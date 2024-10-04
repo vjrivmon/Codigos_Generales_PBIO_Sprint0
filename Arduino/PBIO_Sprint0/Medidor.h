@@ -29,7 +29,7 @@ class Medidor {
     float Vgas = analogRead(pin_gas);
     float Vref = analogRead(pin_vref);
     
-    float M = 1 / (sensitivityCode * TIAGain * 1000 * 0.000000001);
+    float M = 1 / (fabs(sensitivityCode) * TIAGain * 1000 * 0.000000001);
     float DiferenciaVgasVref = Vgas - Vref;
     float Vtotal = DiferenciaVgasVref * 3.3 / 1024;
     float ValorPPM = M * Vtotal;

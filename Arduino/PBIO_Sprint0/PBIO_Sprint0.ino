@@ -17,7 +17,7 @@
 
 #undef min // vaya tela, están definidos en bluefruit.h y  !
 #undef max // colisionan con los de la biblioteca estándar
-
+#define PIN_O3 5
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 #include "LED.h"
@@ -199,9 +199,23 @@ void loop () {
   Serial.print("Vref: ");
   Serial.println(Vr);
 
-  Serial.print("Temperatura: ");
-  Serial.println(valorTemperatura);
+  //Serial.print("Temperatura: ");
+  //Serial.println(valorTemperatura);
+  int adcValue5 = analogRead(5);
+    int adcValue28 = analogRead(28);
+  int adcValue29 = analogRead(29);
+
   
+  // Mostrar el valor ADC en el monitor serial
+  //Serial.print("Valor 5: ");
+  //Serial.println(adcValue5);
+  //Serial.print("Valor 28: ");
+//Serial.println(adcValue28);
+  // Serial.print("Valor 29: ");
+    //Serial.println(adcValue29);
+  
+  // Añade un retardo para evitar saturar el puerto serie
+  delay(1000);
   
 //------------------------------------------------------------------------
 
@@ -216,6 +230,7 @@ void loop () {
   elPuerto.escribir( "---- loop(): acaba **** " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
+  
   
 } // loop ()
 // --------------------------------------------------------------
