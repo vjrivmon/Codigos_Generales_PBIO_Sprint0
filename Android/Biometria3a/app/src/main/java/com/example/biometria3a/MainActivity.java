@@ -212,6 +212,30 @@ public class MainActivity extends AppCompatActivity {
         TramaIBeacon tib = new TramaIBeacon(bytes);
         return Utilidades.bytesToInt(tib.getMinor());
     }
+    private String obtenerInformacionDispositivoBTLE(ScanResult resultado) {
+        BluetoothDevice bluetoothDevice = resultado.getDevice();
+        byte[] bytes = resultado.getScanRecord().getBytes();
+        int rssi = resultado.getRssi();
+
+        StringBuilder info = new StringBuilder();
+        info.append("Dirección = ").append(bluetoothDevice.getAddress()).append("\n");
+        info.append("RSSI = ").append(rssi).append("\n");
+        info.append("Bytes = ").append(Utilidades.bytesToHexString(bytes)).append("\n");
+
+        TramaIBeacon tib = new TramaIBeacon(bytes);
+
+        // Extraer valores de Major y Minor
+        int major = Utilidades.bytesToInt(tib.getMajor());
+        int minor = Utilidades.bytesToInt(tib.getMinor());
+
+        // Añadir Major y Minor al string de información
+        info.append("UUID = ").append(Utilidades.bytesToString(tib.getUUID())).append("\n");
+        info.append("Major = ").append(major).append("\n");
+        info.append("Minor = ").append(minor).append("\n");
+        info.append("TxPower = ").append(tib.getTxPower()).append("\n");
+
+        return info.toString();
+    }
 
     private void buscarEsteDispositivoBTLE300(final String dispositivoBuscado) {
         //Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
@@ -235,8 +259,26 @@ public class MainActivity extends AppCompatActivity {
                 TramaIBeacon tib = new TramaIBeacon(bytes);
                 if (Utilidades.bytesToString(tib.getUUID()).equals(dispositivoBuscado)) {
                     mostrarInformacionDispositivoBTLE(resultado);
+                    final String sensorDatos = obtenerInformacionDispositivoBTLE(resultado);
 
-                }
+
+                    // --------------------------------------------------------------
+                    // ---------------------------Valores Sensor TEXTVIEW -----------------------------------
+                    // --------------------------------------------------------------
+
+                    // Actualizar el TextView en el hilo principal
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView tvBluetoothName = findViewById(R.id.valoresSensor);
+                            tvBluetoothName.setText("Valores: " + sensorDatos);
+                        }
+                    });
+
+
+
+
+            }
 
 
                 else {

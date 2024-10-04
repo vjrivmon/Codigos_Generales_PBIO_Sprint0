@@ -35,8 +35,7 @@ public:
 	  4 // txPower
 	  };
   
-  //const int RSSI = -53; // por poner algo, de momento no lo uso
-  const int RSSI = 33;
+  const int RSSI = -53;
 
   // ............................................................
   // ............................................................
@@ -114,7 +113,21 @@ public:
 
 	(*this).laEmisora.detenerAnuncio();
   } // ()
-	
+
+//----------------------------------------------------------------------------------------------
+// Función para publicar el valor de concentración de COx y temperatura como un anuncio Beacon.
+  void publicarCoXTemp(int16_t valorCox, int16_t valorTemperatura,long tiempoEspera)
+  {
+  (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
+                      valorCox,
+                      valorTemperatura, // minor
+                      (*this).RSSI // rssi
+                  );
+  esperar( tiempoEspera );
+
+  (*this).laEmisora.detenerAnuncio();
+  }
+  
 }; // class
 
 // --------------------------------------------------------------
