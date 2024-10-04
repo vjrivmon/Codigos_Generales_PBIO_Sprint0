@@ -81,10 +81,6 @@ void setup() {
 
   // Globales::elPublicador.laEmisora.pruebaEmision();
   
-  // 
-  // 
-  // 
-  Globales::elMedidor.iniciarMedidor();
 
   // 
   // 
@@ -92,6 +88,30 @@ void setup() {
   esperar( 1000 );
 
   Globales::elPuerto.escribir( "---- setup(): fin ---- \n " );
+
+
+  //-----------------------------------------------------------------------
+  //--------- Probar funcionamiento mandar beacon valores major minor -----
+/* Agrega aquí el bloque de código
+    Globales::elPuerto.escribir("UUID: ");
+    for (int i = 0; i < 16; i++) {
+        Globales::elPuerto.escribir(Globales::elPublicador.beaconUUID[i]);
+    }*/
+    Globales::elPuerto.escribir("\n");
+
+    // Si tienes un valor mayor inicial, puedes usarlo aquí
+    uint16_t major = 0; // O algún valor por defecto
+    Globales::elPuerto.escribir("Major: ");
+    Globales::elPuerto.escribir(major);
+    Globales::elPuerto.escribir("\n");
+
+    Globales::elPuerto.escribir("Minor: ");
+    Globales::elPuerto.escribir(0); // Coloca un valor por defecto o inicial aquí
+    Globales::elPuerto.escribir("\n");
+
+
+
+  
 
 } // setup ()
 
@@ -108,6 +128,12 @@ inline void lucecitas() {
   esperar ( 400 ); //  100 apagado
   Globales::elLED.brillar( 1000 ); // 1000 encendido
   esperar ( 1000 ); //  100 apagado
+
+  
+  // 
+  // 
+  // 
+  Globales::elMedidor.iniciarMedidor();
 } // ()
 
 // --------------------------------------------------------------
@@ -138,19 +164,30 @@ void loop () {
   // 
   float valorCO2 = elMedidor.medirCO2();
   
-  elPublicador.publicarCO2( valorCO2,
-							cont,
-							1000 // intervalo de emisión
+  elPublicador.publicarCO2( valorCO2, cont, 1000 // intervalo de emisión
 							);
+
+
+//-----------------------------------------------------------------------------
+// Código para mostrar el UUID, Major y Minor
+    uint16_t major = (Publicador::MedicionesID::CO2 << 8) + cont; // Obtén el Major
+    /*Globales::elPuerto.escribir("UUID: ");
+    for (int i = 0; i < 16; i++) {
+        Globales::elPuerto.escribir(Globales::elPublicador.beaconUUID[i]);
+    }*/
+    Globales::elPuerto.escribir("\nMajor: ");
+    Globales::elPuerto.escribir(major);
+    Globales::elPuerto.escribir("\nMinor: ");
+    Globales::elPuerto.escribir(valorCO2); // Usando el valor de CO2 como Minor
+    Globales::elPuerto.escribir("\n");
+
   
   // 
   // mido y publico
   // 
   float valorTemperatura = elMedidor.medirTemperatura();
   
-  elPublicador.publicarTemperatura( valorTemperatura, 
-									cont,
-									1000 // intervalo de emisión
+  elPublicador.publicarTemperatura( valorTemperatura, cont, 1000 // intervalo de emisión
 									);
 
   // 
@@ -202,9 +239,14 @@ void loop () {
   //Serial.print("Temperatura: ");
   //Serial.println(valorTemperatura);
   int adcValue5 = analogRead(5);
-    int adcValue28 = analogRead(28);
+  int adcValue28 = analogRead(28);
   int adcValue29 = analogRead(29);
 
+  //Serial.print("Major: ");
+  //Serial.println(major);
+  
+ // Serial.print("Minor: ");
+ // Serial.println(minor);
   
   // Mostrar el valor ADC en el monitor serial
   //Serial.print("Valor 5: ");
@@ -223,7 +265,7 @@ void loop () {
   esperar( 2000 );
 
   elPublicador.laEmisora.detenerAnuncio();
-  
+
   // 
   // 
   // 

@@ -64,8 +64,7 @@ public:
 
   // ............................................................
   // ............................................................
-  void publicarCO2( int16_t valorCO2, uint8_t contador,
-					long tiempoEspera ) {
+  void publicarCO2( int16_t valorCO2, uint8_t contador, long tiempoEspera ) {
 
 	//
 	// 1. empezamos anuncio
