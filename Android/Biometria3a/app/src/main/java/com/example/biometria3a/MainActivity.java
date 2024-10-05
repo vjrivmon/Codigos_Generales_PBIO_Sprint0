@@ -778,11 +778,12 @@ public class MainActivity extends AppCompatActivity {
             postData.put("Longitud", medida.getLongitud());
             */
             valorMajor=valorMajor/1000;
+            valorMinor=valorMinor/100;
             postData.put("hora", "23:00");
             postData.put("lugar", "Haskovo");
             postData.put("id_sensor", 101);
             postData.put("valorGas", valorMajor);
-            postData.put("valorTemperatura", 23);
+            postData.put("valorTemperatura", valorMinor);
 
 
         } catch (JSONException e) {
