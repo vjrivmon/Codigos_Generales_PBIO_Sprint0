@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textViewDispositivos; // Declarar el TextView
     private StringBuilder dispositivosEncontrados; // Para almacenar los dispositivos encontrados
-    private int valorMinor;
-    private int valorMajor;
+     double valorMinor;
+     double valorMajor;
 
 
     private static final int CODIGO_PETICION_PERMISOS = 11223344;
@@ -777,11 +777,12 @@ public class MainActivity extends AppCompatActivity {
             postData.put("Latitud", medida.getLatitud());
             postData.put("Longitud", medida.getLongitud());
             */
+            valorMajor=valorMajor/1000;
             postData.put("hora", "23:00");
             postData.put("lugar", "Haskovo");
             postData.put("id_sensor", 101);
-            postData.put("valorGas", 40);
-            postData.put("valorTemperatura", 35);
+            postData.put("valorGas", valorMajor);
+            postData.put("valorTemperatura", 23);
 
 
         } catch (JSONException e) {
