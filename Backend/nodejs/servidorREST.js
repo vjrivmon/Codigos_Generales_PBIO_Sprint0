@@ -7,7 +7,6 @@ const port = 8080;
 
 // Middleware para procesar JSON
 app.use(express.json());
-
 // Configuración de la base de datos (similar a main.js)
 const pool = mariadb.createPool({
   host: 'sprint0_mdb',
