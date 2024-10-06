@@ -160,6 +160,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Servidor corriendo
 app.listen(port, () => {
   console.log(`API REST corriendo en http://localhost:${port}/api-docs/`);
+  console.log(`APP WEB corriendo en http://localhost`);
+  console.log(`Mediciones de la base de datos corriendo en http://localhost:8080/mediciones`);
 });
 
 /*

@@ -25,7 +25,13 @@ services:
     volumes:
       - ./mariadb/sql:/docker-entrypoint-initdb.d  # Monta la carpeta sql
       - db_data:/var/lib/mysql
-
+  nginx:
+    container_name: sprint0_ngx
+    build:
+      context: ./nodejs/app_web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"  # Exponer el puerto 80 para HTTP
 volumes:
   db_data:
     driver: local
