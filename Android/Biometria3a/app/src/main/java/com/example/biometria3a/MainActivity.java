@@ -779,8 +779,8 @@ public class MainActivity extends AppCompatActivity {
             */
             valorMajor=valorMajor/1000;
             valorMinor=valorMinor/100;
-            postData.put("hora", "23:00");
-            postData.put("lugar", "Haskovo");
+            postData.put("hora", "23:33");
+            postData.put("lugar", "Aviles");
             postData.put("id_sensor", 101);
             postData.put("valorGas", valorMajor);
             postData.put("valorTemperatura", valorMinor);
