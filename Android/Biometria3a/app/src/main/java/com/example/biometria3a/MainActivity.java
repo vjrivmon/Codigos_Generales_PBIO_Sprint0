@@ -646,7 +646,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado");
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
 
-        this.buscarEsteDispositivoBTLE300("ESTO-ES-UN-TEXTO");
+        this.buscarEsteDispositivoBTLE300("INNOVARESCRECER.");
 
 
     } // ()
