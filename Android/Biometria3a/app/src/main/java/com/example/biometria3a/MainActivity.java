@@ -38,6 +38,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -781,8 +783,15 @@ public class MainActivity extends AppCompatActivity {
             */
             valorMajor=valorMajor/1000;
             valorMinor=valorMinor/100;
-            postData.put("hora", "23:33");
-            postData.put("lugar", "Aviles");
+            // Obtener la fecha y hora actual
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm:ss");
+
+            String horaActual = sdfHora.format(calendar.getTime());
+
+            // Usar la hora y fecha actual en postData
+            postData.put("hora", horaActual);
+            postData.put("lugar", "Gandia");
             postData.put("id_sensor", 101);
             postData.put("valorGas", valorMajor);
             postData.put("valorTemperatura", valorMinor);
