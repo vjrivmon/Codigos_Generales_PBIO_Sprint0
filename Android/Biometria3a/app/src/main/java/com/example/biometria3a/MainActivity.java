@@ -646,7 +646,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado");
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
 
-        this.buscarEsteDispositivoBTLE300("ESTO-ES-UN-TEXTO");
+        this.buscarEsteDispositivoBTLE300("INNOVARESCRECER.");
 
 
     } // ()
@@ -766,7 +766,9 @@ public class MainActivity extends AppCompatActivity {
         // URL de destino
         // URL de destino correcta para enviar la medición
 
-        String urlDestino = "http://192.168.0.26:8080/mediciones";
+        //String urlDestino = "http://192.168.0.26:8080/mediciones";
+
+        String urlDestino = "http://172.20.10.5:8080/mediciones";
 
         //String urlDestino = "http://192.168.59.175/Proyecto_Biometria/src/api/v1.0/index.php";
         // Crear un objeto JSON e introducir valores
@@ -779,8 +781,8 @@ public class MainActivity extends AppCompatActivity {
             */
             valorMajor=valorMajor/1000;
             valorMinor=valorMinor/100;
-            postData.put("hora", "23:00");
-            postData.put("lugar", "Haskovo");
+            postData.put("hora", "23:33");
+            postData.put("lugar", "Aviles");
             postData.put("id_sensor", 101);
             postData.put("valorGas", valorMajor);
             postData.put("valorTemperatura", valorMinor);

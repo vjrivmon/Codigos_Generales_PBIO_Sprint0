@@ -4,11 +4,12 @@ const swaggerUi = require('swagger-ui-express');
 const mariadb = require('mariadb');  // Importar mariadb
 const app = express();
 const dotenv = require('dotenv');
+const cors = require('cors'); 
 const port = 8080;
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
-
+app.use(cors());
 // Middleware para procesar JSON
 app.use(express.json());
 // Configuración de la base de datos (similar a main.js)
