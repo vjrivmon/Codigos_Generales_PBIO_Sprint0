@@ -10,6 +10,7 @@ const port = 8080;
 dotenv.config();
 
 // Middleware para procesar JSON
+app.use(cors());
 app.use(express.json());
 // Configuración de la base de datos (similar a main.js)
 const pool = mariadb.createPool({
