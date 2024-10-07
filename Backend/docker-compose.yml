@@ -10,6 +10,8 @@ services:
       - "8080:8080"
     depends_on:
       - mariadb
+    env_file:
+      - ./variables.env
     command: bash -c "while !</dev/tcp/mariadb/3306; do sleep 1; done; node servidorREST.js"
   mariadb:
     container_name: sprint0_mdb
@@ -17,9 +19,8 @@ services:
     build:
       context: ./mariadb
       dockerfile: Dockerfile
-    environment:
-      - MARIADB_ROOT_PASSWORD=1234
-      - MARIADB_DATABASE=ejemploBBDD  # Crea automáticamente la base de datos
+    env_file:
+      - ./variables.env
     ports:
       - "3306:3306"
     volumes:
