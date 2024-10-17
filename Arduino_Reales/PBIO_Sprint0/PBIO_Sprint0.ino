@@ -163,32 +163,16 @@ void loop () {
   // mido y publico
   // 
   float valorCO2 = elMedidor.medirCO2();
-  
-  elPublicador.publicarCO2( valorCO2, cont, 1000 // intervalo de emisión
+  float valorTemp = elMedidor.medirTemp();
+  elPublicador.publicar( valorCO2, cont, 1000,valorTemp // intervalo de emisión
 							);
 
 
 //-----------------------------------------------------------------------------
-// Código para mostrar el UUID, Major y Minor
-    uint16_t major = (Publicador::MedicionesID::CO2 << 8) + cont; // Obtén el Major
-    /*Globales::elPuerto.escribir("UUID: ");
-    for (int i = 0; i < 16; i++) {
-        Globales::elPuerto.escribir(Globales::elPublicador.beaconUUID[i]);
-    }*/
-    Globales::elPuerto.escribir("\nMajor: ");
-    Globales::elPuerto.escribir(major);
-    Globales::elPuerto.escribir("\nMinor: ");
-    Globales::elPuerto.escribir(valorCO2); // Usando el valor de CO2 como Minor
-    Globales::elPuerto.escribir("\n");
+
 
   
-  // 
-  // mido y publico
-  // 
-  float valorTemperatura = elMedidor.medirTemperatura();
-  
-  elPublicador.publicarTemperatura( valorTemperatura, cont, 1000 // intervalo de emisión
-									);
+
 
   // 
   // prueba para emitir un iBeacon y poner

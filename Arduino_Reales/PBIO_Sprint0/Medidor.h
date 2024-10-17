@@ -78,7 +78,7 @@ class Medidor {
 
   // .....................................................
   // .....................................................
-  float medirTemperatura() {
+  float medirTemp() {
 	   float Vtemp = analogRead(pin_temp); // Leer el valor analógico
      float voltage = (analogRead(pin_vref) * Vtemp) / ADC_RESOLUTION; // Convertir a voltaje
      float temperaturaC = voltage * 100; // Convertir el voltaje a grados Celsius (LM35: 10 mV/°C)

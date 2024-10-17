@@ -21,8 +21,8 @@ private:
 	};*/
 
 uint8_t beaconUUID[16] = { //UUID del Beacon // --------------------------------------------- CAMBIAR
-  'E', 'S', 'T', 'O', '-', 'E', 'S', '-', 
-  'U', 'N', '-', 'T', 'E', 'X', 'T', 'O'
+  'M', 'A', 'T', 'X', 'O', '-', 'L', 'L', 
+  'E', 'V', 'A', 'N', 'T', '-', 'U', 'D'
   };
   
 
@@ -64,15 +64,15 @@ public:
 
   // ............................................................
   // ............................................................
-  void publicarCO2( int16_t valorCO2, uint8_t contador, long tiempoEspera ) {
+  void publicar( int16_t valorCO2, uint8_t contador, long tiempoEspera, int16_t valorTemp ) {
 
 	//
 	// 1. empezamos anuncio
 	//
-	uint16_t major = (MedicionesID::CO2 << 8) + contador;
+	//uint16_t major = (MedicionesID::CO2 << 8) + contador;
 	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
-											major,
-											valorCO2, // minor
+											ValorCO2,//major
+											valorTemp, // minor
 											(*this).RSSI // rssi
 									);
 
