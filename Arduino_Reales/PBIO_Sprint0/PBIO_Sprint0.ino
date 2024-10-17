@@ -13,7 +13,7 @@
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
-#include <bluefruit.h>
+#include "bluefruit.h"
 
 #undef min // vaya tela, están definidos en bluefruit.h y  !
 #undef max // colisionan con los de la biblioteca estándar
@@ -164,8 +164,7 @@ void loop () {
   // 
   float valorCO2 = elMedidor.medirCO2();
   float valorTemp = elMedidor.medirTemp();
-  elPublicador.publicar( valorCO2, cont, 1000,valorTemp // intervalo de emisión
-							);
+  elPublicador.publicar( valorCO2, cont, 1000, valorTemp);
 
 
 //-----------------------------------------------------------------------------

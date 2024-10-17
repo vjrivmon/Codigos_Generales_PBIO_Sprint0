@@ -63,7 +63,7 @@ class Medidor {
     Cx = (Vmedida) / (sensitivityCode * 499 * 0.000001);
 
     // Inicializar Cx final con el valor de Cx
-    finalCx = Cx;
+    fCx = Cx;
     /*float Vgas = analogRead(pin_gas);
     float Vref = analogRead(pin_vref);
     
@@ -73,7 +73,7 @@ class Medidor {
     float ValorPPM = M * Vtotal;
     float ValorPPMpor10paraBeacon = ValorPPM * 10;
     return ValorPPMpor10paraBeacon;  */
-    return finalCx;
+    return fCx;
   } // ()
 
   // .....................................................
