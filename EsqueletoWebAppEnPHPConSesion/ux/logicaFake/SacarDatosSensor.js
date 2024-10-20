@@ -4,12 +4,12 @@ function obtenerDatosDelServidor() {
     // Aquí hacemos la solicitud al servidor REST en localhost:8080
     //  http://192.168.18.157:8080/mediciones
     fetch('http://192.168.0.18:8080/mediciones', {
-
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
+
         .then(response => {
             // Verifica si la respuesta es exitosa
             if (!response.ok) {

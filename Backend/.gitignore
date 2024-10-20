@@ -1,5 +1,6 @@
 # No añadir las variables de entorno al repositorio
 .env
+variables.env
 
 # Tampoco añadir la carpeta node_modules
 node_modules/

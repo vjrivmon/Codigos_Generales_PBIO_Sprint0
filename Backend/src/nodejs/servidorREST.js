@@ -18,7 +18,11 @@ console.log('DB_CONTRASENYA:', process.env.DB_CONTRASENYA);
 console.log('DB_NOMBRE:', process.env.DB_NOMBRE);
 console.log('DB_CONNECTION_LIMIT:', process.env.DB_CONNECTION_LIMIT);
 
+// Cargar variables de entorno desde el archivo .env
+dotenv.config();
+
 // Middleware para procesar JSON
+app.use(cors());
 app.use(express.json());
 app.use(cors());
 // Configuración de la base de datos (similar a main.js)

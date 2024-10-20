@@ -1,10 +1,9 @@
 # Usamos la imagen oficial de MariaDB
 FROM mariadb:latest
 
-# Definir argumentos para las variables de entorno
-#ARG DB_USUARIO
-#ARG DB_CONTRASENYA
-#ARG DB_NOMBRE
+# Definir la variable de entorno para la contraseña de root de MariaDB
+# ENV MARIADB_ROOT_PASSWORD=1234
+# Ya no hace falta la línea anterior porque la contraseña se pasa como argumento en el archivo variables.env
 
 # Definir las variables de entorno para MariaDB
 #ENV MARIADB_DATABASE=${DB_NOMBRE}
