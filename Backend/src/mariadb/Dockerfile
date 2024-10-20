@@ -2,6 +2,7 @@
 FROM mariadb:latest
 
 # Definir la variable de entorno para la contraseña de root de MariaDB
+ENV MARIADB_DATABASE=ejemploBBDD
 ENV MARIADB_ROOT_PASSWORD=1234
 
 # Copiame el fichero .sql (que crea la base de datos con la tabla de prueba) dentro del contenedor

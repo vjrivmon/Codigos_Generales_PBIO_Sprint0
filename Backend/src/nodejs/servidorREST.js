@@ -4,9 +4,11 @@ const swaggerUi = require('swagger-ui-express');
 const mariadb = require('mariadb');  // Importar mariadb
 const app = express();
 const port = 8080;
+const cors = require('cors');
 
 // Middleware para procesar JSON
 app.use(express.json());
+app.use(cors());
 // Configuración de la base de datos (similar a main.js)
 const pool = mariadb.createPool({
   host: 'sprint0_mdb',

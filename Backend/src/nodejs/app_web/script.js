@@ -1,6 +1,6 @@
 async function obtenerMediciones() {
     try {
-        const response = await fetch('http://192.168.0.26:8080/mediciones');
+        const response = await fetch('http://172.20.10.5:8080/mediciones'); //Cambiar este dato por la IP del servidor cada vez que se conecta a un nuevo wifi
         if (!response.ok) {
             throw new Error('Error en la respuesta de la API');
         }

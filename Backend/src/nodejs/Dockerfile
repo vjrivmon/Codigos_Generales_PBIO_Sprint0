@@ -13,6 +13,7 @@ RUN if [ ! -f package.json ]; then npm init -y; fi
 # Instalamos las dependencias
 RUN apt update
 RUN npm install mariadb
+RUN npm install cors
 
 # Copiamos el resto del código
 COPY . .
