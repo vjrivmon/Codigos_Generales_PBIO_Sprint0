@@ -17,9 +17,8 @@ services:
     build:
       context: ./mariadb
       dockerfile: Dockerfile
-    environment:
-      - MARIADB_ROOT_PASSWORD=1234
-      - MARIADB_DATABASE=ejemploBBDD  # Crea automáticamente la base de datos
+    env_file:
+      - ./variables.env
     ports:
       - "3306:3306"
     volumes:

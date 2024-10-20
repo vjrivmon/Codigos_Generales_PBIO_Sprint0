@@ -14,6 +14,7 @@ RUN if [ ! -f package.json ]; then npm init -y; fi
 RUN apt update
 RUN npm install mariadb
 RUN npm install cors
+RUN npm install dotenv
 
 # Copiamos el resto del código
 COPY . .

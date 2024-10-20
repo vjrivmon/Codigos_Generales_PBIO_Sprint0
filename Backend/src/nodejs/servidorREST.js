@@ -3,19 +3,22 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const mariadb = require('mariadb');  // Importar mariadb
 const app = express();
+const dotenv = require('dotenv');
 const port = 8080;
 const cors = require('cors');
+require('dotenv').config(); // Asegúrate de que esta línea esté presente
+
 
 // Middleware para procesar JSON
 app.use(express.json());
 app.use(cors());
 // Configuración de la base de datos (similar a main.js)
 const pool = mariadb.createPool({
-  host: 'sprint0_mdb',
-  user: 'root',
-  password: '1234',
-  database: 'ejemploBBDD',
-  connectionLimit: 5
+  host: process.env.DB_HOST,
+  user: process.env.DB_USUARIO,
+  password: process.env.DB_CONTRASENYA,
+  database: process.env.DB_NOMBRE,
+  connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT, 10)
 });
 
 /**
