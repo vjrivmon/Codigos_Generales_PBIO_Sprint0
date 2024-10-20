@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  node:
+    container_name: sprint0_njs
+    build: 
+      context: ./nodejs
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+    env_file:
+      - ./variables.env
+    command: bash -c "while !</dev/tcp/mariadb/3306; do sleep 1; done; node servidorREST.js"
+  mariadb:
+    container_name: sprint0_mdb
+    restart: always
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    env_file:
+      - ./variables.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb/sql:/docker-entrypoint-initdb.d  # Monta la carpeta sql
+      - db_data:/var/lib/mysql
+  nginx:
+    container_name: sprint0_ngx
+    build:
+      context: ./nodejs/app_web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"  # Exponer el puerto 80 para HTTP
+volumes:
+  db_data:
+    driver: local
+
+#
+# server:
+#    build:
+#      context: ./src
+#      dockerfile: ./Dockerfile
+#    container_name: server
+#    image: server
+#    ports:
+#      - 127.0.0.1:8080:8080
+#    env_file:
+#      - ./server.env
+#    depends_on:
+#      - mariadb
+#     
