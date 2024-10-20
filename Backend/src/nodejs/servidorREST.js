@@ -6,8 +6,17 @@ const app = express();
 const dotenv = require('dotenv');
 const port = 8080;
 const cors = require('cors');
-require('dotenv').config(); // Asegúrate de que esta línea esté presente
+//require('dotenv').config(); // Asegúrate de que esta línea esté presente
 
+// Cargar variables de entorno desde el archivo .env
+dotenv.config();
+
+// Verificar que las variables de entorno se carguen correctamente
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USUARIO:', process.env.DB_USUARIO);
+console.log('DB_CONTRASENYA:', process.env.DB_CONTRASENYA);
+console.log('DB_NOMBRE:', process.env.DB_NOMBRE);
+console.log('DB_CONNECTION_LIMIT:', process.env.DB_CONNECTION_LIMIT);
 
 // Middleware para procesar JSON
 app.use(express.json());
