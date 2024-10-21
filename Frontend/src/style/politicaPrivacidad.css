@@ -3,7 +3,7 @@
 .policy-content {
     max-width: 85%;/* Ancho máximo de la sección */
     margin: 1rem auto; /* Centrar la sección en la página */
-    padding: 20px; /* Espaciado interno */
+    padding: 2.5rem; /* Espaciado interno */
     background-color: white; /* Fondo blanco para el contenido */
     border-radius: 33px; /* Bordes redondeados */
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); /* Sombra suave */
@@ -32,6 +32,8 @@
 
 .policy-content ul {
     margin: 10px 0; /* Margen para la lista */
+    line-height: 1.6; /* Espaciado entre líneas */
+
     padding-left: 20px; /* Espaciado interno para la lista */
 }
 
