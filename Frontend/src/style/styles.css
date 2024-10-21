@@ -6,7 +6,7 @@
   --background-color: #D5DEEF;  /* Fondo general */
   --background-color-secondary: #B1C9EF;  /* Fondo general */
   --text-color: #3B3B3B;           /* Color del texto */
-  --button-color: #395886;		/Color de los botones/
+  --button-color: #395886;		/*Color de los botones*/
   --button-color-secondary: #628ECB;
 }
 
@@ -179,5 +179,98 @@ main::before {
 
     .navbar {
         justify-content: space-between;
+    }
+}
+
+
+
+/* Footer */
+.apple-footer {
+    background-color: var(--text-color);
+    padding: 20px 40px;
+    color: #666;
+    font-size: 12px;
+    border-top: 1px solid var(--background-color-secondary);
+	width: 100%;
+	margin-top: 2rem;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: lightgray;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+
+.footer-country a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    margin-top: 15px;
+    text-align: center;
+    color: gray;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .apple-footer {
+        padding: 20px 20px;
+    }
+
+    .footer-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-links ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer-country {
+        margin-top: 15px;
+    }
+
+    .footer-country p {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-top {
+        align-items: center;
+    }
+
+    .footer-links ul {
+        text-align: center;
+        gap: 8px;
+    }
+
+    .footer-country {
+        margin-top: 10px;
+    }
+
+    .footer-country p {
+        text-align: center;
     }
 }
