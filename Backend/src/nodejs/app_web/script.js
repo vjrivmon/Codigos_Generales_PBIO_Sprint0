@@ -21,7 +21,8 @@ function mostrarMediciones(mediciones) {
         div.innerHTML = `
             <p><strong>ID:</strong> ${medicion.id}</p>
             <p><strong>Hora:</strong> ${medicion.hora}</p>
-            <p><strong>Lugar:</strong> ${medicion.lugar}</p>
+            <p><strong>latitud:</strong> ${medicion.latitud}</p>
+            <p><strong>longitud:</strong> ${medicion.longitud}</p>
             <p><strong>ID Sensor:</strong> ${medicion.id_sensor}</p>
             <p><strong>Valor Gas:</strong> ${medicion.valorGas}</p>
             <p><strong>Valor Temperatura:</strong> ${medicion.valorTemperatura}</p>

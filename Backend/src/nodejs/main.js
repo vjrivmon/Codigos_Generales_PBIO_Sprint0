@@ -2,6 +2,9 @@ const mariadb = require('mariadb');
 const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
+const port = 8080;
+
+dotenv.config();
 
 // Configuración general de la base de datos
 const config = {
@@ -49,7 +52,15 @@ app.get('/', async (req, res) => {
   }
 });
 
+// Importar y usar las rutas de `APIRest.js`
+const APIRest = require('./APIRest');
+app.use('/', APIRest);
+
+
 // Iniciar el servidor en el puerto 8080
 app.listen(8080, () => {
-  console.log('Servidor escuchando en http://localhost:8080');
+  //console.log('Servidor escuchando en http://localhost:8080');
+  console.log(`API REST corriendo en http://localhost:${port}/api-docs/`);
+  console.log(`APP WEB corriendo en http://localhost`);
+console.log(`Consulta completa de la base de datos corriendo en http://localhost:8080/base-datos`);
 });
