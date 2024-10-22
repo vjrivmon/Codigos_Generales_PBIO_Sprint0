@@ -41,15 +41,26 @@ async function agregarMedicion(req, res) {
   let connection;
   try {
     connection = await pool.getConnection();
+
+    // Obtener el primer id_sensor disponible
+    const sensorQuery = 'SELECT id_sensor FROM sensores LIMIT 1'; // Puedes modificar esto para obtener el sensor deseado
+    const sensorRows = await connection.query(sensorQuery);
+    if (sensorRows.length === 0) {
+      return res.status(400).send('No hay sensores disponibles');
+    }
+
+    const id_sensor = sensorRows[0].id_sensor; // Asignar el primer id_sensor
+
     const query = 'INSERT INTO mediciones (hora, latitud, longitud, id_sensor, valorGas, valorTemperatura) VALUES (?, ?, ?, ?, ?, ?)';
     const result = await connection.query(query, [
       nuevaMedicion.hora, 
       nuevaMedicion.latitud,
       nuevaMedicion.longitud,
-      nuevaMedicion.id_sensor, 
+      id_sensor, // Usar el id_sensor obtenido
       nuevaMedicion.valorGas, 
       nuevaMedicion.valorTemperatura
     ]);
+
     nuevaMedicion.id = result.insertId; // Asigna el ID generado automáticamente
     res.status(201).json(nuevaMedicion);
   } catch (err) {
@@ -79,13 +90,28 @@ async function ConsultarDatosUsuario(req, res) {
 // Función para consultar si hay alerta
 async function ConsultarSiHayAlerta(req, res) {
   const { id_sensor } = req.params;
+
+  // Verificamos que id_sensor no sea undefined o null
+  if (!id_sensor) {
+    return res.status(400).send('El id_sensor es obligatorio');
+  }
+
   let connection;
   try {
     connection = await pool.getConnection();
-    const query = 'SELECT valorGas FROM mediciones WHERE id_sensor = ? ORDER BY fecha DESC LIMIT 1';
+
+    // Consulta para obtener la última medición del sensor
+    const query = 'SELECT valorGas FROM mediciones WHERE id_sensor = ?';
+    const id_sensor = parseInt(id_sensor, 10); // Convertir a número
     const rows = await connection.query(query, [id_sensor]);
 
-    const hayAlerta = rows.length > 0 && rows[0].valorGas > 50;  // Ejemplo: si valorGas es mayor a 50 hay alerta
+    // Si no hay resultados en la consulta
+    if (rows.length === 0) {
+      return res.json({ hayAlerta: false, message: 'No hay mediciones para este sensor' });
+    }
+
+    // Verificamos si valorGas es mayor a 30
+    const hayAlerta = rows[0].valorGas > 30;
     res.json({ hayAlerta });
   } catch (err) {
     console.error('Error: ', err);
@@ -101,10 +127,10 @@ async function agregarUsuario(req, res) {
   let connection;
   try {
     connection = await pool.getConnection();
-    const query = 'INSERT INTO usuarios (correo, contrasenya) VALUES (?, ?)';
+    const query = 'INSERT INTO usuarios (correo, contrasena) VALUES (?, ?)';
     const result = await connection.query(query, [
       nuevoUsuario.correo,
-      nuevoUsuario.contrasenya
+      nuevoUsuario.contrasena
     ]);
     nuevoUsuario.id = result.insertId;
     res.status(201).json(nuevoUsuario);

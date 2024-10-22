@@ -128,7 +128,6 @@ module.exports = router; // Exportar el router
  *         - hora
  *         - latitud
  *         - longitud
- *         - id_sensor
  *         - valorGas
  *         - valorTemperatura
  *       properties:
@@ -159,7 +158,6 @@ module.exports = router; // Exportar el router
  *         hora: '10:00'
  *         latitud: 40.416775
  *         longitud: -3.703790
- *         id_sensor: 101
  *         valorGas: 40.00
  *         valorTemperatura: 32.00
  */
@@ -172,13 +170,9 @@ module.exports = router; // Exportar el router
  *     Usuario:
  *       type: object
  *       required:
- *         - id_usuario
  *         - correo
- *         - contrasenya
+ *         - contrasena
  *       properties:
- *         id_usuario:
- *           type: integer
- *           description: ID del usuario
  *         correo:
  *           type: string
  *           description: Correo electrónico del usuario
@@ -186,9 +180,8 @@ module.exports = router; // Exportar el router
  *           type: string
  *           description: Contraseña del usuario
  *       example:
- *         id_usuario: 1
  *         correo: 'ejemplo@correo.com'
- *         contrasenya: '123456'
+ *         contrasena: '123456'
  */
 
 // TÍTULO DE LA API en Swagger
@@ -328,7 +321,7 @@ module.exports = router; // Exportar el router
 // GET para consultar si hay alerta por valor de gas
 /**
  * @swagger
- * /alertas/{id_sensor}:
+ * /mediciones/valorGas:
  *   get:
  *     summary: Consulta si hay una alerta para un sensor
  *     tags: [Mediciones]
