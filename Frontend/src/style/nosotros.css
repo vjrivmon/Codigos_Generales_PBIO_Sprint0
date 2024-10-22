@@ -1,0 +1,136 @@
+/* Estilos para la sección Sobre Nosotros */
+
+:root{ 
+  --background-color: #D5DEEF;  /* Fondo general */
+  --background-color-secondary: #B1C9EF;  /* Fondo general */
+  --text-color: #3B3B3B;           /* Color del texto */
+  --button-color: #395886;		/*Color de los botones*/
+  --button-color-secondary: #628ECB;
+}
+
+.about-us {
+    max-width: 85%; /* Ancho máximo de la sección */
+    margin: 2rem auto; /* Centrar la sección en la página */
+    padding: 2.5rem; /* Espaciado interno */
+    background-color: white; /* Fondo blanco */
+    border-radius: 33px; /* Bordes redondeados */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); /* Sombra suave */
+    align-self: center;
+}
+
+.about-us .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-us h1, .about-us h2 {
+    text-align: left;
+    margin-bottom: 20px;
+    color: var(--button-color);
+}
+
+.about-us p {
+    text-align: left;
+    font-size: 1.2em;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.our-values {
+    margin-bottom: 40px;
+}
+
+.our-values ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.our-values ul li {
+    font-size: 1.1em;
+    margin: 10px 0;
+    color: var(--text-color);
+}
+
+.team {
+    text-align: center;
+}
+
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.team-members .member {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 33px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(33.333% - 40px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-members .member img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+}
+
+.team-members .member h3 {
+    font-size: 1.5em;
+    margin: 15px 0;
+    color: var(--button-color);
+}
+
+.team-members .member p {
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+/* Responsivo */
+@media (max-width: 992px) {
+    .team-members .member {
+        width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 768px) {
+    .team-members .member {
+        width: calc(100% - 40px);
+    }
+}
+
+/* Estilos responsivos adicionales */
+@media (max-width: 768px) {
+    .about-us {
+        padding: 15px; /* Reducir el espaciado interno en pantallas pequeñas */
+    }
+
+    .about-us h1 {
+        font-size: 1.8em; /* Tamaño de fuente para título en pantallas pequeñas */
+    }
+
+    .about-us h2 {
+        font-size: 1.3em; /* Tamaño de fuente para subtítulos en pantallas pequeñas */
+    }
+
+    .about-us p {
+        font-size: 0.9em; /* Tamaño de fuente del texto normal en pantallas pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .about-us h1 {
+        font-size: 1.6em; /* Tamaño de fuente más pequeño para el título */
+    }
+
+    .about-us h2 {
+        font-size: 1.2em; /* Tamaño de fuente para subtítulos en pantallas muy pequeñas */
+    }
+
+    .about-us p {
+        font-size: 0.85em; /* Tamaño de fuente del texto normal en pantallas muy pequeñas */
+    }
+}
