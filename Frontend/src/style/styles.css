@@ -31,21 +31,23 @@ body {
 }
 
 .logo {
-  display: flex; /* Flexbox for horizontal alignment */
-  align-items: center; /* Vertically center logo items */
-  font-size: 1.5em;
-  font-weight: bold;
+  display: flex;                /* Mantiene el logo y el texto en la misma fila */
+  position: relative;           /* Permite posicionar el texto con precisión */
+  align-items: flex-start;      /* Alinea los elementos en la parte superior */
 }
 
 .logo img {
-  width: 40px;
-  height: auto;
-  margin-right: 10px; /* Space between logo image and text */
+  width: 40px;                  /* Ajusta el tamaño de la imagen */
+  height: auto;                 /* Mantiene las proporciones */
 }
 
 .logo span {
-  color: var(--text-color);
-  line-height: 40px; /* Align text vertically with logo */
+  position: absolute;           /* Posiciona el texto de forma absoluta */
+  top: 10px;                   /* Ajusta el valor según sea necesario para colocarlo justo encima del logo */
+  left: 50px;                   /* Ajusta la distancia horizontal desde el logo */
+  font-size: 1.2em;             /* Ajusta el tamaño de la fuente */
+  color: var(--text-color);     /* Color del texto */
+font-weight:700;
 }
 
 
