@@ -7,3 +7,6 @@ node_modules/
 
 # Ni tampoco la carpeta sql que contiene la base de datos
 sql/
+
+# No incluir archivos del directorio temporal
+tempdir/
