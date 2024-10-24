@@ -12,7 +12,7 @@ services:
       - mariadb
     env_file:
       - ./variables.env
-    command: bash -c "while !</dev/tcp/mariadb/3306; do sleep 1; done; node servidorREST.js"
+    command: bash -c "while !</dev/tcp/mariadb/3306; do sleep 1; done; node main.js"
   mariadb:
     container_name: sprint0_mdb
     restart: always
@@ -24,7 +24,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mariadb/sql:/docker-entrypoint-initdb.d  # Monta la carpeta sql
+      - ./mariadb/sql:/docker-entrypoint-initdb.d/  # Monta la carpeta sql
       - db_data:/var/lib/mysql
   nginx:
     container_name: sprint0_ngx

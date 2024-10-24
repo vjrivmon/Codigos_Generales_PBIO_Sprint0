@@ -1,0 +1,75 @@
+/* Estilos para la sección de Política de Privacidad */
+
+.policy-content {
+    max-width: 85%;/* Ancho máximo de la sección */
+    margin: 1rem auto; /* Centrar la sección en la página */
+    padding: 2.5rem; /* Espaciado interno */
+    background-color: white; /* Fondo blanco para el contenido */
+    border-radius: 33px; /* Bordes redondeados */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); /* Sombra suave */
+	align-self:center;
+}
+
+.policy-content h1 {
+    font-size: 2em; /* Tamaño de fuente para el título principal */
+    color: var(--text-color); /* Color del texto definido previamente */
+    margin-bottom: 20px; /* Espaciado inferior */
+}
+
+.policy-content h2 {
+    font-size: 1.5em; /* Tamaño de fuente para subtítulos */
+    color: var(--text-color); /* Usar el color de botón para subtítulos */
+    margin-top: 20px; /* Espaciado superior */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.policy-content p {
+    font-size: 1em; /* Tamaño de fuente del texto normal */
+    line-height: 1.6; /* Espaciado entre líneas */
+    color: var(--text-color); /* Color del texto */
+    margin-bottom: 15px; /* Espaciado inferior */
+}
+
+.policy-content ul {
+    margin: 10px 0; /* Margen para la lista */
+    line-height: 1.6; /* Espaciado entre líneas */
+
+    padding-left: 20px; /* Espaciado interno para la lista */
+}
+
+.policy-content ul li {
+    margin-bottom: 5px; /* Espaciado entre elementos de la lista */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .policy-content {
+        padding: 15px; /* Reducir el espaciado interno en pantallas pequeñas */
+    }
+
+    .policy-content h1 {
+        font-size: 1.8em; /* Tamaño de fuente para título en pantallas pequeñas */
+    }
+
+    .policy-content h2 {
+        font-size: 1.3em; /* Tamaño de fuente para subtítulos en pantallas pequeñas */
+    }
+
+    .policy-content p {
+        font-size: 0.9em; /* Tamaño de fuente del texto normal en pantallas pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .policy-content h1 {
+        font-size: 1.6em; /* Tamaño de fuente aún más pequeño para el título */
+    }
+
+    .policy-content h2 {
+        font-size: 1.2em; /* Tamaño de fuente para subtítulos en pantallas muy pequeñas */
+    }
+
+    .policy-content p {
+        font-size: 0.85em; /* Tamaño de fuente del texto normal en pantallas muy pequeñas */
+    }
+}
