@@ -35,6 +35,9 @@
         <activity android:name=".RegistroActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".SobreNosotrosActivity" />
+        <activity android:name=".FAQActivity" />
+
 
         <meta-data
             android:name="preloaded_fonts"

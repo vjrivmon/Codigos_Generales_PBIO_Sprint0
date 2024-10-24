@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Simulación: Si el correo y la contraseña no están vacíos, se muestra un mensaje de éxito.
-        if (email.equals("mimi@com") && password.equals("123456")) {
+        if (email.equals("mimi") && password.equals("123456")) {
             Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
             // Inicia la actividad MainActivity
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
