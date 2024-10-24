@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_about"
+        android:title="Sobre Nosotros" />
+    <item
+        android:id="@+id/action_faq"
+        android:title="FAQ" />
+    <item
+        android:id="@+id/action_packs"
+        android:title="Packs" />
+</menu>
