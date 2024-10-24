@@ -222,6 +222,7 @@ main .btn-primary {
         -1px 1px 0 var(--text-color),  /* Sombra en la esquina inferior izquierda */
         1px -1px 0 var(--text-color),  /* Sombra en la esquina superior derecha */
         -1px -1px 0 var(--text-color); /* Sombra en la esquina superior izquierda */
+	font-weight: 300;
 }
 
 .hero-image img {
