@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <!-- Título de la pantalla -->
+    <TextView
+        android:id="@+id/txtIniSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Crear Cuenta"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Layout para los cuadraditos de opciones de registro social -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutSocialButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtIniSesion">
+
+        <!-- Cuadradito de Facebook -->
+        <ImageView
+            android:id="@+id/btnFacebook"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintEnd_toStartOf="@id/btnGithub"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <!-- Cuadradito de GitHub -->
+        <ImageView
+            android:id="@+id/btnGithub"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_github"
+            app:layout_constraintEnd_toStartOf="@id/btnLinkedIn"
+            app:layout_constraintStart_toEndOf="@id/btnFacebook"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <!-- Cuadradito de LinkedIn -->
+        <ImageView
+            android:id="@+id/btnLinkedIn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_linkedin"
+            app:layout_constraintEnd_toStartOf="@id/btnGooglePlus"
+            app:layout_constraintStart_toEndOf="@id/btnGithub"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <!-- Cuadradito de Google Plus -->
+        <ImageView
+            android:id="@+id/btnGooglePlus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_google_plus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnLinkedIn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Texto para opciones de registro -->
+    <TextView
+        android:id="@+id/txtOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:text="o regístrate con tu email"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSocialButtons" />
+
+    <!-- Campo de texto para el nombre de usuario -->
+    <EditText
+        android:id="@+id/edtUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:hint="Nombre de Usuario"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtOr" />
+
+    <!-- Campo de texto para el correo electrónico -->
+    <EditText
+        android:id="@+id/edtEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Correo Electrónico"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/edtUsername"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Campo de texto para la contraseña -->
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/edtEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Botón de Registro -->
+    <Button
+        android:id="@+id/btnIniSesion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Registrarse"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+
+    <TextView
+        android:id="@+id/txtNoTienesAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="¿Ya tienes cuenta?"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnIniSesion"
+        app:layout_constraintStart_toStartOf="@+id/btnIniSesion"
+        app:layout_constraintTop_toBottomOf="@+id/btnIniSesion" />
+
+    <TextView
+        android:id="@+id/txtRegistrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Inicia sesión"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+
+        app:layout_constraintEnd_toEndOf="@+id/btnIniSesion"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/btnIniSesion"
+        app:layout_constraintTop_toBottomOf="@+id/txtNoTienesAccount" />
+
+    <!-- Texto subrayado para iniciar sesión -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

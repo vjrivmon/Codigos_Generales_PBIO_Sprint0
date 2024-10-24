@@ -38,6 +38,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -667,7 +669,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado");
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
 
-        this.buscarEsteDispositivoBTLE300( "ESTO-ES-UN-TEXTO" );
+        this.buscarEsteDispositivoBTLE300("INNOVARESCRECER.");
 
 
 
@@ -799,6 +801,9 @@ public class MainActivity extends AppCompatActivity {
         // URL de destino
         // URL de destino correcta para enviar la medición
 
+        String urlDestino = "http://192.168.0.26:8080/mediciones";
+
+        //String urlDestino = "http://192.168.59.175/Proyecto_Biometria/src/api/v1.0/index.php";
         // Crear un objeto JSON e introducir valores
         JSONObject postData = new JSONObject();
         try {
@@ -806,6 +811,16 @@ public class MainActivity extends AppCompatActivity {
             postData.put("TipoSensor", medida.getTipoSensor());
             postData.put("Latitud", medida.getLatitud());
             postData.put("Longitud", medida.getLongitud());
+            */
+            valorMajor=valorMajor/1000;
+            valorMinor=valorMinor/100;
+            postData.put("hora", "23:00");
+            postData.put("lugar", "Haskovo");
+            postData.put("id_sensor", 101);
+            postData.put("valorGas", valorMajor);
+            postData.put("valorTemperatura", valorMinor);
+
+
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d("clienterestandroid", "MAAAAAAAAAAAAAAAAAAAAAAAAAAL");
@@ -892,7 +907,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 } // class
-
+/*
                 // Read response from input stream
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
                     String responseLine;
