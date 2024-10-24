@@ -1,0 +1,240 @@
+/* General Styles */
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+/* Product Highlight Section */
+.product-highlight {
+    background-color: var(--background-color-secondary);
+    padding: 10px 0;
+    display: flex;
+    align-items: stretch; /* Asegura que tanto el texto como la imagen tengan la misma altura */
+    justify-content: space-between;
+    gap: 20px; /* Espacio entre texto e imagen */
+}
+
+.product-text {
+    flex: 1; /* El texto ocupa la mitad del espacio */
+    max-width: 600px;
+    display: flex;
+    flex-direction: column; /* Mantiene el texto alineado en bloque */
+    justify-content: center; /* Asegura que el contenido del texto esté centrado verticalmente */
+}
+
+.product-text h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+	font-size: 2rem;
+}
+
+.product-text p {
+    margin-bottom: 20px;
+}
+
+.product-text ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.product-text ul li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.product-text ul li:before {
+    content: "✔";
+    color: var(--button-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.product-image {
+    flex: 1; /* La imagen ocupa la otra mitad del espacio */
+    display: flex;
+    justify-content: center; /* Centra la imagen horizontalmente */
+    align-items: center; /* Centra la imagen verticalmente */
+}
+
+.product-image img {
+    max-width: 100%; /* Imagen ajustada al contenedor */
+    height: auto;
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+}
+
+
+/* Purchase Options Section */
+.purchase-info {
+    background-color: var(--background-color);
+    padding: 60px 0;
+    text-align: center;
+}
+
+.purchase-info h3 {
+    font-size: 2em;
+    margin-bottom: 40px;
+    color: var(--text-color);
+}
+
+.purchase-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.purchase-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 33px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+
+.purchase-card img {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+.purchase-card h4 {
+    font-size: 1.5em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.purchase-card p {
+    font-size: 1em;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.purchase-card .btn {
+    margin-top: 10px;
+}
+
+/* Highlighting the recommended option */
+.highlight {
+    border: 2px solid var(--button-color);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Customer Reviews Section */
+.customer-reviews {
+    background-color: var(--background-color-secondary);
+    padding: 60px 0;
+	margin-bottom: auto;
+}
+
+.customer-reviews h3 {
+    font-size: 2em;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.reviews-carousel {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.review-item {
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 33px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+    text-align: center;
+}
+
+.review-item strong {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+/* General Button Styles */
+.btn {
+    display: inline-flex; /* Ajusta el ancho al contenido */
+    justify-content: center; /* Centra el texto dentro del botón */
+    align-items: center; /* Centra verticalmente el texto */
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    max-width: 100%; /* Asegura que el botón no se desborde */
+    width: auto; /* El ancho se ajusta al contenido */
+}
+.btn-primary {
+    background-color: var(--button-color);
+    color: white;
+    border: 2px solid var(--button-color);
+    width: auto; /* Ancho auto basado en el texto */
+}
+
+.btn-primary:hover {
+    background-color: white;
+    color: var(--button-color);
+}
+
+.btn-outline {
+    background-color: white;
+    color: var(--button-color);
+    border: 2px solid var(--button-color);
+    width: auto; /* El ancho se ajusta al contenido */
+}
+
+.btn-outline:hover {
+    background-color: var(--button-color);
+    color: white;
+}
+
+.btn-secondary {
+    margin-left: 1rem;
+    width: auto; /* Asegura que también el botón secundario tenga ancho auto */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .product-highlight {
+        flex-direction: column; /* Cambia a diseño de columna en pantallas pequeñas */
+        align-items: center; /* Centra el contenido en pantallas pequeñas */
+    }
+	p, li{
+		text-align: left;
+	}
+
+    .product-text {
+        max-width: 100%; /* Asegura que el texto ocupe todo el ancho en pantallas pequeñas */
+        text-align: center; /* Centra el texto */
+        margin-bottom: 20px; /* Añade un espacio entre texto e imagen */
+    }
+	 .product-image img {
+        max-width: 80%; /* La imagen se ajusta en pantallas pequeñas */
+    }
+	
+	.btn-secondary{
+		margin-left:0;
+		margin-top:1rem;
+	}
+
+    .purchase-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .review-item {
+        max-width: 100%;
+    }
+}

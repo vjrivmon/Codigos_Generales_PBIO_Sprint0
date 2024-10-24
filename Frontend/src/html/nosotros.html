@@ -9,18 +9,31 @@
 	<link rel="stylesheet" href="../style/nosotros.css">
 </head>
 <body>
+<!-- Inicio Header y Navbar -->
 <header>
-  <nav class="navbar">
-    <div class="logo"> <img src="../img/pulpo_lowpoly_rosa.png" alt="Logo VIMYP"> <span>VIMYP</span></div>
-    <ul class="nav-links">
-      <li><a href="#">Packs</a></li>
-      <li><a href="#">FAQ</a></li>
-      <li><a href="#">Nosotros</a></li>
-    </ul>
-    <div class="nav-buttons"><a href="#" class="btn btn-primary">Login</a></div>
-  </nav>
-</header>
-<!-- Fin Navbar y header -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">
+              <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+              <span>VIMYP</span>
+            </a>
+          </div>
+      <ul class="nav-links">
+        <li><a href="packs.html">Packs</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <a href="login.html" class="btn btn-primary">Login</a>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- Fin Navbar y header -->
 
 <!-- Inicio section sobre nosotros -->
 <section class="about-us">
@@ -43,38 +56,38 @@
             <div class="team-members">
                 <!-- Miembro 1 -->
                 <div class="member">
-                    <img src="../img/pulpo_lowpoly_rosa.png" alt="Miembro 1">
-                    <h3>Juan Pérez</h3>
+                    <img src="../img/vicente.jpg" alt="Miembro 1">
+                    <h3>Vicente</h3>
                     <p><strong>CEO & Fundador</strong></p>
-                    <p>Juan fundó VIMYP con la idea de crear una empresa que revolucione el mercado con productos únicos y de calidad. Es el líder visionario que guía a nuestro equipo hacia nuevas metas.</p>
+                    <p>Vicente fundó VIMYP con la idea de crear una empresa que revolucione el mercado con productos únicos y de calidad. Es el líder visionario que guía a nuestro equipo hacia nuevas metas.</p>
                 </div>
                 <!-- Miembro 2 -->
                 <div class="member">
-                    <img src="../img/pulpo_lowpoly_rosa.png" alt="Miembro 2">
-                    <h3>María Gómez</h3>
+                    <img src="../img/irene2.jpg" alt="Miembro 2">
+                    <h3>Irene</h3>
                     <p><strong>Directora de Marketing</strong></p>
-                    <p>María es responsable de nuestra estrategia de marketing, asegurándose de que nuestros productos lleguen a las personas adecuadas. Su creatividad y enfoque nos ayudan a destacarnos en el mercado.</p>
+                    <p>Irene es la responsable de nuestra estrategia de marketing, asegurándose de que nuestros productos lleguen a las personas adecuadas. Su creatividad y enfoque nos ayudan a destacarnos en el mercado.</p>
                 </div>
                 <!-- Miembro 3 -->
                 <div class="member">
-                    <img src="../img/pulpo_lowpoly_rosa.png" alt="Miembro 3">
-                    <h3>Carlos Ramírez</h3>
+                    <img src="../img/pablo.jpg" alt="Miembro 3">
+                    <h3>Pablo</h3>
                     <p><strong>Director de Tecnología</strong></p>
-                    <p>Carlos es nuestro gurú tecnológico. Dirige todos los aspectos técnicos de la empresa, asegurándose de que nuestras soluciones sean innovadoras y estén a la vanguardia de la industria.</p>
+                    <p>Pablo es nuestro gurú tecnológico. Dirige todos los aspectos técnicos de la empresa, asegurándose de que nuestras soluciones sean innovadoras y estén a la vanguardia de la industria.</p>
                 </div>
                 <!-- Miembro 4 -->
                 <div class="member">
-                    <img src="../img/pulpo_lowpoly_rosa.png" alt="Miembro 4">
-                    <h3>Ana López</h3>
+                    <img src="../img/mimi.jpg" alt="Miembro 4">
+                    <h3>Mimi</h3>
                     <p><strong>Responsable de Atención al Cliente</strong></p>
-                    <p>Ana se encarga de que nuestros clientes tengan la mejor experiencia posible. Su empatía y habilidades de resolución de problemas son clave para mantener la satisfacción del cliente.</p>
+                    <p>Mimi se encarga de que nuestros clientes tengan la mejor experiencia posible. Su empatía y habilidades de resolución de problemas son clave para mantener la satisfacción del cliente.</p>
                 </div>
                 <!-- Miembro 5 -->
                 <div class="member">
-                    <img src="../img/pulpo_lowpoly_rosa.png" alt="Miembro 5">
-                    <h3>Pablo Torres</h3>
+                    <img src="../img/yilun.jpg" alt="Miembro 5">
+                    <h3>Yilun</h3>
                     <p><strong>Jefe de Operaciones</strong></p>
-                    <p>Pablo supervisa nuestras operaciones diarias, asegurándose de que todo funcione sin problemas. Su atención a los detalles y habilidades organizativas nos mantienen en marcha.</p>
+                    <p>Yilun supervisa nuestras operaciones diarias, asegurándose de que todo funcione sin problemas. Su atención a los detalles y habilidades organizativas nos mantienen en marcha.</p>
                 </div>
             </div>
         </div>
@@ -99,6 +112,8 @@
         </div>
     </footer>
     <!-- Fin footer -->
+
+    <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
 
 </body>
 </html>

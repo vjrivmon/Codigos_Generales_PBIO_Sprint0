@@ -1,0 +1,55 @@
+/* Estilos para la sección FAQ */
+.faq-content {
+    max-width: 85%; /* Ancho máximo de la sección */
+    margin: 2rem auto; /* Centrar la sección en la página */
+    padding: 2.5rem; /* Espaciado interno */
+    background-color: white; /* Fondo blanco */
+    border-radius: 33px; /* Bordes redondeados */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); /* Sombra suave */
+}
+
+.faq-content h1 {
+    font-size: 2em; /* Tamaño de fuente para el título principal */
+    color: var(--text-color); /* Color del texto */
+    text-align: left;
+    margin: 20px ; /* Espaciado inferior */
+	
+}
+
+
+
+.faq-question {
+    display: flex; /* Para alinear el texto y la flecha */
+    justify-content: space-between; /* Espacio entre texto y flecha */
+    cursor: pointer; /* Cambiar el cursor para indicar que es clickeable */
+    padding: 1rem;
+    border-radius: 10px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Efecto de transición */
+	margin:.5rem;
+}
+
+.faq-question:hover {
+    background-color: #f7f7f7; /* Cambia el color de fondo al pasar el ratón */
+}
+
+.faq-answer {
+    display: none; /* Oculta la respuesta por defecto */
+    padding: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .faq-content {
+        padding: 15px; /* Reducir el espaciado interno en pantallas pequeñas */
+    }
+
+    .faq-content h1 {
+        font-size: 1.8em; /* Tamaño de fuente para título en pantallas pequeñas */
+    }
+
+    .faq-question h2 {
+        font-size: 1.3em; /* Tamaño de fuente para preguntas en pantallas pequeñas */
+    }
+}
