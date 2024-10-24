@@ -24,8 +24,22 @@ check_tools() {
    if command -v $1 &>/dev/null; then 
       print_message $GREEN "$1 está instalado."
    else
-      print_message $RED "$1 no está instalado."
-      exit 1
+      print_message $RED "$1 no está instalado. Instalando $1..."
+      if [ "$1" == "docker" ]; then
+         sudo apt-get update
+         sudo apt-get install -y docker.io
+         sudo systemctl start docker
+         sudo systemctl enable docker
+         if command -v $1 &>/dev/null; then
+            print_message $GREEN "$1 instalado correctamente."
+         else
+            print_message $RED "Error al instalar $1."
+            exit 1
+         fi
+      else
+         print_message $RED "No se puede instalar automáticamente $1."
+         exit 1
+      fi
    fi
 }
 
@@ -75,18 +89,38 @@ if command -v docker-compose &>/dev/null; then
    docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build
 else
    print_message $RED "docker-compose no está instalado. Instalando docker-compose..."
-   sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-   sudo chmod +x /usr/local/bin/docker-compose
-   if command -v docker-compose &>/dev/null; then
-      print_message $GREEN "docker-compose instalado correctamente."
-      docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build
+   if command -v curl &>/dev/null; then
+      sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      sudo chmod +x /usr/local/bin/docker-compose
+      if command -v docker-compose &>/dev/null; then
+         print_message $GREEN "docker-compose instalado correctamente."
+         docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build
+      else
+         print_message $RED "Error al instalar docker-compose."
+         exit 1
+      fi
    else
-      print_message $RED "Error al instalar docker-compose."
-      exit 1
+      print_message $RED "curl no está instalado. Instalando curl..."
+      sudo apt-get update
+      sudo apt-get install -y curl
+      if command -v curl &>/dev/null; then
+         sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+         sudo chmod +x /usr/local/bin/docker-compose
+         if command -v docker-compose &>/dev/null; then
+            print_message $GREEN "docker-compose instalado correctamente."
+            docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build
+         else
+            print_message $RED "Error al instalar docker-compose."
+            exit 1
+         fi
+      else
+         print_message $RED "Error al instalar curl."
+         exit 1
+      fi
    fi
 fi
 print_message $GREEN "Contenedores levantados correctamente!"
 #set -y
 # Limpieza del directorio temporal
-print_message $GREEN "Limpiando el directorio temporal..."
-rm -rf $TEMP_DIR
+#print_message $GREEN "Limpiando el directorio temporal..."
+#rm -rf $TEMP_DIR
