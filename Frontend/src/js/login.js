@@ -13,7 +13,7 @@ loginBtn.addEventListener('click', () => {
 // Función para registrar un nuevo usuario
 async function registrarUsuario( email, password) {
     try {
-        const response = await fetch('http://192.168.0.101:8080/usuarios', {
+        const response = await fetch('http://192.168.0.20:8080/usuarios', { // Cambiar la dirección IP por la tuya, ejecutando ipconfig en la terminal
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ async function ConsultarDatosUsuario(email, password) {
       const encodedPassword = encodeURIComponent(password);
   
       // Realizar una solicitud GET al servidor con los parámetros
-      const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, {
+      const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Cambiar la dirección IP por la tuya, ejecutando ipconfig en la terminal
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
