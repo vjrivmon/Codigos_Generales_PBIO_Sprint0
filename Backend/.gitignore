@@ -10,3 +10,6 @@ sql/
 
 # No incluir archivos del directorio temporal
 tempdir/
+
+# No incluir los archivos .json
+*.json
