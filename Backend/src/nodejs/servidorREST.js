@@ -86,6 +86,41 @@ async function ConsultarDatosUsuario(req, res) {
     if (connection) connection.release();
   }
 }
+// Función para verificar usuario por correo y contraseña
+async function verificarUsuario(req, res) {
+  const { correo, contrasena } = req.query; // Usamos req.query para obtener los parámetros de la URL
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+    
+    // Consulta para buscar al usuario con el correo proporcionado
+    const query = 'SELECT * FROM usuarios WHERE correo = ?';
+    const rows = await connection.query(query, [correo]);
+
+    // Si no se encuentra un usuario con ese correo
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Usuario no existe' });
+    }
+
+    const usuario = rows[0];
+    
+    // Compara la contraseña ingresada con la de la base de datos (debes tenerla cifrada)
+    if (usuario.contrasena === contrasena) {
+      // Contraseña correcta
+      return res.json({ success: true });
+    } else {
+      // Contraseña incorrecta
+      return res.json({ success: false, error: 'Contraseña incorrecta' });
+    }
+  } catch (err) {
+    console.error('Error al verificar usuario:', err);
+    res.status(500).json({ success: false, error: 'Error en el servidor' });
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
 
 // Función para consultar si hay alerta
 async function ConsultarSiHayAlerta(req, res) {
@@ -192,5 +227,6 @@ module.exports = {
   ConsultarSiHayAlerta,
   agregarUsuario,
   EliminarUsuario,
-  ConsultarBaseDeDatos
+  ConsultarBaseDeDatos,
+  verificarUsuario
 };

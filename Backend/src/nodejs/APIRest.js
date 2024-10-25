@@ -16,7 +16,8 @@ const {
   ConsultarSiHayAlerta,
   agregarUsuario,
   EliminarUsuario,
-  ConsultarBaseDeDatos
+  ConsultarBaseDeDatos,
+  verificarUsuario
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 // Inicializar app y cargar variables de entorno
 // const app = express();
@@ -44,6 +45,7 @@ router.get('/usuarios/:id_usuario', ConsultarDatosUsuario);
 router.post('/usuarios', agregarUsuario);
 router.delete('/usuarios/:id_usuario', EliminarUsuario);
 router.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
+router.get('/usuarios', verificarUsuario);
 
 // Pruebas de depuración
 console.log('Configuración inicial cargada');
