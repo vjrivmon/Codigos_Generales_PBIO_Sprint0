@@ -10,73 +10,42 @@ loginBtn.addEventListener('click', () => {
     container.classList.remove("active");
 });
 
-document.getElementById('registerForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar el envío del formulario
-
-    const name = document.getElementById('registerName').value;
-    const email = document.getElementById('registerEmail').value;
-    const password = document.getElementById('registerPassword').value;
-
-    // Hacer una solicitud POST para registrar al usuario
-    /*
-    
-    
-    // hay que revisar la siguiente direccion
-    
-    ordenador de Vicente 172.20.0.5
-    Torre Pablo  192.168.0.101
-    
-    
-    */
-    fetch('https://192.168.0.101/api/registro', {   
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Registro exitoso');
-            // Redirigir o realizar otra acción
-        } else {
-            alert('Error: ' + data.message);
+// Inicio Sesion de usuario
+async function verificarUsuario(email, password) {
+    try {
+        const response = await fetch('http://192.168.0.101:8080/usuarios'); // Obtener todos los usuarios
+        if (!response.ok) {
+            throw new Error('Error en la respuesta de la API: ' + response.status);
         }
-    })
-    .catch(error => console.error('Error:', error));
-});
 
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar el envío del formulario
+        const usuarios = await response.json();
 
+        // Buscar el usuario por correo electrónico
+        const usuarioEncontrado = usuarios.find(user => user.correo === email); // Cambiar 'email' a 'correo'
+
+        if (!usuarioEncontrado) {
+            alert('Usuario no existente'); // Alerta si el usuario no existe
+            return;
+        }
+
+        // Comparar la contraseña
+        if (usuarioEncontrado.contrasena === password) { // Cambiar 'password' a 'contrasena'
+            // Si la contraseña es correcta, redirigir a datosYMapa.html
+            window.location.href = 'datosYMapa.html';
+        } else {
+            alert('Contraseña errónea'); // Alerta si la contraseña no es correcta
+        }
+
+    } catch (error) {
+        console.error('Error al verificar el usuario:', error);
+        alert('Ocurrió un error al verificar el usuario. Inténtalo de nuevo más tarde.');
+    }
+}
+
+// Manejar el evento de clic en el botón de iniciar sesión
+document.getElementById('botonIniciarSesion').addEventListener('click', function() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-    /*
-    
-    
-    // hay que revisar la siguiente direccion
-    
-    
-    
-    
-    */
-    // Hacer una solicitud POST para iniciar sesión
-    fetch('https://192.168.0.101/api/registro', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Inicio de sesión exitoso');
-            // Redirigir o realizar otra acción
-        } else {
-            alert('Error: ' + data.message);
-        }
-    })
-    .catch(error => console.error('Error:', error));
+
+    verificarUsuario(email, password); // Llamar a la función para verificar el usuario
 });
