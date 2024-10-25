@@ -23,11 +23,12 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     
     // hay que revisar la siguiente direccion
     
-    
+    ordenador de Vicente 172.20.0.5
+    Torre Pablo  192.168.0.101
     
     
     */
-    fetch('https://192.168.0.23/api/registro', {   
+    fetch('https://192.168.0.101/api/registro', {   
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -61,7 +62,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     
     */
     // Hacer una solicitud POST para iniciar sesión
-    fetch('https://192.168.0.23/api/registro', {
+    fetch('https://192.168.0.101/api/registro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
