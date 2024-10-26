@@ -297,7 +297,6 @@ button:disabled {
 
 /*---- Pestaña para ver la contraseña segura ----*/
 .password-strength-container {
-    margin-top: 10px;
     width: 100%;
 }
 
@@ -348,4 +347,18 @@ button:disabled {
 
 #password-strength{
 	width: 0%;
+}
+
+
+/* CSS para los niveles de seguridad del progress bar */
+.progress-bar-danger {
+    background-color: red;
+}
+
+.progress-bar-warning {
+    background-color: orange;
+}
+
+.progress-bar-success {
+    background-color: green;
 }
