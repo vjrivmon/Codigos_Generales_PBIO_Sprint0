@@ -204,6 +204,7 @@ form label input[type="checkbox"] {
     height: 40px;
 	color: lightgray;
 	cursor: not-allowed; /* Cursor que indica que no está disponible */
+	text-decoration: none;
 }
 
 .toggle-container{
@@ -283,9 +284,10 @@ header {
 
 
 /* Estilo para el botón en su estado deshabilitado */
+
 button:disabled {
-    background-color: lightgray; /* Color de fondo gris claro */
-    color: var(--text-color); /* Color de texto gris */
-    cursor: not-allowed; /* Cursor que indica que no está disponible */
-    opacity: 0.7; /* Ligera transparencia */
+    background-color: lightgray; /* Color de fondo gris claro */
+    color: var(--text-color); /* Color de texto gris */
+    cursor: not-allowed; /* Cursor que indica que no está disponible */
+    opacity: 0.7; /* Ligera transparencia */
 }

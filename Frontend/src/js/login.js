@@ -3,18 +3,16 @@ const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
 
 registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
+    container.classList.add("active");
 });
 
 loginBtn.addEventListener('click', () => {
-    container.classList.remove("active");
+    container.classList.remove("active");
 });
-
 
  document.getElementById("privacy-policy").addEventListener("change", function() {
             document.getElementById("register-btn").disabled = !this.checked;
         });
-
 
 // Función para registrar un nuevo usuario
 async function registrarUsuario( email, password) {
