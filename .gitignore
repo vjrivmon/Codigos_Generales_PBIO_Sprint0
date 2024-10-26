@@ -1,3 +1,10 @@
 
 Backend/src/nodejs/node_modules/.bin/
 node_modules/
+
+# No incluir archivos del directorio temporal
+tempdir/
+
+# No añadir el escaner de sonarqube
+.scannerwork
+sonar-project.properties
