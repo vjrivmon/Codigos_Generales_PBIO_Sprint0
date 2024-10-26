@@ -8,30 +8,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class SobreNosotrosActivity extends AppCompatActivity {
+public class Venta_reembolso_activity extends AppCompatActivity {
 
 
     private ImageView menuIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sobre_nosotros); // Asegúrate de que este es el nombre correcto de tu layout
-
-        TextView valuesContent = findViewById(R.id.values_content);
-
-        // Llenar el TextView con el contenido de los valores
-        String valuesText = "• Innovación: Siempre buscamos nuevas formas de mejorar y ofrecer lo mejor a nuestros clientes.\n\n" +
-                "• Calidad: Nos esforzamos en garantizar que cada uno de nuestros productos cumpla con los más altos estándares.\n\n" +
-                "• Compromiso: Nos apasiona lo que hacemos y nos comprometemos a brindar lo mejor en cada paso.\n\n" +
-                "• Trabajo en equipo: Creemos que juntos podemos lograr más, y la colaboración es fundamental en nuestra empresa.";
-
-        valuesContent.setText(valuesText);
+        setContentView(R.layout.activity_ventasy_reembolso);// Asegúrate de que este es el nombre correcto de tu layout
 
         // Configurar el Toolbar
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
@@ -58,7 +48,7 @@ public class SobreNosotrosActivity extends AppCompatActivity {
     // Método para mostrar el PopupMenu
     private void showPopupMenu(View view) {
         // Crear el PopupMenu
-        PopupMenu popupMenu = new PopupMenu(SobreNosotrosActivity.this, view);
+        PopupMenu popupMenu = new PopupMenu(Venta_reembolso_activity.this, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.menu, popupMenu.getMenu());
 
@@ -68,18 +58,18 @@ public class SobreNosotrosActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 // Usar if-else en lugar de switch para evitar el error
                 if (item.getItemId() == R.id.action_about) {
-                    Toast.makeText(SobreNosotrosActivity.this, "Sobre Nosotros", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Venta_reembolso_activity.this, "Sobre Nosotros", Toast.LENGTH_SHORT).show();
                     lanzarSobreNosotros();
                     return true;
                 } else if (item.getItemId() == R.id.action_faq) {
-                    Toast.makeText(SobreNosotrosActivity.this, "FAQ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Venta_reembolso_activity.this, "FAQ", Toast.LENGTH_SHORT).show();
                     lanzarFAQ();
                     return true;
                 } else if (item.getItemId() == R.id.action_packs) {
-                    Toast.makeText(SobreNosotrosActivity.this, "Packs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Venta_reembolso_activity.this, "Packs", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (item.getItemId() == R.id.action_privacidad) {
-                    Toast.makeText(SobreNosotrosActivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Venta_reembolso_activity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
                     lanzarPrivacidad();
                     return true;
                 }else {

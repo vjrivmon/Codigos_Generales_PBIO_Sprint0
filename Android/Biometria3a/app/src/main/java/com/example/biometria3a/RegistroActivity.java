@@ -101,6 +101,7 @@ public class RegistroActivity extends AppCompatActivity {
                             "Contacto\n" +
                             "Si tienes alguna pregunta, no dudes en ponerte en contacto con nosotros.")
                     .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // Habilitar el CheckBox cuando se cierre el diálogo
@@ -109,6 +110,7 @@ public class RegistroActivity extends AppCompatActivity {
                     })
                     .setCancelable(false) // Evita que se cierre sin aceptar
                     .show();
+
         });
 
     }
@@ -140,12 +142,20 @@ public class RegistroActivity extends AppCompatActivity {
 
         // Simulación: Si todos los campos están llenos, se muestra un mensaje de éxito.
         Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+        goToMainActivity();
     }
 
     // Método para iniciar la actividad "IniciaSesionActivity"
     private void goToLoginActivity() {
         // Creamos un Intent para abrir la actividad de inicio de sesión
         Intent intent = new Intent(RegistroActivity.this, LoginActivity.class);
+        startActivity(intent);  // Iniciamos la nueva actividad
+    }
+
+    // Método para iniciar la actividad "IniciaSesionActivity"
+    private void goToMainActivity() {
+        // Creamos un Intent para abrir la actividad de inicio de sesión
+        Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
         startActivity(intent);  // Iniciamos la nueva actividad
     }
 }

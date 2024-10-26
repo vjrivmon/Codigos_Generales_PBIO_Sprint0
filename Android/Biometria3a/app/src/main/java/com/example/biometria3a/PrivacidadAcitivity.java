@@ -13,25 +13,46 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
-public class SobreNosotrosActivity extends AppCompatActivity {
+public class PrivacidadAcitivity extends AppCompatActivity {
 
 
     private ImageView menuIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sobre_nosotros); // Asegúrate de que este es el nombre correcto de tu layout
+        setContentView(R.layout.activity_privacidad);// Asegúrate de que este es el nombre correcto de tu layout
 
-        TextView valuesContent = findViewById(R.id.values_content);
 
-        // Llenar el TextView con el contenido de los valores
-        String valuesText = "• Innovación: Siempre buscamos nuevas formas de mejorar y ofrecer lo mejor a nuestros clientes.\n\n" +
-                "• Calidad: Nos esforzamos en garantizar que cada uno de nuestros productos cumpla con los más altos estándares.\n\n" +
-                "• Compromiso: Nos apasiona lo que hacemos y nos comprometemos a brindar lo mejor en cada paso.\n\n" +
-                "• Trabajo en equipo: Creemos que juntos podemos lograr más, y la colaboración es fundamental en nuestra empresa.";
+        CardView cardView1 = findViewById(R.id.cardView);
+        CardView cardView2 = findViewById(R.id.cardView2);
+        CardView cardView3 = findViewById(R.id.cardView3);
 
-        valuesContent.setText(valuesText);
+        cardView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PrivacidadAcitivity.this, Condiciones_de_uso_activity.class); // Cambia Activity1 a tu actividad deseada
+                startActivity(intent);
+            }
+        });
+
+        cardView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PrivacidadAcitivity.this, Venta_reembolso_activity.class); // Cambia Activity2 a tu actividad deseada
+                startActivity(intent);
+            }
+        });
+
+        cardView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PrivacidadAcitivity.this, Avisos_Legales_Activity.class); // Cambia Activity3 a tu actividad deseada
+                startActivity(intent);
+            }
+        });
+
 
         // Configurar el Toolbar
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
@@ -58,7 +79,7 @@ public class SobreNosotrosActivity extends AppCompatActivity {
     // Método para mostrar el PopupMenu
     private void showPopupMenu(View view) {
         // Crear el PopupMenu
-        PopupMenu popupMenu = new PopupMenu(SobreNosotrosActivity.this, view);
+        PopupMenu popupMenu = new PopupMenu(PrivacidadAcitivity.this, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.menu, popupMenu.getMenu());
 
@@ -68,18 +89,18 @@ public class SobreNosotrosActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 // Usar if-else en lugar de switch para evitar el error
                 if (item.getItemId() == R.id.action_about) {
-                    Toast.makeText(SobreNosotrosActivity.this, "Sobre Nosotros", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrivacidadAcitivity.this, "Sobre Nosotros", Toast.LENGTH_SHORT).show();
                     lanzarSobreNosotros();
                     return true;
                 } else if (item.getItemId() == R.id.action_faq) {
-                    Toast.makeText(SobreNosotrosActivity.this, "FAQ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrivacidadAcitivity.this, "FAQ", Toast.LENGTH_SHORT).show();
                     lanzarFAQ();
                     return true;
                 } else if (item.getItemId() == R.id.action_packs) {
-                    Toast.makeText(SobreNosotrosActivity.this, "Packs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrivacidadAcitivity.this, "Packs", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (item.getItemId() == R.id.action_privacidad) {
-                    Toast.makeText(SobreNosotrosActivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrivacidadAcitivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
                     lanzarPrivacidad();
                     return true;
                 }else {

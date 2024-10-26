@@ -9,4 +9,7 @@
     <item
         android:id="@+id/action_packs"
         android:title="Packs" />
+    <item
+        android:id="@+id/action_privacidad"
+        android:title="Centro de privacidad" />
 </menu>

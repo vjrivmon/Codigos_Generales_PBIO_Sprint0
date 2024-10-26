@@ -192,7 +192,11 @@ public class FAQActivity  extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.action_packs) {
                     Toast.makeText(FAQActivity.this, "Packs", Toast.LENGTH_SHORT).show();
                     return true;
-                } else {
+                } else if (item.getItemId() == R.id.action_privacidad) {
+                    Toast.makeText(FAQActivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
+                    lanzarPrivacidad();
+                    return true;
+                }else {
                     return false;
                 }
             }
@@ -221,6 +225,13 @@ public class FAQActivity  extends AppCompatActivity {
     private void lanzarPacks() {
         // Acción o navegación para la opción de "Packs"
         Intent intent = new Intent(this, PacksActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void lanzarPrivacidad() {
+        // Acción o navegación para la opción de "Packs"
+        Intent intent = new Intent(this, PrivacidadAcitivity.class);
         startActivity(intent);
     }
     // --------------------------------------------------------------
