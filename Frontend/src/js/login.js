@@ -10,6 +10,12 @@ loginBtn.addEventListener('click', () => {
     container.classList.remove("active");
 });
 
+
+ document.getElementById("privacy-policy").addEventListener("change", function() {
+            document.getElementById("register-btn").disabled = !this.checked;
+        });
+
+
 // Función para registrar un nuevo usuario
 async function registrarUsuario( email, password) {
     try {
@@ -75,7 +81,7 @@ async function ConsultarDatosUsuario(email, password) {
   
 
 // Manejar el evento de clic en el botón de registrarse
-document.getElementById('botonRegistrase').addEventListener('click', function(event) {
+document.getElementById('register-btn').addEventListener('click', function(event) {
     event.preventDefault(); // Evitar el envío del formulario
 
     const email = document.getElementById('signUpEmail').value; // Obtener el correo

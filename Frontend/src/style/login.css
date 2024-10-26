@@ -50,10 +50,14 @@ body{
 }
 
 .container a{
-    color: #333;
-    font-size: 13px;
-    text-decoration: none;
-    margin: 15px 0 10px;
+    color: var(--button-color);
+    font-size: 12px;
+    text-decoration: underline;
+    /*margin: 15px 0 10px;*/
+	    line-height: 1.2; /* Ajusta la altura de línea */
+
+	/*padding-bottom: 4px;*/
+	
 }
 
 .container button{
@@ -118,7 +122,11 @@ body{
     width: 50%;
     opacity: 0;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
+
 
 .container.active .sign-up{
     transform: translateX(100%);
@@ -126,6 +134,49 @@ body{
     z-index: 5;
     animation: move 0.6s;
 }
+
+
+.sign-up label a{
+    font-size: 12px;
+    color: var(--button-color);
+        text-decoration: underline; /* Subrayado para el enlace */
+    padding-bottom: 0px;
+}
+
+.sign-up span {
+    font-size: 12px;
+}
+
+/* Estilo para el contenedor del checkbox y el texto */
+form label {
+    display: flex;
+    align-items: center; /* Alinea el checkbox y el texto verticalmente al centro */
+    font-size: 12px; /* Tamaño de fuente uniforme */
+    color: var(--text-color); /* Color del texto */
+    gap: 5px; /* Espacio entre el checkbox y el texto */
+    white-space: nowrap; /* Evita que el texto pase a otra línea */
+    line-height: 1.2; /* Ajusta la altura de línea */
+}
+
+
+/* Asegurar que el checkbox no cause desplazamiento de línea */
+.sing-up label input[type="checkbox"] {
+    margin: 0; /* Elimina márgenes adicionales */
+    vertical-align: middle; /* Alineación vertical correcta */
+     width: 16px;
+    height: 16px;
+   
+}
+
+
+/* Estilo para el checkbox */
+form label input[type="checkbox"] {
+    margin: 0; /* Elimina cualquier margen adicional */
+    vertical-align: middle; /* Alineación vertical */
+    width: 16px;
+    height: 16px;
+}
+
 
 @keyframes move {
     0%, 49.99%{
@@ -152,6 +203,7 @@ body{
     width: 40px;
     height: 40px;
 	color: lightgray;
+	cursor: not-allowed; /* Cursor que indica que no está disponible */
 }
 
 .toggle-container{
@@ -178,7 +230,6 @@ body{
     color: white;
     position: relative;
     left: -100%;
-    height: 100%;
     width: 200%;
     transform: translateX(0);
     transition: all 0.6s ease-in-out;
@@ -231,4 +282,10 @@ header {
 
 
 
-
+/* Estilo para el botón en su estado deshabilitado */
+button:disabled {
+    background-color: lightgray; /* Color de fondo gris claro */
+    color: var(--text-color); /* Color de texto gris */
+    cursor: not-allowed; /* Cursor que indica que no está disponible */
+    opacity: 0.7; /* Ligera transparencia */
+}

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../style/login.css">
     <link rel="stylesheet" href="../style/styles.css">
+	<link rel="stylesheet" href="../style/contrasenya-segura.css">
 
     <title>Login Page | VIMYP</title>
 </head>
@@ -37,10 +38,17 @@
     <a href="#" class="icon inactive"><i class="fa-brands fa-linkedin-in"></i></a>
 </div>
                 <span>o regístrate con tu email</span>
-                <input type="text" required placeholder="Name">
                 <input type="email" required id="signUpEmail" placeholder="Email">
-                <input type="password" required id="signUpPassword" placeholder="Password">
-                <button id="botonRegistrase" >Registrarse</button>
+                <input type="password" required id="register-password" placeholder="Contraseña"> <!-- AÑADIDO ID -->
+
+        <label>
+    <input type="checkbox" id="privacy-policy">
+    He leído y acepto la <a href="politicaPrivacidad.html" target="_blank">política de privacidad</a>
+</label>
+
+				
+				
+                <button id="register-btn" disabled >Registrarse</button>
             </form>
       </div>
         <div class="form-container sign-in">
@@ -54,7 +62,7 @@
                 </div>
                 <span>o entra con tu email y contraseña</span>
                 <input type="email" required id="loginEmail" placeholder="Email">
-                <input type="password" required id="loginPassword" placeholder="Password">
+                <input type="password" required id="loginPassword" placeholder="Contraseña">
                 <a href="#">¿Has olvidado tu contraseña?</a>
                 <button id="botonIniciarSesion">Iniciar sesión</button>
             </form>
@@ -63,13 +71,13 @@
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
                     <h1>¡Te damos la bienvenida!</h1>
-                </br>
+                <br>
                     <p>¿Ya tienes cuenta?</p>
                     <button class="hidden" id="login">Iniciar sesión</button>
                 </div>
                 <div class="toggle-panel toggle-right">
                     <h1>¡Hola de nuevo!</h1>
-                </br>
+                <br>
                     <p>¿Aún no formas parte de nuestra comunidad?</p>
                     <button class="hidden" id="register">Crear cuenta</button>
                 </div>
@@ -99,6 +107,7 @@
 	<script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
 
 <script src="../js/login.js"></script>
+	<script src="../js/contrasenya-segura.js"></script>
 </body>
 
 </html>
