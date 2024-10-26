@@ -54,31 +54,43 @@
     top: 0;
 }
 
-.product-image {
-    flex: 1; /* La imagen ocupa la otra mitad del espacio */
-    display: flex;
-    justify-content: center; /* Centra la imagen horizontalmente */
-    align-items: center; /* Centra la imagen verticalmente */
-}
 
-.product-image img {
-    max-width: 100%; /* Imagen ajustada al contenedor */
-    height: auto;
-    object-fit: contain; /* Mantiene la proporción de la imagen */
-}
+
+.product-image {
+        width: 100%; /* Asegura que la imagen ocupe el 100% del contenedor */
+        height: 300px; /* Fija la altura de la imagen */
+        overflow: hidden; /* Oculta cualquier desbordamiento */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+			border-radius: 33px;
+
+    }
+
+    .product-image img {
+        width: 100%; /* La imagen ajustada al ancho del contenedor */
+        height: auto; /* Mantiene la proporción original */
+        max-height: 350px; /* Asegura que la altura no exceda 300px */
+        object-fit: cover; /* Recorta la imagen para que cubra el contenedor */
+    }
 
 
 /* Purchase Options Section */
 .purchase-info {
     background-color: var(--background-color);
-    padding: 60px 0;
+    padding: 10px 0;
     text-align: center;
 }
 
 .purchase-info h3 {
     font-size: 2em;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     color: var(--text-color);
+}
+
+section div p{
+	margin-bottom: 1.2rem;
+	text-align: left;
 }
 
 .purchase-grid {
@@ -94,13 +106,27 @@
     border-radius: 33px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     flex: 1;
-    min-width: 250px;
     text-align: center;
+    display: flex;
+	/*flex: 1 1 calc(33.33% - 20px); /* Cada tarjeta ocupa 1/3 menos el espacio de gap*/
+	
+	 flex-direction: column;
+    justify-content: space-between; /* Para separar el contenido del botón */
+	
+	width: 90%;
 }
 
 .purchase-card img {
-    max-width: 100px;
-    margin-bottom: 20px;
+    max-width: 150px;
+    margin: 10px 0;
+	align-self: center
+}
+#Etsy{
+	max-width: 100px;
+}
+
+#Amazon {
+	max-width: 120px;
 }
 
 .purchase-card h4 {
@@ -113,10 +139,13 @@
     font-size: 1em;
     color: var(--text-color);
     margin-bottom: 10px;
+	text-align: center;
 }
 
 .purchase-card .btn {
     margin-top: 10px;
+	 margin: auto; /* Empuja el botón al fondo del contenedor */
+    align-self: flex-end;
 }
 
 /* Highlighting the recommended option */
@@ -128,13 +157,14 @@
 /* Customer Reviews Section */
 .customer-reviews {
     background-color: var(--background-color-secondary);
-    padding: 60px 0;
+    padding: 20px 0;
 	margin-bottom: auto;
 }
 
 .customer-reviews h3 {
     font-size: 2em;
     margin-bottom: 40px;
+	color: var(--text-color);
     text-align: center;
 }
 
@@ -153,6 +183,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-style: italic;
     text-align: center;
+	color: var(--text-color);
 }
 
 .review-item strong {
@@ -216,12 +247,19 @@
 	}
 
     .product-text {
-        max-width: 100%; /* Asegura que el texto ocupe todo el ancho en pantallas pequeñas */
-        text-align: center; /* Centra el texto */
-        margin-bottom: 20px; /* Añade un espacio entre texto e imagen */
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
     }
+	.product-image {
+		/*max-width: 100%; /* La imagen se ajusta en pantallas pequeñas */
+		 max-height: 200px;
+		 object-fit: cover;
+	}
 	 .product-image img {
-        max-width: 80%; /* La imagen se ajusta en pantallas pequeñas */
+        max-width: 100%; /* La imagen se ajusta en pantallas pequeñas */
+		 max-height: 200px;
+		 object-fit: cover;
     }
 	
 	.btn-secondary{
@@ -236,5 +274,8 @@
 
     .review-item {
         max-width: 100%;
+    }
+	.purchase-card {
+        flex: 1 1 100%; /* Cada tarjeta ocupa el 100% del ancho en pantallas pequeñas */
     }
 }
