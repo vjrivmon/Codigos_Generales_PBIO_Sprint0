@@ -1,7 +1,8 @@
 require('dotenv').config({ path: '../variables.env' });
+
 const request = require('supertest');
 const express = require('express');
-const chalk = require('chalk');
+
 const {
   ConsultarMedida,
   agregarMedicion,
@@ -31,9 +32,9 @@ describe('API REST Tests', () => {
   const runTest = async (testName, testFunction) => {
     try {
       await testFunction();
-      console.log(chalk.green(`${testName} - passed`));
+      console.log(`${testName} - passed`);
     } catch (error) {
-      console.error(chalk.red(`${testName} - failed`));
+      console.error(`${testName} - failed`);
       throw error; // Re-throw to ensure the test suite fails
     }
   };
@@ -56,7 +57,7 @@ describe('API REST Tests', () => {
         valorTemperatura: 30.00
       };
       const response = await request(app).post('/mediciones').send(newMeasurement);
-    expect(response.statusCode).toBe(201);
+      expect(response.statusCode).toBe(201);
       expect(response.body).toMatchObject(newMeasurement);
     });
   }, 10000);
@@ -90,7 +91,7 @@ describe('API REST Tests', () => {
         expect(response.statusCode).toBe(404);
         expect(response.text).toBe('Usuario no encontrado');
       }
-});
+    });
   }, 10000);
 
   test('GET /mediciones/:id_sensor - should check for gas alert', async () => {
