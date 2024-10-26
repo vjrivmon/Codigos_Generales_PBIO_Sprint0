@@ -3,19 +3,24 @@ const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
 
 registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
+    container.classList.add("active");
 });
 
 loginBtn.addEventListener('click', () => {
-    container.classList.remove("active");
+    container.classList.remove("active");
 });
+
+ document.getElementById("privacy-policy").addEventListener("change", function() {
+            document.getElementById("register-btn").disabled = !this.checked;
+        });
 
 // Función para registrar un nuevo usuario
 async function registrarUsuario( email, password) {
     try {
         //const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
-        const response = await fetch('http://172.20.10.11:8080/usuarios', { // Ip Portatil Pablo Wifi Pablo
+        //const response = await fetch('http://172.20.10.11:8080/usuarios', { // Ip Portatil Pablo Wifi Pablo
         //const response = await fetch('http://192.168.0.20:8080/usuarios', { // Ip Ordenador Vicente
+        const response = await fetch('http://192.168.0.17:8080/usuarios', { // Ip Ordenador Irene
         
             method: 'POST',
             headers: {
@@ -45,8 +50,9 @@ async function ConsultarDatosUsuario(email, password) {
   
       // Realizar una solicitud GET al servidor con los parámetros
       //const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo
-      const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
+      //const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
       //const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
+      const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +81,7 @@ async function ConsultarDatosUsuario(email, password) {
   
 
 // Manejar el evento de clic en el botón de registrarse
-document.getElementById('botonRegistrase').addEventListener('click', function(event) {
+document.getElementById('register-btn').addEventListener('click', function(event) {
     event.preventDefault(); // Evitar el envío del formulario
 
     const email = document.getElementById('signUpEmail').value; // Obtener el correo
@@ -91,14 +97,15 @@ document.getElementById('botonRegistrase').addEventListener('click', function(ev
     if (!emailRegex.test(email)) {
         alert('Por favor, introduce un email válido.'); // Mensaje de error
         return; // Salir de la función si el email no es válido
-    }
+	}
     // Validar formato de contraseña
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{7,15}$/;
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,200}$/;
     if (!passwordRegex.test(password)) {
-        alert('La contraseña debe tener entre 7 y 15 caracteres, incluir al menos una mayúscula, una minúscula y un número.'); // Mensaje de error
+        alert('La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)'); // Mensaje de error
         return; // Salir de la función si la contraseña no es válida
     }
-    registrarUsuario( email, password); // Llamar a la función para registrar el usuario
+    registrarUsuario( email, password); // Llamar a la función para registrar el usuario3
+		
 });
 
 // Manejar el evento de clic en el botón de iniciar sesion
