@@ -138,6 +138,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
+
+    <!-- CheckBox para Aceptar Políticas de Privacidad -->
+    <CheckBox
+        android:id="@+id/checkBoxPolitica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="Acepto las "
+        android:textColorLink="@color/colorAzuloscuro"
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+
+    <!-- Añadir el texto con enlace -->
+    <TextView
+        android:id="@+id/txtPoliticaEnlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:autoLink="web"
+        android:text="políticas de privacidad"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxPolitica"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxPolitica"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxPolitica" />
     <!-- Botón de Registro -->
     <Button
         android:id="@+id/btnIniSesion"
@@ -149,7 +176,7 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+        app:layout_constraintTop_toBottomOf="@id/checkBoxPolitica" />
 
     <TextView
         android:id="@+id/txtNoTienesAccount"
