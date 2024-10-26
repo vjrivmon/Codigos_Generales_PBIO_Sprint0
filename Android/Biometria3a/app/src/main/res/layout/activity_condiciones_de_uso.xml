@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAzulclaro">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Logo"
+                android:src="@drawable/ic_logobac"
+                android:layout_gravity="start|center_vertical"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Icono del menú hamburguesa -->
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu"
+                android:contentDescription="Menu"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- Icono de usuario al lado derecho -->
+            <ImageView
+                android:id="@+id/user_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"
+                android:contentDescription="User"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/menu_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="30dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/fotosdelperro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="fotografía"
+                        android:src="@drawable/imgen_condiciones_de_uso"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp">
+
+
+
+                    <!-- Título Principal -->
+                <!-- Sección de Bienvenida -->
+                <TextView
+                    android:id="@+id/welcome_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="24dp"
+                    android:text="Bienvenido a VIMYP. Nos complace que hayas decidido acceder a nuestros servicios. Al hacerlo, aceptas cumplir con las condiciones de uso que se detallan a continuación. Estas condiciones son fundamentales para garantizar un uso adecuado de nuestros servicios y la protección tanto de los usuarios como de la empresa. Si no estás de acuerdo con alguna de estas condiciones, te instamos a que no utilices nuestros servicios."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                <!-- Términos y Condiciones Detallados -->
+
+                <!-- Sección 1 -->
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="-5dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="1. Aceptación de las condiciones"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingBottom="16dp"
+                    android:text="Condiciones de Uso"
+                    android:textColor="@color/colorAzuloscuro"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Al utilizar nuestros servicios, manifiestas tu aceptación expresa de estas condiciones de uso. Afirmas que has leído, comprendido y que estás de acuerdo en cumplir con todas las disposiciones aquí establecidas..."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
+
+
+
+
+                <!-- Sección 2 -->
+                <TextView
+                    android:id="@+id/textSection2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="2. Uso de los servicios"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Te comprometes a utilizar nuestros servicios únicamente para fines legales y de acuerdo con las leyes aplicables en tu jurisdicción. Esto incluye, pero no se limita a, las leyes de propiedad intelectual, derechos de autor, protección de datos y cualquier otra normativa pertinente. Queda estrictamente prohibido utilizar nuestros servicios de cualquier manera que pueda dañar, deshabilitar, sobrecargar o deteriorar el funcionamiento de nuestros servicios, o interferir en el uso de los mismos por parte de otros usuarios. Además, no podrás llevar a cabo actividades que puedan comprometer la seguridad de nuestro sistema o que busquen acceder a información no autorizada."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection2" />
+
+
+
+
+
+                <!-- Sección 2 -->
+                <TextView
+                    android:id="@+id/textSection3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="3. Propiedad intelectual"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Todos los contenidos disponibles en el sitio web, incluidos textos, gráficos, logotipos, iconos, imágenes, software y cualquier otro material, son propiedad de VIMYP o de nuestros proveedores de contenido y están protegidos por las leyes de derechos de autor y otras leyes de propiedad intelectual. Queda prohibida la reproducción, distribución, modificación o comunicación pública de estos contenidos sin la autorización previa y expresa del titular de los derechos. Cualquier uso no autorizado de los materiales protegidos podría dar lugar a acciones legales. Valoramos y protegemos nuestra propiedad intelectual y esperamos que nuestros usuarios hagan lo mismo."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection3" />
+
+
+
+
+                <!-- Sección 4 -->
+                <TextView
+                    android:id="@+id/textSection4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="4. Modificaciones a los servicios"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Nos reservamos el derecho de modificar, suspender o interrumpir, temporal o permanentemente, nuestros servicios en cualquier momento y sin previo aviso. Esto puede incluir la adición de nuevas funcionalidades, cambios en la interfaz o en la disponibilidad de ciertos servicios. No seremos responsables ante ti o ante terceros por ninguna modificación, suspensión o interrupción de nuestros servicios. Te recomendamos que estés atento a cualquier comunicación que emitamos sobre cambios en nuestros servicios para asegurarte de que continúas teniendo la mejor experiencia posible."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection4" />
+
+
+
+
+
+                <!-- Sección 5 -->
+                <TextView
+                    android:id="@+id/textSection5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="5. Limitación de responsabilidad"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="En la medida máxima permitida por la ley, VIMYP no será responsable de ningún daño indirecto, incidental, especial o consecuente que resulte del uso o la imposibilidad de uso de nuestros servicios. Esto incluye, sin limitarse a, la pérdida de beneficios, datos o cualquier otro tipo de pérdida financiera o comercial, incluso si hemos sido informados de la posibilidad de tales daños. Al utilizar nuestros servicios, aceptas que esta limitación de responsabilidad es una parte esencial de las condiciones de uso y que nuestra disposición a proporcionarte acceso a nuestros servicios está condicionada a tu aceptación de dicha limitación."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection5" />
+
+
+
+
+
+
+                <!-- Sección 6 -->
+                <TextView
+                    android:id="@+id/textSection6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="6. Cambios en las condiciones de uso"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Nos reservamos el derecho de actualizar o modificar estas condiciones de uso en cualquier momento, sin necesidad de previo aviso. Cualquier cambio será efectivo inmediatamente después de su publicación en nuestro sitio web. Te recomendamos que revises estas condiciones periódicamente para estar informado sobre cualquier actualización que se realice. Tu uso continuado de nuestros servicios tras la publicación de cambios en estas condiciones implicará tu aceptación de dichos cambios."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection6" />
+
+
+
+
+
+                <!-- Sección 7 -->
+                <TextView
+                    android:id="@+id/textSection7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="7. Ley aplicable"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Estas condiciones de uso se rigen por las leyes del país en el que opera VIMYP. Cualquier disputa que surja en relación con estas condiciones, así como con la interpretación, validez o cumplimiento de las mismas, se resolverá en los tribunales de dicho país. Al aceptar estas condiciones, también aceptas que cualquier disputa se someterá a la jurisdicción exclusiva de los tribunales competentes en dicha jurisdicción, renunciando así a cualquier otro fuero que pudiera corresponderte"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection7" />
+
+
+
+                <!-- Sección 8 -->
+                <TextView
+                    android:id="@+id/textSection8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="8. Contacto"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Si tienes alguna pregunta, comentario o inquietud sobre estas condiciones de uso, te invitamos a que te pongas en contacto con nosotros. Puedes hacerlo a través de nuestro formulario de contacto en el sitio web o enviando un correo electrónico a soporte@vimyp.com. Nuestro equipo está disponible para ayudarte y resolver cualquier duda que puedas tener en relación con el uso de nuestros servicios. Valoramos la comunicación con nuestros usuarios y nos comprometemos a responder de manera oportuna y efectiva."
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textSection8" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

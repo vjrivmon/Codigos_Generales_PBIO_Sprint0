@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAzulclaro">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Logo"
+                android:src="@drawable/ic_logobac"
+                android:layout_gravity="start|center_vertical"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Icono del menú hamburguesa -->
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu"
+                android:contentDescription="Menu"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- Icono de usuario al lado derecho -->
+            <ImageView
+                android:id="@+id/user_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"
+                android:contentDescription="User"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/menu_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="8dp"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/fotosdelperro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="fotografía"
+                    android:src="@drawable/avisos_legales"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+            <!-- Título Principal -->
+            <TextView
+                android:id="@+id/title_legals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Avisos Legales"
+                android:textSize="24sp"
+                android:textColor="@color/colorAzuloscuro"
+                android:textStyle="bold"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Introducción -->
+            <TextView
+                android:id="@+id/text_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En esta sección se presentan de manera clara y concisa los avisos legales, así como las condiciones de uso que regulan el acceso y la utilización del sitio web de VIMYP. Es importante que, al utilizar nuestro sitio, tengas en cuenta y aceptes cumplir con estos términos y condiciones. Tu acceso y uso del sitio implica la aceptación de estos avisos legales, así como la normativa vigente que les sea de aplicación."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/title_legals"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 1 -->
+            <TextView
+                android:id="@+id/section1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Identificación del Titular"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_intro"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_identification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico, a continuación se reflejan los siguientes datos: la empresa titular de dominio web es VIMYP, con domicilio a estos efectos en Carrer del Paranimf, 1, 46730, Gandía (Valencia) número de C.I.F.: 47345348F inscrita en el Registro Mercantil. Correo electrónico de contacto: soporte@vimyp.com"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 2 -->
+            <TextView
+                android:id="@+id/section2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. Usuarios"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_identification"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_users"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="El acceso y/o uso de este portal de VIMYP atribuye la condición de USUARIO, que acepta, desde dicho acceso y/o uso, las Condiciones Generales de Uso aquí reflejadas. Las citadas Condiciones serán de aplicación independientemente de las Condiciones Generales de Contratación que en su caso resulten de obligado cumplimiento."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 3 -->
+            <TextView
+                android:id="@+id/section3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. Uso del portal"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_users"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_portal_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="www.vimyp.com proporciona el acceso a multitud de informaciones, servicios, programas o datos (en adelante, “los contenidos”) en Internet pertenecientes a VIMYP o a sus licenciantes a los que el USUARIO pueda tener acceso. El USUARIO asume la responsabilidad del uso del portal. Dicha responsabilidad se extiende al registro que fuese necesario para acceder a determinados servicios o contenidos..."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 4 -->
+            <TextView
+                android:id="@+id/section4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. Protección de datos"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_portal_use"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_data_protection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP cumple con las directrices de la Ley Orgánica 15/1999 de 13 de diciembre de Protección de Datos de Carácter Personal, el Real Decreto 1720/2007 de 21 de diciembre por el que se aprueba el Reglamento de desarrollo de la Ley Orgánica y demás normativa vigente en cada momento..."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 5 -->
+            <TextView
+                android:id="@+id/section5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5. Propiedad Intelectual"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_data_protection"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_intellectual_property"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP por sí o como cesionaria, es titular de todos los derechos de propiedad intelectual e industrial de su página web, así como de los elementos contenidos en la misma (a título enunciativo, imágenes, sonido, audio, vídeo, software o textos, marcas o logotipos...)"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 6 -->
+            <TextView
+                android:id="@+id/section6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6. Exclusión de garantías y responsabilidad"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_intellectual_property"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_exclusion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP no se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo: errores u omisiones en los contenidos, falta de disponibilidad del portal o la transmisión de virus o programas maliciosos o lesivos en los contenidos..."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 7 -->
+            <TextView
+                android:id="@+id/section7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7. Modificaciones"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_exclusion"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_modifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP se reserva el derecho de efectuar sin previo aviso las modificaciones que considere oportunas en su portal, pudiendo cambiar, suprimir o añadir tanto los contenidos y servicios que se presten a través de la misma como la forma en la que estos aparezcan presentados o localizados en su portal."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 8 -->
+            <TextView
+                android:id="@+id/section8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8. Enlaces"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_modifications"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_links"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En el caso de que en www.vimyp.com se dispusiesen enlaces o hipervínculos hacia otros sitios de Internet, VIMYP no ejercerá ningún tipo de control sobre dichos sitios y contenidos..."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 9 -->
+            <TextView
+                android:id="@+id/section9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9. Derecho de exclusión"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_links"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_exclusion_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP se reserva el derecho a denegar o retirar el acceso a portal y/o los servicios ofrecidos sin necesidad de preaviso, a instancia propia o de un tercero, a aquellos usuarios que incumplan las presentes Condiciones Generales de Uso."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 10 -->
+            <TextView
+                android:id="@+id/section10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10. Generalidades"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_exclusion_right"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_generalities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP perseguirá el incumplimiento de las presentes condiciones así como cualquier utilización indebida de su portal ejerciendo todas las acciones civiles y penales que le puedan corresponder en derecho."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 11 -->
+            <TextView
+                android:id="@+id/section11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11. Modificación de las presentes condiciones y duración"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_generalities"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_modification_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIMYP podrá modificar en cualquier momento las condiciones aquí determinadas, siendo debidamente publicadas como aquí aparecen. La vigencia de las citadas condiciones irá en función de su exposición y estarán vigentes hasta debidamente publicadas."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/section11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Sección 12 -->
+            <TextView
+                android:id="@+id/section12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12. Legislación aplicable y jurisdicción"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_modification_duration"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/text_legislation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="La relación entre VIMYP y el USUARIO se regirá por la normativa española vigente y cualquier controversia se someterá a los Juzgados y tribunales de la ciudad de Gandía."
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="4dp"
+                app:layout_constraintTop_toBottomOf="@+id/section12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

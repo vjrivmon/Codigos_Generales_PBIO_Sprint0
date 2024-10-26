@@ -35,6 +35,13 @@
         <activity android:name=".RegistroActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".SobreNosotrosActivity" />
+        <activity android:name=".FAQActivity" />
+        <activity android:name=".PrivacidadAcitivity" />
+        <activity android:name=".Avisos_Legales_Activity" />
+        <activity android:name=".Condiciones_de_uso_activity" />
+        <activity android:name=".Venta_reembolso_activity" />
+
 
         <meta-data
             android:name="preloaded_fonts"

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAzulclaro">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Logo"
+                android:src="@drawable/ic_logobac"
+                android:layout_gravity="start|center_vertical"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Icono del menú hamburguesa -->
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu"
+                android:contentDescription="Menu"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- Icono de usuario al lado derecho -->
+            <ImageView
+                android:id="@+id/user_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"
+                android:contentDescription="User"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/menu_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="30dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/fotosdelperro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="fotografía"
+                        android:src="@drawable/reembolso"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp">
+
+                <!-- Título Principal -->
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Política de Ventas, Devoluciones y Envíos"
+                    android:textColor="@color/colorAzuloscuro"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/welcome_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Sección de Bienvenida -->
+                <TextView
+                    android:id="@+id/welcome_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="24dp"
+                    android:text="En VIMYP, nuestra principal prioridad es la satisfacción de nuestros clientes. Nos esforzamos por ofrecer productos y servicios de la más alta calidad, y nos comprometemos a mantener una comunicación abierta y transparente. A continuación, se presentan nuestras políticas de ventas, devoluciones, cambios y envíos. Te animamos a leer esta política cuidadosamente para tener una comprensión completa de cómo operamos."
+                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 1 -->
+                <TextView
+                    android:id="@+id/section1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Ventas"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/welcome_text"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Todas las compras realizadas a través de nuestro sitio web son consideradas ventas finales. Aceptamos diversos métodos de pago, como tarjetas de crédito, débito y PayPal, para ofrecerte flexibilidad. Los precios están expresados en la moneda local y pueden cambiar sin previo aviso, pero el precio mostrado al momento de la compra será el aplicado. Recomendamos revisar tu pedido antes de finalizar la compra para asegurarte de que todos los detalles sean correctos. Si tienes preguntas o necesitas asistencia, nuestro equipo de atención al cliente está disponible para ayudarte."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 2 -->
+                <TextView
+                    android:id="@+id/section2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2. Reembolsos"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_sales"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_refunds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nos comprometemos con la satisfacción del cliente, y por ello ofrecemos la posibilidad de solicitar un reembolso bajo ciertas condiciones: Estado del producto: El producto debe estar en su estado original, sin usar, y con el embalaje intacto. Plazo de solicitud: La solicitud debe realizarse dentro de los 30 días posteriores a la recepción. Comprobante de compra: Es necesario presentar un comprobante de compra."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 3 -->
+                <TextView
+                    android:id="@+id/section3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3. Proceso de Reembolso"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_refunds"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_refund_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contacta a atención al cliente: A través de nuestro formulario de contacto o correo electrónico. Incluye el número de pedido y el motivo del reembolso. Devolución del producto: El cliente es responsable de los gastos de envío, excepto en casos de error o producto defectuoso. Procesamiento del reembolso: El reembolso se realizará en un plazo de 14 días hábiles tras verificar la devolución del producto."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 4 -->
+                <TextView
+                    android:id="@+id/section4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4. Productos no Reembolsables"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_refund_process"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_non_refundable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Algunos productos no son elegibles para reembolso, como: Artículos personalizados o hechos a medida, Tarjetas de regalo, Productos en oferta o liquidación."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 5 -->
+                <TextView
+                    android:id="@+id/section5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5. Devoluciones / Cambios"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_non_refundable"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_returns_changes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Los productos se pueden devolver o cambiar dentro de los 14 días posteriores a su recepción, siempre que estén en su estado original, sin usar, y en su embalaje original. Incluye el albarán de entrega e indicaciones sobre si deseas un cambio o un reembolso. Los gastos de envío de devolución solo serán reembolsados si el error fue nuestro o el producto es defectuoso."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 6 -->
+                <TextView
+                    android:id="@+id/section6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6. Envíos"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_returns_changes"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Los pedidos son enviados mediante una agencia de transporte en España, con tiempos de entrega entre 48 y 72 horas. Los envíos internacionales se realizan por correo certificado. El tiempo de envío es de 3 días hábiles desde la fecha del pedido. Si necesitas una entrega antes de una fecha específica, indícalo al realizar el pedido."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section6"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 7 -->
+                <TextView
+                    android:id="@+id/section7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7. Gastos de Envío"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_shipping"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_shipping_costs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Los gastos de envío varían según la ubicación: España peninsular y Portugal: Gratis para pedidos superiores a 75 €, inferiores a este importe tienen un coste de 5 €. Baleares, Ceuta y Melilla: Gratis a partir de 120 €, con un coste de 7 € para pedidos menores. Canarias: Gratis a partir de 180 €, con un coste de 11 € para pedidos menores. Europa: 20 € de gastos de envío."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 8 -->
+                <TextView
+                    android:id="@+id/section8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8. Cambios en la Política"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_shipping_costs"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_policy_changes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nos reservamos el derecho de modificar nuestra política en cualquier momento. Cualquier cambio será efectivo inmediatamente tras su publicación. Revisa esta política periódicamente para mantenerte informado."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Sección 9 -->
+                <TextView
+                    android:id="@+id/section9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9. Contacto"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_policy_changes"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Si tienes alguna duda o comentario, contáctanos a través de nuestro formulario de contacto o por correo electrónico a soporte@vimyp.com. Estamos aquí para ayudarte."
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/section9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
