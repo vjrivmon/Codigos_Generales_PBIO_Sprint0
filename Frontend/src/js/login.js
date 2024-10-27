@@ -17,10 +17,10 @@ loginBtn.addEventListener('click', () => {
 // Función para registrar un nuevo usuario
 async function registrarUsuario( email, password) {
     try {
-        //const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
+        const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
         //const response = await fetch('http://172.20.10.11:8080/usuarios', { // Ip Portatil Pablo Wifi Pablo
         //const response = await fetch('http://192.168.0.20:8080/usuarios', { // Ip Ordenador Vicente
-        const response = await fetch('http://192.168.0.17:8080/usuarios', { // Ip Ordenador Irene
+        //const response = await fetch('http://192.168.0.17:8080/usuarios', { // Ip Ordenador Irene
         
             method: 'POST',
             headers: {
@@ -49,10 +49,10 @@ async function ConsultarDatosUsuario(email, password) {
       const encodedPassword = encodeURIComponent(password);
   
       // Realizar una solicitud GET al servidor con los parámetros
-      //const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo
+      const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo 
       //const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
       //const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
-      const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
+      //const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
