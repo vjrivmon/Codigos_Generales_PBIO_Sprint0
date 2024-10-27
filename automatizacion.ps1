@@ -48,6 +48,9 @@ Copy-Item -Recurse "Backend/src/mariadb/*" "$TEMP_DIR/Backend/src/mariadb"
 Copy-Item -Recurse "Frontend/*" "$TEMP_DIR/Backend/src/nodejs/app_web"
 Copy-Item "Backend/src/variables.env" "$TEMP_DIR/Backend/src"
 
+# Copiar los archivos SQL al contenedor de MariaDB
+Copy-Item -Recurse "Backend/src/mariadb/sql/*" "$TEMP_DIR/Backend/src/mariadb/sql" # Asegúrate de que los archivos SQL estén aquí
+
 # Asegúrate de copiar el archivo docker-compose.yml
 if (Test-Path "Backend/src/docker-compose.yml") {
     Copy-Item "Backend/src/docker-compose.yml" "$TEMP_DIR/Backend/src/"
@@ -58,18 +61,41 @@ if (Test-Path "Backend/src/docker-compose.yml") {
 
 print-message "Green" "Hecho!"
 
-# Levantar contenedores con docker-compose
-print-message "Yellow" "Levantando contenedores con docker-compose..."
+# Cambiar el directorio de trabajo al directorio temporal
+Set-Location "$TEMP_DIR/Backend/src"
+
+# Detener y eliminar contenedores y volúmenes con docker-compose
+print-message "Yellow" "Deteniendo y eliminando contenedores y volúmenes con docker-compose..."
 if (Get-Command docker-compose -ErrorAction SilentlyContinue) {
-    docker-compose -f "$TEMP_DIR/Backend/src/docker-compose.yml" up --build -d
+    & docker-compose down -v
 } else {
     print-message "Red" "docker-compose no está instalado. Instalando docker-compose..."
     Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -OutFile "$env:ProgramFiles\docker-compose.exe"
     $env:Path += ";$env:ProgramFiles"
-    & "$env:ProgramFiles\docker-compose.exe" -f "$TEMP_DIR/Backend/src/docker-compose.yml" up --build -d
+    & "$env:ProgramFiles\docker-compose.exe" down -v
+}
+
+print-message "Green" "Contenedores y volúmenes eliminados correctamente!"
+
+# Levantar contenedores con docker-compose
+print-message "Yellow" "Levantando contenedores con docker-compose..."
+if (Get-Command docker-compose -ErrorAction SilentlyContinue) {
+    & docker-compose up --build -d
+} else {
+    print-message "Red" "docker-compose no está instalado. Instalando docker-compose..."
+    Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -OutFile "$env:ProgramFiles\docker-compose.exe"
+    $env:Path += ";$env:ProgramFiles"
+    & "$env:ProgramFiles\docker-compose.exe" up --build -d
 }
 
 print-message "Green" "Contenedores levantados correctamente!"
+
+# Volver al directorio original
+Set-Location -Path (Get-Location -PSProvider FileSystem).ProviderPath
+
+# Limpieza del directorio temporal
+print-message "Green" "Limpiando el directorio temporal..."
+Remove-Item -Recurse -Force $TEMP_DIR
 
 # Ejecutar pruebas dentro del contenedor de la aplicación
 print-message "Yellow" "Ejecutando pruebas dentro del contenedor..."
@@ -81,7 +107,3 @@ Start-Sleep -Seconds 2
 # Mostrar logs de los contenedores
 print-message "Yellow" "Mostrando logs de los contenedores..."
 docker-compose -f "$TEMP_DIR/Backend/src/docker-compose.yml" logs -f
-
-# Limpieza del directorio temporal
-print-message "Green" "Limpiando el directorio temporal..."
-Remove-Item -Recurse -Force $TEMP_DIR
