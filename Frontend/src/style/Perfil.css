@@ -1,0 +1,210 @@
+/* 基本页面布局和样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: white;
+    width: 900px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.usuario-title {
+    font-size: 30px;
+    color: #333;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin-top: 30px; /* 只下移这个 h2 30px */
+    text-align: center; /* 保持居中 */
+}
+
+
+h2 {
+    font-size: 30px;
+    color: #333;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.info-personal {
+    width: 50%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.info-personal .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.info-personal h3 {
+    font-size: 18px;
+    color: #333;
+ 
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.info-personal button {
+    background-color: #8C0368;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.info-item {
+    margin-bottom: 30px; /* 增加每个 item 之间的上下距离 */
+}
+
+.info-item p {
+    margin-bottom: 5px; /* 这个是每个 p 标签内部的行距，可以保持不变 */
+}
+
+.sensors {
+    width: 30%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+
+}
+
+.sensors h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.sensor-info p {
+    background-color: #eeeeee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination span {
+    font-size: 16px;
+}
+
+.logout {
+    background-color: #1E98D7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+	margin-left:700px
+}
+/* 弹出框样式 */
+.popup {
+    display: none; /* 初始隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+/* 固定header和footer */
+header {
+  
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+   
+}
+
+footer {
+   
+    color: #fff;
+    padding: 15px 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+}
+/* 用户头像样式 */

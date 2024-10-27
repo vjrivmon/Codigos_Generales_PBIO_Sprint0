@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Perfil usuario</title>
+	<link rel="stylesheet" href="../style/styles.css">
+	<link rel="stylesheet" href="../style/Perfil.css">
+</head>
+	<header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="../index.html">
+          <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+          <span>VIMYP</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="packs.html">Packs</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <a href="login.html" class="btn btn-primary">Login</a>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+<body>
+
+   <div class="container">
+        <div class="profile-section">
+            <div class="profile">
+              
+               <div class="profile">
+    <h2 class="usuario-title">Usuario</h2> <!-- 给 h2 添加了类名 -->
+</div>
+            </div>
+
+            <div class="info-personal">
+                <div class="header">
+                    <h3>Información personal</h3>
+                    <button id="editBtn">Editar</button> <!-- 添加ID供弹窗触发 -->
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <p><strong>Nombre completo</strong></p>
+                        <p>Nombre Apellidos</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Teléfono</strong></p>
+                        <p>644444444</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Fecha de nacimiento</strong></p>
+                        <p>23/07/1999</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Correo electrónico</strong></p>
+                        <p>correo@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sensors">
+                <h3>Mis sensores</h3>
+                <div class="sensor-info">
+                    <p>Nombre: _________</p>
+                    <p>Id: _________</p>
+                    <p>Ubicación: _________</p>
+                </div>
+                <div class="pagination">
+                    <button>&larr;</button>
+                    <span>1 de 3</span>
+                    <button>&rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="logout">Cerrar Sesión</button>
+    </div>
+ 
+  <div id="popup" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres aplicar estos cambios?</p>
+            <button id="confirmBtn">Confirmar</button>
+            <button id="cancelBtn">Cancelar</button>
+        </div>
+    </div>
+
+
+
+      <footer class="apple-footer">
+    <div class="footer-top">
+        <div class="footer-links">
+            <ul>
+                <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
+                <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
+                <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
+                <li><a href="avisosLegales.html">Avisos Legales</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>Copyright © 2024 VIMYP&nbsp; -&nbsp; Todos los derechos reservados.</p>
+    </div>
+</footer>
+    <script src="JS/Perfil usuario.js"></script>S
+</body>
+	
+</html>

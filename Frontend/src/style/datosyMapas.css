@@ -1,0 +1,60 @@
+#map {
+    height: 500px;
+    width: 100%;
+}
+#info-box {
+    position: absolute;
+    top: 180px;
+    left: 50px;
+    width: 280px;
+    height: auto; /* 自动根据内容调整高度 */
+    padding: 20px;
+    background-color: white; /* 白色背景 */
+    border-radius: 15px; /* 圆角效果 */
+    border: 2px solid rgba(0, 0, 0, 0.1); /* 边框改为浅色 */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+    color: black; /* 字体颜色改为黑色 */
+    font-family: 'Arial', sans-serif; /* 字体 */
+    font-size: 16px; /* 字体大小 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 增加动效 */
+    z-index: 1000;
+}
+
+#info-box:hover {
+    transform: scale(1.05); /* 鼠标悬停时放大 */
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.7); /* 鼠标悬停时阴影变大 */
+}
+
+#info-box h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333; /* 深灰色标题 */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* 轻微的文字阴影 */
+}
+
+#info-box p {
+    margin: 5px 0;
+    font-size: 16px;
+    font-weight: 300; /* 字体较轻 */
+    line-height: 1.5;
+}
+#sensor-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-top: 20px;
+    background-color: #007BFF; /* 蓝色背景 */
+    color: white; /* 白色文字 */
+    border: none;
+    border-radius: 10px; /* 圆角效果 */
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#sensor-btn:hover {
+    background-color: #0056b3; /* 悬停时背景变深 */
+    transform: scale(1.05); /* 悬停时稍微放大 */
+}
+
