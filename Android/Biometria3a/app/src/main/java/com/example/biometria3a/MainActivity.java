@@ -364,7 +364,9 @@ public class MainActivity extends AppCompatActivity {
                         "Valores del sensor: " + "\n" +
                                 "Valor Major: " + valorMajor + "\n" +
                                 "Valor Minor: " + valorMinor + "\n");
+
             }
+
         });
     } // ()
 
@@ -954,6 +956,12 @@ public class MainActivity extends AppCompatActivity {
             postData.put("id_sensor", 101);
             postData.put("valorGas", valorMajor);
             postData.put("valorTemperatura", valorMinor);
+            // Comprobamos si el valor es mayor a 10
+            if (valorMajor >= 3) {
+                // Si el valor es mayor o igual a 10, mostramos la notificación
+                NotificationHalper notificationHelper = new NotificationHalper(MainActivity.this);
+                notificationHelper.showNotification("Aviso", "Altos niveles de O3.");
+            }
 
 
         } catch (JSONException e) {
