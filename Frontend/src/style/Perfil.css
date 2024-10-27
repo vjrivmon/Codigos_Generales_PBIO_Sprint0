@@ -1,13 +1,6 @@
 /* 基本页面布局和样式 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
 
 body {
-    background-color: #f9f9f9;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,10 +9,10 @@ body {
 
 .container {
     background-color: white;
-    width: 900px;
+    width: 90%;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 33px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,58 +25,74 @@ body {
     width: 100%;
 }
 
-.profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 20px;
-}
 
 .usuario-title {
-    font-size: 30px;
-    color: #333;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    margin-top: 30px; /* 只下移这个 h2 30px */
-    text-align: center; /* 保持居中 */
+    font-size: 2rem;
+    color: var(--text-color);
+    margin: 1rem;
+    text-align: center;
 }
 
-
 h2 {
-    font-size: 30px;
-    color: #333;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 2em;
+    color: var(--text-color);
 }
 
 .info-personal {
     width: 50%;
-    background-color: #f0f0f0;
+    background-color: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 33px;
     margin-right: 20px;
+    min-width: 30%;
+    text-align: center;
+    border: 1px solid lightgray;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.info-personal .header {
+.info-personal .headerPerfil {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    text-align: center;
+}
+
+.info-personal, .sensors {
+    background-color: white;
+    padding: 20px;
+    border-radius: 33px;
+    width: 48%;
+    text-align: center;
+    border: 1px solid var(--background-color-secondary);
 }
 
 .info-personal h3 {
-    font-size: 18px;
-    color: #333;
- 
+    font-size: 1.2rem;
+    color: var(--text-color);
     padding: 5px 10px;
-    border-radius: 5px;
+    align-self: center;
 }
 
-.info-personal button {
-    background-color: #8C0368;
+button {
+    background-color: var(--button-color);
+    border: 2px solid var(--button-color);
     color: white;
-    border: none;
-    padding: 5px 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin-left: 0;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 33px;
+    align-self: flex-end;
+}
+
+button:hover {
+    background-color: white;
+    border: 2px solid var(--button-color);
+    color: var(--text-color);
 }
 
 .info-grid {
@@ -93,28 +102,27 @@ h2 {
 }
 
 .info-item {
-    margin-bottom: 30px; /* 增加每个 item 之间的上下距离 */
+    margin-bottom: 30px;
 }
 
 .info-item p {
-    margin-bottom: 5px; /* 这个是每个 p 标签内部的行距，可以保持不变 */
+    margin-bottom: 5px;
 }
 
 .sensors {
-    width: 30%;
-    background-color: #f0f0f0;
+    min-width: 30%;
+    background-color: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 33px;
     text-align: center;
- box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-
+    border: 1px solid lightgray;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sensors h3 {
-    font-size: 18px;
-    color: #333;
+    font-size: 1.2rem;
+    color: var(--text-color);
     margin-bottom: 10px;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 
 .sensor-info p {
@@ -122,6 +130,7 @@ h2 {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
+    text-align: left;
 }
 
 .pagination {
@@ -132,37 +141,27 @@ h2 {
 }
 
 .pagination button {
-    background-color: #333;
+    background-color: var(--button-color);
     color: white;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 33px;
 }
 
 .pagination span {
     font-size: 16px;
 }
 
-.logout {
-    background-color: #1E98D7;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-	margin-left:700px
-}
 /* 弹出框样式 */
 .popup {
-    display: none; /* 初始隐藏 */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
 }
@@ -173,9 +172,16 @@ h2 {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
 }
 
-.popup-content button {
+.popup-content p {
+	margin: 10px;
+}
+
+/*.popup-content button {
     background-color: #333;
     color: white;
     border: none;
@@ -183,22 +189,19 @@ h2 {
     margin: 10px;
     cursor: pointer;
     border-radius: 5px;
-}
-
+}*/
 
 /* 固定header和footer */
 header {
-  
     padding: 10px 20px;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-   
+    background-color: white;
 }
 
 footer {
-   
     color: #fff;
     padding: 15px 20px;
     position: fixed;
@@ -207,4 +210,29 @@ footer {
     text-align: center;
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
 }
+
 /* 用户头像样式 */
+
+/* Media query para pantallas menores a 900px */
+@media (max-width: 900px) {
+    .profile-section {
+        flex-direction: column;
+        align-items: center;
+    }
+  
+    .info-personal,
+    .sensors {
+        width: 100%;
+        margin: 10px 0;
+    }
+  
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+  
+    button {
+        width: 100%;
+        margin-top: 10px;
+        align-self: center;
+    }
+}

@@ -1,50 +1,48 @@
 <!doctype html>
-<html>
+<html lang="es">
 <head>
-<meta charset="utf-8">
-<title>Perfil usuario</title>
-	<link rel="stylesheet" href="../style/styles.css">
-	<link rel="stylesheet" href="../style/Perfil.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mi perfil | VIMYP</title>
+    <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/Perfil.css">
 </head>
-	<header>
-    <nav class="navbar">
-      <div class="logo">
-        <a href="../index.html">
-          <img src="../img/logo.svg" alt="Logotipo VIMYP" />
-          <span>VIMYP</span>
-        </a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="packs.html">Packs</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="nosotros.html">Nosotros</a></li>
-      </ul>
-      <div class="nav-buttons">
-        <a href="login.html" class="btn btn-primary">Login</a>
-        <div class="menu-toggle" id="mobile-menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </div>
-      </div>
-    </nav>
-  </header>
-
 <body>
-
-   <div class="container">
-        <div class="profile-section">
-            <div class="profile">
-              
-               <div class="profile">
-    <h2 class="usuario-title">Usuario</h2> <!-- 给 h2 添加了类名 -->
-</div>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                    <span>VIMYP</span>
+                </a>
             </div>
+            <ul class="nav-links">
+                <li><a href="packs.html">Packs</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="datosYMapa.html">Mapa</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="../index.html" class="btn btn-primary">Cerrar sesión</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <!-- Sección de Perfil -->
+    <div class="container">
+        <h2 class="usuario-title">Mis datos</h2>
+        <div class="profile-section">
             <div class="info-personal">
-                <div class="header">
+                <div class="headerPerfil">
                     <h3>Información personal</h3>
-                    <button id="editBtn">Editar</button> <!-- 添加ID供弹窗触发 -->
+                    <button id="editBtn">Editar</button>
                 </div>
                 <div class="info-grid">
                     <div class="info-item">
@@ -80,11 +78,10 @@
                 </div>
             </div>
         </div>
-
-        <button class="logout">Cerrar Sesión</button>
     </div>
- 
-  <div id="popup" class="popup">
+
+    <!-- Popup -->
+    <div id="popup" class="popup">
         <div class="popup-content">
             <p>¿Seguro que quieres aplicar estos cambios?</p>
             <button id="confirmBtn">Confirmar</button>
@@ -92,24 +89,24 @@
         </div>
     </div>
 
-
-
-      <footer class="apple-footer">
-    <div class="footer-top">
-        <div class="footer-links">
-            <ul>
-                <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
-                <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
-                <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
-                <li><a href="avisosLegales.html">Avisos Legales</a></li>
-            </ul>
+    <!-- Footer -->
+    <footer class="apple-footer">
+        <div class="footer-top">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
+                    <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
+                    <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
+                    <li><a href="avisosLegales.html">Avisos Legales</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="footer-bottom">
-        <p>Copyright © 2024 VIMYP&nbsp; -&nbsp; Todos los derechos reservados.</p>
-    </div>
-</footer>
-    <script src="JS/Perfil usuario.js"></script>S
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP - Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../js/Perfil.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
-	
 </html>
