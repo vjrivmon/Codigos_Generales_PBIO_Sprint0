@@ -1,21 +1,46 @@
-// 获取弹出框及按钮
+// Obtener elementos del DOM
 const popup = document.getElementById('popup');
 const editBtn = document.getElementById('editBtn');
+const saveBtn = document.getElementById('guardarcambios');
 const confirmBtn = document.getElementById('confirmBtn');
 const cancelBtn = document.getElementById('cancelBtn');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
 
-// 点击“编辑”按钮，显示弹出框
+// Función para habilitar la edición de los campos
 editBtn.addEventListener('click', function() {
-    popup.style.display = 'flex'; // 显示弹窗
+    emailInput.disabled = false; // Habilitar campo de correo
+    passwordInput.disabled = false; // Habilitar campo de contraseña
+    saveBtn.disabled = false; // Habilitar botón de guardar cambios
+    editBtn.disabled = true; // Deshabilitar botón de editar datos
 });
 
-// 点击“确认”按钮，继续执行操作
+// Mostrar popup al hacer clic en "Guardar cambios"
+saveBtn.addEventListener('click', function() {
+    popup.style.display = 'flex'; // Mostrar popup
+});
+
+// Confirmar cambios al hacer clic en "Confirmar"
 confirmBtn.addEventListener('click', function() {
-    popup.style.display = 'none'; // 关闭弹窗
-    alert('Cambios confirmados'); // 模拟确认操作
+    // Aquí puedes agregar la lógica para guardar los cambios
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    
+    // Simular el almacenamiento de cambios
+    console.log('Cambios guardados:', { email, password });
+    
+    // Cerrar popup
+    popup.style.display = 'none';
+    
+    // Deshabilitar campos nuevamente y habilitar botón de editar
+    emailInput.disabled = true;
+    passwordInput.disabled = true;
+    saveBtn.disabled = true;
+    editBtn.disabled = false; // Volver a habilitar botón de editar
+    alert('Cambios confirmados'); // Mensaje de confirmación
 });
 
-// 点击“取消”按钮，关闭弹出框
+// Cerrar popup al hacer clic en "Cancelar"
 cancelBtn.addEventListener('click', function() {
-    popup.style.display = 'none'; // 关闭弹窗
+    popup.style.display = 'none'; // Cerrar popup sin guardar cambios
 });
