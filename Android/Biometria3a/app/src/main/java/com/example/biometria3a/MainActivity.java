@@ -17,6 +17,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -84,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
     private StringBuilder dispositivosEncontrados; // Para almacenar los dispositivos encontrados
      double valorMinor;
      double valorMajor;
-
+    // --------------------------------------------------------------
+    private static final int TIMEOUT_MS = 10000;
+    private Handler handler = new Handler();
+    private NotificationHalper notificationHelper;
 
     private static final int CODIGO_PETICION_PERMISOS = 11223344;
     // --------------------------------------------------------------
@@ -112,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             public void onScanResult(int callbackType, ScanResult resultado) {
                 super.onScanResult(callbackType, resultado);
                 Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanResult() ");
-
                 mostrarInformacionDispositivoBTLE(resultado);
             }
 
@@ -120,9 +123,6 @@ public class MainActivity extends AppCompatActivity {
             public void onBatchScanResults(List<ScanResult> results) {
                 super.onBatchScanResults(results);
                 Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onBatchScanResults() ");
-
-
-
 
             }
 
@@ -145,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         this.elEscanner.startScan(this.callbackDelEscaneo);
+
+
 
     } // ()
 
@@ -256,6 +258,16 @@ public class MainActivity extends AppCompatActivity {
         //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): instalamos scan callback ");
 
         // super.onScanResult(ScanSettings.SCAN_MODE_LOW_LATENCY, result); para ahorro de energía
+        // Iniciar el temporizador para la notificación de tiempo de espera
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Si el temporizador se ejecuta, mostrar la notificación
+                NotificationHalper notificationHelper = new NotificationHalper(MainActivity.this);
+                notificationHelper.showNotification("Aviso", "Dispositivo no encontrado .");
+            }
+        }, TIMEOUT_MS);
+
 
         this.callbackDelEscaneo = new ScanCallback() {
             @Override
@@ -284,9 +296,7 @@ public class MainActivity extends AppCompatActivity {
                             tvBluetoothName.setText("Valores: " + sensorDatos);
                         }
                     });
-
-
-
+                    
 
             }
 
@@ -809,6 +819,10 @@ public class MainActivity extends AppCompatActivity {
                 showPopupMenu(v);
             }
         });
+
+
+
+
     }
 
 

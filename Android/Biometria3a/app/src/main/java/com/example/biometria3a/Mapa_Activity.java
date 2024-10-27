@@ -29,7 +29,7 @@ public class Mapa_Activity extends AppCompatActivity {
     private WebView webView;
     private Button btnUpdate;
     private ImageView menuIcon;
-
+    private NotificationHalper notificationHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +104,12 @@ public class Mapa_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
+        // Llama a la notificación al iniciar la actividad
+        //NotificationHalper notificationHelper = new NotificationHalper(this);
+       // notificationHelper.showNotification("Aviso", "Senosr no encontrado");
     }
 
     // 更新显示时间
@@ -137,6 +143,7 @@ public class Mapa_Activity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.action_packs) {
                     Toast.makeText(Mapa_Activity.this, "Packs", Toast.LENGTH_SHORT).show();
+                    lanzarPacks();
                     return true;
                 } else if (item.getItemId() == R.id.action_privacidad) {
                     Toast.makeText(Mapa_Activity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
@@ -170,7 +177,7 @@ public class Mapa_Activity extends AppCompatActivity {
 
     private void lanzarPacks() {
         // Acción o navegación para la opción de "Packs"
-        Intent intent = new Intent(this, PacksActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
