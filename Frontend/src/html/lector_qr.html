@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectura de QR y Sensor</title>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <style>
+        #reader {
+            width: 600px;
+            height: 300px;
+            margin: auto;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        #sensorData {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lectura de Código QR y Sensor</h1>
+    <div id="reader"></div>
+    <div id="result"></div>
+    <div id="sensorData"></div>
+
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            // Manejar el texto decodificado del QR
+            document.getElementById("result").innerText = `Texto decodificado: ${decodedText}`;
+
+            // Extraer usuarioID y sensorID
+            const [usuarioID, sensorID] = decodedText.split(',').map(param => param.split(':')[1]);
+
+            // Mostrar los IDs
+            console.log(`Usuario ID: ${usuarioID}, Sensor ID: ${sensorID}`);
+
+            // Aquí puedes realizar una llamada AJAX a tu API para asociar el sensor al usuario
+            fetch('/api/usuarios/' + usuarioID + '/sensores/' + sensorID, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sensorID: sensorID })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Sensor asociado exitosamente:', data);
+                // Llamar a la función para leer los datos del sensor
+                readSensorData(sensorID);
+            })
+            .catch(error => {
+                console.error('Error al asociar el sensor:', error);
+            });
+        }
+
+        function readSensorData(sensorID) {
+            // Llamada a la API para leer los datos del sensor
+            fetch(`/api/sensores/${sensorID}/datos`)
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar los datos del sensor
+                    document.getElementById("sensorData").innerText = `Datos del Sensor ${sensorID}: Valor Gas: ${data.valorGas}, Valor Temperatura: ${data.valorTemperatura}`;
+                })
+                .catch(error => {
+                    console.error('Error al leer los datos del sensor:', error);
+                });
+        }
+
+        function onScanError(errorMessage) {
+            // Manejar el error de escaneo
+            console.warn(`Error de escaneo: ${errorMessage}`);
+        }
+
+        const html5QrCode = new Html5Qrcode("reader");
+
+        // Iniciar el escaneo
+        html5QrCode.start(
+            { facingMode: "environment" }, // Cámara trasera
+            {
+                fps: 10,
+                qrbox: 250 // Tamaño de la caja de escaneo
+            },
+            onScanSuccess,
+            onScanError
+        ).catch(err => {
+            console.error('Error al iniciar el escaneo:', err);
+        });
+    </script>
+</body>
+</html>

@@ -13,7 +13,6 @@ Este directorio contiene el código fuente principal de la página web del proye
 ## Archivos principales
 
 - `index.html`: Página principal de la aplicación, que se carga al iniciar la aplicación.
-- `styles.css`: Archivo CSS global que contiene estilos comunes utilizados en toda la aplicación.
 
 ## Tecnologías utilizadas
 
@@ -26,9 +25,9 @@ Este directorio contiene el código fuente principal de la página web del proye
 ## Cómo empezar
 
 1. Asegúrate de tener Docker instalado y corriendo en tu máquina local.
-2. Asegúrate de tener tu IP puesta en el archivo login.js
+2. Asegúrate de tener tu IP puesta en el archivo login.js y en el archivo perfil.js
 3. Ejecuta el comando `.\automatizacion.ps1` en la raíz del proyecto para iniciar la aplicación frontend en un contenedor Docker.
-4. Abre tu navegador y busca `http://localhost:8080` para ver la aplicación en funcionamiento.
+4. Abre tu navegador y busca `http://localhost` para ver la aplicación en funcionamiento.
 
 
 ## Notas adicionales
