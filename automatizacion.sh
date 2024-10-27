@@ -83,10 +83,13 @@ fi
 
 print_message $GREEN "Hecho!"
 
-# Montar los contenedores con docker-compose
-print_message $YELLOW "Levantando contenedores con docker-compose..."
+# Cambiar el directorio de trabajo al directorio temporal
+cd "$TEMP_DIR/Backend/src"
+
+# Detener y eliminar contenedores y volúmenes con docker-compose
+print_message $YELLOW "Deteniendo y eliminando contenedores y volúmenes con docker-compose..."
 if command -v docker-compose &>/dev/null; then
-    docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build -d
+    docker-compose down -v
 else
     print_message $RED "docker-compose no está instalado. Instalando docker-compose..."
     if command -v curl &>/dev/null; then
@@ -94,7 +97,7 @@ else
         sudo chmod +x /usr/local/bin/docker-compose
         if command -v docker-compose &>/dev/null; then
             print_message $GREEN "docker-compose instalado correctamente."
-            docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build -d
+            docker-compose down -v
         else
             print_message $RED "Error al instalar docker-compose."
             exit 1
@@ -108,7 +111,46 @@ else
             sudo chmod +x /usr/local/bin/docker-compose
             if command -v docker-compose &>/dev/null; then
                 print_message $GREEN "docker-compose instalado correctamente."
-                docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml up --build -d
+                docker-compose down -v
+            else
+                print_message $RED "Error al instalar docker-compose."
+                exit 1
+            fi
+        else
+            print_message $RED "Error al instalar curl."
+            exit 1
+        fi
+    fi
+fi
+
+print_message $GREEN "Contenedores y volúmenes eliminados correctamente!"
+
+# Levantar contenedores con docker-compose
+print_message $YELLOW "Levantando contenedores con docker-compose..."
+if command -v docker-compose &>/dev/null; then
+    docker-compose up --build -d
+else
+    print_message $RED "docker-compose no está instalado. Instalando docker-compose..."
+    if command -v curl &>/dev/null; then
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        if command -v docker-compose &>/dev/null; then
+            print_message $GREEN "docker-compose instalado correctamente."
+            docker-compose up --build -d
+        else
+            print_message $RED "Error al instalar docker-compose."
+            exit 1
+        fi
+    else
+        print_message $RED "curl no está instalado. Instalando curl..."
+        sudo apt-get update
+        sudo apt-get install -y curl
+        if command -v curl &>/dev/null; then
+            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            if command -v docker-compose &>/dev/null; then
+                print_message $GREEN "docker-compose instalado correctamente."
+                docker-compose up --build -d
             else
                 print_message $RED "Error al instalar docker-compose."
                 exit 1
@@ -122,6 +164,13 @@ fi
 
 print_message $GREEN "Contenedores levantados correctamente!"
 
+# Volver al directorio original
+cd -
+
+# Limpieza del directorio temporal
+print_message $GREEN "Limpiando el directorio temporal..."
+rm -rf $TEMP_DIR
+
 # Ejecutar pruebas dentro del contenedor de la aplicación
 print_message $YELLOW "Ejecutando pruebas dentro del contenedor..."
 docker exec sprint1_njs npm test
@@ -132,7 +181,3 @@ sleep 2
 # Mostrar logs de los contenedores
 print_message $YELLOW "Mostrando logs de los contenedores..."
 docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml logs -f
-
-# Limpieza del directorio temporal
-print_message $GREEN "Limpiando el directorio temporal..."
-rm -rf $TEMP_DIR
