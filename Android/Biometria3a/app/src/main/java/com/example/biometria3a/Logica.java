@@ -2,27 +2,198 @@ package com.example.biometria3a;
 
 import android.util.Log;
 
-public class Logica {
-    private Object Medicion;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-    public void guardarMedicion(Medidas medicion) {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-        Log.d("test", "entra a guardar medicion");
-        // ojo: creo que hay que crear uno nuevo cada vez
-        PeticionarioREST elPeticionario = new PeticionarioREST();
+import java.util.HashMap;
+import java.util.Map;
 
+public class ApiClient {
+    private static final String BASE_URL = "http://192.168.0.101"; // Cambia esto a la URL de tu API de la ip del ordenador
 
-        String textoJSON = "{\"Medicion\":\"" + medicion.getMedicion() + "\", \"TipoSensor\":\"" + medicion.getTipoSensor() + "\", \"Latitud\":\"" + medicion.getLatitud() + "\", \"Longitud\":\"" + medicion.getLongitud() + "\"}";
-        Log.d("JSON", textoJSON);
-        elPeticionario.hacerPeticionREST("POST", "http://172.20.10.2/src/api/v1.0/index.php", textoJSON,
-                new PeticionarioREST.RespuestaREST() {
-                    @Override
-                    public void callback(int codigo, String cuerpo) {
-                        Log.d("test", "Se ha insertado correctamente");
-                    }
+    // Método para verificar usuario
+    public static void verificarUsuario(String correo, String contrasena, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/verificarUsuario?correo=" + correo + "&contrasena=" + contrasena;
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
                 }
-        );
+            }
+        }, errorListener);
 
+        queue.add(stringRequest);
+    }
 
+    // Método para agregar un usuario
+    public static void agregarUsuario(String correo, String contrasena, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/agregarUsuario";
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("correo", correo);
+                params.put("contrasena", contrasena);
+                return params;
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    // Método para consultar datos de usuario
+    public static void consultarDatosUsuario(String id_usuario, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/ConsultarDatosUsuario/" + id_usuario;
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener);
+
+        queue.add(stringRequest);
+    }
+
+    // Método para consultar medida
+    public static void consultarMedida(String id_sensor, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/ConsultarMedida/" + id_sensor;
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener);
+
+        queue.add(stringRequest);
+    }
+    // Método para agregar una medición
+    public static void agregarMedicion(String hora, double latitud, double longitud, double valorGas, double valorTemperatura, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/agregarMedicion";
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("hora", hora);
+                params.put("latitud", String.valueOf(latitud));
+                params.put("longitud", String.valueOf(longitud));
+                params.put("valorGas", String.valueOf(valorGas));
+                params.put("valorTemperatura", String.valueOf(valorTemperatura));
+                return params;
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    // Método para consultar si hay alerta
+    public static void consultarSiHayAlerta(String id_sensor, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/ConsultarSiHayAlerta/" + id_sensor;
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener);
+
+        queue.add(stringRequest);
+    }
+
+    // Método para eliminar un usuario
+    public static void eliminarUsuario(String id_usuario, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/EliminarUsuario/" + id_usuario;
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener);
+
+        queue.add(stringRequest);
+    }
+
+    // Método para consultar todas las tablas de la base de datos
+    public static void consultarBaseDeDatos(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = BASE_URL + "/ConsultarBaseDeDatos";
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    listener.onResponse(jsonResponse);
+                } catch (JSONException e) {
+                    errorListener.onErrorResponse(new VolleyError(e));
+                }
+            }
+        }, errorListener);
+
+        queue.add(stringRequest);
     }
 }
