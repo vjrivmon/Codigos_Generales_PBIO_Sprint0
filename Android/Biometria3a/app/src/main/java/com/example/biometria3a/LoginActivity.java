@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         if (email.equals("mimi") && password.equals("123456")) {
             Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
             // Inicia la actividad MainActivity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, Mapa_Activity.class);
             startActivity(intent);  // Inicia la nueva actividad
         } else {
             Toast.makeText(LoginActivity.this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();

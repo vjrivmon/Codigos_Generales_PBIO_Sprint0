@@ -9,7 +9,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:icon="@drawable/ic_logo"
         android:allowBackup="true"
@@ -39,6 +39,8 @@
         <activity android:name=".Avisos_Legales_Activity" />
         <activity android:name=".Condiciones_de_uso_activity" />
         <activity android:name=".Venta_reembolso_activity" />
+        <activity android:name=".EditPerfilActivity"/>
+        <activity android:name=".Mapa_Activity"/>
 
 
         <meta-data

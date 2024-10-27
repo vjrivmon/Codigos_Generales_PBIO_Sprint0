@@ -44,6 +44,15 @@ public class Condiciones_de_uso_activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ImageView logo = findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Iniciar la actividad del mapa
+                Intent intent = new Intent(Condiciones_de_uso_activity.this, Mapa_Activity .class);
+                startActivity(intent);
+            }
+        });
         // Encontrar el icono del menú en el Toolbar
         menuIcon = findViewById(R.id.menu_icon);
 
