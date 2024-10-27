@@ -41,6 +41,17 @@ public class SobreNosotrosActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+        ImageView userIcon = findViewById(R.id.user_icon);
+
+        // Configurar OnClickListener para el ícono de usuario
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear un Intent para abrir EditProfileActivity
+                Intent intent = new Intent(SobreNosotrosActivity.this, EditPerfilActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Encontrar el icono del menú en el Toolbar
         menuIcon = findViewById(R.id.menu_icon);

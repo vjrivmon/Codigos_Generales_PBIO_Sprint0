@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Mapa title -->
+    <TextView
+        android:id="@+id/tv_map_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mapa de calidad del aire de Valencia"
+        android:textSize="24sp"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+    <!-- WebView for the map -->
+    <WebView
+        android:id="@+id/webview_map"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_below="@id/tv_map_title"
+        android:layout_marginTop="16dp" />
+
+    <!-- Information box -->
+    <RelativeLayout
+        android:id="@+id/info_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/webview_map"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:padding="20dp">
+
+        <!-- Hora actual -->
+        <TextView
+            android:id="@+id/tv_current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hora actual: "
+            android:textSize="12sp"
+            android:textColor="#808080"
+            android:layout_alignParentTop="true"/>
+
+        <!-- Datos de mi sensor -->
+        <TextView
+            android:id="@+id/tv_sensor_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Datos de mi sensor"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_below="@id/tv_current_time"
+            android:layout_marginTop="10dp"/>
+
+        <!-- Temperatura -->
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temperatura: 25°C"
+            android:layout_below="@id/tv_sensor_data"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- Ozono -->
+        <TextView
+            android:id="@+id/tv_ozone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ozono: 100 ppm"
+            android:layout_below="@id/tv_temperature"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- Actualizar button -->
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actualizar"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_below="@id/tv_ozone"
+            android:layout_marginTop="16dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -33,6 +33,18 @@ public class Avisos_Legales_Activity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        ImageView userIcon = findViewById(R.id.user_icon);
+
+        // Configurar OnClickListener para el ícono de usuario
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear un Intent para abrir EditProfileActivity
+                Intent intent = new Intent(Avisos_Legales_Activity.this, EditPerfilActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Encontrar el icono del menú en el Toolbar
         menuIcon = findViewById(R.id.menu_icon);
 

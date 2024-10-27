@@ -766,9 +766,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        // Obtener referencia al ícono de usuario en el Toolbar
+        ImageView userIcon = findViewById(R.id.user_icon);
+
+        // Configurar OnClickListener para el ícono de usuario
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear un Intent para abrir EditProfileActivity
+                Intent intent = new Intent(MainActivity.this, EditPerfilActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         mandarPost=findViewById(R.id.mandarPost);
         mandarPost.setOnClickListener(new View.OnClickListener() {
@@ -795,6 +810,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     // Método para mostrar el PopupMenu
     // Método para mostrar el PopupMenu
@@ -859,6 +877,12 @@ public class MainActivity extends AppCompatActivity {
     private void lanzarPrivacidad() {
         // Acción o navegación para la opción de "Packs"
         Intent intent = new Intent(this, PrivacidadAcitivity.class);
+        startActivity(intent);
+    }
+
+    private void lanzarMapa() {
+        // Acción o navegación para la opción de "Packs"
+        Intent intent = new Intent(this, Mapa_Activity.class);
         startActivity(intent);
     }
 
