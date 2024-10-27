@@ -228,6 +228,34 @@ async function EliminarUsuario(req, res) {
     }
   }
 }
+// Función para asociar un sensor a un usuario
+async function asociarSensorAUsuario(req, res) {
+  const { id_usuario, id_sensor } = req.body;
+  let connection;
+  try {
+    console.log(`Intentando obtener conexión para asociar sensor ${id_sensor} al usuario ${id_usuario}`);
+    connection = await pool.getConnection();
+    console.log('Conexión obtenida con éxito');
+
+    const query = 'UPDATE sensores SET id_usuario = ? WHERE id_sensor = ?';
+    const result = await connection.query(query, [id_usuario, id_sensor]);
+
+    if (result.affectedRows === 0) {
+      console.warn('Sensor no encontrado o no se pudo asociar');
+      return res.status(404).send('Sensor no encontrado o no se pudo asociar');
+    }
+
+    res.status(200).send('Sensor asociado al usuario correctamente');
+  } catch (err) {
+    console.error('Error al asociar sensor al usuario:', err);
+    res.status(500).send('Error al asociar sensor al usuario');
+  } finally {
+    if (connection) {
+      console.log('Liberando conexión');
+      connection.release();
+    }
+  }
+}
 // Función para consultar todas las tablas de la base de datos
 async function ConsultarBaseDeDatos(req, res) {
   let connection;
