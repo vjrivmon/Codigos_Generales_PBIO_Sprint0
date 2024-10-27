@@ -16,6 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: var(--text-color) !important;
 }
 
 .profile-section {
@@ -23,6 +24,7 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
+	gap: 20px;
 }
 
 
@@ -53,10 +55,11 @@ h2 {
 .info-personal .headerPerfil {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     margin-bottom: 10px;
-    text-align: center;
 }
+
+
 
 .info-personal, .sensors {
     background-color: white;
@@ -80,7 +83,7 @@ button {
     color: white;
     padding: 10px 20px;
     text-decoration: none;
-    margin-left: 0;
+    /*margin-left: 0;*/
     font-size: 1em;
     font-weight: bold;
     transition: background-color 0.3s, color 0.3s;
@@ -129,7 +132,7 @@ button:hover {
     background-color: #eeeeee;
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 33px;
     text-align: left;
 }
 
@@ -174,7 +177,6 @@ button:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
     max-width: 400px;
-    text-align: center;
 }
 
 .popup-content p {
@@ -193,13 +195,13 @@ button:hover {
 
 /* 固定header和footer */
 header {
-    padding: 10px 20px;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
     background-color: white;
 }
+
 
 footer {
     color: #fff;
@@ -230,9 +232,26 @@ footer {
         grid-template-columns: 1fr;
     }
   
+	 /* Posicionar el botón debajo del campo de correo electrónico */
+    .headerPerfil {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .info-personal button {
+        align-self: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+	
     button {
         width: 100%;
         margin-top: 10px;
         align-self: center;
     }
+	
+	.container{
+		margin-top: 400px;
+	}
 }
