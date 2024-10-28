@@ -144,8 +144,8 @@ section div p{
 }
 
 .purchase-card .btn {
+    margin: auto; /* Empuja el botón al fondo del contenedor */
     margin-top: 10px;
-	 margin: auto; /* Empuja el botón al fondo del contenedor */
     align-self: flex-end;
 }
 
