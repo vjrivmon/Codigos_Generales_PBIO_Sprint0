@@ -46,6 +46,7 @@ router.post('/usuarios', agregarUsuario);
 router.delete('/usuarios/:id_usuario', EliminarUsuario);
 router.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
 router.get('/usuarios', verificarUsuario);
+//router.post('/asociar-sensor', asociarSensorAUsuario);
 
 // Pruebas de depuración
 console.log('Configuración inicial cargada');

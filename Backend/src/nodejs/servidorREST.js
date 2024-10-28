@@ -1,5 +1,11 @@
+/**
+ * @file main.js
+ * @brief Conexión a la base de datos MariaDB y ejecución de consultas SQL.
+ */
+
 const mariadb = require('mariadb');
 const dotenv = require('dotenv');
+
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
@@ -10,7 +16,12 @@ console.log('DB_CONTRASENYA:', process.env.DB_CONTRASENYA);
 console.log('DB_NOMBRE:', process.env.DB_NOMBRE);
 console.log('DB_CONNECTION_LIMIT:', process.env.DB_CONNECTION_LIMIT);
 
-// Configuración de la base de datos (similar a main.js)
+/**
+ * @brief Configuración de la base de datos MariaDB.
+ *
+ * Se crea una piscina de conexiones a la base de datos, con un límite de conexiones
+ * establecido por el valor de la variable de entorno DB_CONNECTION_LIMIT.
+ */
 const pool = mariadb.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USUARIO,
@@ -19,10 +30,19 @@ const pool = mariadb.createPool({
   connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT, 10)
 });
 
-// Función para consultar medida
+/**
+ * @brief Función para consultar medida en la base de datos.
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para obtener las mediciones del sensor con ID determinado.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
 async function ConsultarMedida(req, res) {
   const { id_sensor } = req.params;
   let connection;
+
   try {
     console.log(`Intentando obtener conexión para el sensor ID: ${id_sensor}`);
     connection = await pool.getConnection();
@@ -48,7 +68,15 @@ async function ConsultarMedida(req, res) {
     }
   }
 }
-// Función para crear una nueva medición
+/**
+ * @brief Función para agregar una nueva medición.
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para insertar una nueva medición en la tabla mediciones.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
 async function agregarMedicion(req, res) {
   const nuevaMedicion = req.body;
   let connection;
@@ -56,25 +84,25 @@ async function agregarMedicion(req, res) {
     connection = await pool.getConnection();
 
     // Obtener el primer id_sensor disponible
-    const sensorQuery = 'SELECT id_sensor FROM sensores LIMIT 1'; // Puedes modificar esto para obtener el sensor deseado
+    const sensorQuery = 'SELECT id_sensor FROM sensores LIMIT 1'; 
     const sensorRows = await connection.query(sensorQuery);
     if (sensorRows.length === 0) {
       return res.status(400).send('No hay sensores disponibles');
     }
 
-    const id_sensor = sensorRows[0].id_sensor; // Asignar el primer id_sensor
+    const id_sensor = sensorRows[0].id_sensor; 
 
     const query = 'INSERT INTO mediciones (hora, latitud, longitud, id_sensor, valorGas, valorTemperatura) VALUES (?, ?, ?, ?, ?, ?)';
     const result = await connection.query(query, [
       nuevaMedicion.hora,
       nuevaMedicion.latitud,
       nuevaMedicion.longitud,
-      id_sensor, // Usar el id_sensor obtenido
+      id_sensor, 
       nuevaMedicion.valorGas,
       nuevaMedicion.valorTemperatura
     ]);
 
-    nuevaMedicion.id = result.insertId; // Asigna el ID generado automáticamente
+    nuevaMedicion.id = result.insertId; 
     res.status(201).json(nuevaMedicion);
   } catch (err) {
     console.error('Error: ', err);
@@ -83,7 +111,15 @@ async function agregarMedicion(req, res) {
     if (connection) connection.release();
   }
 }
-// Función para consultar datos de usuario
+/**
+ * @brief Función para consultar datos de usuario.
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para obtener los datos del usuario con ID determinado.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
 async function ConsultarDatosUsuario(req, res) {
   const { id_usuario } = req.params;
   let connection;
@@ -168,7 +204,15 @@ async function ConsultarSiHayAlerta(req, res) {
   }
 }
 
-// Función para agregar un usuario
+/**
+ * @brief Función para agregar un usuario.
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para insertar un nuevo usuario en la tabla usuarios.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
 async function agregarUsuario(req, res) {
   const nuevoUsuario = req.body;
   let connection;
@@ -198,7 +242,15 @@ async function agregarUsuario(req, res) {
   }
 }
 
-// Función para eliminar un usuario
+/*
+  @brief Función para eliminar un usuario
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para borrar el usuario con ID determinado.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
 async function EliminarUsuario(req, res) {
   const { id_usuario } = req.params;
   let connection;
@@ -228,7 +280,47 @@ async function EliminarUsuario(req, res) {
     }
   }
 }
-// Función para consultar todas las tablas de la base de datos
+
+// Por implementar
+// Función para asociar un sensor a un usuario
+/*
+async function asociarSensorAUsuario(req, res) {
+  const { id_usuario, id_sensor } = req.body;
+  let connection;
+  try {
+    console.log(`Intentando obtener conexión para asociar sensor ${id_sensor} al usuario ${id_usuario}`);
+    connection = await pool.getConnection();
+    console.log('Conexión obtenida con éxito');
+
+    const query = 'UPDATE sensores SET id_usuario = ? WHERE id_sensor = ?';
+    const result = await connection.query(query, [id_usuario, id_sensor]);
+
+    if (result.affectedRows === 0) {
+      console.warn('Sensor no encontrado o no se pudo asociar');
+      return res.status(404).send('Sensor no encontrado o no se pudo asociar');
+    }
+
+    res.status(200).send('Sensor asociado al usuario correctamente');
+  } catch (err) {
+    console.error('Error al asociar sensor al usuario:', err);
+    res.status(500).send('Error al asociar sensor al usuario');
+  } finally {
+    if (connection) {
+      console.log('Liberando conexión');
+      connection.release();
+    }
+  }
+}
+  */
+/**
+ * @brief Función para consultar todas las tablas de la base de datos.
+ *
+ * Esta función obtiene una conexión a la base de datos y ejecuta consultas SQL
+ * para obtener todos los registros de las tablas mediciones, usuarios y sensores.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
 async function ConsultarBaseDeDatos(req, res) {
   let connection;
   try {
@@ -271,3 +363,4 @@ module.exports = {
   ConsultarBaseDeDatos,
   verificarUsuario
 };
+
