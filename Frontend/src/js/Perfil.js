@@ -47,7 +47,7 @@ cancelBtn.addEventListener('click', function() {
 // Función para cargar datos del usuario al cargar la página
 window.onload = function() {
     const userId = 1; // ID del usuario a cargar
-    fetch(`http://192.168.0.101:8080/usuarios/${userId}`) // Cambiado para que use el ID en la ruta
+    fetch(`http://172.20.10.5:8080/usuarios/${userId}`) // Cambiado para que use el ID en la ruta
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al cargar los datos del usuario');

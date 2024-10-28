@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://192.168.18.157"; // Cambia esto a la URL de tu API de la ip del ordenador
+    private static final String BASE_URL = "http://172.20.10.5"; // Cambia esto a la URL de tu API de la ip del ordenador
 
     // Método para verificar usuario
     public static void verificarUsuario(String correo,  Context context,String contrasena, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
