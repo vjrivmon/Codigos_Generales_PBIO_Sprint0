@@ -95,8 +95,16 @@
                 </div>
                 <span>o entra con tu email y contraseña</span>
                 <input type="email" required id="loginEmail" placeholder="Email">
-                <input type="password" required id="loginPassword" placeholder="Contraseña">
+				
+				<div class="password-strength-container">
+				<div class="input__wrapper">
+    <input type="password" required id="loginPassword" placeholder="Contraseña">
+    <img alt="Eye Icon" title="Eye Icon" src="../assets/eye.svg" class="input__icon" id="toggle-login-password-visibility">
+</div>
+				</div>
+				
                 <a href="#">¿Has olvidado tu contraseña?</a>
+				
                 <button id="botonIniciarSesion">Iniciar sesión</button>
             </form>
         </div>
