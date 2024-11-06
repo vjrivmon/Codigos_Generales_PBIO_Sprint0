@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAC Address QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        #qrcode {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        input, button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Device Association</h2>
+    <p>Scan this QR code to associate your device</p>
+
+    <!-- 显示二维码 -->
+    <div id="qrcode">
+        <img id="qrImage" alt="QR Code" />
+    </div>
+
+    <!-- PIN 输入作为备用 -->
+    <input type="text" id="pinInput" placeholder="Enter PIN" maxlength="4">
+    <button onclick="submitPin()">Submit PIN</button>
+
+    <script>
+        // 加载二维码图片
+        document.getElementById("qrImage").src = "http://127.0.0.1:5000/generate_qr";
+
+        // 发送 PIN 码到后端
+        function submitPin() {
+            const pin = document.getElementById("pinInput").value;
+            fetch('http://127.0.0.1:5000/api/associate_device', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pin: pin })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert("Invalid PIN or association failed.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
