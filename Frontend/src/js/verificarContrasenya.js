@@ -1,31 +1,23 @@
-// Obtener los elementos de las contraseñas, el botón y el checkbox
-/*const passwordInput = document.getElementById("signUpPassword");
-const passwordConfirmInput = document.getElementById("signUpPasswordConfirm");
-const registerBtn = document.getElementById("register-btn");
-const privacyPolicyCheckbox = document.getElementById("privacy-policy");
+// Esperar a que todo el DOM esté cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Usamos var en lugar de const para garantizar compatibilidad
+    var passwordInput = document.getElementById("signUpPassword");
+    var passwordConfirmInput = document.getElementById("signUpPasswordConfirm");
 
-// Función para verificar si las contraseñas coinciden y si el checkbox está marcado
-function checkFormValidity() {
-    const password = passwordInput.value;
-    const confirmPassword = passwordConfirmInput.value;
-    const isPrivacyChecked = privacyPolicyCheckbox.checked;
+    // Función para verificar si las contraseñas coinciden
+    function checkPasswordsMatch() {
+        var password = passwordInput.value;
+        var confirmPassword = passwordConfirmInput.value;
 
-    // Verificar si las contraseñas coinciden y si el checkbox está marcado
-    if (password === confirmPassword && isPrivacyChecked) {
-        // Si las contraseñas coinciden y el checkbox está marcado, habilitar el botón de registro
-        registerBtn.disabled = false;
-    } else {
-        // Si no coinciden o el checkbox no está marcado, deshabilitar el botón de registro
-        registerBtn.disabled = true;
+        // Cambiar el borde según si coinciden o no
+        if (password === confirmPassword) {
+            passwordConfirmInput.style.border = "2px solid green"; // Borde verde si coinciden
+        } else {
+            passwordConfirmInput.style.border = "2px solid red"; // Borde rojo si no coinciden
+        }
     }
-}
 
-// Añadir eventos para cuando el usuario escriba en cualquiera de los dos campos de contraseña
-passwordInput.addEventListener("keyup", checkFormValidity);
-passwordConfirmInput.addEventListener("keyup", checkFormValidity);
-
-// También llamar a la función cuando el campo "Repetir Contraseña" pierda el foco
-passwordConfirmInput.addEventListener("blur", checkFormValidity);
-
-// Añadir un evento para cuando el usuario marque o desmarque el checkbox de privacidad
-privacyPolicyCheckbox.addEventListener("change", checkFormValidity);*/
+    // Añadir los eventos de escucha a ambos campos de contraseña
+    passwordInput.addEventListener("input", checkPasswordsMatch);
+    passwordConfirmInput.addEventListener("input", checkPasswordsMatch);
+});
