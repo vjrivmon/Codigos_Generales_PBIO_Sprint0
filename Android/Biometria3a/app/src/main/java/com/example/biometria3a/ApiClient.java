@@ -1,21 +1,27 @@
 package com.example.biometria3a;
-
-import android.content.Context;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
+
+    private static Retrofit retrofit = null;
+
+    // AQI VA LA IP DE TU ORDENADOR Q ES LA IP DEL SERVIDOR
+    private static final String BASE_URL = "http://192.168.0.20:8080/";  // Para emulador
+
+
+    // Método para obtener la instancia de Retrofit
+    public static Retrofit getClient() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)  // Base URL de la API
+                    .addConverterFactory(GsonConverterFactory.create()) // Convertir la respuesta a JSON
+                    .build();
+        }
+        return retrofit;
+    }
+    }
+
+    /*
     private static final String BASE_URL = "http://172.20.10.5"; // Cambia esto a la URL de tu API de la ip del ordenador
 
     // Método para verificar usuario
@@ -204,3 +210,4 @@ public class ApiClient {
         queue.add(stringRequest);
     }
 }
+*/

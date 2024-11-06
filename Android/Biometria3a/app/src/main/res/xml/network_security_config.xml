@@ -3,4 +3,22 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">172.20.10.5</domain>
     </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">172.20.208.1</domain>
+    </domain-config>
+
+    <!-- aqui va la ip del tu dispositivo movil-->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.0.23</domain>
+    </domain-config>
+
+    <!-- AQUI SE DEBE PONER TU IP DEL ORDENADOR Q ES LA IP DEL SERVIDOR ASI CON 192.168.X.X-->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.0.20</domain>  <!-- Dirección IP de tu servidor -->
+    </domain-config>
 </network-security-config>

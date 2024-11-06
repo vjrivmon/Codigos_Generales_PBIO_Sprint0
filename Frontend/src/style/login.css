@@ -33,9 +33,12 @@ body{
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    /*width: 768px;*/
+	width: 800px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 600px;    
+	transition: min-height 0.6s ease-in-out; /* Transición suave en min-height */
+
 }
 
 .container p{

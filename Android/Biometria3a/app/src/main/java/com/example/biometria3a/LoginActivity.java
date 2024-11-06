@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         btnIniSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fakeLogin();
+                login();
             }
         });
 
@@ -49,6 +54,71 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void login() {
+        String email = edtEmail.getText().toString();
+        String password = edtPassword.getText().toString();
+
+        // Validar los campos
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Por favor, ingresa correo y contraseña.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crear el objeto Usuario con las credenciales
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+      Call<Usuario> call = apiService.getUserByCredentials(email, password);
+ 
+
+
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Login exitoso: redirige al usuario a la actividad principal
+                    Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(LoginActivity.this, Mapa_Activity.class);  // Cambia MainActivity a tu actividad principal
+                    startActivity(intent);
+                    finish();  // Cierra la actividad de login
+                } else {
+                    // Credenciales incorrectas
+                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                // Error de conexión o de servidor
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+/*
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Usuario usuario = response.body();
+                    Log.d("LoginActivity", "Usuario recibido: " + usuario);  // Imprime el objeto usuario
+                } else {
+                    Log.d("LoginActivity", "Respuesta de la API no exitosa o sin cuerpo: " + response);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+ */
+    }
+
+
+
+
+
 
     // Lógica "fake" para simular el inicio de sesión
     private void fakeLogin() {

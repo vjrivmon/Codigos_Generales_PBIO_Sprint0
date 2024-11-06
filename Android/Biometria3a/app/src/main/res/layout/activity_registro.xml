@@ -13,7 +13,7 @@
         android:id="@+id/txtIniSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="30dp"
         android:text="Crear Cuenta"
         android:textColor="@color/colorAccent"
         android:textSize="24sp"
@@ -139,17 +139,127 @@
         android:layout_marginTop="16dp"/>
 
 
+
+    <!-- Barra de progreso -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminate="false"
+        android:max="4"
+    android:progress="0"
+        android:progressDrawable="@drawable/progress_bar_style"
+    style="@android:style/Widget.ProgressBar.Horizontal"
+    app:layout_constraintTop_toBottomOf="@id/edtPassword"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Ticks para los requisitos de la contraseña -->
+
+    <!-- Lista de requisitos de la contraseña -->
+
+        <!-- Requisito de mayúsculas -->
+
+
+    <LinearLayout
+        android:id="@+id/reqUppercase"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        >
+
+        <CheckBox
+            android:id="@+id/cbUppercase"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txtUppercase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mayuscula y minuscula"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Requisito de carácter especial -->
+    <!-- Requisito de longitud -->
+    <LinearLayout
+        android:id="@+id/reqNumber"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/reqSpecialChar"
+        >
+
+        <CheckBox
+            android:id="@+id/cbNumber"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txtNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número (0-9)"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reqSpecialChar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/reqLength"
+        >
+
+        <CheckBox
+            android:id="@+id/cbSpecialChar"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txtSpecialChar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carácter especial (!@#$%^*)"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reqLength"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/reqUppercase"
+        >
+
+        <CheckBox
+            android:id="@+id/cbLength"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txtLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimo 8 caracteres"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+
     <!-- CheckBox para Aceptar Políticas de Privacidad -->
     <CheckBox
         android:id="@+id/checkBoxPolitica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:buttonTint="@color/colorAzuloscuro"
         android:enabled="false"
         android:text="Acepto las "
-        android:buttonTint="@color/colorAzuloscuro"
         app:layout_constraintStart_toStartOf="@+id/edtPassword"
-        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/reqNumber" />
 
     <!-- Añadir el texto con enlace -->
     <TextView
