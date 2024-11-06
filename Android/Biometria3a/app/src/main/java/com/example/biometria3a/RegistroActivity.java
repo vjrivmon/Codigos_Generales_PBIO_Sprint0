@@ -2,17 +2,22 @@ package com.example.biometria3a;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +28,8 @@ public class RegistroActivity extends AppCompatActivity {
     private EditText edtUsername, edtEmail, edtPassword;
     private Button btnRegistrarse;
     private TextView  txtRegistrate;
-    private CheckBox checkBoxPolitica;
+    private CheckBox checkBoxPolitica,cbUppercase, cbNumber, cbSpecialChar, cbLength;
+    private ProgressBar progressBar;  // Barra de progreso
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,78 @@ public class RegistroActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnRegistrarse = findViewById(R.id.btnIniSesion);
         txtRegistrate = findViewById(R.id.txtRegistrate);
+
+        // Enlazar los CheckBoxes de requisitos de contraseña
+        cbUppercase = findViewById(R.id.cbUppercase);
+        cbNumber = findViewById(R.id.cbNumber);
+        cbSpecialChar = findViewById(R.id.cbSpecialChar);
+        cbLength = findViewById(R.id.cbLength);
+
+        // Enlazar la ProgressBar
+        progressBar = findViewById(R.id.progressBar);
+
+        // Establecer un TextWatcher para verificar la contraseña mientras el usuario escribe
+        edtPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+                // No es necesario hacer nada aquí
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // No es necesario hacer nada aquí
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Obtener la contraseña ingresada por el usuario
+                String password = editable.toString();
+
+                // Variables para verificar cada uno de los requisitos
+                boolean hasUppercase = false;
+                boolean hasLowercase = false;
+                boolean hasNumber = false;
+                boolean hasSpecialChar = false;
+                boolean hasMinLength = false;
+
+                // Verificar si la contraseña tiene mayúsculas, minúsculas, números, caracteres especiales y longitud
+                for (char c : password.toCharArray()) {
+                    if (Character.isUpperCase(c)) {
+                        hasUppercase = true;
+                    }
+                    if (Character.isLowerCase(c)) {
+                        hasLowercase = true;
+                    }
+                    if (Character.isDigit(c)) {
+                        hasNumber = true;
+                    }
+                    if ("!@#$%^&*".contains(String.valueOf(c))) {
+                        hasSpecialChar = true;
+                    }
+                }
+
+                // Verificar longitud mínima
+                if (password.length() >= 8) {
+                    hasMinLength = true;
+                }
+
+                // Actualizar los CheckBox según si se cumple cada requisito
+                cbUppercase.setChecked(hasUppercase && hasLowercase); // Requiere al menos una mayúscula y una minúscula
+                cbNumber.setChecked(hasNumber);
+                cbSpecialChar.setChecked(hasSpecialChar);
+                cbLength.setChecked(hasMinLength);
+                // Calcular el progreso
+                int progress = 0;
+                if (hasUppercase && hasLowercase) progress++;
+                if (hasNumber) progress++;
+                if (hasSpecialChar) progress++;
+                if (hasMinLength) progress++;
+
+                // Actualizar la barra de progreso
+                progressBar.setProgress(progress);
+            }
+
+        });
 
         // Configurar el botón de registro
        // btnRegistrarse.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +136,17 @@ public class RegistroActivity extends AppCompatActivity {
                         return;
                     }
 
-                    if (TextUtils.isEmpty(password)) {
-                        Toast.makeText(RegistroActivity.this, "Por favor, introduce tu contraseña", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            if (TextUtils.isEmpty(password)) {
+                Toast.makeText(RegistroActivity.this, "Por favor, introduce tu contraseña", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Validar los requisitos de la contraseña
+            if (!cbUppercase.isChecked() || !cbNumber.isChecked() || !cbSpecialChar.isChecked() || !cbLength.isChecked()) {
+                Toast.makeText(RegistroActivity.this, "Por favor, cumple con todos los requisitos de la contraseña", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (!checkBoxPolitica.isChecked()) {
                 Toast.makeText(RegistroActivity.this, "Por favor, acepta la política de privacidad", Toast.LENGTH_SHORT).show();
                 return;
