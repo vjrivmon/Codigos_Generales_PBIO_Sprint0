@@ -14,12 +14,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RegistroActivity extends AppCompatActivity {
 
     private EditText edtUsername, edtEmail, edtPassword;
     private Button btnRegistrarse;
     private TextView  txtRegistrate;
     private CheckBox checkBoxPolitica;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +38,61 @@ public class RegistroActivity extends AppCompatActivity {
         txtRegistrate = findViewById(R.id.txtRegistrate);
 
         // Configurar el botón de registro
-        btnRegistrarse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fakeRegister();
+       // btnRegistrarse.setOnClickListener(new View.OnClickListener() {
+
+        btnRegistrarse.setOnClickListener(view -> {
+
+            // Crear el objeto User
+            String username = edtUsername.getText().toString().trim();
+            String email =edtEmail.getText().toString();
+            String password = edtPassword.getText().toString();
+
+                    // Validar los campos
+                    if (TextUtils.isEmpty(username)) {
+                        Toast.makeText(RegistroActivity.this, "Por favor, introduce tu nombre de usuario", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (TextUtils.isEmpty(email)) {
+                        Toast.makeText(RegistroActivity.this, "Por favor, introduce tu correo electrónico", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (TextUtils.isEmpty(password)) {
+                        Toast.makeText(RegistroActivity.this, "Por favor, introduce tu contraseña", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+            if (!checkBoxPolitica.isChecked()) {
+                Toast.makeText(RegistroActivity.this, "Por favor, acepta la política de privacidad", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+
+
+            //----------------------REGISTRO------------------------------
+
+            Usuario newUser = new Usuario(email, password);
+
+            // Llamar a la API para registrar el usuario
+            ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            Call<Void> call = apiService.registerUser(newUser);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(RegistroActivity.this, "Usuario registrado exitosamente.", Toast.LENGTH_SHORT).show();
+                        finish(); // Cerrar la actividad después del registro
+                    } else {
+                        Toast.makeText(RegistroActivity.this, "Error al registrar el usuario. Intenta de nuevo.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(RegistroActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
         });
 
         // Asignamos el OnClickListener al TextView "Inicia sesión"
@@ -115,35 +170,8 @@ public class RegistroActivity extends AppCompatActivity {
 
     }
 
-    // Lógica "fake" para simular el registro
-    private void fakeRegister() {
-        String username = edtUsername.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
-        String password = edtPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(username)) {
-            Toast.makeText(RegistroActivity.this, "Por favor, introduce tu nombre de usuario", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(RegistroActivity.this, "Por favor, introduce tu correo electrónico", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(RegistroActivity.this, "Por favor, introduce tu contraseña", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!checkBoxPolitica.isChecked()){
-            Toast.makeText(RegistroActivity.this, "Por favor, acepta la política de privacidad", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Simulación: Si todos los campos están llenos, se muestra un mensaje de éxito.
-        Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-        goToMainActivity();
-    }
 
     // Método para iniciar la actividad "IniciaSesionActivity"
     private void goToLoginActivity() {
@@ -158,4 +186,29 @@ public class RegistroActivity extends AppCompatActivity {
         Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
         startActivity(intent);  // Iniciamos la nueva actividad
     }
+
+/*
+    private void registrarUsuario(Usuario usuario) {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<Void> call = apiService.crearUsuario(usuario);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RegistroActivity.this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
+                    // Aquí puedes redirigir a la actividad de inicio de sesión o principal
+                } else {
+                    Toast.makeText(RegistroActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(RegistroActivity.this, "Fallo en la conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+ */
 }

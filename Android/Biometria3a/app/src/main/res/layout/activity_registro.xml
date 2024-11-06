@@ -139,17 +139,35 @@
         android:layout_marginTop="16dp"/>
 
 
+
+    <!-- Barra de progreso -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminate="false"
+        android:max="4"
+    android:progress="0"
+    style="@android:style/Widget.ProgressBar.Horizontal"
+    app:layout_constraintTop_toBottomOf="@id/edtPassword"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Ticks para los requisitos de la contraseña -->
+
+
+
     <!-- CheckBox para Aceptar Políticas de Privacidad -->
     <CheckBox
         android:id="@+id/checkBoxPolitica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
+        android:buttonTint="@color/colorAzuloscuro"
         android:enabled="false"
         android:text="Acepto las "
-        android:buttonTint="@color/colorAzuloscuro"
         app:layout_constraintStart_toStartOf="@+id/edtPassword"
-        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <!-- Añadir el texto con enlace -->
     <TextView

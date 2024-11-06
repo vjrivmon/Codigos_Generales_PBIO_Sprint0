@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                             tvBluetoothName.setText("Valores: " + sensorDatos);
                         }
                     });
-                    
+
 
             }
 
