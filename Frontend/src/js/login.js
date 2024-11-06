@@ -88,9 +88,11 @@ document.getElementById('register-btn').addEventListener('click', function(event
 
     const email = document.getElementById('signUpEmail').value; // Obtener el correo
     const password = document.getElementById('signUpPassword').value; // Obtener la contraseña
+    const phone = document.getElementById('signUpPhone').value; // Obtener la contraseña
+    const name = document.getElementById('signUpName').value; // Obtener la contraseña
 
     // Validar que los campos no estén vacíos
-    if (!email || !password) {
+    if (!email || !password || !phone || !name) {
         alert('Todos los campos son obligatorios.'); // Mensaje de error
         return; // Salir de la función si hay campos vacíos
     }
