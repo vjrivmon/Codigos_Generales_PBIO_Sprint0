@@ -2,6 +2,8 @@ const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
 
+import { enviarCorreoVerificarCorreo } from "./mail.service.js";
+
 registerBtn.addEventListener('click', () => {
     container.classList.add("active");
 });
@@ -17,11 +19,11 @@ loginBtn.addEventListener('click', () => {
 // Función para registrar un nuevo usuario
 async function registrarUsuario( email, password) {
     try {
-        //const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
+        const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
         //const response = await fetch('http://172.20.10.11:8080/usuarios', { // Ip Portatil Pablo Wifi Pablo
         //const response = await fetch('http://192.168.0.20:8080/usuarios', { // Ip Ordenador Vicente
         //const response = await fetch('http://192.168.0.17:8080/usuarios', { // Ip Ordenador Irene
-        const response = await fetch('http://172.20.10.5:8080/usuarios', { // Ip Portátil visi Universidad
+        //const response = await fetch('http://172.20.10.5:8080/usuarios', { // Ip Portátil visi Universidad
         
             method: 'POST',
             headers: {
@@ -49,12 +51,12 @@ async function ConsultarDatosUsuario(email, password) {
       // Codificar la contraseña antes de enviarla (esto solo es para fines ilustrativos, NO es seguro)
       const encodedPassword = encodeURIComponent(password);
   
-      // Realizar una solicitud GET al servidor con los parámetros
-      //const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo 
+       //Realizar una solicitud GET al servidor con los parámetros
+      const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo 
       //const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
       //const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
       //const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
-      const response = await fetch(`http://172.20.10.5:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  Ip Portátil visi Universidad
+      //const response = await fetch(`http://172.20.10.5:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  Ip Portátil visi Universidad
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -85,10 +87,10 @@ async function ConsultarDatosUsuario(email, password) {
 // Manejar el evento de clic en el botón de registrarse
 document.getElementById('register-btn').addEventListener('click', function(event) {
     event.preventDefault(); // Evitar el envío del formulario
-
     const email = document.getElementById('signUpEmail').value; // Obtener el correo
     const password = document.getElementById('signUpPassword').value; // Obtener la contraseña
 
+    
     // Validar que los campos no estén vacíos
     if (!email || !password) {
         alert('Todos los campos son obligatorios.'); // Mensaje de error
