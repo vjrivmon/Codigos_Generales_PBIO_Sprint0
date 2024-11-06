@@ -10,7 +10,7 @@ loginBtn.addEventListener('click', () => {
     container.classList.remove("active");
 });
 
- document.getElementById("privacy-policy").addEventListener("change", function() {
+document.getElementById("privacy-policy").addEventListener("change", function() {
             document.getElementById("register-btn").disabled = !this.checked;
         });
 

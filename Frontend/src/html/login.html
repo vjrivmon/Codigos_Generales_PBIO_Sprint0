@@ -32,22 +32,30 @@
         <div class="form-container sign-up">
             <form>
                 <h1>Crear cuenta</h1>
+				<!--  Añadir en caso de querer expandir la web
                <div class="social-icons">
     <a href="#" class="icon inactive"><i class="fa-brands fa-google-plus-g"></i></a>
     <a href="#" class="icon inactive"><i class="fa-brands fa-facebook-f"></i></a>
     <a href="#" class="icon inactive"><i class="fa-brands fa-github"></i></a>
     <a href="#" class="icon inactive"><i class="fa-brands fa-linkedin-in"></i></a>
-</div>
-                <span>o regístrate con tu email</span>
+</div> -->
+                <span>Regístrate a continuación con tus datos</span>
 				<input type="text" required id="signUpName" placeholder="Nombre">
+				<input type="tel" id="signUpPhone" placeholder="Teléfono" maxlength="9" required>
+
                 <input type="email" required id="signUpEmail" placeholder="Email">
                <!-- <input type="password" required id="signUpPassword" placeholder="Contraseña"> <!-- AÑADIDO ID -->
+				
 				
 				<div class="password-strength-container">
     <div class="input__wrapper">
                 <input type="password" required id="signUpPassword" placeholder="Contraseña"> <!-- AÑADIDO ID -->
+		
         <img alt="Eye Icon" title="Eye Icon" src="../assets/eye.svg" class="input__icon" id="toggle-password-visibility">
     </div>
+					<!-- Segundo campo "Contraseña" para que se verifique que se ha escrito bien -->
+<input type="password" required id="signUpPasswordConfirm" placeholder="Repetir contraseña">
+					
     <div class="password-strength">
         <p><span id="password-strength-text"></span></p>
         <div class="progress">
@@ -87,13 +95,15 @@
         <div class="form-container sign-in">
             <form>
                 <h1>Iniciar sesión</h1>
+								
+				<!--  Añadir en caso de querer expandir la web
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-                <span>o entra con tu email y contraseña</span>
+                </div> -->
+                <span>Entra con tu email y contraseña</span>
                 <input type="email" required id="loginEmail" placeholder="Email">
 				
 				<div class="password-strength-container">
@@ -102,6 +112,7 @@
     <img alt="Eye Icon" title="Eye Icon" src="../assets/eye.svg" class="input__icon" id="toggle-login-password-visibility">
 </div>
 				</div>
+			
 				
                 <a href="#">¿Has olvidado tu contraseña?</a>
 				
@@ -149,6 +160,8 @@
 
 <script src="../js/login.js"></script>
 	<script src="../js/contrasenya-segura.js"></script>
+	<script src="../js/verificarContrasenya.js"></script>
+	<script src="../js/telf.js"></script>
 </body>
 
 </html>
