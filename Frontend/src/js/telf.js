@@ -14,3 +14,4 @@ phoneInput.addEventListener("blur", function() {
         this.focus(); // Volver a enfocar el campo
     }
 });
+
