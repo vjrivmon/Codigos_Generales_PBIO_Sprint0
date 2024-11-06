@@ -15,5 +15,6 @@ public interface ApiService {
     // Método para consultar los datos de un usuario por correo y contraseña
     @GET("usuarios")
     Call<Usuario> getUserByCredentials(@Query("correo") String email, @Query("contrasena") String password);
+
 }
 
