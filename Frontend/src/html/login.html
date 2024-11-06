@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../style/login.css">
     <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/popup.css">
     <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 
 
@@ -114,7 +115,7 @@
 				</div>
 			
 				
-                <a href="#">¿Has olvidado tu contraseña?</a>
+                <a href="#" id="olvideContrasenyaBtn">¿Has olvidado tu contraseña?</a>
 				
                 <button id="botonIniciarSesion">Iniciar sesión</button>
             </form>
@@ -137,6 +138,21 @@
         </div>
 </div>
 
+	
+<!-- Popup -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <h3>¿Seguro que quieres cambiar la contraseña?</h3>
+		
+            <p>Escribe el teléfono asociado a la cuenta de correo con la que intentas iniciar sesión.</p>
+            <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input">
+			<button id="mandarCorreoNuevaContrasenya">Recuperar contraseña</button>
+        	<button id="cancelBtn">Cancelar</button>
+    </div>
+</div>
+
+	
+	
 <!-- Footer -->
     <footer class="apple-footer">
         <div class="footer-top">
@@ -163,6 +179,7 @@
 	<script src="../js/verificarContrasenya.js"></script>
 	<script src="../js/telf.js"></script>
 	<script src="../js/ajustarTamanyoPagina.js"></script>
+	<script src="../js/popupOlvidarContrasenya.js"></script>
 </body>
 
 </html>
