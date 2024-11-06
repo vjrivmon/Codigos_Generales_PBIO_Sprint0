@@ -10,17 +10,6 @@ olvideContrasenyaBtn.addEventListener('click', function() {
     popup.style.display = 'flex'; 
 });
 
-// Cuando se hace clic en "Confirmar"
-confirmBtn.addEventListener('click', function() {
-   
-});
-
-// Cuando se hace clic en "Cancelar"
-cancelBtn.addEventListener('click', function() {
-    popup.style.display = 'none'; // Oculta el popup
-});
-
-
 /*--------------------- TELEFONO -------------------------*/
 // Escuchar el evento de entrada de texto
 popupPhone.addEventListener("input", function() {
@@ -28,27 +17,24 @@ popupPhone.addEventListener("input", function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
-// Validación de longitud al perder el foco
-popupPhone.addEventListener("blur", function() {
-    if (this.value.length !== 9) {
+/*-------------------- CONFIRMAR --------------------------*/
+confirmBtn.addEventListener('click', function(event) { 
+    // Validar que el campo no esté vacío y tenga exactamente 9 dígitos
+    if (!popupPhone.value) {
+        alert('Rellene el campo con su número de teléfono.');
+        return;
+    } else if (popupPhone.value.length !== 9) {
         alert("El número de teléfono debe tener exactamente 9 dígitos.");
-        this.focus(); // Volver a enfocar el campo
+        return;
+    } else {
+        alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
+        /* ENVIAR CORREO AL USUARIO - FALTA POR IMPLEMENTAR*/
+        popup.style.display = 'none'; // Oculta el popup
     }
 });
 
-
-
-/*-------------------- CONFIRMAR --------------------------*/
-document.getElementById('mandarCorreoNuevaContrasenya').addEventListener('click', function(event) { 
-    // Validar que los campos no estén vacíos
-    if (!popupPhone) {
-        alert('Rellene el campo con su número de teléfono.'); // Mensaje de error
-        return; // Salir de la función si hay campos vacíos
-    }
-	else {
-		alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.'); // Mensaje de error
-		/* ENVIAR CORREO AL USUARIO - FALTA POR IMPLEMENTAR*/
-		    popup.style.display = 'none'; // Oculta el popup
-
-	}
+/*----------------------- CANCELAR  ------------------------*/
+cancelBtn.addEventListener('click', function() {
+    popup.style.display = 'none'; // Oculta el popup
+    popupPhone.value = ''; // Limpiar el campo de teléfono
 });
