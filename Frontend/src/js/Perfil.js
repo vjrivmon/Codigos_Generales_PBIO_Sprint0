@@ -5,6 +5,7 @@ const saveBtn = document.getElementById('guardarcambios');
 const confirmBtn = document.getElementById('confirmBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const emailInput = document.getElementById('email');
+
 const passwordInput = document.getElementById('password');
 
 // Importa el módulo child_process

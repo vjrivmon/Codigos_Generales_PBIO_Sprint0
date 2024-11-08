@@ -43,26 +43,38 @@
                 <div class="headerPerfil">
                     <h3>Información personal</h3>
                 </div>
-                <form id="profileForm" class="info-grid">
+                <div class="info-grid">
                     <div class="info-item">
-                        <p><strong>Correo</strong></p>
-                        <input type="email" id="email" placeholder="pmg@gmail.com" disabled/>
+                        <p><strong>Nombre completo</strong></p>
+                        <input type="text" id="userName" placeholder="Nombre Apellidos" value="Nombre Apellidos" required disabled>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Teléfono</strong></p>
+                        <input type="tel" id="userPhone" placeholder="123456789" value="123456789" required disabled>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Correo electrónico</strong></p>
+                        <input type="email" id="userEmail" placeholder="correo@gmail.com" value="correo@gmail.com" required disabled>
                     </div>
                     <div class="info-item">
                         <p><strong>Contraseña</strong></p>
-                        <input type="password" id="password" placeholder="**********" disabled/>
+                        <input type="password" id="userPassword" placeholder="********" value="123456789" required disabled>
                     </div>
-                    <button type="button" id="editBtn" class="edit-button">Editar Datos</button>
-                    <button type="button" id="guardarCambios" class="edit-button" disabled>Guardar cambios</button>
-                </form>
+
+                    <div class="info-item">
+                        <a href="#" id="olvideContrasenyaBtn">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <!-- Botón Editar fuera de headerPerfil -->
+                    <button id="editBtn" class="edit-button">Editar</button>
+                </div>
             </div>
 
             <div class="sensors">
                 <h3>Mis sensores</h3>
                 <div class="sensor-info">
-                    <p>Nombre: _________</p>
-                    <p>Id: _________</p>
-                    <p>Ubicación: _________</p>
+                    <p>Nombre: <input type="text" placeholder="Nombre del sensor" value="Manolito" required disabled></p>
+                    <p>Id: <input type="text" placeholder="ID del sensor" value="1234567879123" required disabled></p>
+                    <p>Ubicación: <input type="text" placeholder="Ubicación" value="Gandía playa" required disabled></p>
                 </div>
                 <div class="pagination">
                     <button>&larr;</button>
@@ -94,9 +106,20 @@
                 </ul>
             </div>
         </div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP - Todos los derechos reservados.</p>
+        </div>
     </footer>
 
     <script src="../js/Perfil.js"></script>
     <script src="../js/menu.js"></script>
+    <script>
+        // JavaScript para habilitar/deshabilitar inputs
+        document.getElementById("editBtn").addEventListener("click", function() {
+            const inputs = document.querySelectorAll("#userName, #userPhone, #userEmail, .sensor-info input");
+            inputs.forEach(input => input.disabled = !input.disabled);
+            this.textContent = inputs[0].disabled ? "Editar" : "Guardar";
+        });
+    </script>
 </body>
 </html>
