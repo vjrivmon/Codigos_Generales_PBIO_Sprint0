@@ -70,6 +70,9 @@ DB_NOMBRE=ejemploBBDD
 DB_CONNECTION_LIMIT=10
 MARIADB_ROOT_PASSWORD=1234
 MARIADB_DATABASE=ejemploBBDD
+EMAIL_HOST=smtp.gmail.com
+EMAIL_USER=vimyp.s.l@gmail.com
+EMAIL_PASSWORD=Innovarescrecer.
 
 Para ejecutar el archivo automático automatizacion.ps1 (para ver la parte del FRONTEND dentro del contenedor NGINX que está dentro del BACKEND)
 Debes de realizar los siguientes pasos:
