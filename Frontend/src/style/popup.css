@@ -12,6 +12,7 @@
     z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
 }
 
+
 .popup-content {
     background-color: white;
     padding: 1rem;

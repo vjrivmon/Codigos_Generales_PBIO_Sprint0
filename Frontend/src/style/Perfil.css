@@ -1,4 +1,6 @@
 /* 基本页面布局和样式 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 body {
     display: flex;
@@ -40,6 +42,7 @@ h2 {
     color: var(--text-color);
 }
 
+
 .info-personal {
     width: 50%;
     background-color: white;
@@ -75,6 +78,7 @@ h2 {
     color: var(--text-color);
     padding: 5px 10px;
     align-self: center;
+    text-align: center;
 }
 
 button {
@@ -90,6 +94,7 @@ button {
     cursor: pointer;
     border-radius: 33px;
     align-self: flex-end;
+    font-family: 'Montserrat', sans-serif;
 }
 
 button:hover {
@@ -114,11 +119,11 @@ button:hover {
 
 .info-item  a{
     color: var(--button-color);
-    font-size: 12px;
+    font-size: .8rem;
     text-decoration: underline;
-    /*margin: 15px 0 10px;*/
+    margin-top: 1rem;
 	    line-height: 1.2; /* Ajusta la altura de línea */
-
+    text-align:right;
 	/*padding-bottom: 4px;*/
 	
 }
@@ -137,6 +142,10 @@ button:hover {
     font-size: 1.2rem;
     color: var(--text-color);
     margin-bottom: 10px;
+    text-align: center;
+
+    padding: 5px 10px;
+    align-self: center;
 }
 
 .sensor-info p {
@@ -180,6 +189,8 @@ button:hover {
     align-items: center;
 }
 
+
+
 .popup-content {
     background-color: white;
     padding: 20px;
@@ -187,7 +198,7 @@ button:hover {
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
-    max-width: 400px;
+    max-width: 550px; /* Limita el ancho máximo */
 }
 
 .popup-content p {
@@ -277,10 +288,105 @@ input {
     background-color: #eee;
     outline: none;
     font-size: 1em;
+    
+    font-family: 'Montserrat', sans-serif;
 }
 
 input:disabled {
     background-color: #f5f5f5;
     color: gray;
     cursor: not-allowed;
+    
+}
+
+
+/*-------- POPUP ------*/
+/* Popup */
+.popup2 {
+    display: none; /* Inicialmente está oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
+}
+
+.popup-content2 {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 20px; /* Ajusta el borde redondeado */
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    opacity: 1;
+    visibility: visible; /* Inicialmente visible */
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Desvanecimiento y visibilidad suave */
+    width: 100%;
+    max-width: 550px; /* Limita el ancho máximo */
+}
+
+.popup-content2 h3 {
+	margin: .5rem, auto;
+	padding-top: 1rem;
+}
+
+.popup-content2 p {
+	margin: 1rem auto;
+}
+
+/* Estilos de los botones */
+.popup-content2 button {
+    background-color: var(--button-color, #395886); /* Usa color de botón predeterminado */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px; /* Ajuste de borde redondeado */
+    border: 2px solid var(--button-color, #395886);    
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cambio al pasar el cursor sobre los botones */
+.popup-content2 button:hover {
+    background-color: white;
+    color: var(--button-color, #395886);
+}
+
+/* Campo de teléfono que se muestra de forma suave */
+#phone-container {
+    display: none; /* Inicialmente oculto */
+    opacity: 0;
+    visibility: hidden; /* Oculto inicialmente */
+    text-align: center;
+    margin-top: 20px;
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Transición suave */
+}
+
+#phone-container.show {
+    display: block; /* Hace que el campo de teléfono sea visible */
+    opacity: 1; /* Haciendo el campo de teléfono visible gradualmente */
+    visibility: visible; /* Haciendo visible el campo de teléfono */
+}
+
+/* Estilo para los párrafos dentro del contenedor */
+#phone-container p {
+    padding: 0 10px 10px 10px;
+}
+
+/* Estilos para el campo de entrada */
+.input {
+    background-color: #eee;
+    border: none;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 20px; /* Ajuste de borde redondeado */
+    max-width: 65%; /* Mejora la adaptabilidad */
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+	margin-bottom: .5rem;
 }

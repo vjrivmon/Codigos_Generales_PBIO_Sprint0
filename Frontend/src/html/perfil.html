@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mi perfil | VIMYP</title>
     <link rel="stylesheet" href="../style/styles.css">
-    <link rel="stylesheet" href="../style/Perfil.css">
+    <link rel="stylesheet" href="../style/Perfil.css">  
+    
 </head>
 <body>
     <!-- Header -->
@@ -45,12 +46,13 @@
                 </div>
                 <div class="info-grid">
                     <div class="info-item">
-                        <p><strong>Nombre completo</strong></p>
-                        <input type="text" id="userName" placeholder="Nombre Apellidos" value="Nombre Apellidos" required disabled>
+                        <p>Nombre</p>
+                        <input type="text" id="userName" placeholder="Nombre Apellidos" value="Valentín Pastor" required disabled>	
                     </div>
                     <div class="info-item">
-                        <p><strong>Teléfono</strong></p>
-                        <input type="tel" id="userPhone" placeholder="123456789" value="123456789" required disabled>
+                        <p>Teléfono</strong></p>
+                        <input type="tel" id="userPhone" placeholder="123456789" value="123456789" maxlength="9" required disabled>
+
                     </div>
                     <div class="info-item">
                         <p><strong>Correo electrónico</strong></p>
@@ -59,21 +61,24 @@
                     <div class="info-item">
                         <p><strong>Contraseña</strong></p>
                         <input type="password" id="userPassword" placeholder="********" value="123456789" required disabled>
+                        <a href="#" id="olvideContrasenyaBtn">¿Olvidaste tu contraseña?</a>
                     </div>
 
                     <div class="info-item">
-                        <a href="#" id="olvideContrasenyaBtn">¿Olvidaste tu contraseña?</a>
+                       
                     </div>
+
                     <!-- Botón Editar fuera de headerPerfil -->
                     <button id="editBtn" class="edit-button">Editar</button>
+                
                 </div>
             </div>
 
             <div class="sensors">
                 <h3>Mis sensores</h3>
                 <div class="sensor-info">
-                    <p>Nombre: <input type="text" placeholder="Nombre del sensor" value="Manolito" required disabled></p>
-                    <p>Id: <input type="text" placeholder="ID del sensor" value="1234567879123" required disabled></p>
+                    <p>Nombre: <input type="text" placeholder="Nombre del sensor" value="Manolito" required disabled id="sensorName"></p>
+                    <p>Dirección MAC: <input type="tel" placeholder="ID del sensor" value="1234567879123" required disabled></p>
                     <p>Ubicación: <input type="text" placeholder="Ubicación" value="Gandía playa" required disabled></p>
                 </div>
                 <div class="pagination">
@@ -85,14 +90,28 @@
         </div>
     </div>
 
-    <!-- Popup -->
-    <div id="popup" class="popup">
-        <div class="popup-content">
+    <!-- Popup editar cambios -->
+    <div id="popup2" class="popup2">
+        <div class="popup-content2">
             <p>¿Seguro que quieres aplicar estos cambios?</p>
-            <button id="confirmBtn">Confirmar</button>
-            <button id="cancelBtn">Cancelar</button>
+            <button id="confirmBtn2">Confirmar</button>
+            <button id="cancelBtn2">Cancelar</button>
         </div>
     </div>
+
+
+    <!-- Popup cambiar contraseña -->
+<!-- Popup cambiar contraseña -->
+<div id="popupOlvidado" class="popup">
+    <div class="popup-content">
+        <h3>¿Seguro que quieres cambiar la contraseña?</h3>
+        <p>Escribe el teléfono asociado a la cuenta de correo con la que intentas iniciar sesión.</p>
+        <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input">
+        <button id="mandarCorreoNuevaContrasenya">Recuperar contraseña</button>
+        <button id="cancelBtn">Cancelar</button>
+    </div>
+</div>
+
 
     <!-- Footer -->
     <footer class="apple-footer">
@@ -113,13 +132,9 @@
 
     <script src="../js/Perfil.js"></script>
     <script src="../js/menu.js"></script>
-    <script>
-        // JavaScript para habilitar/deshabilitar inputs
-        document.getElementById("editBtn").addEventListener("click", function() {
-            const inputs = document.querySelectorAll("#userName, #userPhone, #userEmail, .sensor-info input");
-            inputs.forEach(input => input.disabled = !input.disabled);
-            this.textContent = inputs[0].disabled ? "Editar" : "Guardar";
-        });
-    </script>
+    <script src="../js/editarPerfil.js"></script>
+    <script src="../js/popupOlvidarContrasenyaPerfil.js"></script>
+    <script src="../js/telf.js"></script>
+    
 </body>
 </html>
