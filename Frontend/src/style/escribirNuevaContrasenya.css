@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+
+:root{ 
+    --background-color: #D5DEEF;  /* Fondo general */
+    --background-color-secondary: #B1C9EF;  /* Fondo general */
+    --text-color: #3B3B3B;           /* Color del texto */
+    --button-color: #395886;		/*Color de los botones*/
+    --button-color-secondary: #628ECB;
+  }
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    background-color: white;
+    /*background: linear-gradient(to right, #e2e2e2, #c9d6ff);*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.container{
+    background-color: white;
+    border-radius: 33px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    /*width: 768px;*/
+	width: 800px;
+    max-width: 100%;
+    min-height: 500px;    
+	transition: min-height 0.6s ease-in-out; /* Transición suave en min-height */
+
+}
+
+.container h2 {
+	font-size: 2em; /* Tamaño de fuente para el título principal */
+    color: var(--button-color); /* Color del texto */
+    text-align: center;
+    margin: 20px ; /* Espaciado inferior */
+	margin-top: 30px;
+}
+.container p{
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 25px;
+	    padding: 0 15px 10px 15px;
+}
+
+.container span{
+    font-size: 12px;
+}
+
+.container a{
+    color: var(--button-color);
+    font-size: 12px;
+    text-decoration: underline;
+    /*margin: 15px 0 10px;*/
+	    line-height: 1.2; /* Ajusta la altura de línea */
+
+	/*padding-bottom: 4px;*/
+	
+}
+
+.container button{
+    background-color: var(--button-color);
+    color: white;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 33px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+	margin-bottom: 50px;
+}
+
+
+.container button:hover {
+  background-color: white;
+  border: 2px solid var(--button-color);
+  color: var(--text-color);
+}
+
+.container button.hidden{
+    background-color: transparent;
+    border-color: white;
+}
+
+.container form{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.container input{
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 33px;
+    width: 100%;
+    outline: none;
+}
+
+.form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in{
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+
+.sign-up label a{
+    font-size: 12px;
+    color: var(--button-color);
+        text-decoration: underline; /* Subrayado para el enlace */
+    padding-bottom: 0px;
+}
+
+.sign-up span {
+    font-size: 12px;
+}
+
+/* Estilo para el contenedor del checkbox y el texto */
+form label {
+    display: flex;
+    align-items: center; /* Alinea el checkbox y el texto verticalmente al centro */
+    font-size: 12px; /* Tamaño de fuente uniforme */
+    color: var(--text-color); /* Color del texto */
+    gap: 5px; /* Espacio entre el checkbox y el texto */
+    white-space: nowrap; /* Evita que el texto pase a otra línea */
+    line-height: 1.2; /* Ajusta la altura de línea */
+}
+
+
+
+
+/* Estilo para el checkbox */
+form label input[type="checkbox"] {
+    margin: 0; /* Elimina cualquier margen adicional */
+    vertical-align: middle; /* Alineación vertical */
+    width: 16px;
+    height: 16px;
+}
+
+
+@keyframes move {
+    0%, 49.99%{
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100%{
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.social-icons{
+    margin: 20px 0;
+}
+
+.social-icons a{
+    border: 1px solid #ccc;
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+	color: lightgray;
+	cursor: not-allowed; /* Cursor que indica que no está disponible */
+	text-decoration: none;
+}
+
+.toggle-container{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container{
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle{
+    background-color: var(--button-color);
+    height: 100%;
+    background: linear-gradient(to right, var(--button-color), var(--button-color));
+    color: white;
+    position: relative;
+    left: -100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.container.active .toggle{
+    transform: translateX(50%);
+}
+
+.toggle-panel{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.toggle-left{
+    transform: translateX(-200%);
+}
+
+.container.active .toggle-left{
+    transform: translateX(0);
+}
+
+.toggle-right{
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.active .toggle-right{
+    transform: translateX(200%);
+}
+
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vh; /* O ajusta según sea necesario */
+	margin: 0 auto;
+}
+
+
+
+/* Estilo para el botón en su estado deshabilitado */
+
+button:disabled {
+    background-color: lightgray; /* Color de fondo gris claro */
+    color: var(--text-color); /* Color de texto gris */
+    cursor: not-allowed; /* Cursor que indica que no está disponible */
+    opacity: 0.7; /* Ligera transparencia */
+}
+
+
+
+
+/*---- Pestaña para ver la contraseña segura ----*/
+.password-strength-container {
+    width: 100%;
+}
+
+.input__wrapper {
+    position: relative;
+}
+
+.input__icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.password-strength {
+    margin-top: 5px;
+}
+
+.progress {
+    background-color: #eee;
+    border-radius: 3px;
+    height: 3px;
+}
+
+.progress-bar {
+    height: 3px;
+    transition: width 0.3s ease-in-out;
+}
+
+.password-strength-items {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.password-strength-items li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.password-strength-items img {
+    width: 16px;
+    height: 16px;
+}
+
+#password-strength{
+	width: 0%;
+}
+
+
+/* CSS para los niveles de seguridad del progress bar */
+.progress-bar-danger {
+    background-color: red;
+}
+
+.progress-bar-warning {
+    background-color: orange;
+}
+
+.progress-bar-success {
+    background-color: green;
+}
