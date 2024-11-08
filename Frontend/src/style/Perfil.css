@@ -239,6 +239,11 @@ footer {
 
 /* Media query para pantallas menores a 900px */
 @media (max-width: 900px) {
+    .container{
+		/*margin-top: 400px;*/
+        margin-top: 55rem; /* Quitar el margen superior */
+        padding-bottom: 7rem;
+	}
     .profile-section {
         flex-direction: column;
         align-items: center;
@@ -272,10 +277,10 @@ footer {
         margin-top: 10px;
         align-self: center;
     }
-	
-	.container{
-		margin-top: 400px;
-	}
+
+   /* .sensors{
+       padding-bottom: 10rem;
+    }*/
 }
 
 
