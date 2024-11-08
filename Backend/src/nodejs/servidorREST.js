@@ -5,6 +5,8 @@
 
 const mariadb = require('mariadb');
 const dotenv = require('dotenv');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -81,34 +83,40 @@ async function agregarMedicion(req, res) {
   const nuevaMedicion = req.body;
   let connection;
   try {
+    console.log('Datos de la nueva medición:', nuevaMedicion);
     connection = await pool.getConnection();
+    console.log('Conexión obtenida con éxito');
 
-    // Obtener el primer id_sensor disponible
-    const sensorQuery = 'SELECT id_sensor FROM sensores LIMIT 1'; 
-    const sensorRows = await connection.query(sensorQuery);
+    // Verificar si el sensor existe
+    const checkSensorQuery = 'SELECT * FROM sensores WHERE id_sensor = ?';
+    const sensorRows = await connection.query(checkSensorQuery, [nuevaMedicion.id_sensor]);
+    console.log('Resultado de la consulta de sensores:', sensorRows);
     if (sensorRows.length === 0) {
-      return res.status(400).send('No hay sensores disponibles');
+      console.warn('Sensor no encontrado');
+      return res.status(400).send('Sensor no encontrado');
     }
-
-    const id_sensor = sensorRows[0].id_sensor; 
 
     const query = 'INSERT INTO mediciones (hora, latitud, longitud, id_sensor, valorGas, valorTemperatura) VALUES (?, ?, ?, ?, ?, ?)';
     const result = await connection.query(query, [
       nuevaMedicion.hora,
       nuevaMedicion.latitud,
       nuevaMedicion.longitud,
-      id_sensor, 
+      nuevaMedicion.id_sensor,
       nuevaMedicion.valorGas,
       nuevaMedicion.valorTemperatura
     ]);
 
-    nuevaMedicion.id = result.insertId; 
+    nuevaMedicion.id = result.insertId;
+    console.log('Medición agregada con éxito:', nuevaMedicion);
     res.status(201).json(nuevaMedicion);
   } catch (err) {
-    console.error('Error: ', err);
+    console.error('Error al agregar la medición:', err);
     res.status(500).send('Error al insertar los datos');
   } finally {
-    if (connection) connection.release();
+    if (connection) {
+      console.log('Liberando conexión');
+      connection.release();
+    }
   }
 }
 /**
@@ -164,7 +172,9 @@ async function verificarUsuario(req, res) {
     }
 
     const usuario = rows[0];
-    if (usuario.contrasena === contrasena) {
+    // Verificar la contraseña proporcionada por el usuario
+    const isMatch = await bcrypt.compare(contrasena, usuario.contrasena);
+    if (isMatch) {
       console.log('Contraseña correcta');
       return res.json({ success: true });
     } else {
@@ -221,6 +231,11 @@ async function agregarUsuario(req, res) {
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
 
+    // Encriptar la contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(nuevoUsuario.contrasena, salt);
+    nuevoUsuario.contrasena = hash;
+
     const query = 'INSERT INTO usuarios (nombre, telefono, correo, contrasena) VALUES (?, ?, ?, ?)';
     console.log('Ejecutando consulta para agregar usuario');
     const result = await connection.query(query, [
@@ -231,8 +246,10 @@ async function agregarUsuario(req, res) {
     ]);
     console.log('Consulta de inserción ejecutada con éxito');
 
-    nuevoUsuario.id = result.insertId;
-    res.status(201).json(nuevoUsuario);
+    nuevoUsuario.id_usuario = result.insertId; // Cambiar a id_usuario
+    // Excluir la contraseña del objeto devuelto
+    const { contrasena, ...usuarioSinContrasena } = nuevoUsuario;
+    res.status(201).json(usuarioSinContrasena);
   } catch (err) {
     console.error('Error al agregar el usuario:', err);
     res.status(500).send('Error al agregar el usuario');
@@ -371,15 +388,29 @@ async function recuperarContrasena(req, res) {
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
 
+    // Verificar si el usuario existe
+    const checkUserQuery = 'SELECT * FROM usuarios WHERE correo = ?';
+    const userRows = await connection.query(checkUserQuery, [correo]);
+    console.log('Resultado de la consulta de usuarios:', userRows);
+    if (userRows.length === 0) {
+      console.warn('Usuario no encontrado');
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Encriptar la nueva contraseña
+    const hash = crypto.createHash('sha256').update(nuevaContrasena).digest('hex');
+
     const query = 'UPDATE usuarios SET contrasena = ? WHERE correo = ?';
-    const result = await connection.query(query, [nuevaContrasena, correo]);
+    const result = await connection.query(query, [hash, correo]);
+    console.log('Resultado de la actualización de contraseña:', result);
 
     if (result.affectedRows === 0) {
-      console.warn('Usuario no encontrado');
-      res.status(404).send('Usuario no encontrado');
-    } else {
-      res.status(200).send('Contraseña actualizada correctamente');
+      console.warn('No se pudo actualizar la contraseña');
+      return res.status(500).send('No se pudo actualizar la contraseña');
     }
+
+    console.log('Contraseña actualizada correctamente para el usuario con correo:', correo);
+    res.status(200).send('Contraseña actualizada correctamente');
   } catch (err) {
     console.error('Error al actualizar la contraseña:', err);
     res.status(500).send('Error al actualizar la contraseña');
@@ -395,7 +426,7 @@ async function recuperarContrasena(req, res) {
  * @brief Función para editar los datos de un usuario.
  *
  * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
- * consulta SQL para actualizar los datos del usuario con el ID proporcionado.
+ * consulta SQL para actualizar los datos del usuario con el correo proporcionado.
  *
  * @param req Objeto de solicitud HTTP (Express.js).
  * @param res Objeto de respuesta HTTP (Express.js).
@@ -408,15 +439,26 @@ async function editarDatosUsuario(req, res) {
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
 
+    // Verificar si el usuario existe
+    const checkUserQuery = 'SELECT * FROM usuarios WHERE id_usuario = ?';
+    const userRows = await connection.query(checkUserQuery, [id_usuario]);
+    console.log('Resultado de la consulta de usuarios:', userRows);
+    if (userRows.length === 0) {
+      console.warn('Usuario no encontrado');
+      return res.status(404).send('Usuario no encontrado');
+    }
+
     const query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
     const result = await connection.query(query, [nombre, telefono, correo, contrasena, id_usuario]);
+    console.log('Resultado de la actualización de datos del usuario:', result);
 
     if (result.affectedRows === 0) {
-      console.warn('Usuario no encontrado');
-      res.status(404).send('Usuario no encontrado');
-    } else {
-      res.status(200).send('Datos del usuario actualizados correctamente');
+      console.warn('No se pudieron actualizar los datos del usuario');
+      return res.status(500).send('No se pudieron actualizar los datos del usuario');
     }
+
+    console.log('Datos del usuario actualizados correctamente para el usuario con ID:', id_usuario);
+    res.status(200).send('Datos del usuario actualizados correctamente');
   } catch (err) {
     console.error('Error al actualizar los datos del usuario:', err);
     res.status(500).send('Error al actualizar los datos del usuario');

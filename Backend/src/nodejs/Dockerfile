@@ -17,6 +17,7 @@ RUN npm install mariadb
 RUN npm install cors
 RUN npm install dotenv
 RUN npm install nodemailer
+RUN npm install bcryptjs
 
 # Copiamos el resto del código
 COPY . .

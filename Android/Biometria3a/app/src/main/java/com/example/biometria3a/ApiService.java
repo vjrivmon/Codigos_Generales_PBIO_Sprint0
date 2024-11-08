@@ -16,5 +16,8 @@ public interface ApiService {
     @GET("usuarios")
     Call<Usuario> getUserByCredentials(@Query("correo") String email, @Query("contrasena") String password);
 
+    @POST("mediciones")
+    Call<Void> enviarMedicion(@Body Medicion medicion);
+
 }
 

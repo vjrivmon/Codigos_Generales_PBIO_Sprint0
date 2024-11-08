@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         // Crear el objeto Usuario con las credenciales
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
       Call<Usuario> call = apiService.getUserByCredentials(email, password);
- 
+
 
 
         call.enqueue(new Callback<Usuario>() {
