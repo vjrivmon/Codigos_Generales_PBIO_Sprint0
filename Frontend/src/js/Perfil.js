@@ -1,7 +1,7 @@
 // Obtener elementos del DOM
 const popup = document.getElementById('popup');
 const editBtn = document.getElementById('editBtn');
-const saveBtn = document.getElementById('guardarcambios');
+const saveBtn = document.getElementById('guardarCambios');
 const confirmBtn = document.getElementById('confirmBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const emailInput = document.getElementById('email');
