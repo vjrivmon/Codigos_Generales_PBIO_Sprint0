@@ -7,6 +7,13 @@ const cancelBtn = document.getElementById('cancelBtn');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 
+// Importa el módulo child_process
+const { exec } = require('child_process');
+
+//import { enviarCorreoVerificarCorreo } from "./mail.service.js";
+import { enviarCorreoCambios } from "./emailGuardarCambiosUsuario.js";
+
+
 // Función para habilitar la edición de los campos
 editBtn.addEventListener('click', function() {
     emailInput.disabled = false; // Habilitar campo de correo
@@ -17,6 +24,7 @@ editBtn.addEventListener('click', function() {
 
 // Mostrar popup al hacer clic en "Guardar cambios"
 saveBtn.addEventListener('click', function() {
+
     popup.style.display = 'flex'; // Mostrar popup
 });
 
@@ -24,7 +32,18 @@ saveBtn.addEventListener('click', function() {
 confirmBtn.addEventListener('click', function() {
     const email = emailInput.value;
     const password = passwordInput.value;
-
+    //enviar correo
+    exec('node emailGuardarCambiosUsuario.js', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error al ejecutar el comando: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    });
     // Aquí puedes agregar la lógica para validar y guardar los cambios
     console.log('Cambios guardados:', { email, password });
 
