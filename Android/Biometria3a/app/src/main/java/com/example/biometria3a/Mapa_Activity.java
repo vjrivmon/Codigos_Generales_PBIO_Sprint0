@@ -1,6 +1,7 @@
 package com.example.biometria3a;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Mapa_Activity extends AppCompatActivity {
-
+    private OzoneLevelReceiver ozoneLevelReceiver;
     private TextView tvCurrentTime, tvTemperature, tvOzone;
     private WebView webView;
     private Button btnUpdate;
@@ -189,5 +190,6 @@ public class Mapa_Activity extends AppCompatActivity {
     }
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+
 
 }
