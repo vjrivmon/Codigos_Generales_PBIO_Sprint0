@@ -5,6 +5,8 @@
 
 const mariadb = require('mariadb');
 const dotenv = require('dotenv');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -170,7 +172,9 @@ async function verificarUsuario(req, res) {
     }
 
     const usuario = rows[0];
-    if (usuario.contrasena === contrasena) {
+    // Verificar la contraseña proporcionada por el usuario
+    const isMatch = await bcrypt.compare(contrasena, usuario.contrasena);
+    if (isMatch) {
       console.log('Contraseña correcta');
       return res.json({ success: true });
     } else {
@@ -227,6 +231,11 @@ async function agregarUsuario(req, res) {
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
 
+    // Encriptar la contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(nuevoUsuario.contrasena, salt);
+    nuevoUsuario.contrasena = hash;
+
     const query = 'INSERT INTO usuarios (nombre, telefono, correo, contrasena) VALUES (?, ?, ?, ?)';
     console.log('Ejecutando consulta para agregar usuario');
     const result = await connection.query(query, [
@@ -237,8 +246,10 @@ async function agregarUsuario(req, res) {
     ]);
     console.log('Consulta de inserción ejecutada con éxito');
 
-    nuevoUsuario.id = result.insertId;
-    res.status(201).json(nuevoUsuario);
+    nuevoUsuario.id_usuario = result.insertId; // Cambiar a id_usuario
+    // Excluir la contraseña del objeto devuelto
+    const { contrasena, ...usuarioSinContrasena } = nuevoUsuario;
+    res.status(201).json(usuarioSinContrasena);
   } catch (err) {
     console.error('Error al agregar el usuario:', err);
     res.status(500).send('Error al agregar el usuario');
@@ -386,8 +397,11 @@ async function recuperarContrasena(req, res) {
       return res.status(404).send('Usuario no encontrado');
     }
 
+    // Encriptar la nueva contraseña
+    const hash = crypto.createHash('sha256').update(nuevaContrasena).digest('hex');
+
     const query = 'UPDATE usuarios SET contrasena = ? WHERE correo = ?';
-    const result = await connection.query(query, [nuevaContrasena, correo]);
+    const result = await connection.query(query, [hash, correo]);
     console.log('Resultado de la actualización de contraseña:', result);
 
     if (result.affectedRows === 0) {
