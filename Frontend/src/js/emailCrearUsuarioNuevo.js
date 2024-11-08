@@ -1,4 +1,4 @@
-var nodemailer = require('nodemailer');
+/*var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -54,24 +54,24 @@ var mailOptions = {
           text-align: left;
           color: #3B3B3B !important; /* Aseguramos que el texto sea #3B3B3B */
         }
-        
+        /*
         .button {
           display: inline-block;
           padding: 10px 20px;
           margin-top: 20px;
-          text-decoration: none !important; /* Aseguramos que no haya subrayado en el enlace */
+          text-decoration: none !important; /* Aseguramos que no haya subrayado en el enlace *//*
           border-radius: 33px;
           font-weight: bold;
           font-size: 1.1rem;
           transition: background-color 0.3s;
           background-color: #395886;
           border: 2px solid #395886;
-          color: white !important; /* Aseguramos que el texto sea blanco */
+          color: white !important; /* Aseguramos que el texto sea blanco *//*
         }
 
         .button:hover {
           background-color: white;
-          color: #395886 !important; /* Aseguramos que el texto sea #395886 en el hover */
+          color: #395886 !important; /* Aseguramos que el texto sea #395886 en el hover *//*
           border: 2px solid #395886;
         }
 
@@ -83,8 +83,8 @@ var mailOptions = {
           font-size: 0.9rem;
           color: #666;
           border-top: 1px solid #666;
-        }
-      </style>
+        }*/
+ /*     </style>
     </head>
     <body>
       <div class="header">
@@ -119,4 +119,46 @@ transporter.sendMail(mailOptions, function (error, info) {
     } else {
         console.log('Email enviado: ' + info.response);
     }
-});
+});*/
+
+		
+		
+		// emailCrearUsuarioNuevo.js
+const nodemailer = require('nodemailer');
+
+function enviarCorreo(email) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'irenebati4@gmail.com',
+            pass: 'uins wbqo poyu yjon'
+        }
+    });
+
+    const mailOptions = {
+        from: 'irenebati4@gmail.com',
+        to: email,
+        subject: 'Bienvenido a VIMYP',
+        html: `<!DOCTYPE html>...`, // Aquí va el HTML del correo
+        attachments: [
+            {
+                filename: 'logo.svg',
+                path: './img/logo.svg',
+                cid: 'logo'
+            }
+        ]
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error al enviar correo:', error);
+        } else {
+            console.log('Correo enviado:', info.response);
+        }
+    });
+}
+
+// Exportar la función para que se pueda usar en otros archivos
+module.exports = enviarCorreo;
+
+		

@@ -22,7 +22,11 @@ async function registrarUsuario( email, password) {
         const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
         //const response = await fetch('http://172.20.10.11:8080/usuarios', { // Ip Portatil Pablo Wifi Pablo
         //const response = await fetch('http://192.168.0.20:8080/usuarios', { // Ip Ordenador Vicente
+
         //const response = await fetch('http://192.168.0.17:8080/usuarios', { // Ip Ordenador Irene
+
+        const response = await fetch('http://192.168.1.190:8080/usuarios', { // Ip Ordenador Irene
+
         //const response = await fetch('http://172.20.10.5:8080/usuarios', { // Ip Portátil visi Universidad
         
             method: 'POST',
@@ -54,7 +58,7 @@ async function ConsultarDatosUsuario(email, password) {
        //Realizar una solicitud GET al servidor con los parámetros
       const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo 
       //const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
-      //const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
+      const response = await fetch(`http://192.168.1.190:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador irene
       //const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
       //const response = await fetch(`http://172.20.10.5:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  Ip Portátil visi Universidad
         method: 'GET',
@@ -110,6 +114,12 @@ document.getElementById('register-btn').addEventListener('click', function(event
         alert('La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)'); // Mensaje de error
         return; // Salir de la función si la contraseña no es válida
     }
+	
+	
+	// Llamar a la función para enviar el correo
+    //enviarCorreo(email);
+	
+	// Registrar usuario
     registrarUsuario( email, password); // Llamar a la función para registrar el usuario3
 		
 });
