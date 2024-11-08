@@ -97,6 +97,12 @@ button:hover {
     border: 2px solid var(--button-color);
     color: var(--text-color);
 }
+button:disabled {
+    background-color: #cccccc; /* Color gris claro */
+    color: #666666; /* Color de texto gris oscuro */
+    cursor: not-allowed; /* Cambiar el cursor a no permitido */
+    opacity: 0.6; /* Reducir opacidad */
+}
 
 .info-grid {
     display: grid;
