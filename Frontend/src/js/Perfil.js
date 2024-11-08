@@ -36,7 +36,7 @@ confirmBtn.addEventListener('click', function() {
     passwordInput.disabled = true;
     saveBtn.disabled = true;
     editBtn.disabled = false; // Volver a habilitar botón de editar
-    alert('Cambios confirmados'); // Mensaje de confirmación
+    alert('Te hemos enviado un correo para verificar los cambios, porfavor compruebelo'); // Mensaje de confirmación
 });
 
 // Cerrar popup al hacer clic en "Cancelar"
@@ -46,8 +46,8 @@ cancelBtn.addEventListener('click', function() {
 
 // Función para cargar datos del usuario al cargar la página
 window.onload = function() {
-    const userId = 1; // ID del usuario a cargar
-    fetch(`http://172.20.10.5:8080/usuarios/${userId}`) // Cambiado para que use el ID en la ruta
+    const id_usuario = 1; // ID del usuario a cargar
+    fetch(`http://92.168.2.101:8080/usuarios?id_usuario=${encodeURIComponent(id_usuario)}`) // Cambiado para que use el ID en la ruta
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al cargar los datos del usuario');
