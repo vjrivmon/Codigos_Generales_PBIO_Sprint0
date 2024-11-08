@@ -221,9 +221,11 @@ async function agregarUsuario(req, res) {
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
 
-    const query = 'INSERT INTO usuarios (correo, contrasena) VALUES (?, ?)';
+    const query = 'INSERT INTO usuarios (nombre, telefono, correo, contrasena) VALUES (?, ?, ?, ?)';
     console.log('Ejecutando consulta para agregar usuario');
     const result = await connection.query(query, [
+      nuevoUsuario.nombre,
+      nuevoUsuario.telefono,
       nuevoUsuario.correo,
       nuevoUsuario.contrasena
     ]);
@@ -352,6 +354,80 @@ async function ConsultarBaseDeDatos(req, res) {
   }
 }
 
+/**
+ * @brief Función para recuperar la contraseña de un usuario.
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para actualizar la contraseña del usuario con el correo proporcionado.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
+async function recuperarContrasena(req, res) {
+  const { correo, nuevaContrasena } = req.body;
+  let connection;
+  try {
+    console.log(`Intentando obtener conexión para actualizar contraseña del usuario con correo: ${correo}`);
+    connection = await pool.getConnection();
+    console.log('Conexión obtenida con éxito');
+
+    const query = 'UPDATE usuarios SET contrasena = ? WHERE correo = ?';
+    const result = await connection.query(query, [nuevaContrasena, correo]);
+
+    if (result.affectedRows === 0) {
+      console.warn('Usuario no encontrado');
+      res.status(404).send('Usuario no encontrado');
+    } else {
+      res.status(200).send('Contraseña actualizada correctamente');
+    }
+  } catch (err) {
+    console.error('Error al actualizar la contraseña:', err);
+    res.status(500).send('Error al actualizar la contraseña');
+  } finally {
+    if (connection) {
+      console.log('Liberando conexión');
+      connection.release();
+    }
+  }
+}
+
+/**
+ * @brief Función para editar los datos de un usuario.
+ *
+ * Se obtiene una conexión a la base de datos desde la piscina y se ejecuta una
+ * consulta SQL para actualizar los datos del usuario con el ID proporcionado.
+ *
+ * @param req Objeto de solicitud HTTP (Express.js).
+ * @param res Objeto de respuesta HTTP (Express.js).
+ */
+async function editarDatosUsuario(req, res) {
+  const { id_usuario, nombre, telefono, correo, contrasena } = req.body;
+  let connection;
+  try {
+    console.log(`Intentando obtener conexión para actualizar datos del usuario con ID: ${id_usuario}`);
+    connection = await pool.getConnection();
+    console.log('Conexión obtenida con éxito');
+
+    const query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
+    const result = await connection.query(query, [nombre, telefono, correo, contrasena, id_usuario]);
+
+    if (result.affectedRows === 0) {
+      console.warn('Usuario no encontrado');
+      res.status(404).send('Usuario no encontrado');
+    } else {
+      res.status(200).send('Datos del usuario actualizados correctamente');
+    }
+  } catch (err) {
+    console.error('Error al actualizar los datos del usuario:', err);
+    res.status(500).send('Error al actualizar los datos del usuario');
+  } finally {
+    if (connection) {
+      console.log('Liberando conexión');
+      connection.release();
+    }
+  }
+}
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -361,6 +437,8 @@ module.exports = {
   agregarUsuario,
   EliminarUsuario,
   ConsultarBaseDeDatos,
-  verificarUsuario
+  verificarUsuario,
+  recuperarContrasena,
+  editarDatosUsuario
 };
 
