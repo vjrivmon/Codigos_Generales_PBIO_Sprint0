@@ -1,18 +1,11 @@
 // Obtener elementos del DOM
 const popup = document.getElementById('popup');
 const editBtn = document.getElementById('editBtn');
-const saveBtn = document.getElementById('guardarcambios');
+const saveBtn = document.getElementById('guardarCambios');
 const confirmBtn = document.getElementById('confirmBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
-
-// Importa el módulo child_process
-const { exec } = require('child_process');
-
-//import { enviarCorreoVerificarCorreo } from "./mail.service.js";
-import { enviarCorreoCambios } from "./emailGuardarCambiosUsuario.js";
-
 
 // Función para habilitar la edición de los campos
 editBtn.addEventListener('click', function() {
@@ -24,7 +17,6 @@ editBtn.addEventListener('click', function() {
 
 // Mostrar popup al hacer clic en "Guardar cambios"
 saveBtn.addEventListener('click', function() {
-
     popup.style.display = 'flex'; // Mostrar popup
 });
 
@@ -32,18 +24,7 @@ saveBtn.addEventListener('click', function() {
 confirmBtn.addEventListener('click', function() {
     const email = emailInput.value;
     const password = passwordInput.value;
-    //enviar correo
-    exec('node emailGuardarCambiosUsuario.js', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error al ejecutar el comando: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
+
     // Aquí puedes agregar la lógica para validar y guardar los cambios
     console.log('Cambios guardados:', { email, password });
 
@@ -55,7 +36,7 @@ confirmBtn.addEventListener('click', function() {
     passwordInput.disabled = true;
     saveBtn.disabled = true;
     editBtn.disabled = false; // Volver a habilitar botón de editar
-    alert('Cambios confirmados'); // Mensaje de confirmación
+    alert('Te hemos enviado un correo para verificar los cambios, porfavor compruebelo'); // Mensaje de confirmación
 });
 
 // Cerrar popup al hacer clic en "Cancelar"
@@ -65,8 +46,8 @@ cancelBtn.addEventListener('click', function() {
 
 // Función para cargar datos del usuario al cargar la página
 window.onload = function() {
-    const userId = 1; // ID del usuario a cargar
-    fetch(`http://172.20.10.5:8080/usuarios/${userId}`) // Cambiado para que use el ID en la ruta
+    const id_usuario = 1; // ID del usuario a cargar
+    fetch(`http://92.168.2.101:8080/usuarios?id_usuario=${encodeURIComponent(id_usuario)}`) // Cambiado para que use el ID en la ruta
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al cargar los datos del usuario');
