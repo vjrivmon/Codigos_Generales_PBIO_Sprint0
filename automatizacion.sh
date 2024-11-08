@@ -14,6 +14,8 @@ DOCKER_IMAGE="sprint1_ngx"
 DOCKER_CONTAINER="sprint1"
 PORT=80
 DOCKERFILE_PATH="Dockerfile"
+SQL_FILE="ejemploBBDD.sql"
+DOCKER_COMPOSE_FILE="docker-compose.yml"
 
 print_message() {
     local color=$1
@@ -31,21 +33,46 @@ check_tools() {
             sudo apt-get install -y docker.io
             sudo systemctl start docker
             sudo systemctl enable docker
-            if command -v $1 &>/dev/null; then
-                print_message $GREEN "$1 instalado correctamente."
-            else
-                print_message $RED "Error al instalar $1."
-                exit 1
-            fi
+        elif [ "$1" == "jq" ]; then
+            sudo apt-get update
+            sudo apt-get install -y jq
+        elif [ "$1" == "rsync" ]; then
+            sudo apt-get update
+            sudo apt-get install -y rsync
+        elif [ "$1" == "docker-compose" ]; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
         else
             print_message $RED "No se puede instalar automáticamente $1."
+            exit 1
+        fi
+
+        # Verificar si se ha instalado correctamente
+        if command -v $1 &>/dev/null; then
+            print_message $GREEN "$1 instalado correctamente."
+        else
+            print_message $RED "Error al instalar $1."
             exit 1
         fi
     fi
 }
 
-# Llamar a la función anterior
+# Función para verificar que Docker Desktop esté corriendo
+check_docker_desktop() {
+    if ! docker info &>/dev/null; then
+        print_message $RED "Docker Desktop no está corriendo o no está integrado con WSL 2. Por favor, asegúrate de que Docker Desktop esté iniciado y la integración con WSL 2 esté habilitada."
+        exit 1
+    fi
+}
+
+# Llamar a la función para verificar/instalar las herramientas necesarias
 check_tools docker
+check_tools jq
+check_tools rsync
+check_tools docker-compose
+
+# Verificar que Docker Desktop esté corriendo
+check_docker_desktop
 
 # Leer versión de la aplicación
 if [ -f "Backend/src/nodejs/package.json" ]; then
@@ -58,26 +85,38 @@ fi
 
 # Eliminar antiguos contenedores e imágenes en ejecución
 print_message $YELLOW "Eliminando contenedores e imágenes antiguas..."
-docker rm -f $DOCKER_CONTAINER
-docker rmi -f $DOCKER_IMAGE:$APP_VERSION
-docker rm -f $(docker ps -a -q)
-docker rmi -f $(docker images -q)
+docker ps -a --filter "name=$DOCKER_CONTAINER" -q | xargs -r docker rm -f
+docker images --filter=reference="$DOCKER_IMAGE:$APP_VERSION" -q | xargs -r docker rmi -f
 
 # Crear la estructura de carpetas/directorios
 print_message $YELLOW "Creando estructura de carpetas..."
 mkdir -p $TEMP_DIR/Backend/src/nodejs/app_web
 mkdir -p $TEMP_DIR/Backend/src/mariadb
+mkdir -p $TEMP_DIR/Backend/src/mariadb/sql
 cp Backend/src/nodejs/app_web/Dockerfile $TEMP_DIR/Backend/src/nodejs/app_web
 rsync -av --exclude='app_web' --exclude='node_modules' Backend/src/nodejs/ $TEMP_DIR/Backend/src/nodejs
 cp -r Backend/src/mariadb/* $TEMP_DIR/Backend/src/mariadb
 cp -r Frontend/* $TEMP_DIR/Backend/src/nodejs/app_web
-cp Backend/src/variables.env $TEMP_DIR/Backend/src
+
+# Verificar si el archivo variables.env existe
+if [ -f "Backend/src/variables.env" ]; then
+    cp Backend/src/variables.env $TEMP_DIR/Backend/src
+else
+    print_message $YELLOW "Advertencia: No se ha encontrado el archivo variables.env"
+fi
+
+# Verificar si el archivo SQL existe y copiarlo
+if [ -f "Backend/src/mariadb/sql/$SQL_FILE" ]; then
+    cp "Backend/src/mariadb/sql/$SQL_FILE" $TEMP_DIR/Backend/src/mariadb/sql
+else
+    print_message $YELLOW "Advertencia: No se ha encontrado el archivo $SQL_FILE para importar datos a la base de datos"
+fi
 
 # Asegúrate de copiar el archivo docker-compose.yml desde Backend/src/
-if [ -f "Backend/src/docker-compose.yml" ]; then
-    cp Backend/src/docker-compose.yml $TEMP_DIR/Backend/src/
+if [ -f "Backend/src/$DOCKER_COMPOSE_FILE" ]; then
+    cp Backend/src/$DOCKER_COMPOSE_FILE $TEMP_DIR/Backend/src/
 else
-    print_message $RED "No se ha encontrado el archivo docker-compose.yml"
+    print_message $RED "No se ha encontrado el archivo $DOCKER_COMPOSE_FILE"
     exit 1
 fi
 
@@ -88,96 +127,38 @@ cd "$TEMP_DIR/Backend/src"
 
 # Detener y eliminar contenedores y volúmenes con docker-compose
 print_message $YELLOW "Deteniendo y eliminando contenedores y volúmenes con docker-compose..."
-if command -v docker-compose &>/dev/null; then
-    docker-compose down -v
-else
-    print_message $RED "docker-compose no está instalado. Instalando docker-compose..."
-    if command -v curl &>/dev/null; then
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        if command -v docker-compose &>/dev/null; then
-            print_message $GREEN "docker-compose instalado correctamente."
-            docker-compose down -v
-        else
-            print_message $RED "Error al instalar docker-compose."
-            exit 1
-        fi
-    else
-        print_message $RED "curl no está instalado. Instalando curl..."
-        sudo apt-get update
-        sudo apt-get install -y curl
-        if command -v curl &>/dev/null; then
-            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            sudo chmod +x /usr/local/bin/docker-compose
-            if command -v docker-compose &>/dev/null; then
-                print_message $GREEN "docker-compose instalado correctamente."
-                docker-compose down -v
-            else
-                print_message $RED "Error al instalar docker-compose."
-                exit 1
-            fi
-        else
-            print_message $RED "Error al instalar curl."
-            exit 1
-        fi
-    fi
-fi
+docker-compose down -v
 
 print_message $GREEN "Contenedores y volúmenes eliminados correctamente!"
 
 # Levantar contenedores con docker-compose
 print_message $YELLOW "Levantando contenedores con docker-compose..."
-if command -v docker-compose &>/dev/null; then
-    docker-compose up --build -d
-else
-    print_message $RED "docker-compose no está instalado. Instalando docker-compose..."
-    if command -v curl &>/dev/null; then
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        if command -v docker-compose &>/dev/null; then
-            print_message $GREEN "docker-compose instalado correctamente."
-            docker-compose up --build -d
-        else
-            print_message $RED "Error al instalar docker-compose."
-            exit 1
-        fi
-    else
-        print_message $RED "curl no está instalado. Instalando curl..."
-        sudo apt-get update
-        sudo apt-get install -y curl
-        if command -v curl &>/dev/null; then
-            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            sudo chmod +x /usr/local/bin/docker-compose
-            if command -v docker-compose &>/dev/null; then
-                print_message $GREEN "docker-compose instalado correctamente."
-                docker-compose up --build -d
-            else
-                print_message $RED "Error al instalar docker-compose."
-                exit 1
-            fi
-        else
-            print_message $RED "Error al instalar curl."
-            exit 1
-        fi
-    fi
-fi
+docker-compose up --build -d
 
 print_message $GREEN "Contenedores levantados correctamente!"
 
-# Volver al directorio original
-cd -
+# Esperar un momento para asegurarse de que los contenedores se inicien correctamente
+sleep 2
 
-# Limpieza del directorio temporal
-print_message $GREEN "Limpiando el directorio temporal..."
-rm -rf $TEMP_DIR
+# Verificar el estado de los contenedores
+print_message $YELLOW "Verificando el estado de los contenedores..."
+docker ps -a
+
+# Obtener el nombre del contenedor en ejecución
+RUNNING_CONTAINER=$(docker ps --filter "name=$DOCKER_CONTAINER" --format "{{.Names}}")
+
+if [ -z "$RUNNING_CONTAINER" ]; then
+    print_message $RED "Error: No se encontró un contenedor en ejecución con el nombre $DOCKER_CONTAINER"
+    exit 1
+fi
 
 # Ejecutar pruebas dentro del contenedor de la aplicación
 print_message $YELLOW "Ejecutando pruebas dentro del contenedor..."
 docker exec sprint1_njs npm test
 
-# Esperar un momento para asegurarse de que los resultados de las pruebas se impriman completamente
-sleep 2
-
 # Mostrar logs de los contenedores
 print_message $YELLOW "Mostrando logs de los contenedores..."
-docker-compose -f $TEMP_DIR/Backend/src/docker-compose.yml logs -f
+docker-compose logs -f
+
+# Volver al directorio original
+cd -

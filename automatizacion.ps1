@@ -31,12 +31,32 @@ if (Test-Path "Backend/src/nodejs/package.json") {
     exit 1
 }
 
-# Eliminar contenedores e imágenes antiguas
+# Eliminar contenedores e imágenes antiguas, específicamente los que estou usando (sprint1_ngx, sprint1_njs y sprint1_mdb)
 print-message "Yellow" "Eliminando contenedores e imágenes antiguas..."
 docker rm -f $DOCKER_CONTAINER
+# Obtenemos la lista de imágenes relacionadas con la aplicación
+$RELATED_IMAGES = docker images --format="{{.Repository}}:{{.Tag}}" | Select-String sprint1_
+if ($RELATED_IMAGES) {
+    # Eliminamos cada una de las imágenes relacionadas
+    foreach ($image in $RELATED_IMAGES) {
+        docker rmi -f $image
+    }
+} else {
+    print-message "Green" "No se encontraron imágenes relacionadas"
+}
+# Obtenemos la lista de contenedores activos con el nombre sprint1_
+$ACTIVE_CONTAINERS = docker ps -q --filter name=sprint1_
+if ($ACTIVE_CONTAINERS) {
+    # Eliminamos cada uno de los contenedores activos
+    foreach ($container in $ACTIVE_CONTAINERS) {
+        docker rm -f $container
+    }
+} else {
+    print-message "Green" "No se encontraron contenedores activos"
+}
+
+# Eliminar contenedor y imagen del contenedor relacionado con la aplicación sprint1_
 docker rmi -f "${DOCKER_IMAGE}:${APP_VERSION}"
-docker rm -f (docker ps -a -q)
-docker rmi -f (docker images -q)
 
 # Crear la estructura de carpetas
 print-message "Yellow" "Creando estructura de carpetas..."
@@ -63,6 +83,7 @@ print-message "Green" "Hecho!"
 
 # Cambiar el directorio de trabajo al directorio temporal
 Set-Location "$TEMP_DIR/Backend/src"
+
 
 # Detener y eliminar contenedores y volúmenes con docker-compose
 print-message "Yellow" "Deteniendo y eliminando contenedores y volúmenes con docker-compose..."
@@ -107,3 +128,7 @@ Start-Sleep -Seconds 2
 # Mostrar logs de los contenedores
 print-message "Yellow" "Mostrando logs de los contenedores..."
 docker-compose -f "$TEMP_DIR/Backend/src/docker-compose.yml" logs -f
+
+
+# Volver al directorio original
+Set-Location -Path (Get-Location -PSProvider FileSystem).ProviderPath

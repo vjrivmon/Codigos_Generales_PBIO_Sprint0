@@ -1,0 +1,90 @@
+/* Popup */
+.popup {
+    display: none; /* Inicialmente está oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
+}
+
+.popup-content {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 20px; /* Ajusta el borde redondeado */
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    opacity: 1;
+    visibility: visible; /* Inicialmente visible */
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Desvanecimiento y visibilidad suave */
+    width: 100%;
+    max-width: 550px; /* Limita el ancho máximo */
+	height: 250px;
+}
+
+.popup-content h3 {
+	margin: .5rem, auto;
+	padding-top: 1rem;
+}
+
+.popup-content p {
+	margin: 1rem auto;
+}
+
+/* Estilos de los botones */
+.popup-content button {
+    background-color: var(--button-color, #395886); /* Usa color de botón predeterminado */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px; /* Ajuste de borde redondeado */
+    border: 2px solid var(--button-color, #395886);    
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cambio al pasar el cursor sobre los botones */
+.popup-content button:hover {
+    background-color: white;
+    color: var(--button-color, #395886);
+}
+
+/* Campo de teléfono que se muestra de forma suave */
+#phone-container {
+    display: none; /* Inicialmente oculto */
+    opacity: 0;
+    visibility: hidden; /* Oculto inicialmente */
+    text-align: center;
+    margin-top: 20px;
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Transición suave */
+}
+
+#phone-container.show {
+    display: block; /* Hace que el campo de teléfono sea visible */
+    opacity: 1; /* Haciendo el campo de teléfono visible gradualmente */
+    visibility: visible; /* Haciendo visible el campo de teléfono */
+}
+
+/* Estilo para los párrafos dentro del contenedor */
+#phone-container p {
+    padding: 0 10px 10px 10px;
+}
+
+/* Estilos para el campo de entrada */
+.input {
+    background-color: #eee;
+    border: none;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 20px; /* Ajuste de borde redondeado */
+    max-width: 65%; /* Mejora la adaptabilidad */
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+	margin-bottom: .5rem;
+}
