@@ -69,7 +69,11 @@ Copy-Item -Recurse "Frontend/*" "$TEMP_DIR/Backend/src/nodejs/app_web"
 Copy-Item "Backend/src/variables.env" "$TEMP_DIR/Backend/src"
 
 # Copiar los archivos SQL al contenedor de MariaDB
-Copy-Item -Recurse "Backend/src/mariadb/sql/*" "$TEMP_DIR/Backend/src/mariadb/sql" # Asegúrate de que los archivos SQL estén aquí
+if (Test-Path "Backend/src/mariadb/sql/ejemploBBDD.sql") {
+    Copy-Item -Recurse "Backend/src/mariadb/sql/ejemploBBDD.sql" "$TEMP_DIR/Backend/src/mariadb/sql"
+} else {
+    print-message "Yellow" "Advertencia: No se ha encontrado el archivo ejemploBBDD.sql para importar datos a la base de datos"
+}
 
 # Asegúrate de copiar el archivo docker-compose.yml
 if (Test-Path "Backend/src/docker-compose.yml") {
@@ -81,9 +85,17 @@ if (Test-Path "Backend/src/docker-compose.yml") {
 
 print-message "Green" "Hecho!"
 
+# Guardar el directorio original
+$originalDir = Get-Location
+
 # Cambiar el directorio de trabajo al directorio temporal
 Set-Location "$TEMP_DIR/Backend/src"
 
+# Cargar variables de entorno desde el archivo variables.env
+$envVars = Get-Content "Backend/src/variables.env" | ForEach-Object {
+    $name, $value = $_ -split '='
+    [System.Environment]::SetEnvironmentVariable($name, $value)
+}
 
 # Detener y eliminar contenedores y volúmenes con docker-compose
 print-message "Yellow" "Deteniendo y eliminando contenedores y volúmenes con docker-compose..."
@@ -111,8 +123,15 @@ if (Get-Command docker-compose -ErrorAction SilentlyContinue) {
 
 print-message "Green" "Contenedores levantados correctamente!"
 
+# Esperar un momento para asegurarse de que los contenedores estén completamente levantados
+Start-Sleep -Seconds 8
+
+# Ejecutar el archivo SQL dentro del contenedor de MariaDB usando variables de entorno
+print-message "Yellow" "Ejecutando el archivo SQL dentro del contenedor de MariaDB..."
+Invoke-Expression "docker exec -i $(docker-compose ps -q mariadb) mysql -u $env:DB_USUARIO -p$env:DB_CONTRASENYA $env:DB_NOMBRE < $TEMP_DIR/Backend/src/mariadb/sql/ejemploBBDD.sql"
+
 # Volver al directorio original
-Set-Location -Path (Get-Location -PSProvider FileSystem).ProviderPath
+Set-Location -Path $originalDir
 
 # Limpieza del directorio temporal
 print-message "Green" "Limpiando el directorio temporal..."
@@ -129,6 +148,5 @@ Start-Sleep -Seconds 2
 print-message "Yellow" "Mostrando logs de los contenedores..."
 docker-compose -f "$TEMP_DIR/Backend/src/docker-compose.yml" logs -f
 
-
 # Volver al directorio original
-Set-Location -Path (Get-Location -PSProvider FileSystem).ProviderPath
+Set-Location -Path $originalDir

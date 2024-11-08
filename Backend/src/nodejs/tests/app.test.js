@@ -29,7 +29,9 @@ const {
   agregarUsuario, // Función para agregar un nuevo usuario al sistema
   EliminarUsuario, // Función para eliminar un usuario del sistema
   ConsultarBaseDeDatos, // Función para consultar toda la base de datos
-  verificarUsuario // Función para verificar un usuario y su contraseña
+  verificarUsuario, // Función para verificar un usuario y su contraseña
+  recuperarContrasena, // Función para recuperar la contraseña del usuario
+  editarDatosUsuario // Función para editar los datos del usuario
 } = require('../servidorREST'); // Importar las funciones de servidorREST
 
 /**
@@ -51,6 +53,16 @@ app.delete('/usuarios/:id_usuario', EliminarUsuario); // Ruta para eliminar un u
 app.get('/mediciones/:id_sensor', ConsultarSiHayAlerta); // Ruta para consultar si hay alerta en el sistema
 app.post('/verificar-usuario', verificarUsuario); // Ruta para verificar un usuario y su contraseña
 app.get('/base-datos', ConsultarBaseDeDatos); // Ruta para consultar toda la base de datos
+app.put('/usuarios/contrasena', async (req, res) => { 
+  const updatePassword = req.body; // Obtiene los datos para actualizar la contraseña
+  console.log('Datos para actualizar la contraseña:', updatePassword);
+  await recuperarContrasena(req, res); // Llama a la función de servidorREST para actualizar la contraseña
+});
+app.put('/usuarios', async (req, res) => {
+  const updateUser = req.body; // Obtiene los datos para actualizar el usuario
+  console.log('Datos para actualizar el usuario:', updateUser);
+  await editarDatosUsuario(req, res); // Llama a la función de servidorREST para actualizar los datos del usuario
+});
 
 /**
  * @file app-test.js
@@ -98,7 +110,10 @@ describe('API REST Tests', () => {
         valorGas: 50.00,
         valorTemperatura: 30.00
       };
+      console.log('Datos de la nueva medición para el test:', newMeasurement);
       const response = await request(app).post('/mediciones').send(newMeasurement);
+      console.log('Respuesta del servidor:', response.body);
+      console.log('Estado de respuesta del servidor:', response.statusCode);
       expect(response.statusCode).toBe(201); // El estado de respuesta debe ser 201
       expect(response.body).toMatchObject(newMeasurement); // La respuesta debe coincidir con la medición nueva
     });
@@ -121,6 +136,7 @@ describe('API REST Tests', () => {
   test('POST /usuarios - debería agregar un nuevo usuario', async () => {
     await runTest('POST /usuarios', async () => {
       const newUser = { // Datos para el nuevo usuario
+        id: 6,
         nombre: 'Test',
         telefono: '123456789',
         correo: 'test@correo.com',
@@ -137,7 +153,7 @@ describe('API REST Tests', () => {
    */
   test('DELETE /usuarios/:id_usuario - debería eliminar un usuario', async () => {
     await runTest('DELETE /usuarios/:id_usuario', async () => {
-      const response = await request(app).delete('/usuarios/1');
+      const response = await request(app).delete('/usuarios/6');
       if (response.statusCode === 200) { // Si el estado de respuesta es 200, verificar el mensaje
         expect(response.text).toBe('Usuario eliminado correctamente'); // El mensaje debe ser "Usuario eliminado correctamente"
       } else { // Si el estado de respuesta no es 200, verificar el mensaje
@@ -181,10 +197,13 @@ describe('API REST Tests', () => {
   test('PUT /usuarios/contrasena - debería actualizar la contraseña del usuario', async () => {
     await runTest('PUT /usuarios/contrasena', async () => {
       const updatePassword = { // Datos para actualizar la contraseña
-        correo: 'test@correo.com',
+        correo: 'visi02@gmail.com',
         nuevaContrasena: 'nueva123'
       };
+      console.log('Datos para actualizar la contraseña:', updatePassword);
       const response = await request(app).put('/usuarios/contrasena').send(updatePassword);
+      console.log('Respuesta del servidor:', response.body);
+      console.log('Estado de respuesta del servidor:', response.statusCode);
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
       expect(response.text).toBe('Contraseña actualizada correctamente'); // El mensaje debe ser "Contraseña actualizada correctamente"
     });
@@ -197,12 +216,15 @@ describe('API REST Tests', () => {
     await runTest('PUT /usuarios', async () => {
       const updateUser = { // Datos para actualizar el usuario
         id_usuario: 1,
-        nombre: 'Nuevo Nombre',
+        nombre: 'Víctor',
         telefono: '123456789',
         correo: 'nuevo@correo.com',
         contrasena: 'nueva123'
       };
+      console.log('Datos para actualizar el usuario:', updateUser);
       const response = await request(app).put('/usuarios').send(updateUser);
+      console.log('Respuesta del servidor:', response.body);
+      console.log('Estado de respuesta del servidor:', response.statusCode);
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
       expect(response.text).toBe('Datos del usuario actualizados correctamente'); // El mensaje debe ser "Datos del usuario actualizados correctamente"
     });
