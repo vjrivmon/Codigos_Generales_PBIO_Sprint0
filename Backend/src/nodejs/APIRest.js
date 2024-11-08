@@ -17,7 +17,9 @@ const {
   agregarUsuario,
   EliminarUsuario,
   ConsultarBaseDeDatos,
-  verificarUsuario
+  verificarUsuario,
+  recuperarContrasena,
+  editarDatosUsuario
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 // Inicializar app y cargar variables de entorno
 // const app = express();
@@ -46,6 +48,8 @@ router.post('/usuarios', agregarUsuario);
 router.delete('/usuarios/:id_usuario', EliminarUsuario);
 router.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
 router.get('/usuarios', verificarUsuario);
+router.put('/usuarios/contrasena', recuperarContrasena);
+router.put('/usuarios', editarDatosUsuario);
 //router.post('/asociar-sensor', asociarSensorAUsuario);
 
 // Pruebas de depuración
@@ -124,7 +128,7 @@ module.exports = router; // Exportar el router
  * @swagger
  * components:
  *   schemas:
- *     Medicion:
+ *     Medición:
  *       type: object
  *       required:
  *         - id
@@ -149,7 +153,7 @@ module.exports = router; // Exportar el router
  *           format: double
  *           description: longitud de la medición
  *         id_sensor:
- *           type: integer
+ *           type: string
  *           description: ID del sensor
  *         valorGas:
  *           type: number
@@ -173,18 +177,28 @@ module.exports = router; // Exportar el router
  *     Usuario:
  *       type: object
  *       required:
+ *         - nombre
+ *         - teléfono
  *         - correo
  *         - contrasena
  *       properties:
+ *         nombre:
+ *           type: string
+ *           description: Nombre del usuario
+ *         teléfono:
+ *           type: string
+ *           description: Teléfono del usuario
  *         correo:
  *           type: string
  *           description: Correo electrónico del usuario
- *         contrasenya:
+ *         contrasena:
  *           type: string
  *           description: Contraseña del usuario
  *       example:
- *         correo: 'ejemplo@correo.com'
- *         contrasena: '123456'
+ *         nombre: 'Vicente'
+ *         teléfono: '601037577'
+ *         correo: 'visi02@gmail.com'
+ *         contrasena: 'pass1'
  */
 
 // TÍTULO DE LA API en Swagger
@@ -214,7 +228,7 @@ module.exports = router; // Exportar el router
  *       - in: path
  *         name: id_sensor
  *         schema:
- *           type: integer
+ *           type: string
  *         required: true
  *         description: ID del sensor
  *     responses:
@@ -227,7 +241,6 @@ module.exports = router; // Exportar el router
  *               items:
  *                 $ref: '#/components/schemas/Medicion'
  */
-
 
 // POST para agregar medición
 /**

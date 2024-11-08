@@ -79,7 +79,7 @@ describe('API REST Tests', () => {
    */
   test('GET /mediciones/:id_sensor - debería devolver mediciones para un sensor', async () => {
     await runTest('GET /mediciones/:id_sensor', async () => {
-      const response = await request(app).get('/mediciones/1');
+      const response = await request(app).get('/mediciones/00:1A:2B:3M:4D:5E');
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
       expect(response.body).toBeInstanceOf(Array); // La respuesta debe ser un array
     });
@@ -94,6 +94,7 @@ describe('API REST Tests', () => {
         hora: '14:00',
         latitud: 40.416775,
         longitud: -3.703790,
+        id_sensor: '00:1A:2B:3M:4D:5E',
         valorGas: 50.00,
         valorTemperatura: 30.00
       };
@@ -120,6 +121,8 @@ describe('API REST Tests', () => {
   test('POST /usuarios - debería agregar un nuevo usuario', async () => {
     await runTest('POST /usuarios', async () => {
       const newUser = { // Datos para el nuevo usuario
+        nombre: 'Test',
+        telefono: '123456789',
         correo: 'test@correo.com',
         contrasena: '123456'
       };
@@ -149,7 +152,7 @@ describe('API REST Tests', () => {
    */
   test('GET /mediciones/:id_sensor - debería comprobar si hay alerta de gas', async () => {
     await runTest('GET /mediciones/:id_sensor - verificación de alerta', async () => {
-      const response = await request(app).get('/mediciones/1');
+      const response = await request(app).get('/mediciones/00:1A:2B:3M:4D:5E');
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
       expect(response.body).toHaveProperty('hayAlerta'); // La respuesta debe tener la propiedad "hayAlerta"
     });
@@ -169,6 +172,39 @@ describe('API REST Tests', () => {
       expect(response.body).toHaveProperty('mediciones'); // La respuesta debe tener la propiedad "mediciones"
       expect(response.body).toHaveProperty('usuarios'); // La respuesta debe tener la propiedad "usuarios"
       expect(response.body).toHaveProperty('sensores'); // La respuesta debe tener la propiedad "sensores"
+    });
+  }, 10000);
+
+  /**
+   * @test PUT /usuarios/contrasena - debería actualizar la contraseña del usuario
+   */
+  test('PUT /usuarios/contrasena - debería actualizar la contraseña del usuario', async () => {
+    await runTest('PUT /usuarios/contrasena', async () => {
+      const updatePassword = { // Datos para actualizar la contraseña
+        correo: 'test@correo.com',
+        nuevaContrasena: 'nueva123'
+      };
+      const response = await request(app).put('/usuarios/contrasena').send(updatePassword);
+      expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
+      expect(response.text).toBe('Contraseña actualizada correctamente'); // El mensaje debe ser "Contraseña actualizada correctamente"
+    });
+  }, 10000);
+
+  /**
+   * @test PUT /usuarios - debería actualizar los datos del usuario
+   */
+  test('PUT /usuarios - debería actualizar los datos del usuario', async () => {
+    await runTest('PUT /usuarios', async () => {
+      const updateUser = { // Datos para actualizar el usuario
+        id_usuario: 1,
+        nombre: 'Nuevo Nombre',
+        telefono: '123456789',
+        correo: 'nuevo@correo.com',
+        contrasena: 'nueva123'
+      };
+      const response = await request(app).put('/usuarios').send(updateUser);
+      expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
+      expect(response.text).toBe('Datos del usuario actualizados correctamente'); // El mensaje debe ser "Datos del usuario actualizados correctamente"
     });
   }, 10000);
 });
