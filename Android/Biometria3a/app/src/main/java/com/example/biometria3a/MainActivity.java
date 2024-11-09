@@ -53,11 +53,21 @@ import java.util.Date;
 import java.util.List;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
 
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 import java.util.Locale;
@@ -85,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textViewDispositivos; // Declarar el TextView
     private StringBuilder dispositivosEncontrados; // Para almacenar los dispositivos encontrados
-     double valorMinor;
-     double valorMajor;
+    double valorMinor;
+    double valorMajor;
     // --------------------------------------------------------------
     private static final int TIMEOUT_MS = 10000;
     private Handler handler = new Handler();
@@ -112,11 +122,16 @@ public class MainActivity extends AppCompatActivity {
     private static final long INTERVALO_30_SEGUNDOS = 30 * 1000; // 30 segundos en milisegundos
     private Runnable enviarDatosRunnable;
 
+    private EditText emailEditText, codeEditText;
+    private Button sendEmailButton, verifyButton;
+    private VerificationManager verificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loadVerificationFragment();
         // Inicializa el TextView
         textViewDispositivos = findViewById(R.id.dispositivoBtle);
         dispositivosEncontrados = new StringBuilder();
@@ -125,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         notificationHelper = new NotificationHalper(this);
 
         // Configurar el Toolbar
-        Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Iniciar el envío automático cada 30 segundos
@@ -135,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         if (!CO2NotificationManager.checkLocationPermission(this)) {
             CO2NotificationManager.requestLocationPermission(this);
         }
-
 
 
         if (getSupportActionBar() != null) {
@@ -156,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mandarPost=findViewById(R.id.mandarPost);
+        mandarPost = findViewById(R.id.mandarPost);
         mandarPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " onCreate(): empieza ");
         inicializarBlueTooth();
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
-
 
 
         // Encontrar el icono del menú en el Toolbar
@@ -197,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = this;
         sendOzoneLevelBroadcast(context, valorO3); // Enviar el broadcast para mostrar la notificación
+
+
     }
 
     // --------------------------------------------------------------
@@ -205,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         if (valorO3 >= SENSOR_DANADO_THRESHOLD) {
             // Si el valor de CO2 es mayor o igual a 500, el sensor puede estar dañado o haciendo lecturas erróneas
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
-        } else if (valorO3>= RANGO_MODERADO_MIN &&valorO3 <= RANGO_MODERADO_MAX) {
+        } else if (valorO3 >= RANGO_MODERADO_MIN && valorO3 <= RANGO_MODERADO_MAX) {
             // Si el valor de CO2 está entre 180 y 240, es un nivel moderado de calidad del aire
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
         } else if (valorO3 > RANGO_MODERADO_MAX) {
@@ -213,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
         }
     }
+
     // Método para enviar el Broadcast
     public void sendOzoneLevelBroadcast(Context context, int valorO3) {
         Intent intent = new Intent("com.example.biometria3a.OZONE_LEVEL_CHANGED"); // Acción personalizada
@@ -286,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
         this.elEscanner.startScan(this.callbackDelEscaneo);
 
 
-
     } // ()
 
     // --------------------------------------------------------------
@@ -300,8 +315,8 @@ public class MainActivity extends AppCompatActivity {
         TramaIBeacon tib = new TramaIBeacon(bytes);
 
         // Convertir los valores Major y Minor
-       valorMajor = Utilidades.bytesToInt(tib.getMajor());
-      //  valorMajor=50;
+        valorMajor = Utilidades.bytesToInt(tib.getMajor());
+        //  valorMajor=50;
 
         Log.d(ETIQUETA_LOG, "Valor Major detectado: " + valorMajor);
 
@@ -361,12 +376,10 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
 
-
-
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
-    private double getMedicionsBeacon (ScanResult resultado) {
+    private double getMedicionsBeacon(ScanResult resultado) {
         byte[] bytes = resultado.getScanRecord().getBytes();
         TramaIBeacon tib = new TramaIBeacon(bytes);
         return Utilidades.bytesToInt(tib.getMinor());
@@ -446,10 +459,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
 
-            }
-
-
-                else {
+                } else {
                     //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult(): no es el dispositivo buscado ");
                 }
             }
@@ -485,7 +495,6 @@ public class MainActivity extends AppCompatActivity {
         this.elEscanner.startScan(this.callbackDelEscaneo);
 
 
-
         // -----------------------Obtener el nombre del dispositivo---------------------------------
         // Obtener el nombre del dispositivo Bluetooth
         String deviceName = dispositivoBuscado;
@@ -506,7 +515,6 @@ public class MainActivity extends AppCompatActivity {
                 tvBluetoothName.setText("Nombre del dispositivo: " + finalDeviceName);
 
 
-
                 TextView tvBluetoothValores = findViewById(R.id.valoresSensor);
                 tvBluetoothValores.setText(
                         "Valores del sensor: " + "\n" +
@@ -520,7 +528,6 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-
 
 
     // --------------------------------------------------------------
@@ -558,8 +565,6 @@ public class MainActivity extends AppCompatActivity {
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
 
         this.buscarEsteDispositivoBTLE300("INNOVARESCRECER.");
-
-
 
 
     } // ()
@@ -624,8 +629,6 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
 
-
-
     // Método para mostrar el PopupMenu
     // Método para mostrar el PopupMenu
     private void showPopupMenu(View view) {
@@ -650,11 +653,11 @@ public class MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.action_packs) {
                     Toast.makeText(MainActivity.this, "Packs", Toast.LENGTH_SHORT).show();
                     return true;
-            } else if (item.getItemId() == R.id.action_privacidad) {
-                Toast.makeText(MainActivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
-                lanzarPrivacidad();
-                return true;
-            }else {
+                } else if (item.getItemId() == R.id.action_privacidad) {
+                    Toast.makeText(MainActivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
+                    lanzarPrivacidad();
+                    return true;
+                } else {
                     return false;
                 }
             }
@@ -663,6 +666,7 @@ public class MainActivity extends AppCompatActivity {
         // Mostrar el menú
         popupMenu.show();
     }
+
     // Inflar el menú cuando se crea la actividad
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -720,9 +724,6 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
 
 
-
-
-
     //-------------------------enviar el post --------------------
     // --------------------------------Enviar automatico 30seg ------------------------------
     private void iniciarEnvioAutomatico() {
@@ -736,11 +737,13 @@ public class MainActivity extends AppCompatActivity {
         };
         handler.post(enviarDatosRunnable);  // Inicia la primera ejecución
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(enviarDatosRunnable);
     }
+
     public void boton_enviar_pulsado_client(View quien) {
         // Llama a obtener la hora actual
         String horaActual = CO2NotificationManager.getCurrentTime();
@@ -751,7 +754,6 @@ public class MainActivity extends AppCompatActivity {
         double longitud = getLongitud();
         // Mostrar las coordenadas en un Toast
         Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
-
 
 
         int idSensor = 101;
@@ -813,6 +815,7 @@ public class MainActivity extends AppCompatActivity {
             return 0;  // Si no se puede obtener la ubicación, retorna 0
         }
     }
+
     private double getLongitud() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -837,7 +840,6 @@ public class MainActivity extends AppCompatActivity {
             return 0;  // Si no se puede obtener la ubicación, retorna 0
         }
     }
-
 
 
     // Updated method to send POST request
@@ -963,12 +965,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadVerificationFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        // 加载 VerificationFragment
+        VerificationFragment verificationFragment = new VerificationFragment();
+        fragmentTransaction.replace(R.id.fragment_container, verificationFragment);
+        fragmentTransaction.commit();
+
+    }
+    // class
 
 }
- // class
-
-
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 // --------------------------------------------------------------
