@@ -154,7 +154,7 @@ async function ConsultarDatosUsuario(req, res) {
 
 // Función para verificar usuario por correo y contraseña
 async function verificarUsuario(req, res) {
-  const { correo, contrasena } = req.query;
+  const { correo, contrasena } = req.body; // Cambiar a req.body en lugar de req.query
   let connection;
   try {
     console.log(`Intentando obtener conexión para verificar usuario con correo: ${correo}`);
