@@ -50,6 +50,7 @@ router.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
 router.get('/usuarios', verificarUsuario);
 router.put('/usuarios/contrasena', recuperarContrasena);
 router.put('/usuarios', editarDatosUsuario);
+router.post('/usuarios/verificar', verificarUsuario);
 //router.post('/asociar-sensor', asociarSensorAUsuario);
 
 // Pruebas de depuración

@@ -42,41 +42,32 @@ async function registrarUsuario(email, password, phone, name) {
 
 async function ConsultarDatosUsuario(email, password) {
     try {
-      // Codificar la contraseña antes de enviarla (esto solo es para fines ilustrativos, NO es seguro)
-      const encodedPassword = encodeURIComponent(password);
-  
-      // Realizar una solicitud GET al servidor con los parámetros
-      //const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo 
-      //const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
-      //const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
-      //const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
-      const response = await fetch(`http://192.168.0.25:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  Ip Portátil visi Universidad
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+        const response = await fetch('http://192.168.0.25:8080/usuarios/verificar', { // Ip Portátil visi Universidad
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ correo: email, contrasena: password })
+        });
 
-      const result = await response.json();
-  
-      if (response.ok) {
-        if (result.success) {
-          window.location.href = 'datosYMapa.html';
+        const result = await response.json();
+
+        if (response.ok) {
+            if (result.success) {
+                window.location.href = 'datosYMapa.html';
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        } else if (result.error === 'Usuario no existe') {
+            alert('El usuario no existe');
         } else {
-          alert('Contraseña incorrecta');
+            alert('Ocurrió un error inesperado');
         }
-      } else if (result.error === 'Usuario no existe') {
-        alert('El usuario no existe');
-      } else {
-        alert('Ocurrió un error inesperado');
-      }
     } catch (error) {
-      console.error('Error al verificar el usuario:', error);
-      alert('Ocurrió un error al conectar con el servidor');
+        console.error('Error al verificar el usuario:', error);
+        alert('Ocurrió un error al conectar con el servidor');
     }
-  }
-  
-  
+}
 
 // Manejar el evento de clic en el botón de registrarse
 document.getElementById('register-btn').addEventListener('click', function(event) {
