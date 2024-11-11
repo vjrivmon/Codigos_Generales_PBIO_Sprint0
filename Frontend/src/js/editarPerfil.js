@@ -1,3 +1,5 @@
+import { enviarCorreoDatosUsuarioCambiados } from "./mail.service.js";
+
 const popup = document.getElementById('popup2');
 const editBtn = document.getElementById('editBtn'); // Botón de editar
 const confirmBtn = document.getElementById('confirmBtn2'); // Botón de confirmar
@@ -75,8 +77,10 @@ confirmBtn.addEventListener('click', function(event) {
         alert("El número de teléfono debe tener exactamente 9 dígitos.");
         return;
     } else {
+        const mail = await enviarCorreoDatosUsuarioCambiados(userEmail)
         alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
         /* ENVIAR CORREO AL USUARIO - FALTA POR IMPLEMENTAR*/
+        
         popup.style.display = 'none'; // Oculta el popup
     }
 });
