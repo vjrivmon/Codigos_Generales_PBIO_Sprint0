@@ -46,30 +46,24 @@
                 <div class="info-grid">
                     <div class="info-item">
                         <p>Nombre</p>
-                        <input type="text" id="userName" placeholder="Nombre Apellidos" value="Valentín Pastor" required disabled>	
+                        <input type="text" id="userName" placeholder="Nombre Apellidos" required disabled>	
                     </div>
                     <div class="info-item">
-                        <p>Teléfono</strong></p>
-                        <input type="tel" id="userPhone" placeholder="123456789" value="123456789" maxlength="9" required disabled>
-
+                        <p>Teléfono</p>
+                        <input type="tel" id="userPhone" placeholder="123456789" maxlength="9" required disabled>
                     </div>
                     <div class="info-item">
-                        <p><strong>Correo electrónico</strong></p>
-                        <input type="email" id="userEmail" placeholder="correo@gmail.com" value="correo@gmail.com" required disabled>
+                        <p>Correo electrónico</p>
+                        <input type="email" id="userEmail" placeholder="correo@gmail.com" required disabled>
                     </div>
                     <div class="info-item">
-                        <p><strong>Contraseña</strong></p>
-                        <input type="password" id="userPassword" placeholder="********" value="123456789" required disabled>
+                        <p>Contraseña</p>
+                        <input type="password" id="userPassword" placeholder="********" required disabled>
                         <a href="#" id="olvideContrasenyaBtn">¿Olvidaste tu contraseña?</a>
                     </div>
-
                     <div class="info-item">
-                       
+                        <button id="editBtn" class="edit-button">Editar</button>
                     </div>
-
-                    <!-- Botón Editar fuera de headerPerfil -->
-                    <button id="editBtn" class="edit-button">Editar</button>
-                
                 </div>
             </div>
 
@@ -98,19 +92,16 @@
         </div>
     </div>
 
-
     <!-- Popup cambiar contraseña -->
-<!-- Popup cambiar contraseña -->
-<div id="popupOlvidado" class="popup">
-    <div class="popup-content">
-        <h3>¿Seguro que quieres cambiar la contraseña?</h3>
-        <p>Escribe el teléfono asociado a la cuenta de correo con la que intentas iniciar sesión.</p>
-        <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input">
-        <button id="mandarCorreoNuevaContrasenya">Recuperar contraseña</button>
-        <button id="cancelBtn">Cancelar</button>
+    <div id="popupOlvidado" class="popup">
+        <div class="popup-content">
+            <h3>¿Seguro que quieres cambiar la contraseña?</h3>
+            <p>Escribe el teléfono asociado a la cuenta de correo con la que intentas iniciar sesión.</p>
+            <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input">
+            <button id="mandarCorreoNuevaContrasenya">Recuperar contraseña</button>
+            <button id="cancelBtn">Cancelar</button>
+        </div>
     </div>
-</div>
-
 
     <!-- Footer -->
     <footer class="apple-footer">
