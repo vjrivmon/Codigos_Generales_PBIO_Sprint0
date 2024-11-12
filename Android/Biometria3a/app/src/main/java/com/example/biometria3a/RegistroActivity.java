@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,13 +20,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegistroActivity extends AppCompatActivity {
 
-    private EditText edtUsername, edtEmail, edtPassword;
+    private EditText edtUsername, edtEmail, edtPassword,edtPhone;
     private Button btnRegistrarse;
     private TextView  txtRegistrate;
     private CheckBox checkBoxPolitica,cbUppercase, cbNumber, cbSpecialChar, cbLength;
@@ -40,6 +43,7 @@ public class RegistroActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        edtPhone = findViewById(R.id.edtTelefono);
         btnRegistrarse = findViewById(R.id.btnIniSesion);
         txtRegistrate = findViewById(R.id.txtRegistrate);
 
@@ -122,14 +126,27 @@ public class RegistroActivity extends AppCompatActivity {
 
             // Crear el objeto User
             String username = edtUsername.getText().toString().trim();
-            String email =edtEmail.getText().toString();
+            String email = edtEmail.getText().toString();
             String password = edtPassword.getText().toString();
-
+            String phone = edtPhone.getText().toString().trim();
+            // Imprimir los valores en el Logcat para ver qué se está enviando
+            Log.d("RegistroActivity", "Nombre: " + username);
+            Log.d("RegistroActivity", "Telefono: " + phone);
+            Log.d("RegistroActivity", "Correo: " + email);
+            Log.d("RegistroActivity", "Contraseña: " + password);
+            if (!isValidPhoneNumber(phone)) {
+                Toast.makeText(RegistroActivity.this, "Número de teléfono no válido", Toast.LENGTH_SHORT).show();
+                return;
+            }
                     // Validar los campos
                     if (TextUtils.isEmpty(username)) {
                         Toast.makeText(RegistroActivity.this, "Por favor, introduce tu nombre de usuario", Toast.LENGTH_SHORT).show();
                         return;
                     }
+            if (TextUtils.isEmpty(phone)) {
+                Toast.makeText(RegistroActivity.this, "Por favor, introduce tu número de teléfono", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
                     if (TextUtils.isEmpty(email)) {
                         Toast.makeText(RegistroActivity.this, "Por favor, introduce tu correo electrónico", Toast.LENGTH_SHORT).show();
@@ -156,7 +173,7 @@ public class RegistroActivity extends AppCompatActivity {
 
             //----------------------REGISTRO------------------------------
 
-            Usuario newUser = new Usuario(email, password);
+            Usuario newUser = new Usuario(username, phone, email, password);
 
             // Llamar a la API para registrar el usuario
             ApiService apiService = ApiClient.getClient().create(ApiService.class);
@@ -168,10 +185,27 @@ public class RegistroActivity extends AppCompatActivity {
                         Toast.makeText(RegistroActivity.this, "Usuario registrado exitosamente.", Toast.LENGTH_SHORT).show();
                         finish(); // Cerrar la actividad después del registro
                     } else {
-                        Toast.makeText(RegistroActivity.this, "Error al registrar el usuario. Intenta de nuevo.", Toast.LENGTH_SHORT).show();
+                        // Mostrar más detalles sobre el error
+                        String errorMessage = "Error al registrar el usuario. Intenta de nuevo.";
+                        if (response.code() == 400) {
+                            errorMessage = "Solicitud incorrecta (400). Revisa los datos enviados.";
+                        } else if (response.code() == 500) {
+                            errorMessage = "Error del servidor (500). Intenta más tarde.";
+                        }
+
+                        // Imprimir el código de estado y el cuerpo de la respuesta para depuración
+                        Log.e("RegistroError", "Código de error: " + response.code());
+                        if (response.errorBody() != null) {
+                            try {
+                                String errorBody = response.errorBody().string();
+                                Log.e("RegistroError", "Cuerpo del error: " + errorBody);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Toast.makeText(RegistroActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(RegistroActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -270,6 +304,11 @@ public class RegistroActivity extends AppCompatActivity {
         // Creamos un Intent para abrir la actividad de inicio de sesión
         Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
         startActivity(intent);  // Iniciamos la nueva actividad
+    }
+    // Método para validar el formato del teléfono
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        // Validación simple para asegurar que el número tiene solo dígitos (puedes ajustarlo a tu necesidad)
+        return phoneNumber.matches("[0-9]{10}");  // Acepta solo números de 10 dígitos
     }
 
 /*
