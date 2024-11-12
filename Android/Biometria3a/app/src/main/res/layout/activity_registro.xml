@@ -154,22 +154,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
+        <EditText
+            android:id="@+id/edtconfirmPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Confirmar Contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+
 
 
     <!-- Barra de progreso -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:indeterminate="false"
-        android:max="4"
-    android:progress="0"
-        android:progressDrawable="@drawable/progress_bar_style"
-    style="@android:style/Widget.ProgressBar.Horizontal"
-    app:layout_constraintTop_toBottomOf="@id/edtPassword"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:indeterminate="false"
+            android:max="4"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bar_style"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtconfirmPassword" />
     <!-- Ticks para los requisitos de la contraseña -->
 
     <!-- Lista de requisitos de la contraseña -->

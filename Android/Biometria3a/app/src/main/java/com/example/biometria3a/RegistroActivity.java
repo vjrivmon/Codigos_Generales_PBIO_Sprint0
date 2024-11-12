@@ -28,7 +28,7 @@ import retrofit2.Response;
 
 public class RegistroActivity extends AppCompatActivity {
 
-    private EditText edtUsername, edtEmail, edtPassword,edtPhone;
+    private EditText edtUsername, edtEmail, edtPassword,edtPhone,edtConfirmPassword;
     private Button btnRegistrarse;
     private TextView  txtRegistrate;
     private CheckBox checkBoxPolitica,cbUppercase, cbNumber, cbSpecialChar, cbLength;
@@ -46,6 +46,7 @@ public class RegistroActivity extends AppCompatActivity {
         edtPhone = findViewById(R.id.edtTelefono);
         btnRegistrarse = findViewById(R.id.btnIniSesion);
         txtRegistrate = findViewById(R.id.txtRegistrate);
+        edtConfirmPassword = findViewById(R.id.edtconfirmPassword);
 
         // Enlazar los CheckBoxes de requisitos de contraseña
         cbUppercase = findViewById(R.id.cbUppercase);
@@ -129,6 +130,9 @@ public class RegistroActivity extends AppCompatActivity {
             String email = edtEmail.getText().toString();
             String password = edtPassword.getText().toString();
             String phone = edtPhone.getText().toString().trim();
+
+            String confirmPassword = edtConfirmPassword.getText().toString();
+
             // Imprimir los valores en el Logcat para ver qué se está enviando
             Log.d("RegistroActivity", "Nombre: " + username);
             Log.d("RegistroActivity", "Telefono: " + phone);
@@ -155,6 +159,15 @@ public class RegistroActivity extends AppCompatActivity {
 
             if (TextUtils.isEmpty(password)) {
                 Toast.makeText(RegistroActivity.this, "Por favor, introduce tu contraseña", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(confirmPassword)) {
+                Toast.makeText(RegistroActivity.this, "Por favor, confirma tu contraseña", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Validar que las contraseñas coincidan
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(RegistroActivity.this, "Las contraseñas no coinciden, por favor verifica", Toast.LENGTH_SHORT).show();
                 return;
             }
 
