@@ -44,6 +44,7 @@
         <activity android:name=".Venta_reembolso_activity" />
         <activity android:name=".EditPerfilActivity"/>
         <activity android:name=".Mapa_Activity"/>
+        <activity android:name=".VerificationActivity"/>
         <receiver android:name=".OzoneLevelReceiver"
             android:enabled="true"
             android:exported="true">

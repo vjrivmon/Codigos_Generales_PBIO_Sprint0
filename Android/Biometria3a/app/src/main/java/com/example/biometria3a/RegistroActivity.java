@@ -183,6 +183,10 @@ public class RegistroActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(RegistroActivity.this, "Usuario registrado exitosamente.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(RegistroActivity.this, VerificationActivity.class);
+                        startActivity(intent);
+
                         finish(); // Cerrar la actividad después del registro
                     } else {
                         // Mostrar más detalles sobre el error

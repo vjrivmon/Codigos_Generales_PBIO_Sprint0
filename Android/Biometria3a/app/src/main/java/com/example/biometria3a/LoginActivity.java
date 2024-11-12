@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
+        Log.d("LoginActivity", "Correo: " + email);
+        Log.d("LoginActivity", "Contraseña: " + password);
 
         // Validar los campos
         if (email.isEmpty() || password.isEmpty()) {
@@ -74,18 +78,31 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // Login exitoso: redirige al usuario a la actividad principal
-                    Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(LoginActivity.this, Mapa_Activity.class);  // Cambia MainActivity a tu actividad principal
-                    startActivity(intent);
-                    finish();  // Cierra la actividad de login
+                if (response.isSuccessful()) {
+                    Usuario usuario = response.body();
+                    if (usuario != null) {
+                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, Mapa_Activity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    // Credenciales incorrectas
-                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo", Toast.LENGTH_SHORT).show();
+                    // Mostrar el código de error y el cuerpo de la respuesta para depurar
+                    Log.e("LoginActivity", "Error en la respuesta del servidor. Código de error: " + response.code());
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorBody = response.errorBody().string();
+                            Log.e("LoginActivity", "Cuerpo de error: " + errorBody);
+                            Toast.makeText(LoginActivity.this, "Error: " + errorBody, Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
+
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
