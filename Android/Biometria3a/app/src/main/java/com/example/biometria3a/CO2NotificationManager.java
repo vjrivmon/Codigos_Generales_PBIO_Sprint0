@@ -29,7 +29,7 @@ public class CO2NotificationManager {
     private static final int NOTIFICATION_ID = 1;
     private static final int REQUEST_PERMISSION_CODE = 100; // Código para la solicitud de permisos
 
-    public static void showCO2AlertNotification(Context context, int co2Value) {
+    public static void showCO2AlertNotification(Context context, double co2Value) {
         // Verificar si se tiene el permiso de localización
         if (checkLocationPermission(context)) {
             // Si se tiene el permiso, proceder con la notificación
@@ -42,7 +42,7 @@ public class CO2NotificationManager {
 
             // Definir el mensaje dependiendo del nivel de CO2
             String additionalInfo = "";
-            if (co2Value > 500) {
+            /*if (co2Value > 500) {
                 // Nivel peligroso
                 contentText = "¡Nivel de 03 peligrosamente alto! " + contentText;
                 additionalInfo = "¡El nivel de 03 ha superado los 500! Es peligroso para la salud.";
@@ -65,6 +65,31 @@ public class CO2NotificationManager {
                 additionalInfo = "El nivel de 03 está dentro del rango saludable.";
             }
 
+
+             */
+
+            if (co2Value > 500) {
+                // Nivel crítico, sensor dañado o valor anormal
+         
+                contentText = "¡Valor de 03 peligrosamente alto.\n";
+                additionalInfo = "¡El nivel de 03 ha superado los 500! Esto indica que el sensor podría estar dañado o el valor es anormalmente alto.\n" +
+                        "Por favor, revisa el sensor o las condiciones de medición.";
+            } else if (co2Value >= 240 && co2Value <= 500) {
+                // Nivel moderado
+                contentText = "Nivel moderado de ozono detectado.\n";
+                additionalInfo = "La concentración de ozono está en un nivel moderado (entre 240 y 500 ppb). Se recomienda tomar precauciones.\n" +
+                        "Fecha y hora: " + currentTime + ".\n" +
+                        "Nivel de Ozono: " + co2Value + ".\n" +
+                        "Coordenadas GPS: " + gpsCoordinates + ".\n";
+            } else if (co2Value >= 180) {
+                // Nivel bajo pero no ideal
+                contentText = "Nivel de CO2 aceptable, pero mejorable.";
+                additionalInfo = "El nivel de O3 está dentro del rango aceptable, pero se pueden tomar medidas para mejorarlo.";
+            } else {
+                // Nivel bajo
+                contentText = "Nivel de CO2 normal.";
+                additionalInfo = "El nivel de O3 está dentro del rango saludable.";
+            }
             // Crear la notificación
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_rounded_logo)  // Cambia esto por tu ícono

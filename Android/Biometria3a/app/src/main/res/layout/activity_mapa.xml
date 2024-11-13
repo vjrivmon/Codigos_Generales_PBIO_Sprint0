@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:background="#F7F7F7"
     tools:context=".Mapa_Activity">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -89,14 +88,121 @@
         android:layout_below="@id/tv_map_title"
         android:layout_marginTop="16dp" />
 
+    <!-- Contenedor de los botones -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/webview_map"
+        android:layout_marginTop="14dp"
+        android:padding="16dp">
+
+        <!-- Botón 1: Buscar Dispositivos BTLE -->
+        <Button
+            android:id="@+id/botonBuscarDispositivosBTLE"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FF5aa4"
+            android:text="Buscar Dispositivos BTLE"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Botón 2: Detener búsqueda Dispositivos BTLE -->
+        <Button
+            android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#FF5aa4"
+
+            android:text="Detener búsqueda Dispositivos BTLE"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/botonBuscarDispositivosBTLE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Botón 3: Buscar nuestro Dispositivo BTLE -->
+        <Button
+            android:id="@+id/botonBuscarNuestroDispositivoBTLE"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#FF5aa4"
+
+            android:text="Buscar nuestro dispositivo BTLE"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/botonDetenerBusquedaDispositivosBTLE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Botón 4: Enviar Datos -->
+        <Button
+            android:id="@+id/mandarPost"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#FF5aa4"
+
+
+            android:text="Enviar datos"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/botonBuscarNuestroDispositivoBTLE" />
+
+
+        <!-- TextViews para mostrar los resultados -->
+        <TextView
+            android:id="@+id/dispositivoBtle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#690D7C"
+            app:layout_constraintTop_toBottomOf="@id/mandarPost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/nuestrodisp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#F01515"
+            app:layout_constraintTop_toBottomOf="@id/dispositivoBtle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/valoresSensor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Valores del sensor"
+            android:textColor="#00A2F0"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/nuestrodisp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!-- Information box -->
     <RelativeLayout
         android:id="@+id/info_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/webview_map"
-        android:layout_marginTop="16dp"
+        android:layout_below="@id/button_container"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:padding="20dp">
 
         <!-- Hora actual -->
@@ -104,51 +210,51 @@
             android:id="@+id/tv_current_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:text="Hora actual: "
-            android:textSize="12sp"
             android:textColor="#808080"
-            android:layout_alignParentTop="true"/>
+            android:textSize="12sp" />
 
         <!-- Datos de mi sensor -->
         <TextView
             android:id="@+id/tv_sensor_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Datos de mi sensor"
-            android:textSize="20sp"
-            android:textColor="#000000"
             android:layout_below="@id/tv_current_time"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:text="Datos de mi sensor"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <!-- Temperatura -->
         <TextView
             android:id="@+id/tv_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Temperatura: 25°C"
             android:layout_below="@id/tv_sensor_data"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:text="Temperatura: 25°C"
+            android:textSize="16sp" />
 
         <!-- Ozono -->
         <TextView
             android:id="@+id/tv_ozone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ozono: 100 ppm"
             android:layout_below="@id/tv_temperature"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:text="Ozono: 100 ppm"
+            android:textSize="16sp" />
 
         <!-- Actualizar button -->
         <Button
             android:id="@+id/btn_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Actualizar"
-            android:backgroundTint="@color/colorAccent"
             android:layout_below="@id/tv_ozone"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Actualizar" />
     </RelativeLayout>
 </RelativeLayout>
 </ScrollView>

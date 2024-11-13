@@ -1,152 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F7F7"
+    tools:context=".Mapa_Activity">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAzulclaro"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <!-- Toolbar personalizado -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:contentDescription="Logo"
-            android:src="@drawable/ic_logobac"
-            android:layout_gravity="start|center_vertical"
-            android:scaleType="fitCenter"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-
-            <!-- Icono del menú hamburguesa -->
-            <ImageView
-                android:id="@+id/menu_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu"
-                android:contentDescription="Menu"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+            <!-- Toolbar personalizado -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <!-- Icono de usuario al lado derecho -->
-            <ImageView
-                android:id="@+id/user_icon"
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="Logo"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_logobac" />
+
+                <ImageView
+                    android:id="@+id/menu_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="Menu"
+                    android:src="@drawable/ic_menu"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/user_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="User"
+                    android:src="@drawable/ic_user"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/menu_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Mapa title -->
+        <TextView
+            android:id="@+id/tv_map_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/constraintLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Mapa de calidad del aire de Valencia"
+            android:textSize="24sp" />
+
+        <!-- WebView for the map -->
+        <WebView
+            android:id="@+id/webview_map"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_below="@id/tv_map_title"
+            android:layout_marginTop="16dp" />
+
+        <!-- Contenedor de los botones -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/webview_map"
+            android:layout_marginTop="14dp"
+            android:padding="16dp">
+
+            <!-- Botón 1: Buscar Dispositivos BTLE -->
+            <Button
+                android:id="@+id/botonBuscarDispositivosBTLE"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#FF5aa4"
+                android:text="Buscar Dispositivos BTLE"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Botón 2: Detener búsqueda Dispositivos BTLE -->
+            <Button
+                android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#FF5aa4"
+
+                android:text="Detener búsqueda Dispositivos BTLE"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/botonBuscarDispositivosBTLE"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+            <!-- Botón 4: Enviar Datos -->
+            <Button
+                android:id="@+id/mandarPost"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:backgroundTint="#FF5aa4"
+                android:text="Enviar datos"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/botonDetenerBusquedaDispositivosBTLE" />
+
+
+            <!-- TextViews para mostrar los resultados -->
+            <TextView
+                android:id="@+id/dispositivoBtle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#690D7C"
+                app:layout_constraintTop_toBottomOf="@id/mandarPost"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/nuestrodisp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#F01515"
+                app:layout_constraintTop_toBottomOf="@id/dispositivoBtle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/valoresSensor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Valores del sensor"
+                android:textColor="#00A2F0"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/nuestrodisp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Information box -->
+        <RelativeLayout
+            android:id="@+id/info_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_container"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:padding="20dp">
+
+            <!-- Hora actual -->
+            <TextView
+                android:id="@+id/tv_current_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_user"
-                android:contentDescription="User"
-                android:layout_gravity="end"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toStartOf="@+id/menu_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:layout_alignParentTop="true"
+                android:text="Hora actual: "
+                android:textColor="#808080"
+                android:textSize="12sp" />
 
-        </androidx.appcompat.widget.Toolbar>
+            <!-- Datos de mi sensor -->
+            <TextView
+                android:id="@+id/tv_sensor_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_current_time"
+                android:layout_marginTop="10dp"
+                android:text="Datos de mi sensor"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
+            <!-- Temperatura -->
+            <TextView
+                android:id="@+id/tv_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_sensor_data"
+                android:layout_marginTop="8dp"
+                android:text="Temperatura: 25°C"
+                android:textSize="16sp" />
 
-    <!-- Botones de acciones -->
-    <Button
-        android:id="@+id/botonBuscarDispositivosBTLE"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FF5aa4"
-        android:onClick="botonBuscarDispositivosBTLEPulsado"
-        android:text="Buscar Dispositivos BTLE"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+            <!-- Ozono -->
+            <TextView
+                android:id="@+id/tv_ozone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_temperature"
+                android:layout_marginTop="8dp"
+                android:text="Ozono: 100 ppm"
+                android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FF5aa4"
-        android:onClick="botonDetenerBusquedaDispositivosBTLEPulsado"
-        android:text="Detener búsqueda Dispositivos BTLE"
-        app:layout_constraintTop_toBottomOf="@id/botonBuscarDispositivosBTLE"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <Button
-        android:id="@+id/botonBuscarNuestroDispositivoBTLE"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FF5aa4"
-        android:onClick="botonBuscarNuestroDispositivoBTLEPulsado"
-        android:text="Buscar nuestro dispositivo BTLE"
-        app:layout_constraintTop_toBottomOf="@id/botonDetenerBusquedaDispositivosBTLE"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <Button
-        android:id="@+id/mandarPost"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FF5aa4"
-        android:text="Enviar datos"
-        android:textColorLink="#DB0707"
-        app:layout_constraintTop_toBottomOf="@id/botonBuscarNuestroDispositivoBTLE"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <!-- TextViews para mostrar los resultados -->
-    <TextView
-        android:id="@+id/dispositivoBtle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="#690D7C"
-        app:layout_constraintTop_toBottomOf="@id/mandarPost"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/nuestrodisp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="#F01515"
-        app:layout_constraintTop_toBottomOf="@id/dispositivoBtle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/valoresSensor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Valores del sensor"
-        android:textColor="#00A2F0"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/nuestrodisp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Actualizar button -->
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_ozone"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Actualizar" />
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

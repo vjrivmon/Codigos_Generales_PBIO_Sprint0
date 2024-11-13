@@ -3,6 +3,7 @@ package com.example.biometria3a;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -24,6 +25,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -92,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView menuIcon;
     public Button mandarPost;
-
-    private TextView textViewDispositivos; // Declarar el TextView
-    private StringBuilder dispositivosEncontrados; // Para almacenar los dispositivos encontrados
     double valorMinor;
     double valorMajor;
     // --------------------------------------------------------------
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
-
     private static final int SENSOR_DANADO_THRESHOLD = 500;  // Umbral de valor para sensor dañado
     private static final int RANGO_MODERADO_MIN = 180;  // Umbral para calidad del aire moderada (mínimo)
     private static final int RANGO_MODERADO_MAX = 240;  // Umbral para calidad del aire moderada (máximo)
@@ -122,19 +122,55 @@ public class MainActivity extends AppCompatActivity {
     private static final long INTERVALO_30_SEGUNDOS = 30 * 1000; // 30 segundos en milisegundos
     private Runnable enviarDatosRunnable;
 
-    private EditText emailEditText, codeEditText;
-    private Button sendEmailButton, verifyButton;
-    private VerificationManager verificationManager;
+    // --------------------------------------------------------------
+    private TextView tvCurrentTime, tvTemperature, tvOzone;
+    private WebView webView;
+    private Button btnUpdate;
+    private static final int REQUEST_ENABLE_BT = 1;
+    // Crear la instancia de BluetoothHelper
+    private BluetoothHelper bluetoothHelper;
 
+    private Runnable timeoutRunnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Inicializar el helper de Bluetooth
+        bluetoothHelper = new BluetoothHelper(this);
 
-        loadVerificationFragment();
-        // Inicializa el TextView
-        textViewDispositivos = findViewById(R.id.dispositivoBtle);
-        dispositivosEncontrados = new StringBuilder();
+        //------------Automatizar busqueda de mi dispositivo----------------
+        // Llama automáticamente al método para iniciar la búsqueda
+        // Inicializa el adaptador Bluetooth y el escáner
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Log.e("Error", "Este dispositivo no soporta Bluetooth");
+            return; // Termina si el dispositivo no soporta Bluetooth
+        }
+
+        // Verifica si Bluetooth está activado, de lo contrario solicita activarlo
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+        // Inicializa el escáner de Bluetooth LE
+        elEscanner = bluetoothAdapter.getBluetoothLeScanner();
+        if (elEscanner == null) {
+            Log.e("Error", "El escáner BLE no está disponible");
+            return; // Termina si el escáner es nulo
+        }
+        String dispositivoBuscado = "ESTO-ES-UN-TEXTO";  // Cambia esto por el nombre del dispositivo que buscas
+
+        buscarEsteDispositivoBTLE300(dispositivoBuscado);
+        //---------------mapa----------------
+        tvCurrentTime = findViewById(R.id.tv_current_time);
+        tvTemperature = findViewById(R.id.tv_temperature);
+        tvOzone = findViewById(R.id.tv_ozone);
+        btnUpdate = findViewById(R.id.btn_update);
+        webView = findViewById(R.id.webview_map);
+
+
+       // loadVerificationFragment();
 
         // Inicializar el NotificationHelper para gestionar notificaciones
         notificationHelper = new NotificationHalper(this);
@@ -202,21 +238,50 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(ozoneLevelReceiver, filter);
 
         // Ejemplo de valor de CO2 (este valor se podría obtener de tu sensor)
-        int valorO3 = 280; // Este es solo un ejemplo, cámbialo por el valor real del sensor
-
+        //int valorO3 = 280; // Este es solo un ejemplo, cámbialo por el valor real del sensor
+         double valorO3= valorMajor/10000;
         // Llamar al método para lanzar la notificación según el valor
-        lanzarNoti(valorO3);
-
+       // lanzarNoti((int) valorO3);
+        Log.d("MiEtiqueta", "El valor de O3 es: " + valorO3);
 
         Context context = this;
-        sendOzoneLevelBroadcast(context, valorO3); // Enviar el broadcast para mostrar la notificación
+        sendOzoneLevelBroadcast(context, (int) valorO3); // Enviar el broadcast para mostrar la notificación
 
 
+
+
+        //------------------mapa------------------------
+        // WebView设置
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true); // 启用JavaScript
+        webView.setWebViewClient(new WebViewClient()); // 在WebView中打开URL
+
+
+        // 加载Google Maps的普通URL，显示瓦伦西亚的位置
+        String googleMapsUrl = "https://www.google.com/maps?q=Valencia&z=12";
+        webView.loadUrl(googleMapsUrl);
+
+        // 显示当前时间
+        updateTime();
+
+        // 更新按钮点击事件
+        btnUpdate.setOnClickListener(v -> {
+                    // 更新传感器数据的逻辑
+                    tvTemperature.setText("Temperatura: 26°C"); // 假设更新后的温度
+                    tvOzone.setText("Ozono: 105 ppm"); // 假设更新后的Ozono数据
+                    updateTime(); // 更新时间
+        });
+    }
+
+    // 更新显示时间
+    private void updateTime() {
+        String currentTime = new SimpleDateFormat("EEEE, d MMM yyyy HH:mm:ss", new Locale("es", "ES")).format(new Date());
+        tvCurrentTime.setText("Hora actual: " + currentTime);
     }
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-    public void lanzarNoti(int valorO3) {
+    public void lanzarNoti(double valorO3) {
         if (valorO3 >= SENSOR_DANADO_THRESHOLD) {
             // Si el valor de CO2 es mayor o igual a 500, el sensor puede estar dañado o haciendo lecturas erróneas
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
@@ -317,6 +382,8 @@ public class MainActivity extends AppCompatActivity {
         // Convertir los valores Major y Minor
         valorMajor = Utilidades.bytesToInt(tib.getMajor());
         //  valorMajor=50;
+       lanzarNoti(valorMajor);
+        // Usar Handler para esperar 10 segundos antes de mostrar la notificación
 
         Log.d(ETIQUETA_LOG, "Valor Major detectado: " + valorMajor);
 
@@ -443,6 +510,8 @@ public class MainActivity extends AppCompatActivity {
                 TramaIBeacon tib = new TramaIBeacon(bytes);
                 if (Utilidades.bytesToString(tib.getUUID()).equals(dispositivoBuscado)) {
                     mostrarInformacionDispositivoBTLE(resultado);
+                    // Reiniciar el temporizador al recibir datos
+                    reiniciarTemporizador();
                     final String sensorDatos = obtenerInformacionDispositivoBTLE(resultado);
 
                     // --------------------------------------------------------------
@@ -463,7 +532,29 @@ public class MainActivity extends AppCompatActivity {
                     //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult(): no es el dispositivo buscado ");
                 }
             }
+            private void reiniciarTemporizador() {
+                // Si el temporizador ya estaba corriendo, cancelarlo
+                if (timeoutRunnable != null) {
+                    handler.removeCallbacks(timeoutRunnable);
+                }
 
+                // Crear un nuevo Runnable para el temporizador
+                timeoutRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        // Si no se han recibido datos en el tiempo especificado, mostrar una notificación
+                        enviarNotificacionSinDatos();
+                    }
+                };
+
+                // Iniciar el temporizador
+                handler.postDelayed(timeoutRunnable, 10000);
+            }
+            private void enviarNotificacionSinDatos() {
+                NotificationHalper notificationHalper = new NotificationHalper(MainActivity.this);
+                notificationHalper.showNotification("Alerta de Sensor", "No se han recibido datos del sensor. El sensor está apagado o no disponible.");
+
+            }
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
                 super.onBatchScanResults(results);
@@ -754,13 +845,15 @@ public class MainActivity extends AppCompatActivity {
         double longitud = getLongitud();
         // Mostrar las coordenadas en un Toast
         Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
+        // Obtener el ID del sensor dinámicamente
+        //String idSensor = bluetoothHelper.obtenerIdSensor(this);
+       // Log.d("IDsensor", idSensor);
 
-
-        int idSensor = 101;
-        //double valorGas = valorMajor / 1000;
-        double valorGas = 200;
-        //double valorTemperatura = valorMinor / 100;
-        double valorTemperatura = 32;
+       String idSensor = "00:1A:2B:3M:4D:5E";
+        double valorGas = valorMajor / 1000;
+       // double valorGas = 200;
+        double valorTemperatura = valorMinor / 100;
+       // double valorTemperatura = 32;
 
         // Crea el objeto Medicion con los datos obtenidos
         Medicion medicion = new Medicion(horaActual, latitud, longitud, idSensor, valorGas, valorTemperatura);
@@ -965,7 +1058,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadVerificationFragment() {
+ /*   private void loadVerificationFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -975,6 +1068,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
+
+  */
     // class
 
 }

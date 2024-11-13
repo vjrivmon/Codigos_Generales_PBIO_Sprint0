@@ -15,6 +15,10 @@ public class Usuario {
         this.contrasena = contrasena;
     }
     // Getters y Setters
+    // Getters y setters
+    public int getId_usuario() {
+        return id_usuario;
+    }
     public String getCorreo() {
         return correo;
     }
