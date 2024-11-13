@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para cargar datos del usuario al cargar la página
     const id_usuario = 1; // ID del usuario a cargar, esto debería ser dinámico
-    fetch(`http://192.168.0.25:8080/usuarios/${encodeURIComponent(id_usuario)}`) // Cambiado para que use el ID en la ruta
+    fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`) // Cambiado para que use localhost
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al cargar los datos del usuario');
