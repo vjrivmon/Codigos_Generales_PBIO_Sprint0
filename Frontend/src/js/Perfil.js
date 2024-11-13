@@ -58,26 +58,46 @@ document.addEventListener('DOMContentLoaded', function() {
     cancelBtn.addEventListener('click', function() {
         popup.style.display = 'none'; // Cerrar popup sin guardar cambios
     });
+    
+    // ---------------------------- Antes de tocar esto, consultar esto con Vicente, se puede romper el código ----------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // Función para obtener el valor de una cookie por su nombre
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
     // Función para cargar datos del usuario al cargar la página
-    const id_usuario = 1; // ID del usuario a cargar, esto debería ser dinámico
-    fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`) // Cambiado para que use localhost
+    const id_usuario = getCookie('id_usuario'); // Obtener ID del usuario desde la cookie
+    console.log(`id_usuario obtenido de la cookie: ${id_usuario}`);
+    if (!id_usuario) {
+        alert('No se pudo obtener el ID del usuario.');
+        return;
+    }
+
+    fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al cargar los datos del usuario');
+                throw new Error(`Error al cargar los datos del usuario: ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            // Asumiendo que la consulta devuelve un array, tomar el primer elemento
-            const userData = data[0]; // Asegúrate de que tu consulta devuelva un solo usuario
-            emailInput.value = userData.correo; // Asignar el correo al input
-            passwordInput.value = ''; // No mostrar la contraseña
-            nameInput.value = userData.nombre; // Asignar el nombre al input
-            phoneInput.value = userData.telefono; // Asignar el teléfono al input
+            if (data && data.length > 0) {
+                const userData = data[0];
+                emailInput.value = userData.correo;
+                passwordInput.value = '';
+                nameInput.value = userData.nombre;
+                phoneInput.value = userData.telefono;
+            } else {
+                console.error('Error: Datos del usuario no encontrados.');
+                alert('No se pudieron cargar los datos del usuario.');
+            }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('No se pudieron cargar los datos del usuario.');
+            alert(`No se pudieron cargar los datos del usuario. Detalles: ${error.message}`);
         });
+            // ------------------------------------------------------------------------------------------------------------------------------------
 });
