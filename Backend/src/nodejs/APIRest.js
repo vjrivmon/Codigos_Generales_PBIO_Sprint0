@@ -158,8 +158,8 @@ module.exports = router; // Exportar el router
  *           format: double
  *           description: longitud de la medición
  *         id_sensor:
- *           type: string
- *           description: ID del sensor
+ *           type: varchar
+ *           description: ID del sensor en formato MAC
  *         valorGas:
  *           type: number
  *           description: Valor de la medición de Gas
@@ -170,8 +170,58 @@ module.exports = router; // Exportar el router
  *         hora: '10:00'
  *         latitud: 40.416775
  *         longitud: -3.703790
+ *         id_sensor: '00:0A:95:9D:68:16'
  *         valorGas: 40.00
  *         valorTemperatura: 32.00
+ */
+
+// Esquema de Swagger para Medicion
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Medicion:
+ *       type: object
+ *       required:
+ *         - id
+ *         - hora
+ *         - latitud
+ *         - longitud
+ *         - id_sensor
+ *         - valorGas
+ *         - valorTemperatura
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID de la medición
+ *         hora:
+ *           type: string
+ *           description: Hora de la medición
+ *         latitud:
+ *           type: number
+ *           format: double
+ *           description: Latitud de la medición
+ *         longitud:
+ *           type: number
+ *           format: double
+ *           description: Longitud de la medición
+ *         id_sensor:
+ *           type: string
+ *           description: ID del sensor en formato MAC
+ *         valorGas:
+ *           type: number
+ *           description: Valor de la medición de Gas
+ *         valorTemperatura:
+ *           type: number
+ *           description: Valor de la medición de Temperatura
+ *       example:
+ *         id: 2
+ *         hora: '11:00:00'
+ *         latitud: 41.385064
+ *         longitud: 2.173404
+ *         id_sensor: '11:2B:2X:3L:4K:5F'
+ *         valorGas: 30
+ *         valorTemperatura: 32
  */
 
 // Esquema de Swagger para Usuario
@@ -183,7 +233,7 @@ module.exports = router; // Exportar el router
  *       type: object
  *       required:
  *         - nombre
- *         - teléfono
+ *         - telefono
  *         - correo
  *         - contrasena
  *       properties:
@@ -201,9 +251,9 @@ module.exports = router; // Exportar el router
  *           description: Contraseña del usuario
  *       example:
  *         nombre: 'Vicente'
- *         teléfono: '601037577'
+ *         telefono: '601037577'
  *         correo: 'visi02@gmail.com'
- *         contrasena: 'pass1'
+ *         contrasena: '$2a$10$e4HxEk.Xrs7jtJ5VcVtiPu1Rcs7piWorVyPpSY/VllP2msnLczYBy'
  */
 
 // TÍTULO DE LA API en Swagger
@@ -268,7 +318,6 @@ module.exports = router; // Exportar el router
  *             schema:
  *               $ref: '#/components/schemas/Medicion'
  */
-
 
 // GET para consultar usuario por id
 /**
