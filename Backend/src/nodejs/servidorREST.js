@@ -397,8 +397,9 @@ async function recuperarContrasena(req, res) {
       return res.status(404).send('Usuario no encontrado');
     }
 
-    // Encriptar la nueva contraseña
-    const hash = crypto.createHash('sha256').update(nuevaContrasena).digest('hex');
+    // Encriptar la nueva contraseña utilizando bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(nuevaContrasena, salt);
 
     const query = 'UPDATE usuarios SET contrasena = ? WHERE correo = ?';
     const result = await connection.query(query, [hash, correo]);
@@ -470,6 +471,37 @@ async function editarDatosUsuario(req, res) {
   }
 }
 
+/**
+ * @brief Función para encriptar contraseñas no encriptadas en la base de datos.
+ */
+async function encriptarContrasenas() {
+  let connection;
+  try {
+    connection = await pool.getConnection();
+    const usuarios = await connection.query('SELECT id_usuario, contrasena FROM usuarios');
+
+    for (const usuario of usuarios) {
+      // Verificar si la contraseña ya está encriptada
+      if (!usuario.contrasena.startsWith('$2a$')) {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(usuario.contrasena, salt);
+        await connection.query('UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?', [hash, usuario.id_usuario]);
+      }
+    }
+
+    console.log('Contraseñas encriptadas y actualizadas correctamente');
+  } catch (err) {
+    console.error('Error al encriptar las contraseñas:', err);
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+}
+
+// Llamar a la función encriptarContrasenas al iniciar el servidor
+encriptarContrasenas();
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -481,6 +513,7 @@ module.exports = {
   ConsultarBaseDeDatos,
   verificarUsuario,
   recuperarContrasena,
-  editarDatosUsuario
+  editarDatosUsuario,
+  encriptarContrasenas
 };
 
