@@ -274,9 +274,10 @@ footer {
     }
 
     .info-personal button {
-        align-self: center;
+        align-self: flex-end;
         width: 100%;
         margin-top: 10px;
+        margin-right: 5px;
     }
 	
     button {
