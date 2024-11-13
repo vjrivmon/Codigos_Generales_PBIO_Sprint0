@@ -16,48 +16,48 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Función para habilitar la edición de los campos
-    editBtn.addEventListener('click', function() {
-        emailInput.disabled = false; // Habilitar campo de correo
-        passwordInput.disabled = false; // Habilitar campo de contraseña
-        nameInput.disabled = false; // Habilitar campo de nombre
-        phoneInput.disabled = false; // Habilitar campo de teléfono
-        confirmBtn.disabled = false; // Habilitar botón de guardar cambios
-        editBtn.disabled = true; // Deshabilitar botón de editar datos
-    });
+    // // Función para habilitar la edición de los campos
+    // editBtn.addEventListener('click', function() {
+    //     emailInput.disabled = false; // Habilitar campo de correo
+    //     passwordInput.disabled = false; // Habilitar campo de contraseña
+    //     nameInput.disabled = false; // Habilitar campo de nombre
+    //     phoneInput.disabled = false; // Habilitar campo de teléfono
+    //     confirmBtn.disabled = false; // Habilitar botón de guardar cambios
+    //     editBtn.disabled = true; // Deshabilitar botón de editar datos
+    // });
 
-    // Mostrar popup al hacer clic en "Guardar cambios"
-    confirmBtn.addEventListener('click', function() {
-        popup.style.display = 'flex'; // Mostrar popup
-    });
+    // // Mostrar popup al hacer clic en "Guardar cambios"
+    // confirmBtn.addEventListener('click', function() {
+    //     popup.style.display = 'flex'; // Mostrar popup
+    // });
 
-    // Confirmar cambios al hacer clic en "Confirmar"
-    confirmBtn.addEventListener('click', function() {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        const name = nameInput.value;
-        const phone = phoneInput.value;
+    // // Confirmar cambios al hacer clic en "Confirmar"
+    // confirmBtn.addEventListener('click', function() {
+    //     const email = emailInput.value;
+    //     const password = passwordInput.value;
+    //     const name = nameInput.value;
+    //     const phone = phoneInput.value;
 
-        // Aquí puedes agregar la lógica para validar y guardar los cambios
-        console.log('Cambios guardados:', { email, password, name, phone });
+    //     // Aquí puedes agregar la lógica para validar y guardar los cambios
+    //     console.log('Cambios guardados:', { email, password, name, phone });
 
-        // Cerrar popup
-        popup.style.display = 'none';
+    //     // Cerrar popup
+    //     popup.style.display = 'none';
 
-        // Deshabilitar campos nuevamente y habilitar botón de editar
-        emailInput.disabled = true;
-        passwordInput.disabled = true;
-        nameInput.disabled = true;
-        phoneInput.disabled = true;
-        confirmBtn.disabled = true;
-        editBtn.disabled = false; // Volver a habilitar botón de editar
-        alert('Te hemos enviado un correo para verificar los cambios, porfavor compruebelo'); // Mensaje de confirmación
-    });
+    //     // Deshabilitar campos nuevamente y habilitar botón de editar
+    //     emailInput.disabled = true;
+    //     passwordInput.disabled = true;
+    //     nameInput.disabled = true;
+    //     phoneInput.disabled = true;
+    //     confirmBtn.disabled = true;
+    //     editBtn.disabled = false; // Volver a habilitar botón de editar
+    //     alert('Te hemos enviado un correo para verificar los cambios, porfavor compruebelo'); // Mensaje de confirmación
+    // });
 
-    // Cerrar popup al hacer clic en "Cancelar"
-    cancelBtn.addEventListener('click', function() {
-        popup.style.display = 'none'; // Cerrar popup sin guardar cambios
-    });
+    // // Cerrar popup al hacer clic en "Cancelar"
+    // cancelBtn.addEventListener('click', function() {
+    //     popup.style.display = 'none'; // Cerrar popup sin guardar cambios
+    // });
     
     // ---------------------------- Antes de tocar esto, consultar esto con Vicente, se puede romper el código ----------------------------
     // ------------------------------------------------------------------------------------------------------------------------------------
