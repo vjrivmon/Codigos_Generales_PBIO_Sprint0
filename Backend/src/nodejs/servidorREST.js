@@ -5,7 +5,6 @@
 
 const mariadb = require('mariadb');
 const dotenv = require('dotenv');
-const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
 // Cargar variables de entorno desde el archivo .env
@@ -514,6 +513,6 @@ module.exports = {
   verificarUsuario,
   recuperarContrasena,
   editarDatosUsuario,
-  encriptarContrasenas
+  encriptarContrasenas,
 };
 
