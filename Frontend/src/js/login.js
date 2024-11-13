@@ -30,9 +30,17 @@ async function registrarUsuario(email, password, phone, name) {
         }
 
         const data = await response.json();
-        alert('Usuario registrado exitosamente!'); // Mensaje de éxito
+        alert('Usuario registrado exitosamente! Por favor, verifica tu correo.'); // Mensaje de éxito
 
-        // Opcionalmente, puedes redirigir al usuario al iniciar sesión
+        // Enviar correo de verificación
+        await fetch('http://localhost:8080/enviar-correo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        });
+
         container.classList.remove("active"); // Volver a la vista de inicio de sesión
     } catch (error) {
         console.error('Error al registrar el usuario:', error);
@@ -52,8 +60,13 @@ async function ConsultarDatosUsuario(email, password) {
 
         const result = await response.json();
 
+        // ---------------------------- Antes de tocar esto, consultar esto con Vicente, se puede romper el código ----------------------------
+        // ------------------------------------------------------------------------------------------------------------------------------------
         if (response.ok) {
             if (result.success) {
+                // Almacenar el id_usuario en una cookie segura
+                document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
+                console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
                 window.location.href = 'datosYMapa.html';
             } else {
                 alert('Contraseña incorrecta');
@@ -67,6 +80,8 @@ async function ConsultarDatosUsuario(email, password) {
         console.error('Error al verificar el usuario:', error);
         alert('Ocurrió un error al conectar con el servidor');
     }
+    // ------------------------------------------------------------------------------------------------------------------------------------
+
 }
 
 // Manejar el evento de clic en el botón de registrarse
