@@ -19,7 +19,8 @@ const {
   ConsultarBaseDeDatos,
   verificarUsuario,
   recuperarContrasena,
-  editarDatosUsuario
+  editarDatosUsuario,
+  encriptarContrasenas
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 // Inicializar app y cargar variables de entorno
 // const app = express();
@@ -90,6 +91,9 @@ router.get('/base-datos', ConsultarBaseDeDatos);
 
 // Pruebas de depuración
 console.log('Configuración de rutas cargada');
+
+// Llamar a la función encriptarContrasenas al iniciar el servidor
+encriptarContrasenas();
 
 // Swagger Setup
 const swaggerOptions = {

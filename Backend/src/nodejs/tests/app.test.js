@@ -119,7 +119,6 @@ describe('API REST Tests', () => {
     });
   }, 10000);
 
-  const crypto = require('crypto');
   /**
    * @test POST /usuarios - debería agregar un nuevo usuario
    */
@@ -133,8 +132,9 @@ describe('API REST Tests', () => {
         contrasena: '123456'
       };
 
-      // Encriptar la contraseña
-      const hash = crypto.createHash('sha256').update(newUser.contrasena).digest('hex');
+      // Encriptar la contraseña utilizando bcryptjs
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(newUser.contrasena, salt);
       newUser.contrasena = hash;
 
       const response = await request(app).post('/usuarios').send(newUser);
@@ -166,10 +166,10 @@ describe('API REST Tests', () => {
   test('POST /usuarios - debería agregar un nuevo usuario con contraseña encriptada', async () => {
     await runTest('POST /usuarios', async () => {
       const newUser = { // Datos para el nuevo usuario
-        nombre: 'Víctor',
-        telefono: '123456789',
-        correo: 'nuevo@correo.com',
-        contrasena: 'nueva123'
+        nombre: 'Hugo',
+        telefono: '693075745',
+        correo: 'huguito13@gmail.com',
+        contrasena: 'MadridismoSociologico'
       };
       console.log('Datos del nuevo usuario para el test:', newUser);
   
@@ -186,20 +186,6 @@ describe('API REST Tests', () => {
     });
   }, 10000);
 
-  /**
-   * @test DELETE /usuarios/:id_usuario - debería eliminar un usuario
-   */
-  test('DELETE /usuarios/:id_usuario - debería eliminar un usuario', async () => {
-    await runTest('DELETE /usuarios/:id_usuario', async () => {
-      const response = await request(app).delete('/usuarios/6');
-      if (response.statusCode === 200) { // Si el estado de respuesta es 200, verificar el mensaje
-        expect(response.text).toBe('Usuario eliminado correctamente'); // El mensaje debe ser "Usuario eliminado correctamente"
-      } else { // Si el estado de respuesta no es 200, verificar el mensaje
-        expect(response.statusCode).toBe(404); // El estado de respuesta debe ser 404
-        expect(response.text).toBe('Usuario no encontrado'); // El mensaje debe ser "Usuario no encontrado"
-      }
-    });
-  }, 10000);
 
   // /**
   //  * @test GET /mediciones/:id_sensor - debería comprobar si hay alerta de gas
@@ -236,9 +222,15 @@ describe('API REST Tests', () => {
     await runTest('PUT /usuarios/contrasena', async () => {
       const updatePassword = { // Datos para actualizar la contraseña
         correo: 'visi02@gmail.com',
-        nuevaContrasena: 'nueva123'
+        nuevaContrasena: '1111'
       };
       console.log('Datos para actualizar la contraseña:', updatePassword);
+
+      // Encriptar la nueva contraseña antes de enviarla
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(updatePassword.nuevaContrasena, salt);
+      updatePassword.nuevaContrasena = hashedPassword;
+
       const response = await request(app).put('/usuarios/contrasena').send(updatePassword);
       console.log('Respuesta del servidor:', response.body);
       console.log('Estado de respuesta del servidor:', response.statusCode);
@@ -253,7 +245,7 @@ describe('API REST Tests', () => {
   test('PUT /usuarios - debería actualizar los datos del usuario', async () => {
     await runTest('PUT /usuarios', async () => {
       const updateUser = { // Datos para actualizar el usuario
-        id_usuario: 1,
+        id_usuario: 6,
         nombre: 'Víctor',
         telefono: '123456789',
         correo: 'nuevo@correo.com',
@@ -267,4 +259,20 @@ describe('API REST Tests', () => {
       expect(response.text).toBe('Datos del usuario actualizados correctamente'); // El mensaje debe ser "Datos del usuario actualizados correctamente"
     });
   }, 10000);
+
+    /**
+   * @test DELETE /usuarios/:id_usuario - debería eliminar un usuario
+   */
+    test('DELETE /usuarios/:id_usuario - debería eliminar un usuario', async () => {
+      await runTest('DELETE /usuarios/:id_usuario', async () => {
+        const response = await request(app).delete('/usuarios/6');
+        if (response.statusCode === 200) { // Si el estado de respuesta es 200, verificar el mensaje
+          expect(response.text).toBe('Usuario eliminado correctamente'); // El mensaje debe ser "Usuario eliminado correctamente"
+        } else { // Si el estado de respuesta no es 200, verificar el mensaje
+          expect(response.statusCode).toBe(404); // El estado de respuesta debe ser 404
+          expect(response.text).toBe('Usuario no encontrado'); // El mensaje debe ser "Usuario no encontrado"
+        }
+      });
+    }, 10000);
+  
 });
