@@ -17,7 +17,7 @@ document.getElementById("privacy-policy").addEventListener("change", function() 
 // Función para registrar un nuevo usuario
 async function registrarUsuario(email, password, phone, name) {
     try {
-        const response = await fetch('http://192.168.0.25:8080/usuarios', { // Ip Portátil visi Universidad
+        const response = await fetch('http://localhost:8080/usuarios', { // Cambiado para que use localhost
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ async function registrarUsuario(email, password, phone, name) {
 
 async function ConsultarDatosUsuario(email, password) {
     try {
-        const response = await fetch('http://192.168.0.25:8080/usuarios/verificar', { // Ip Portátil visi Universidad
+        const response = await fetch('http://localhost:8080/usuarios/verificar', { // Cambiado para que use localhost
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
