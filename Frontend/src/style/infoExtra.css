@@ -1,0 +1,185 @@
+/* Estructura general */
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: white;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Secciones y artículos */
+section {
+    padding: 0.01rem 0.4rem;
+    background-color: var(--button-color);
+    margin: 1rem auto;
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 33px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+section:nth-child(even) {
+    background-color: var(--button-color);
+}
+
+article {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+h1, h2, h3, h4 {
+    color: var(--button-color);
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+h3 {
+    font-size: 1.2rem;
+    color: var(--button-color);
+    margin-top: 1rem;
+}
+
+h4 {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+p {
+    line-height: 1.6;
+    margin: 0.5rem 0;
+}
+
+/* Listas de recomendaciones */
+ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+    padding: 0;
+    list-style-type: disc;
+}
+
+ul li {
+    margin: 0.5rem 0;
+}
+
+/* Aside para información importante */
+aside {
+    padding: 1rem;
+    background-color:  rgba(41, 156, 41, 0.1); /* Fondo suave verde para aside */
+    border-left: 4px solid rgb(15, 176, 15);
+    border-radius: 15px;
+    margin: 1rem 0;
+    color: var(--text-color);
+}
+
+aside ul {
+    list-style-type: square;
+    margin: 0.5rem 0 0 1.5rem;
+}
+
+aside ul li {
+    margin: 0.3rem 0;
+    color: var(--text-color);
+}
+
+/* Estilos de alerta para secciones críticas */
+.alerta {
+    background-color: rgba(255, 102, 102, 0.1); /* Fondo suave rojo para alertas */
+    border-left: 5px solid #ff6666;
+    padding: 1rem;
+    border-radius: 15px;
+    margin: 1rem 0;
+    color: var(--text-color);
+}
+
+/* Enfocar títulos importantes */
+strong {
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+/* Diseño responsive */
+@media (max-width: 768px) {
+    section {
+        padding: 0.01rem 0.5rem;
+        width: 90%;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    h3 {
+        font-size: 1rem;
+    }
+
+    .content {
+        display: block;
+    }
+
+    .main-column, .sidebar-column {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 2rem;
+    }
+}
+
+
+
+
+.emergency-contact{
+    background-color: rgba(255, 102, 102, 0.3); /* Fondo suave rojo para alertas */
+    border-radius: 33px;
+    padding: 1.5rem;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    margin-bottom: 2rem;
+   }
+
+.emergency-contact h2{
+    color: var(--text-color);
+}
+
+    /* Estilos para los iconos */
+    .emergency-contact h2 i {
+        color: red;  /* Cambiar color a rojo */
+        margin: 0 8px;  /* Añadir margen para separación del texto */
+        vertical-align: middle;  /* Alinear los iconos verticalmente al medio del texto */
+    }
+
+
+  /* Estilo para la clase .interes */
+.interes {
+    background-color: var(--background-color-secondary) !important; /* Fondo suave verde claro con opacidad */
+    border-radius: 33px;
+    padding: 1rem 1.5rem !important;
+    color: var(--text-color);
+}
+
+.interes a{
+    color: var(--button-color);
+}
+
+/* Estilo para el título dentro de .interes */
+.interes h2 {
+    color: var(--text-color);
+}
+
+/* Estilo para el párrafo dentro de .interes */
+.interes p {
+    color: var(--text-color);
+}
