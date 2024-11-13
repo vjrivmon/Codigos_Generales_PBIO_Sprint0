@@ -6,6 +6,7 @@
 const mariadb = require('mariadb');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
+// const enviarCorreo = require('./app_web/emailCrearUsuarioNuevo'); // Eliminar si no se usa
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -139,7 +140,11 @@ async function ConsultarDatosUsuario(req, res) {
     console.log('Ejecutando consulta para obtener datos del usuario');
     const rows = await connection.query(query, [id_usuario]);
     console.log('Consulta ejecutada con éxito');
-    res.json(rows);
+    if (rows.length > 0) {
+      res.json(rows);
+    } else {
+      res.status(404).send('Usuario no encontrado');
+    }
   } catch (err) {
     console.error('Error en la consulta:', err);
     res.status(500).send('Error en la consulta');
@@ -175,7 +180,7 @@ async function verificarUsuario(req, res) {
     const isMatch = await bcrypt.compare(contrasena, usuario.contrasena);
     if (isMatch) {
       console.log('Contraseña correcta');
-      return res.json({ success: true });
+      return res.json({ success: true, id_usuario: usuario.id_usuario });
     } else {
       console.warn('Contraseña incorrecta');
       return res.json({ success: false, error: 'Contraseña incorrecta' });
@@ -248,6 +253,10 @@ async function agregarUsuario(req, res) {
     nuevoUsuario.id_usuario = result.insertId; // Cambiar a id_usuario
     // Excluir la contraseña del objeto devuelto
     const { contrasena, ...usuarioSinContrasena } = nuevoUsuario;
+
+    // Enviar correo de bienvenida
+    // await enviarCorreo(nuevoUsuario.correo, 'Bienvenido', 'Gracias por registrarte!');
+
     res.status(201).json(usuarioSinContrasena);
   } catch (err) {
     console.error('Error al agregar el usuario:', err);
@@ -501,6 +510,36 @@ async function encriptarContrasenas() {
 // Llamar a la función encriptarContrasenas al iniciar el servidor
 encriptarContrasenas();
 
+async function verificarCorreo(req, res) {
+  const { email } = req.query;
+  let connection;
+  try {
+    console.log(`Intentando obtener conexión para verificar correo: ${email}`);
+    connection = await pool.getConnection();
+    console.log('Conexión obtenida con éxito');
+
+    const query = 'UPDATE usuarios SET verificado = 1 WHERE correo = ?';
+    const result = await connection.query(query, [email]);
+    console.log('Resultado de la verificación de correo:', result);
+
+    if (result.affectedRows === 0) {
+      console.warn('No se pudo verificar el correo');
+      return res.status(500).send('No se pudo verificar el correo');
+    }
+
+    console.log('Correo verificado correctamente para el usuario con correo:', email);
+    res.status(200).send('Correo verificado correctamente');
+  } catch (err) {
+    console.error('Error al verificar el correo:', err);
+    res.status(500).send('Error al verificar el correo');
+  } finally {
+    if (connection) {
+      console.log('Liberando conexión');
+      connection.release();
+    }
+  }
+}
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -514,5 +553,6 @@ module.exports = {
   recuperarContrasena,
   editarDatosUsuario,
   encriptarContrasenas,
+  verificarCorreo
 };
 
