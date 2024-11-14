@@ -52,7 +52,7 @@ router.delete('/usuarios/:id_usuario', EliminarUsuario);
 router.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
 router.get('/usuarios', verificarUsuario);
 router.put('/usuarios/contrasena', recuperarContrasena);
-router.put('/usuarios', editarDatosUsuario);
+router.put('/usuarios/:id_usuario', editarDatosUsuario);
 router.post('/usuarios/verificar', verificarUsuario);
 router.get('/verificar-correo', verificarCorreo);
 router.post('/verificar-correo', enviarCorreoVerificacion);

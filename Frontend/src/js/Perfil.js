@@ -62,19 +62,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // ---------------------------- Antes de tocar esto, consultar esto con Vicente, se puede romper el código ----------------------------
     // ------------------------------------------------------------------------------------------------------------------------------------
     // Función para obtener el valor de una cookie por su nombre
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Función para cargar datos del usuario al cargar la página
-    const id_usuario = getCookie('id_usuario'); // Obtener ID del usuario desde la cookie
-    console.log(`id_usuario obtenido de la cookie: ${id_usuario}`);
-    if (!id_usuario) {
-        alert('No se pudo obtener el ID del usuario.');
-        return;
-    }
+    // Llamada a la función para actualizar los datos del usuario en la base de datos
+            /*function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+        
+            // Función para cargar id del usuario al cargar la página
+            const id_usuario = getCookie('id_usuario'); // Obtener ID del usuario desde la cookie
+            console.log(`id_usuario obtenido de la cookie: ${id_usuario}`);
+            if (!id_usuario) {
+                alert('No se pudo obtener el ID del usuario.');
+                return;
+            }*/
+                const id_usuario =4;
 
     fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`)
         .then(response => {
