@@ -6,7 +6,8 @@
 const mariadb = require('mariadb');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
-// const enviarCorreo = require('./app_web/emailCrearUsuarioNuevo'); // Eliminar si no se usa
+//const enviarCorreo = require('./emailCrearUsuarioNuevo'); // Asegúrate de que la ruta sea correcta
+const nodemailer = require('nodemailer');
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -17,6 +18,9 @@ console.log('DB_USUARIO:', process.env.DB_USUARIO);
 console.log('DB_CONTRASENYA:', process.env.DB_CONTRASENYA);
 console.log('DB_NOMBRE:', process.env.DB_NOMBRE);
 console.log('DB_CONNECTION_LIMIT:', process.env.DB_CONNECTION_LIMIT);
+console.log('EMAIL_HOST:', process.env.EMAIL_HOST);
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD);
 
 /**
  * @brief Configuración de la base de datos MariaDB.
@@ -31,6 +35,130 @@ const pool = mariadb.createPool({
   database: process.env.DB_NOMBRE,
   connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT, 10)
 });
+
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+async function enviarCorreo(email) {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'Bienvenido a VIMYP',
+    html: `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
+      <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: white;
+        color: #3B3B3B;
+        padding: 20px;
+      }
+      .header {
+        text-align: center;
+        padding: 10px 0 0 0;
+      }
+      .logo {
+        width: 100px;
+        height: auto;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 2rem;
+        color: #395886;
+      }
+      .content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 33px;
+        margin: 20px auto;
+        max-width: 80%;
+        text-align: center;
+        color: #3B3B3B;
+      }
+      .content p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        text-align: left;
+        color: #3B3B3B !important;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        text-decoration: none !important;
+        border-radius: 33px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+        background-color: #395886;
+        border: 2px solid #395886;
+        color: white !important;
+      }
+      .button:hover {
+        background-color: white;
+        color: #395886 !important;
+        border: 2px solid #395886;
+      }
+      .footer {
+        clear: both;
+        margin-top: 20px;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+        border-top: 1px solid #666;
+      }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+      <img src="cid:logo" alt="Logotipo VIMYP" class="logo">
+      <h1>Te damos la bienvenida a VIMYP</h1>
+      </div>
+      <div class="content">
+      <p>Estimado usuario,</p>
+      <p>Nos complace darte la bienvenida a VIMYP. Desde ahora, podrás contar con información precisa y en tiempo real sobre la calidad del aire que respiras. Nos esforzamos por ofrecerte tranquilidad y facilidad en el acceso a datos de calidad.</p>
+      <p>Haciendo click en este botón ya estarás oficialmente dado de alta.</p>
+      <a href="http://localhost:8080/verificar-correo?email=${email}" class="button">Confirmar</a>
+      <p>¿No has sido tú? Si no solicitaste este registro, por favor ignora este mensaje o contáctanos.</p>
+      </div>
+      <div class="footer">
+      © 2024 VIMYP. Todos los derechos reservados.
+      </div>
+    </body>
+    </html>
+    `,
+    attachments: [
+      {
+        filename: 'logo.svg',
+        path: './img/logo.svg',
+        cid: 'logo'
+      }
+    ]
+  };
+
+  console.log('Preparando para enviar correo con las siguientes opciones:', mailOptions);
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error al enviar correo:', error);
+    } else {
+      console.log('Correo enviado:', info.response);
+    }
+  });
+}
 
 /**
  * @brief Función para consultar medida en la base de datos.
@@ -540,6 +668,17 @@ async function verificarCorreo(req, res) {
   }
 }
 
+async function enviarCorreoVerificacion(req, res) {
+    const { email } = req.body;
+    try {
+        await enviarCorreo(email);
+        res.status(200).send('Correo de verificación enviado correctamente');
+    } catch (error) {
+        console.error('Error al enviar el correo de verificación:', error);
+        res.status(500).send('Error al enviar el correo de verificación');
+    }
+}
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -553,6 +692,8 @@ module.exports = {
   recuperarContrasena,
   editarDatosUsuario,
   encriptarContrasenas,
-  verificarCorreo
+  verificarCorreo,
+  enviarCorreoVerificacion,
+  enviarCorreo
 };
 

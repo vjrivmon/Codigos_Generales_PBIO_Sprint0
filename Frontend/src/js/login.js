@@ -33,13 +33,17 @@ async function registrarUsuario(email, password, phone, name) {
         alert('Usuario registrado exitosamente! Por favor, verifica tu correo.'); // Mensaje de éxito
 
         // Enviar correo de verificación
-        await fetch('http://localhost:8080/enviar-correo', {
+        const correoResponse = await fetch('http://localhost:8080/verificar-correo', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email: email })
         });
+
+        if (!correoResponse.ok) {
+            throw new Error('Error al enviar el correo de verificación: ' + correoResponse.status);
+        }
 
         container.classList.remove("active"); // Volver a la vista de inicio de sesión
     } catch (error) {
@@ -90,8 +94,8 @@ document.getElementById('register-btn').addEventListener('click', function(event
 
     const email = document.getElementById('signUpEmail').value; // Obtener el correo
     const password = document.getElementById('signUpPassword').value; // Obtener la contraseña
-    const phone = document.getElementById('signUpPhone').value; // Obtener la contraseña
-    const name = document.getElementById('signUpName').value; // Obtener la contraseña
+    const phone = document.getElementById('signUpPhone').value; // Obtener el teléfono
+    const name = document.getElementById('signUpName').value; // Obtener el nombre
 
     // Validar que los campos no estén vacíos
     if (!email || !password || !phone || !name) {

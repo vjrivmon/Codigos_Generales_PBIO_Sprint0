@@ -101,3 +101,85 @@ document.addEventListener('DOMContentLoaded', function() {
         });
             // ------------------------------------------------------------------------------------------------------------------------------------
 });
+
+// Función para registrar un nuevo usuario
+async function registrarUsuario(email, password, phone, name) {
+    try {
+        const response = await fetch('http://localhost:8080/usuarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ correo: email, contrasena: password, telefono: phone, nombre: name })
+        });
+
+        if (!response.ok) {
+            throw new Error('Error en la respuesta de la API: ' + response.status);
+        }
+
+        const data = await response.json();
+        alert('Usuario registrado exitosamente! Por favor, verifica tu correo.');
+
+        // Enviar correo de verificación
+        await fetch('http://localhost:8080/enviar-correo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        });
+
+        container.classList.remove("active"); // Volver a la vista de inicio de sesión
+    } catch (error) {
+        console.error('Error al registrar el usuario:', error);
+        alert('Ocurrió un error al registrar el usuario. Inténtalo de nuevo más tarde.');
+    }
+}
+
+// Función para verificar si el usuario ha confirmado su correo
+async function verificarCorreo(email) {
+    try {
+        const response = await fetch(`http://localhost:8080/usuarios/verificar-correo?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+        return data.verificado;
+    } catch (error) {
+        console.error('Error al verificar el correo:', error);
+        return false;
+    }
+}
+
+async function ConsultarDatosUsuario(email, password) {
+    try {
+        const response = await fetch('http://localhost:8080/usuarios/verificar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ correo: email, contrasena: password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            if (result.success) {
+                const correoVerificado = await verificarCorreo(email);
+                if (!correoVerificado) {
+                    alert('Por favor, verifica tu correo antes de iniciar sesión.');
+                    return;
+                }
+                document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
+                console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
+                window.location.href = 'datosYMapa.html';
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        } else if (result.error === 'Usuario no existe') {
+            alert('El usuario no existe');
+        } else {
+            alert('Ocurrió un error inesperado');
+        }
+    } catch (error) {
+        console.error('Error al verificar el usuario:', error);
+        alert('Ocurrió un error al conectar con el servidor');
+    }
+}
