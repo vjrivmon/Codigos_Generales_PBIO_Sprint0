@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>VIMYP | Expertos en medir la calidad del aire</title>
     <link rel="stylesheet" href="style/styles.css">
-	    <link rel="icon" href="img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
+    <link rel="stylesheet" href="style/cookie.css">
+    <link rel="icon" href="img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -51,7 +53,22 @@
   </div>
 </main>
 
-<script src="js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+<div class="wrapper">
+    <div>
+        <h2>Consentimiento de cookies <i class="bx bx-cookie"></i></h2>
+    </div>
 
+    <div class="data">
+       <p>Nuestro sitio web utiliza cookies para mejorar tu experiencia de navegación y ofrecerte información relevante. Antes de continuar navegando, acepta nuestra <a href="#">Política de Cookies y Privacidad.</a></p>
+    </div>
+
+    <div class="buttons">
+        <button class="button" id="acceptBtn">Aceptar</button>
+        <button class="button" id="declineBtn">Rechazar</button>
+    </div>
+</div>
+
+<script src="js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+<script src="js/cookie.js"></script> <!-- Archivo JS para que funcione la ventana emergente de cookies -->
 </body>
 </html>
