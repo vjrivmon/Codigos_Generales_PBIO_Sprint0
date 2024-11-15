@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Obtener el ID del usuario (aquí puedes usar la función de cookies si lo necesitas)
-            const id_usuario = 4; // O reemplaza con `obtenerValorCookie('id_usuario');`
+            // const id_usuario = 4; // O reemplaza con `obtenerValorCookie('id_usuario');`
 
             // Llamada a la función para actualizar los datos del usuario en la base de datos
             const datosUsuario = {
