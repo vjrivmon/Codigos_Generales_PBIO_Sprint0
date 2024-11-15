@@ -141,15 +141,21 @@ module.exports = router; // Exportar el router
  *       type: object
  *       required:
  *         - id
+ *         -fecha
  *         - hora
  *         - latitud
  *         - longitud
- *         - valorGas
+ *         - valorO3
  *         - valorTemperatura
+ *         - valorNO2
+ *         - valorSO3
  *       properties:
  *         id:
  *           type: integer
  *           description: ID de la medición
+ *         fecha:
+ *           type: string
+ *           description: Fecha de la medición
  *         hora:
  *           type: string
  *           description: Hora de la medición
@@ -164,19 +170,28 @@ module.exports = router; // Exportar el router
  *         id_sensor:
  *           type: varchar
  *           description: ID del sensor en formato MAC
- *         valorGas:
+ *         valorO3:
  *           type: number
- *           description: Valor de la medición de Gas
+ *           description: Valor de la medición de Gas O3
  *         valorTemperatura:
  *           type: number
  *           description: Valor de la medición de Temperatura
+ *         valorNO2:
+ *           type: number
+ *           description: Valor de la medición de Gas NO2
+ *         valorSO3:
+ *           type: number
+ *           description: Valor de la medición de Gas SO3
  *       example:
+ *         fecha: '21/11/2024'
  *         hora: '10:00'
  *         latitud: 40.416775
  *         longitud: -3.703790
  *         id_sensor: '00:0A:95:9D:68:16'
- *         valorGas: 40.00
+ *         valorO3: 10.00
  *         valorTemperatura: 32.00
+ *         valorNO2: 10.00
+ *         valorSO3: 10.00
  */
 
 // Esquema de Swagger para Medicion
@@ -188,44 +203,58 @@ module.exports = router; // Exportar el router
  *       type: object
  *       required:
  *         - id
+ *         -fecha
  *         - hora
  *         - latitud
  *         - longitud
- *         - id_sensor
- *         - valorGas
+ *         - valorO3
  *         - valorTemperatura
+ *         - valorNO2
+ *         - valorSO3
  *       properties:
  *         id:
  *           type: integer
  *           description: ID de la medición
+ *         fecha:
+ *           type: string
+ *           description: Fecha de la medición
  *         hora:
  *           type: string
  *           description: Hora de la medición
  *         latitud:
  *           type: number
  *           format: double
- *           description: Latitud de la medición
+ *           description: latitud de la medición
  *         longitud:
  *           type: number
  *           format: double
- *           description: Longitud de la medición
+ *           description: longitud de la medición
  *         id_sensor:
- *           type: string
+ *           type: varchar
  *           description: ID del sensor en formato MAC
- *         valorGas:
+ *         valorO3:
  *           type: number
- *           description: Valor de la medición de Gas
+ *           description: Valor de la medición de Gas O3
  *         valorTemperatura:
  *           type: number
  *           description: Valor de la medición de Temperatura
+ *         valorNO2:
+ *           type: number
+ *           description: Valor de la medición de Gas NO2
+ *         valorSO3:
+ *           type: number
+ *           description: Valor de la medición de Gas SO3
  *       example:
  *         id: 2
+ *         fecha: '21/11/2024'
  *         hora: '11:00:00'
  *         latitud: 41.385064
  *         longitud: 2.173404
  *         id_sensor: '11:2B:2X:3L:4K:5F'
- *         valorGas: 30
+ *         valorO3: 30
  *         valorTemperatura: 32
+ *         valorNO2: 20
+ *         valorSO3: 20
  */
 
 // Esquema de Swagger para Usuario
