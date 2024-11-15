@@ -572,6 +572,9 @@ async function editarDatosUsuario(req, res) {
   const { id_usuario, nombre, telefono, correo, contrasena } = req.body;
   let connection;
   try {
+    console.log(`Datos recibidos para la actualización: id_usuario: ${id_usuario}, nombre: ${nombre}, telefono: ${telefono}, correo: ${correo}, contrasena: ${contrasena}`);
+
+    // Obtener conexión a la base de datos
     console.log(`Intentando obtener conexión para actualizar datos del usuario con ID: ${id_usuario}`);
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
@@ -579,14 +582,25 @@ async function editarDatosUsuario(req, res) {
     // Verificar si el usuario existe
     const checkUserQuery = 'SELECT * FROM usuarios WHERE id_usuario = ?';
     const userRows = await connection.query(checkUserQuery, [id_usuario]);
-    console.log('Resultado de la consulta de usuarios:', userRows);
+    console.log('Resultado de la consulta de usuario:', userRows);
+
     if (userRows.length === 0) {
       console.warn('Usuario no encontrado');
       return res.status(404).send('Usuario no encontrado');
     }
 
-    const query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
-    const result = await connection.query(query, [nombre, telefono, correo, contrasena, id_usuario]);
+    // Construir la consulta de actualización sin la contraseña, si no se proporciona
+    let query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ? WHERE id_usuario = ?';
+    let params = [nombre, telefono, correo, id_usuario];
+
+    // Si la contraseña es proporcionada, incluirla en la actualización
+    if (contrasena) {
+      query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
+      params = [nombre, telefono, correo, contrasena, id_usuario];
+    }
+
+    // Ejecutar la actualización
+    const result = await connection.query(query, params);
     console.log('Resultado de la actualización de datos del usuario:', result);
 
     if (result.affectedRows === 0) {
