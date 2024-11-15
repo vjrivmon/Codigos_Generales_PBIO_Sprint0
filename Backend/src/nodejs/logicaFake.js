@@ -7,6 +7,7 @@ const medicionesFake = [
      * Medición simulada número 1.
      *
      * @param id Identificador único.
+     * @param fecha Fecha de la medición.
      * @param hora Hora de la medición en formato 'HH:mm'.
      * @param latitud Latitud del lugar donde se realizó la medición (en grados decimales).
      * @param longitud Longitud del lugar donde se realizó la medición (en grados decimales).
@@ -14,11 +15,11 @@ const medicionesFake = [
      * @param valorGas Valor de gas medido en partes por millón.
      * @param valorTemperatura Valor de temperatura medido en grados Celsius.
      */
-    { id: 1, hora: '10:00', latitud: 40.416775, longitud: -3.703790, id_sensor: 101, valorGas: 40.00, valorTemperatura: 35.00 },
+    { id: 1, fecha: '21/11/2024', hora: '10:00', latitud: 40.416775, longitud: -3.703790, id_sensor: 101, valorGas: 40.00, valorTemperatura: 35.00 },
     /**
      * Medición simulada número 2.
      */
-    { id: 2, hora: '11:00', latitud: 41.385064, longitud: 2.173404, id_sensor: 102, valorGas: 30.00, valorTemperatura: 32.00 },
+    { id: 2, fecha: '21/11/2024', hora: '11:00', latitud: 41.385064, longitud: 2.173404, id_sensor: 102, valorGas: 30.00, valorTemperatura: 32.00 },
 ];
   
 /**

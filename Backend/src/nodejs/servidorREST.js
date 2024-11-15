@@ -224,14 +224,17 @@ async function agregarMedicion(req, res) {
       return res.status(400).send('Sensor no encontrado');
     }
 
-    const query = 'INSERT INTO mediciones (hora, latitud, longitud, id_sensor, valorGas, valorTemperatura) VALUES (?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO mediciones (fecha, hora, latitud, longitud, id_sensor, valorO3, valorTemperatura, valorNO2, valorSO3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const result = await connection.query(query, [
+      nuevaMedicion.fecha,
       nuevaMedicion.hora,
       nuevaMedicion.latitud,
       nuevaMedicion.longitud,
       nuevaMedicion.id_sensor,
-      nuevaMedicion.valorGas,
-      nuevaMedicion.valorTemperatura
+      nuevaMedicion.valorO3,
+      nuevaMedicion.valorTemperatura,
+      nuevaMedicion.valorNO2,
+      nuevaMedicion.valorSO3
     ]);
 
     nuevaMedicion.id = result.insertId;
