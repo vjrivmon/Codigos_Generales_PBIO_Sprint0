@@ -69,8 +69,7 @@ public class CO2NotificationManager {
              */
 
             if (co2Value > 500) {
-                // Nivel crítico, sensor dañado o valor anormal
-         
+                // Nivel crítico, sensor dañado o valor anormalç
                 contentText = "¡Valor de 03 peligrosamente alto.\n";
                 additionalInfo = "¡El nivel de 03 ha superado los 500! Esto indica que el sensor podría estar dañado o el valor es anormalmente alto.\n" +
                         "Por favor, revisa el sensor o las condiciones de medición.";

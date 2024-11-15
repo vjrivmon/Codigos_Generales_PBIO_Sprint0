@@ -14,14 +14,28 @@ public class Usuario {
         this.correo = correo;
         this.contrasena = contrasena;
     }
+    // Constructor sin parámetros (vacío)
+    public Usuario() {
+        // Puedes dejarlo vacío o inicializar valores predeterminados si lo deseas
+    }
     // Getters y Setters
     // Getters y setters
     public int getId_usuario() {
         return id_usuario;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+
+    public void setNombre(String correo) {
+        this.nombre = nombre;
+    }
     public String getCorreo() {
         return correo;
     }
+
 
     public void setCorreo(String correo) {
         this.correo = correo;

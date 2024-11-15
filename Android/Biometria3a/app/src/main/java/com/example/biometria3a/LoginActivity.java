@@ -1,6 +1,7 @@
 package com.example.biometria3a;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,8 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
-        Log.d("LoginActivity", "Correo: " + email);
-        Log.d("LoginActivity", "Contraseña: " + password);
 
         // Validar los campos
         if (email.isEmpty() || password.isEmpty()) {
@@ -70,46 +72,56 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Crear el objeto Usuario con las credenciales
+        // Crear el servicio API
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-      Call<Usuario> call = apiService.getUserByCredentials(email, password);
 
+        // Crear un mapa con las credenciales
+        HashMap<String, String> credentials = new HashMap<>();
+        credentials.put("correo", email);
+        credentials.put("contrasena", password);
 
-
-        call.enqueue(new Callback<Usuario>() {
+        // Hacer la solicitud al servidor
+        Call<JsonObject> call = apiService.loginUser(credentials);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful()) {
-                    Usuario usuario = response.body();
-                    if (usuario != null) {
-                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    JsonObject responseBody = response.body();
+                    boolean success = responseBody.get("success").getAsBoolean();
+
+
+                    if (success) {
+                        int userId = responseBody.get("id_usuario").getAsInt();
+                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. ID Usuario: " + userId, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        saveUserIdToSession(userId);
+
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Mostrar el código de error y el cuerpo de la respuesta para depurar
-                    Log.e("LoginActivity", "Error en la respuesta del servidor. Código de error: " + response.code());
-                    if (response.errorBody() != null) {
-                        try {
-                            String errorBody = response.errorBody().string();
-                            Log.e("LoginActivity", "Cuerpo de error: " + errorBody);
-                            Toast.makeText(LoginActivity.this, "Error: " + errorBody, Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Código: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
-
             @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+      //  });
+
+   // }
+
+ /*   @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
                 // Error de conexión o de servidor
                 Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
+
+  */
+           // }
         });
 /*
         call.enqueue(new Callback<Usuario>() {
@@ -170,4 +182,12 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this,RegistroActivity.class);
         startActivity(intent);  // Iniciamos la nueva actividad
     }
+
+    private void saveUserIdToSession(int userId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("userId", userId);
+        editor.apply();
+    }
+
 }
