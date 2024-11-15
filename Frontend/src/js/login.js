@@ -68,6 +68,11 @@ async function ConsultarDatosUsuario(email, password) {
         // ------------------------------------------------------------------------------------------------------------------------------------
         if (response.ok) {
             if (result.success) {
+                const correoVerificado = await verificarCorreo(email);
+                if (!correoVerificado) {
+                    alert('Por favor, verifica tu correo antes de iniciar sesión.');
+                    return;
+                }
                 // Almacenar el id_usuario en una cookie segura
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
                 console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);

@@ -137,11 +137,11 @@ module.exports = router; // Exportar el router
  * @swagger
  * components:
  *   schemas:
- *     Medición:
+ *     Medicion:
  *       type: object
  *       required:
  *         - id
- *         -fecha
+ *         - fecha
  *         - hora
  *         - latitud
  *         - longitud
@@ -203,7 +203,7 @@ module.exports = router; // Exportar el router
  *       type: object
  *       required:
  *         - id
- *         -fecha
+ *         - fecha
  *         - hora
  *         - latitud
  *         - longitud
@@ -244,17 +244,17 @@ module.exports = router; // Exportar el router
  *         valorSO3:
  *           type: number
  *           description: Valor de la medición de Gas SO3
- *       example:
- *         id: 2
- *         fecha: '21/11/2024'
- *         hora: '11:00:00'
- *         latitud: 41.385064
- *         longitud: 2.173404
- *         id_sensor: '11:2B:2X:3L:4K:5F'
- *         valorO3: 30
- *         valorTemperatura: 32
- *         valorNO2: 20
- *         valorSO3: 20
+ *        example:
+ *           id: 2
+ *           fecha: '21/11/2024'
+ *           hora: '11:00:00'
+ *           latitud: 41.385064
+ *           longitud: 2.173404
+ *           id_sensor: '11:2B:2X:3L:4K:5F'
+ *           valorO3: 30
+ *           valorTemperatura: 32
+ *           valorNO2: 20
+ *           valorSO3: 20
  */
 
 // Esquema de Swagger para Usuario
