@@ -9,6 +9,7 @@
     <link rel="icon" href="../img/logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="../style/infoExtra.css" />
     <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
@@ -29,7 +30,7 @@
                 <li><a href="perfil.html">Mi perfil</a></li>
             </ul>
             <div class="nav-buttons">
-                <a href="../index.html" class="btn btn-primary">Cerrar sesión</a>
+                <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
                 <div class="menu-toggle" id="mobile-menu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -144,6 +145,36 @@
         <h2>Enlaces de Interés <i class="fas fa-link"></i></h2>
         <p>Para más información sobre la normativa y recomendaciones sobre la calidad del aire, consulta el siguiente <a href="https://www.boe.es/buscar/doc.php?id=DOUE-L-2008-80787" target="_blank">documento oficial.</a></p>
     </section>
+
+
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="apple-footer">
+        <div class="footer-top">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
+                    <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
+                    <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
+                    <li><a href="avisosLegales.html">Avisos Legales</a></li>
+                </ul>
+            </div>
+</div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP&nbsp; -&nbsp; Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script src="../js/cerrarSesion.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 
 </html>

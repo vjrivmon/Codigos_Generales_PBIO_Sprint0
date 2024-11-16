@@ -10,6 +10,7 @@
     <!-- 引入外部样式表 -->
     <link rel="stylesheet" href="../style/datosyMapas.css"/>
 	<link rel="stylesheet" href="../style/styles.css">
+  <link rel="stylesheet" href="../style/popupCerrarSesion.css">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- 引入FontAwesome -->
@@ -31,7 +32,7 @@
 		  <li><a href="perfil.html">Mi perfil</a></li>
       </ul>
       <div class="nav-buttons">
-        <a href="../index.html" class="btn btn-primary">Cerrar sesión</a>
+        <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
         <div class="menu-toggle" id="mobile-menu">
           <span class="bar"></span>
           <span class="bar"></span>
@@ -92,6 +93,15 @@
     </div>
 </footer>
 
+ <!-- Popup para cerrar sesión -->
+ <div id="popup-cerrar-sesion" class="popup">
+  <div class="popup-content">
+      <p>¿Seguro que quieres cerrar la sesión?</p>
+      <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+      <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+  </div>
+</div>
+
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
  <script src="../js/datosyMapas.js">
@@ -99,5 +109,6 @@
 	 <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><!-- Archivo JS para librerias de graficas -->
    <script src="../js/graficaGas.js"></script>
+    <script src="../js/popupCerrarSesion.js"></script>
 </body>
 </html>
