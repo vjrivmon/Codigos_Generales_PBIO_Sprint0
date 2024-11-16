@@ -7,6 +7,7 @@
     <title>Mi perfil | VIMYP</title>
     <link rel="stylesheet" href="../style/styles.css">
     <link rel="stylesheet" href="../style/admin.css">  
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
     <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 </head>
 <body>
@@ -21,7 +22,7 @@
             </div>
             
             <div class="nav-buttons">
-                <a href="../index.html" class="btn btn-primary">Cerrar sesión</a>
+                <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
             </div>
         </nav>
     </header>
@@ -89,6 +90,17 @@
         </div>
     </section>
 
+
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
+
     <script src="../js/admin.js"></script>
+    <script src="../js/cerrarSesion.js"></script>
 </body>
 </html>
