@@ -34,7 +34,7 @@
             <!-- Filtros -->
             <div class="filters">
                 <div class="filt">
-                    <p><strong>Filtrar según actividad:</strong></p>
+                    <p><strong>Filtrar:</strong></p>
 
                     <select id="filter-status">
                         <option value="all">Todos</option>
@@ -44,10 +44,8 @@
                         <option value="max24h">Más de 24h inactivos</option>
                     </select>
                 </div>
-            </div>
 
             <!-- Ordenamiento -->
-            <div class="filters">
                 <div class="filt">
                     <p><strong>Ordenar por:</strong></p>
 
@@ -71,25 +69,26 @@
                 </div>
             </div>
 
-            <!-- Tabla de Sensores -->
-            <table class="sensor-table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Dirección MAC</th>
-                        <th>Ubicación</th>
-                        <th>Última actividad</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="sensor-list">
-                    <!-- Datos generados dinámicamente -->
-                </tbody>
-            </table>
+            <!-- Tabla de Sensores (con contenedor para scroll horizontal) -->
+            <div class="sensor-table-container">
+                <table class="sensor-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Dirección MAC</th>
+                            <th>Ubicación</th>
+                            <th>Última actividad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sensor-list">
+                        <!-- Datos generados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
-    <script src="../js/menu.js"></script>
     <script src="../js/admin.js"></script>
 </body>
 </html>
