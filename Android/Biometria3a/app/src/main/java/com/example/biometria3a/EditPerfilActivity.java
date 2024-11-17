@@ -17,6 +17,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -217,56 +220,89 @@ private void lanzarPrivacidad() {
         });
     }
 
-
     private void saveUserData() {
-        // Obtener los valores introducidos en los campos de edición
-        String name = editName.getText().toString();
-        String email = editEmail.getText().toString();
-        String phone = editPhone.getText().toString();
-        String contrasenia = editContrasenia.getText().toString();
-
-        // Verificar que los campos no estén vacíos
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || contrasenia.isEmpty()) {
-            Toast.makeText(EditPerfilActivity.this, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show();
+        // Obtener el ID del usuario desde la sesión
+        int userId = getUserIdFromSession();
+        Log.d("EditPerfilActivity", "ID de usuario en sesión: " + userId);
+        if (userId == -1) {
+            Toast.makeText(this, "Error: Usuario no encontrado en la sesión.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Crear el objeto Usuario con los datos editados
-        Usuario updatedUser = new Usuario(name, email, phone, contrasenia);
+        // Obtener los datos ingresados por el usuario
+        String nombre = editName.getText().toString().trim();
+        String email = editEmail.getText().toString();
+        String telefono = editPhone.getText().toString().trim();
+        String contrasena = editContrasenia.getText().toString().trim();
 
-        // Obtener el ID del usuario
-        int userId = getUserIdFromSession();
-        Log.d("UserId", "El ID del usuario es: " + userId);
-        // Llamar a la API para actualizar los datos del usuario
-        if (userId != -1) {
-            Call<Void> call = apiService.updateUser(userId, updatedUser);
+        // Validaciones básicas para asegurarse de que no estén vacíos los campos obligatorios
+        if (nombre.isEmpty() || email.isEmpty() || telefono.isEmpty()) {
+            Toast.makeText(this, "Por favor, completa todos los campos obligatorios.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validar el formato del correo electrónico (si es necesario)
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Por favor, ingresa un correo electrónico válido.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validar el formato del teléfono (si es necesario)
+        if (telefono.length() < 10) {
+            Toast.makeText(this, "El número de teléfono es demasiado corto.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
-// Suponiendo que 'updateUser' es el método en la API
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(EditPerfilActivity.this, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Mostrar detalles de la respuesta para depurar
-                        Log.e("ErrorActualizar", "Error al actualizar los datos: " + response.code() + " - " + response.message());
-                        Toast.makeText(EditPerfilActivity.this, "Error al actualizar los datos: " + response.message(), Toast.LENGTH_SHORT).show();
+        Usuario usuario = new Usuario(userId,nombre, telefono, email, contrasena);
+        // Crear un objeto Usuario con los nuevos datos
+       /* Usuario usuario = new Usuario();
+        usuario.setId_usuario(userId);  // Establecer el ID del usuario
+        usuario.setNombre(nombre);      // Establecer el nombre
+        usuario.setCorreo(email);       // Establecer el correo
+        usuario.setTelefono(telefono);  // Establecer el teléfono
+
+        */
+        // Solo actualizar la contraseña si fue modificada
+       /* if (!contrasena.isEmpty()) {
+            usuario.setContrasena(contrasena);  // Establecer la contraseña si no está vacía
+        }
+*/
+        // Log para verificar los datos que se van a enviar al backend
+        Log.d("EditPerfilActivity", "Datos enviados al servidor: " + new Gson().toJson(usuario));
+
+        // Llamar al endpoint para actualizar el usuario
+        Call<Void> call = apiService.updateUser(userId, usuario);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(EditPerfilActivity.this, "Datos actualizados correctamente.", Toast.LENGTH_SHORT).show();
+                    finish();  // Cerrar la actividad
+                } else {
+                    try {
+                        // Obtener el cuerpo de la respuesta como texto
+                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "No hay información de error";
+                        Log.d("EditPerfilActivity", "Error al actualizar los datos: " + response.code() + " " + response.message());
+                        Log.d("EditPerfilActivity", "Cuerpo de la respuesta: " + errorBody);
+                        Toast.makeText(EditPerfilActivity.this, "Error al actualizar los datos.", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(EditPerfilActivity.this, "Error al leer el cuerpo de la respuesta.", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
 
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    // Aquí imprimimos el mensaje de error
-                    Log.e("ErrorActualizar", "Error de conexión: " + t.getMessage());
-                    Toast.makeText(EditPerfilActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toast.makeText(EditPerfilActivity.this, "Error: Usuario no encontrado en la sesión.", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Si ocurre un error en la conexión, mostrar el mensaje de error
+                Toast.makeText(EditPerfilActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("EditPerfilActivity", "Error de conexión: " + t.getMessage());
+            }
+        });
     }
+
+
 
 
 // --------------------------------------------------------------
