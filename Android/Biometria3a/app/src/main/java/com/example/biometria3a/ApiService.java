@@ -5,6 +5,13 @@ import com.google.gson.JsonObject;
 import java.util.HashMap;
 import java.util.List;
 
+import java.util.List;
+
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -40,6 +47,8 @@ public interface ApiService {
 
 
 
+    @GET("/mediciones/{id_sensor}")
+    Call<List<Medicion2>> getMedicionesBySensor(@Path("id_sensor") String idSensor);
 
 
 }

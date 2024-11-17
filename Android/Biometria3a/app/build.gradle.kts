@@ -37,7 +37,10 @@ android {
             excludes += "META-INF/LICENSE"
         }
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     dependencies {
 
         implementation(libs.appcompat)
@@ -53,5 +56,6 @@ android {
         implementation("com.squareup.retrofit2:converter-gson:2.9.0")
         implementation("com.sun.mail:android-mail:1.6.7")
         implementation("com.sun.mail:android-activation:1.6.7")
+        implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     }
 }

@@ -53,5 +53,7 @@ public class Medicion {
 
     public double getValorSO3() { return valorSO3; }
     public void setValorSO3(double valorSO3) { this.valorSO3 = valorSO3; }
+
+
 }
 

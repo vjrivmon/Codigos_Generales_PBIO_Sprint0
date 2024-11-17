@@ -45,6 +45,8 @@
         <activity android:name=".EditPerfilActivity"/>
         <activity android:name=".Mapa_Activity"/>
         <activity android:name=".VerificationActivity"/>
+        <activity android:name=".AirQualityActivity"/>
+
         <receiver android:name=".OzoneLevelReceiver"
             android:enabled="true"
             android:exported="true">
