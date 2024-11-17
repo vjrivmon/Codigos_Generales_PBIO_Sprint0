@@ -87,7 +87,7 @@ async function ConsultarDatosUsuario(email, password) {
         }
     } catch (error) {
         console.error('Error al verificar el usuario:', error);
-        alert('Ocurrió un error al conectar con el servidor');
+        alert('Porfavor verifica tu correo, para poder iniciar sesión');
     }
     // ------------------------------------------------------------------------------------------------------------------------------------
 
