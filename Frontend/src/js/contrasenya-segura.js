@@ -24,7 +24,7 @@ passwordInput.addEventListener("keyup", () => {
 
 loginPasswordToggle.addEventListener("click", () => {
     loginPasswordInput.type = loginPasswordInput.type === "password" ? "text" : "password";
-    loginPasswordToggle.src = loginPasswordToggle.type === "password" ? "../assets/eye.svg" : "../assets/eye-off.svg";
+    loginPasswordToggle.src = loginPasswordInput.type === "password" ? "../assets/eye.svg" : "../assets/eye-off.svg";
 });
 
 loginPasswordInput.addEventListener("keyup", () => {

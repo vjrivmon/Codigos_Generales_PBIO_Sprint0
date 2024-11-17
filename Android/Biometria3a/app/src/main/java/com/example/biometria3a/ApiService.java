@@ -34,8 +34,9 @@ public interface ApiService {
     Call<List<Usuario>> getUserById(@Path("id") int userId);
 
 
-    @PUT("users/{id}")
-    Call<Void> updateUser(@Path("id") int id, @Body Usuario usuario);
+    @PUT("usuarios/{id}")
+    Call<Void> updateUser(@Path("id") int userId, @Body Usuario usuario);
+
 
 
 

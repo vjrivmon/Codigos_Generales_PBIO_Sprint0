@@ -836,28 +836,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void boton_enviar_pulsado_client(View quien) {
-        // Llama a obtener la hora actual
+        // Obtener fecha y hora actuales
+        String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String horaActual = CO2NotificationManager.getCurrentTime();
-
         // Llama a obtener las coordenadas actuales
 
         double latitud = getLatitud();
         double longitud = getLongitud();
         // Mostrar las coordenadas en un Toast
-        Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
         // Obtener el ID del sensor dinámicamente
         //String idSensor = bluetoothHelper.obtenerIdSensor(this);
        // Log.d("IDsensor", idSensor);
 
-       String idSensor = "00:1A:2B:3M:4D:5E";
-        double valorGas = valorMajor / 1000;
-       // double valorGas = 200;
+
+        // Valores de las mediciones (estos serían dinámicos en la práctica)
+        double valorO3 =  valorMajor / 1000; // Ejemplo
         double valorTemperatura = valorMinor / 100;
+        double valorNO2 = 75.30; // Ejemplo
+        double valorSO3 = 10.40; // Ejemplo
+
+       String idSensor = "00:1A:2B:3M:4D:5E";
+       // double valorGas = valorMajor / 1000;
+       // double valorGas = 200;
+     //   double valorTemperatura = valorMinor / 100;
        // double valorTemperatura = 32;
 
         // Crea el objeto Medicion con los datos obtenidos
-        Medicion medicion = new Medicion(horaActual, latitud, longitud, idSensor, valorGas, valorTemperatura);
-
+        // Crear el objeto Medicion con los nuevos datos
+        Medicion medicion = new Medicion(fechaActual, horaActual, latitud, longitud, idSensor,
+                valorO3, valorTemperatura, valorNO2, valorSO3);
         // Realiza la llamada para enviar la medición a la API
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<Void> call = apiService.enviarMedicion(medicion);

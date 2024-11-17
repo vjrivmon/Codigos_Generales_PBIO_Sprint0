@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mi perfil | VIMYP</title>
+    <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/admin.css">  
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                    <span>VIMYP</span>
+                </a>
+            </div>
+            
+            <div class="nav-buttons">
+                <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sección de Admin -->
+    <section class="admin">
+        <div class="container">
+            <h1>Gestión de Sensores</h1>
+            
+            <!-- Filtros -->
+            <div class="filters">
+                <div class="filt">
+                    <p><strong>Filtrar:</strong></p>
+
+                    <select id="filter-status">
+                        <option value="all">Todos</option>
+                        <option value="active">Activos actualmente</option>
+                        <option value="inactive">Inactivos actualmente</option>
+                        <option value="min24h">Activos en las últimas 24h</option>
+                        <option value="max24h">Más de 24h inactivos</option>
+                    </select>
+                </div>
+
+            <!-- Ordenamiento -->
+                <div class="filt">
+                    <p><strong>Ordenar por:</strong></p>
+
+                    <select id="sort-field">
+                        <option value="nameAsc">Nombre ascendente</option>
+                        <option value="nameDesc">Nombre descendente</option>
+                        <option value="macAddressAsc">MAC ascendente</option>
+                        <option value="macAddressDesc">MAC descendente</option>
+                        <option value="statusAct">Activos primero</option>
+                        <option value="statusDesact">Inactivos primero</option>
+                        <option value="dateAsc">Fecha más reciente</option>
+                        <option value="dateDesc">Fecha más lejana</option>
+                        <option value="UbiAsc">Sensor más cercano</option>
+                        <option value="UbiDesc">Sensor más lejano</option>
+                    </select>
+                    
+                </div>
+                <div class="btns">
+                    <button id="apply-filters">Aplicar filtros</button>
+                    <button id="clear-filters">Borrar filtros</button>
+                </div>
+            </div>
+
+            <!-- Tabla de Sensores (con contenedor para scroll horizontal) -->
+            <div class="sensor-table-container">
+                <table class="sensor-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Dirección MAC</th>
+                            <th>Ubicación</th>
+                            <th>Última actividad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sensor-list">
+                        <!-- Datos generados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+    <script src="../js/cerrarSesion.js"></script>
+</body>
+</html>
