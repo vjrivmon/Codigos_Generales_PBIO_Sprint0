@@ -232,13 +232,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Ejemplo de valor de CO2 (este valor se podría obtener de tu sensor)
         //int valorO3 = 280; // Este es solo un ejemplo, cámbialo por el valor real del sensor
-         double valorO3= valorMajor/10000;
+        // double valorO3= valorMajor/10000;
         // Llamar al método para lanzar la notificación según el valor
        // lanzarNoti((int) valorO3);
-        Log.d("MiEtiqueta", "El valor de O3 es: " + valorO3);
+      //  Log.d("MiEtiqueta", "El valor de O3 es: " + valorO3);
 
         Context context = this;
-        sendOzoneLevelBroadcast(context, (int) valorO3); // Enviar el broadcast para mostrar la notificación
+      //  sendOzoneLevelBroadcast(context, (int) valorO3); // Enviar el broadcast para mostrar la notificación
 
 
 
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     public void lanzarNoti(double valorO3) {
-        if (valorO3 >= SENSOR_DANADO_THRESHOLD) {
+     /*   if (valorO3 >= SENSOR_DANADO_THRESHOLD) {
             // Si el valor de CO2 es mayor o igual a 500, el sensor puede estar dañado o haciendo lecturas erróneas
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
         } else if (valorO3 >= RANGO_MODERADO_MIN && valorO3 <= RANGO_MODERADO_MAX) {
@@ -285,6 +285,10 @@ public class MainActivity extends AppCompatActivity {
             // Si el valor de CO2 es mayor a 240, es un nivel alto de calidad del aire
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
         }
+
+      */
+
+        CO2NotificationManager.showCO2AlertNotification(this, valorO3);
     }
 
     // Método para enviar el Broadcast
@@ -314,10 +318,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(ozoneLevelReceiver);
     }
 
-    private void enviarNotificacionAlerta() {
-        NotificationHalper notificationHelper = new NotificationHalper(MainActivity.this);
-        notificationHelper.showNotification("Alerta", "¡Niveles de O3 muy altos! Valor Major: " + valorMajor);
-    }
+
 
     private void buscarTodosLosDispositivosBTLE() {
         Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empieza ");
