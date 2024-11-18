@@ -2,6 +2,7 @@ package com.example.biometria3a;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -69,7 +70,7 @@ public class AirQualityActivity extends AppCompatActivity {
     }
 
     private void fetchMediciones() {
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
         String[] sensorIds = {
                 "00:1A:2B:3M:4D:5E",
                 "11:2B:2X:3L:4K:5F",
@@ -82,12 +83,18 @@ public class AirQualityActivity extends AppCompatActivity {
 
         for (String idSensor : sensorIds) {
             Call<List<Medicion2>> call = apiService.getMedicionesBySensor(idSensor);
+           // Call<List<Medicion2>> call = RetrofitClient.getMedicionesBySensor(idSensor);
+            Log.d("AirQualityActivity", "fetchMediciones: " + call.request().url());
+            Log.d("AirQualityActivity", "fetchMediciones: " + allMediciones+    " " + idSensor);
+
 
             call.enqueue(new Callback<List<Medicion2>>() {
                 @Override
                 public void onResponse(Call<List<Medicion2>> call, Response<List<Medicion2>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         for (Medicion2 medicion : response.body()) {
+                            Log.d("AirQualityActivity", "Comparando fecha: " + medicion.getFecha() + " con " + selectedDate);
+
                             if (medicion.getFecha().equals(selectedDate)) {
                                 allMediciones.add(medicion);
                             }

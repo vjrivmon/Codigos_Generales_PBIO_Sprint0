@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
-                fakeLogin();
+                //fakeLogin();
             }
         });
 
@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // Lógica "fake" para simular el inicio de sesión
-    private void fakeLogin() {
+    /*private void fakeLogin() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
@@ -175,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }
     }
-
+*/
     // Método para iniciar la actividad "IniciaSesionActivity"
     private void goToRegistroActivity() {
         // Creamos un Intent para abrir la actividad de inicio de sesión
