@@ -6,4 +6,7 @@
     <color name="colorAzulclaro">#b1c9ef</color>
     <color name="colorAzuloscuro">#395886</color>
     <color name="red">#3F51B5</color>
+    <color name="primaryColor">#2E7D32</color>
+    <color name="textColor">#000000</color>
+    <color name="backgroundColor">#FFFFFF</color>
 </resources>
