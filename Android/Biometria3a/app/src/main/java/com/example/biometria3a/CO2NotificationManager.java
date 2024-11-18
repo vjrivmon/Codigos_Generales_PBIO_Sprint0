@@ -83,11 +83,17 @@ public class CO2NotificationManager {
             } else if (co2Value >= 180) {
                 // Nivel bajo pero no ideal
                 contentText = "Nivel de CO2 aceptable, pero mejorable.";
-                additionalInfo = "El nivel de O3 está dentro del rango aceptable, pero se pueden tomar medidas para mejorarlo.";
+                additionalInfo = "El nivel de O3 está dentro del rango aceptable, pero se pueden tomar medidas para mejorarlo. \n" +
+                        "Fecha y hora: " + currentTime + ".\n" +
+                        "Nivel de Ozono: " + co2Value + ".\n" +
+                        "Coordenadas GPS: " + gpsCoordinates + ".\n";;
             } else {
                 // Nivel bajo
                 contentText = "Nivel de CO2 normal.";
-                additionalInfo = "El nivel de O3 está dentro del rango saludable.";
+                additionalInfo = "El nivel de O3 está dentro del rango saludable.\n" +
+                        "Fecha y hora: " + currentTime + ".\n" +
+                        "Nivel de Ozono: " + co2Value + ".\n" +
+                        "Coordenadas GPS: " + gpsCoordinates + ".\n";
             }
             // Crear la notificación
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
