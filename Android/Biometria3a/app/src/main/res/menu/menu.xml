@@ -5,6 +5,9 @@
         android:id="@+id/action_grafica"
         android:title="Grafica" />
     <item
+        android:id="@+id/info_extra"
+        android:title="Info sobre los gases" />
+    <item
         android:id="@+id/action_about"
         android:title="Sobre Nosotros" />
     <item

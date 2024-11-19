@@ -1,5 +1,7 @@
 package com.example.biometria3a;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuInflater;
@@ -52,10 +54,15 @@ public class MenuHandler {
         } else if (item.getItemId() == R.id.action_privacidad) {
             Toast.makeText(context, "Privacidad", Toast.LENGTH_SHORT).show();
             context.startActivity(new Intent(context, PrivacidadAcitivity.class));
-        }
-        else if (item.getItemId() == R.id.action_grafica) {
+        } else if (item.getItemId() == R.id.action_grafica) {
             Toast.makeText(context, "Grafica", Toast.LENGTH_SHORT).show();
             context.startActivity(new Intent(context, AirQualityActivity.class));
+        } else if (item.getItemId() == R.id.info_extra) {
+            Toast.makeText(context, "Info Extra", Toast.LENGTH_SHORT).show();
+            // If the context is an instance of AppCompatActivity (or any Activity)
+            context.startActivity(new Intent(context, InfoExtraFragment.class));
+
         }
     }
+
 }
