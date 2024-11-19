@@ -1,4 +1,8 @@
-// Selección de elementos
+//Este código sirve para cerrar la sesión de un usuario en la web. Se implementa un popup que se muestra al hacer clic 
+//en el botón de cerrar sesión, y se cierra al hacer clic en el botón de cancelar o confirmar. Al confirmar, se redirige 
+//al usuario a la página de inicio. Si cancelas, se cierra el popup y no se realiza ninguna acción.
+
+// Seleccionar el botón de cerrar sesión, el popup y los botones de confirmar y cancelar
 const logoutBtn = document.getElementById('logoutBtn');
 const popup = document.getElementById('popup-cerrar-sesion');
 const confirmBtn = document.getElementById('confirmBtn-cerrar');

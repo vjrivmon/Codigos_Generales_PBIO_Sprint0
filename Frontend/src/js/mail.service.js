@@ -1,3 +1,7 @@
+// Este código se encarga de enviar correos electrónicos a los usuarios de la aplicación.
+// Se utiliza la librería nodemailer para enviar correos electrónicos a los usuarios.
+// Se utiliza la librería dotenv para cargar las variables de entorno del archivo .env.
+
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();

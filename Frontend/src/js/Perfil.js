@@ -1,17 +1,21 @@
+// Este archivo contiene el código JavaScript para la página de perfil de usuario. 
+// Permite al usuario editar sus datos personales y guardar los cambios en la base de datos.
+// También se encarga de cargar los datos del usuario al cargar la página. 
+// Se utiliza una cookie para almacenar el ID del usuario y se envía un correo de verificación al guardar los cambios.
 // Asegurarse de que el DOM esté completamente cargado antes de ejecutar el código
 document.addEventListener('DOMContentLoaded', function() {
     // Obtener elementos del DOM
-    const popup = document.getElementById('popup2');
-    const editBtn = document.getElementById('editBtn');
-    const confirmBtn = document.getElementById('confirmBtn2');
-    const cancelBtn = document.getElementById('cancelBtn2');
-    const emailInput = document.getElementById('userEmail');
-    const passwordInput = document.getElementById('userPassword');
-    const nameInput = document.getElementById('userName');
-    const phoneInput = document.getElementById('userPhone');
+    const popup = document.getElementById('popup2');  // Popup de confirmación
+    const editBtn = document.getElementById('editBtn'); // Botón de editar datos
+    const confirmBtn = document.getElementById('confirmBtn2'); // Botón de guardar cambios
+    const cancelBtn = document.getElementById('cancelBtn2'); // Botón de cancelar cambios
+    const emailInput = document.getElementById('userEmail'); // Campo de correo
+    const passwordInput = document.getElementById('userPassword'); // Campo de contraseña
+    const nameInput = document.getElementById('userName'); // Campo de nombre
+    const phoneInput = document.getElementById('userPhone'); // Campo de teléfono
 
     // Verificar que todos los elementos existen
-    if (!popup || !editBtn || !confirmBtn || !cancelBtn || !emailInput || !passwordInput || !nameInput || !phoneInput) {
+    if (!popup || !editBtn || !confirmBtn || !cancelBtn || !emailInput || !passwordInput || !nameInput || !phoneInput) { // Si falta algún elemento
         console.error('Error: Uno o más elementos del DOM no se encontraron.');
         return;
     }
@@ -87,6 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // ------------------------------------------------------------------------------------------------------------------------------------
     // Función para obtener el valor de una cookie por su nombre
     // Llamada a la función para actualizar los datos del usuario en la base de datos
+
+    // Txt -> getCookie() -> json
             function getCookie(name) {
                 const value = `; ${document.cookie}`;
                 const parts = value.split(`; ${name}=`);
@@ -98,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`id_usuario obtenido de la cookie: ${id_usuario}`);
             if (!id_usuario) {
                 alert('No se pudo obtener el ID del usuario.');
-                return;
+                return; // Salir de la función si no se pudo obtener el ID del usuario
             }
                 // const id_usuario =4;
 
@@ -107,9 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error(`Error al cargar los datos del usuario: ${response.statusText}`);
             }
-            return response.json();
+            return response.json();  // Convertir respuesta a JSON
         })
-        .then(data => {
+        .then(data => { 
             if (data && data.length > 0) {
                 const userData = data[0];
                 emailInput.value = userData.correo;
@@ -174,6 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
 //     }
 // }
 
+
+// Función para consultar los datos de un usuario existente
+// Txt, txt -> ConsultarDatosUsuario() -> json 
 async function ConsultarDatosUsuario(email, password) {
     try {
         const response = await fetch('http://localhost:8080/usuarios/verificar', {
@@ -191,7 +200,7 @@ async function ConsultarDatosUsuario(email, password) {
                 const correoVerificado = await verificarCorreo(email);
                 if (!correoVerificado) {
                     alert('Por favor, verifica tu correo antes de iniciar sesión.');
-                    return;
+                    return; // Salir de la función si el correo no está verificado
                 }
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
                 console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);

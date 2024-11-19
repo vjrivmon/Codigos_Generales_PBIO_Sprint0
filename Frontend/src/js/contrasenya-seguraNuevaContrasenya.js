@@ -1,3 +1,9 @@
+// Este código implementa la funcionalidad de la página de restablecimiento de contraseña para mostrar y ocultar la nueva contraseña,
+// actualizar la fuerza de la contraseña en tiempo real y verificar la fortaleza de la contraseña. Se utilizan eventos para el
+// botón de mostrar/ocultar contraseña, la entrada de la nueva contraseña y la verificación de la fortaleza de la contraseña. Además,
+// se define una función para actualizar la fuerza de la contraseña y se actualizan las condiciones con íconos de verificación según
+// la fortaleza de la contraseña.
+
 // Elementos de restablecimiento de contraseña
 const newPasswordInput = document.getElementById("newPassword");
 const confirmPasswordInput = document.getElementById("confirmPassword");
@@ -18,6 +24,7 @@ newPasswordInput.addEventListener("keyup", () => {
 });
 
 // Lógica de verificación de fortaleza de la contraseña
+// password -> updatePasswordStrength() -> código de colores barra de progreso
 function updatePasswordStrength(password) {
     let strength = 0;
 
@@ -28,20 +35,20 @@ function updatePasswordStrength(password) {
     document.querySelector('.eight-character img').src = password.length >= 8 ? '../assets/circle-check.svg' : '../assets/circle-cross.svg';
 
     // Calcula la fuerza de la contraseña
-    if ((/[a-z].*[A-Z]|[A-Z].*[a-z]/).test(password)) strength++;
-    if (/\d/.test(password)) strength++;
-    if (/[!@#$%^&*]/.test(password)) strength++;
-    if (password.length >= 8) strength++;
+    if ((/[a-z].*[A-Z]|[A-Z].*[a-z]/).test(password)) strength++;  // Si contiene al menos una letra minúscula y una mayúscula
+    if (/\d/.test(password)) strength++;  // Si contiene al menos un número
+    if (/[!@#$%^&*]/.test(password)) strength++;  // Si contiene al menos un carácter especial
+    if (password.length >= 8) strength++;  // Si tiene al menos 8 caracteres
 
-    const strengthPercentage = (strength / 4) * 100;
+    const strengthPercentage = (strength / 4) * 100; // Calcula el porcentaje del espacio de la barra de progreso
     passwordStrengthBar.style.width = strengthPercentage + "%";
 
     // Cambia la clase de la barra de progreso según la fuerza
     if (strength < 2) {
-        passwordStrengthBar.className = "progress-bar progress-bar-danger";
+        passwordStrengthBar.className = "progress-bar progress-bar-danger";  // Contraseña débil - Rojo
     } else if (strength === 3) {
-        passwordStrengthBar.className = "progress-bar progress-bar-warning";
+        passwordStrengthBar.className = "progress-bar progress-bar-warning";  // Contraseña moderada - Amarillo
     } else if (strength === 4) {
-        passwordStrengthBar.className = "progress-bar progress-bar-success";
+        passwordStrengthBar.className = "progress-bar progress-bar-success";  // Contraseña fuerte - Verde
     }
 }

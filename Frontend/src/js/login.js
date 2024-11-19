@@ -1,21 +1,37 @@
+// Este archivo contiene el código JavaScript necesario para manejar el registro e inicio de sesión de usuarios en la aplicación web.
+// Se encarga de enviar los datos de registro al backend y de verificar los datos de inicio de sesión. También maneja la redirección 
+// a la página principal de la aplicación una vez que el usuario ha iniciado sesión correctamente.
+// Requiere un backend que responda a las rutas '/usuarios' y '/usuarios/verificar' con las operaciones de registro e inicio de sesión, 
+// respectivamente.
+
+// Obtener los elementos del DOM
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
 
-registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
+registerBtn.addEventListener('click', () => { // Evento de clic en el botón de registrarse
+    container.classList.add("active"); 
 });
 
-loginBtn.addEventListener('click', () => {
+loginBtn.addEventListener('click', () => { // Evento de clic en el botón de iniciar sesión
     container.classList.remove("active");
 });
 
-document.getElementById("privacy-policy").addEventListener("change", function() {
-            document.getElementById("register-btn").disabled = !this.checked;
+document.getElementById("privacy-policy").addEventListener("change", function() {  // Evento de cambio en la casilla de verificación de política de privacidad
+            document.getElementById("register-btn").disabled = !this.checked; // Habilitar o deshabilitar el botón de registro según el estado de la casilla
         });
 
-// Función para registrar un nuevo usuario
-async function registrarUsuario(email, password, phone, name) {
+// Función para registrar un nuevo usuario 
+// Txt, Txt, N, Txt -> registrarUsuario() ->
+// - email: correo electrónico del usuario
+// - password: contraseña del usuario
+// - phone: teléfono del usuario
+// - name: nombre del usuario
+// La función envía los datos de registro al backend y muestra un mensaje de éxito o error al usuario.
+// Si el registro es exitoso, se envía un correo de verificación al usuario.
+// Si ocurre un error, se muestra un mensaje de error al usuario.
+
+async function registrarUsuario(email, password, phone, name) { 
     try {
         const response = await fetch('http://localhost:8080/usuarios', { // Cambiado para que use localhost
             method: 'POST',
@@ -52,6 +68,11 @@ async function registrarUsuario(email, password, phone, name) {
     }
 }
 
+// Función para verificar si un correo ha sido verificado
+// Txt, txt -> verificarCorreo() -> V/F
+// - email: correo electrónico del usuario
+// - password: contraseña del usuario
+// La función envía una solicitud al backend para verificar si el correo ha sido verificado.
 async function ConsultarDatosUsuario(email, password) {
     try {
         const response = await fetch('http://localhost:8080/usuarios/verificar', { // Cambiado para que use localhost
@@ -108,13 +129,14 @@ document.getElementById('register-btn').addEventListener('click', function(event
         return; // Salir de la función si hay campos vacíos
     }
     // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el formato de email. Debe contener @ y al menos un punto. 
     if (!emailRegex.test(email)) {
         alert('Por favor, introduce un email válido.'); // Mensaje de error
         return; // Salir de la función si el email no es válido
     }
     // Validar formato de contraseña
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,200}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,200}$/; 
+    // La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)
     if (!passwordRegex.test(password)) {
         alert('La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)'); // Mensaje de error
         return; // Salir de la función si la contraseña no es válida

@@ -1,3 +1,8 @@
+// En este código se implementa la funcionalidad de la página de registro y login para cambiar entre las pantallas de registro 
+//y login, y ajustar el tamaño del contenedor en función de la vista actual. Se utilizan funciones para mostrar el formulario 
+//de registro y login, y para ajustar el tamaño del contenedor. Además, se definen eventos para los botones de registro y login 
+//que llaman a estas funciones al hacer clic en ellos.
+
 //Elementos para el registro
 const passwordInput = document.getElementById("signUpPassword");
 const passwordStrengthText = document.getElementById("password-strength-text");
