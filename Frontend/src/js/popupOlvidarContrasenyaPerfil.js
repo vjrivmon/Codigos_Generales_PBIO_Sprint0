@@ -1,3 +1,10 @@
+// Este código se encarga de mostrar un popup para que el usuario pueda reestablecer su contraseña en caso de que la haya olvidado.
+// Se le pedirá al usuario que introduzca su número de teléfono y se le enviará un correo con un enlace para reestablecer su contraseña.
+// Si el usuario no introduce un número de teléfono, se le mostrará una alerta pidiéndole que lo introduzca.
+// Si el usuario introduce un número de teléfono, se le enviará un correo con un enlace para reestablecer su contraseña y se cerrará el popup.
+// Si el usuario hace clic en el botón de cancelar, se cerrará el popup sin hacer nada más.
+
+
 const popupContrasenya = document.getElementById('popupOlvidado');
 const olvideContrasenyaBtn = document.getElementById('olvideContrasenyaBtn');
 const confirmBtnOlvidada = document.getElementById('mandarCorreoNuevaContrasenya');

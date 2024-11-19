@@ -1,3 +1,26 @@
+/* Este código sirve para mostrar una lista de sensores en una tabla, con la posibilidad de filtrar y ordenar los datos. 
+    Variables: 
+    - sensors: contiene los datos de los sensores.
+    - sensorList: referencia al elemento <tbody> de la tabla.
+    - filterStatus: referencia al elemento <select> para filtrar por estado.
+    - sortField: referencia al elemento <select> para ordenar por campo.
+    - applyFiltersButton: referencia al botón "Aplicar filtros".
+    - clearFiltersButton: referencia al botón "Borrar filtros".
+
+    Funciones:
+    - displaySensors: muestra los sensores en la tabla.
+    - formatCoordinates: convierte las coordenadas de latitud y longitud a formato con N/S y E/W.
+    - formatDate: formatea la fecha en formato "dd-mm-aaaa hh:mm:ss".
+    - applyFilters: aplica los filtros y ordenamientos seleccionados.
+
+    Eventos:
+    - click en "Aplicar filtros": aplica los filtros seleccionados.
+    - click en "Borrar filtros": borra los filtros y muestra los datos originales.
+    - carga de la página: muestra todos los sensores en la tabla.
+
+
+*/ 
+
 // Datos de los sensores
 const sensors = [
     { name: "Sensor 1", status: "active", lastActive: "2024-11-14T12:00:00Z", macAddress: "00:14:22:01:23:45", latitude: 39.4699, longitude: -0.3763 },
@@ -17,6 +40,7 @@ const clearFiltersButton = document.getElementById("clear-filters");
 // Función para mostrar los sensores en la tabla
 
 // Función para mostrar los sensores en la tabla
+// sensors -> displaySensors() 
 function displaySensors(sensors) {
     sensorList.innerHTML = "";
     sensors.forEach(sensor => {
@@ -60,6 +84,7 @@ function displaySensors(sensors) {
 }
 
 // Función para convertir latitud y longitud a formato con N/S y E/W
+// latitude, longitude -> formatCoordinates()
 function formatCoordinates(latitude, longitude) {
     // Latitud
     const latDirection = latitude >= 0 ? 'N' : 'S';
@@ -74,6 +99,7 @@ function formatCoordinates(latitude, longitude) {
 }
 
 // Función para formatear la fecha
+// dateString -> formatDate()
 function formatDate(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -84,11 +110,12 @@ function formatDate(dateString) {
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
     // Formato: día-mes-año hora:minuto:segundo
-    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;  // Devuelve la fecha formateada de forma: dd-mm-aaaa hh:mm:ss
 }
 
 
 // Función para aplicar los filtros y ordenamientos
+// applyFilters()
 function applyFilters() {
     let filteredSensors = [...sensors]; // Usar la variable correcta `sensors`
 
@@ -112,7 +139,6 @@ function applyFilters() {
     }
 
     // Ordenar según el campo seleccionado
-    const sortValue = sortField.value;
     switch (sortValue) {
         case "nameAsc":
             filteredSensors.sort((a, b) => a.name.localeCompare(b.name));
@@ -139,14 +165,14 @@ function applyFilters() {
             filteredSensors.sort((a, b) => new Date(b.lastActive) - new Date(a.lastActive));
             break;
         case "UbiAsc":
-            filteredSensors.sort((a, b) => {
+            filteredSensors.sort((a, b) => { // Ordenar por distancia al origen
                 const distanceA = Math.sqrt(Math.pow(a.latitude, 2) + Math.pow(a.longitude, 2));
                 const distanceB = Math.sqrt(Math.pow(b.latitude, 2) + Math.pow(b.longitude, 2));
                 return distanceA - distanceB;
             });
             break;
         case "UbiDesc":
-            filteredSensors.sort((a, b) => {
+            filteredSensors.sort((a, b) => { // Ordenar por distancia al origen (inverso)
                 const distanceA = Math.sqrt(Math.pow(a.latitude, 2) + Math.pow(a.longitude, 2));
                 const distanceB = Math.sqrt(Math.pow(b.latitude, 2) + Math.pow(b.longitude, 2));
                 return distanceB - distanceA;

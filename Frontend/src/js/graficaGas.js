@@ -1,4 +1,6 @@
-
+// Este código se encarga de obtener los datos de un sensor de gas de un backend y mostrarlos en una gráfica con Chart.js
+// También calcula la media ponderada de los valores de gas y los muestra en la página web
+// Requiere Chart.js y un backend que responda a la ruta '/mediciones/:idSensor' con los datos del sensor de gas en formato JSON
 
 // Reemplaza 'ID_SENSOR' con el valor del sensor que deseas consultar
 const id_sensor = '00:1A:2B:3M:4D:5E';  // Ejemplo de ID de sensor

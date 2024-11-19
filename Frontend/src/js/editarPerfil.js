@@ -1,3 +1,7 @@
+// Este script se encarga de manejar la funcionalidad de editar el perfil del usuario en la página web.
+// Se encarga de validar los campos del formulario, mostrar un popup para editar los datos y enviar los datos al servidor.
+// Se debe incluir en la página web que contenga el formulario de edición de perfil.
+
 // Asegurarse de que el DOM esté completamente cargado antes de ejecutar el código
 document.addEventListener('DOMContentLoaded', function() {
     const popup = document.getElementById('popup2');
@@ -16,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /*--------------------- NOMBRE -------------------------*/
+    // Validar que el nombre tenga al menos 2 caracteres 
+    // (se puede cambiar la longitud mínima si se desea)
     userName.addEventListener("blur", function() {
         if (this.value.length < 2) {
             alert("El nombre debe tener al menos 2 caracteres.");
@@ -24,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /*--------------------- CORREO -------------------------*/
+    // Validar que el correo tenga un formato válido con una expresión regular 
+    // El correo debe tener un @ y un punto después del @ (ej .com) (no se permiten espacios)
     userEmail.addEventListener("blur", function() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(this.value)) {
@@ -33,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /*--------------------- TELEFONO -------------------------*/
+    // Validar que el teléfono tenga exactamente 9 dígitos y solo números
     userPhone.addEventListener("input", function() {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
@@ -45,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /*-------------------------------- APARECER POPUP EDITAR DATOS ---------------------------------*/
+    // Al hacer clic en el botón de editar, se habilitan los campos para editar los datos y se muestra el popup
     document.getElementById("editBtn").addEventListener("click", function() {
         const inputs = document.querySelectorAll("#userName, #userPhone, #userEmail, #sensorName");
         inputs.forEach(input => input.disabled = !input.disabled);
@@ -55,15 +65,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /*-------------------- CONFIRMAR --------------------------*/
+    // Al hacer clic en el botón de confirmar, se envían los datos al servidor para actualizar el perfil del usuario
+
     confirmBtn.addEventListener('click', async function(event) { 
         event.preventDefault();
         
-        if (!userName.value || !userPhone.value || !userEmail.value || !sensorName.value) {
+        if (!userName.value || !userPhone.value || !userEmail.value || !sensorName.value) { // Verificar que todos los campos estén llenos
             alert('Rellene todos los campos.');
             return;
         }
 
-        if (userPhone.value.length !== 9) {
+        if (userPhone.value.length !== 9) { // Verificar que el teléfono tenga exactamente 9 dígitos
+
             alert("El número de teléfono debe tener exactamente 9 dígitos.");
             return;
         } 
@@ -79,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 correo: userEmail.value       // Acceder al valor del campo
             };
             
+            // Enviar los datos al servidor
             const response = await fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`, {
                 method: 'PUT',
                 headers: {
@@ -87,20 +101,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(datosUsuario)
             });
 
-            if (!response.ok) {
+            if (!response.ok) { // Verificar si la respuesta tuvo éxito
                 throw new Error('No se pudieron actualizar los datos del usuario');
                 popup.style.display = 'none';
             }
 
-            const resultado = await response.text();
+            const resultado = await response.text(); // Obtener el mensaje de éxito desde la respuesta del servidor
+
             alert(resultado); // Muestra mensaje de éxito
             alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
             popup.style.display = 'none'; // Oculta el popup
             
-        } catch (error) {
+        } catch (error) { // Capturar errores
             console.error('Error al actualizar los datos del usuario:', error);
             alert('Hubo un problema al actualizar los datos del usuario.');
-            popup.style.display = 'none';
+            popup.style.display = 'none'; // Oculta el popup
         }
     });
 

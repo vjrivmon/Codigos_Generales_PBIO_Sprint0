@@ -1,3 +1,10 @@
+// Este script envía un correo electrónico al usuario cuando se solicita un cambio en su perfil de usuario.
+// Se utiliza nodemailer para enviar correos electrónicos y se envía un correo electrónico con un botón de confirmación.
+// El botón de confirmación lleva al usuario a la URL del sitio web donde se guardan los cambios.
+// Se adjunta un logotipo en el correo electrónico y se muestra en el cuerpo del correo electrónico.
+// Se debe cambiar la dirección de correo electrónico del remitente, la dirección de correo electrónico del destinatario y la URL del sitio web en el botón de confirmación.
+// Se debe cambiar la ruta de la imagen del logotipo en el sistema local.
+
 var nodemailer = require('nodemailer');
 
 
