@@ -36,19 +36,17 @@ const pool = mariadb.createPool({
   connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT, 10)
 });
 
-const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: 'vimyp.s.l@gmail.com',
+      pass: 'qejv suwv cykj wcjj'
+  }
 });
 
 async function enviarCorreo(email) {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  var mailOptions = {
+    from: 'vimyp.s.l@gmail.com',
     to: email,
     subject: 'Bienvenido a VIMYP',
     html: `
@@ -59,94 +57,98 @@ async function enviarCorreo(email) {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
       <style>
-      body {
-        font-family: 'Montserrat', sans-serif;
-        background-color: white;
-        color: #3B3B3B;
-        padding: 20px;
-      }
-      .header {
-        text-align: center;
-        padding: 10px 0 0 0;
-      }
-      .logo {
-        width: 100px;
-        height: auto;
-        margin: 0 auto;
-      }
-      h1 {
-        font-size: 2rem;
-        color: #395886;
-      }
-      .content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 33px;
-        margin: 20px auto;
-        max-width: 80%;
-        text-align: center;
-        color: #3B3B3B;
-      }
-      .content p {
-        font-size: 1.1rem;
-        line-height: 1.5;
-        text-align: left;
-        color: #3B3B3B !important;
-      }
-      .button {
-        display: inline-block;
-        padding: 10px 20px;
-        margin-top: 20px;
-        text-decoration: none !important;
-        border-radius: 33px;
-        font-weight: bold;
-        font-size: 1.1rem;
-        transition: background-color 0.3s;
-        background-color: #395886;
-        border: 2px solid #395886;
-        color: white !important;
-      }
-      .button:hover {
-        background-color: white;
-        color: #395886 !important;
-        border: 2px solid #395886;
-      }
-      .footer {
-        clear: both;
-        margin-top: 20px;
-        padding-top: 20px;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #666;
-        border-top: 1px solid #666;
-      }
+        body {
+          font-family: 'Montserrat', sans-serif;
+          background-color: white;
+          color: #3B3B3B;
+          padding: 20px;
+        }
+        .header {
+          text-align: center;
+          padding: 10px 0 0 0;
+        }
+        .logo {
+          width: 100px;
+          height: auto;
+          margin: 0 auto;
+        }
+        h1 {
+          font-size: 2rem;
+          color: #395886;
+          font-family: 'Montserrat', sans-serif;
+        }
+        .content {
+          background-color: white;
+          padding: 20px;
+          border-radius: 33px;
+          margin: 20px auto;
+          max-width: 80%;
+          text-align: center;
+          color: #3B3B3B;
+        }
+        .content p {
+          font-size: 1.1rem;
+          line-height: 1.5;
+          text-align: left;
+          font-family: 'Montserrat', sans-serif;
+          color: #3B3B3B !important; /* Aseguramos que el texto sea #3B3B3B */
+        }
+        
+        .button {
+          display: inline-block;
+          padding: 10px 20px;
+          margin-top: 20px;
+          text-decoration: none !important; /* Aseguramos que no haya subrayado en el enlace */
+          border-radius: 33px;
+          font-weight: bold;
+          font-size: 1.1rem;
+          transition: background-color 0.3s;
+          background-color: #395886;
+          border: 2px solid #395886;
+          color: white !important; /* Aseguramos que el texto sea blanco */
+          font-family: 'Montserrat', sans-serif;
+        }
+
+        .button:hover {
+          background-color: white;
+          color: #395886 !important; /* Aseguramos que el texto sea #395886 en el hover */
+          border: 2px solid #395886;
+        }
+
+        .footer {
+          clear: both;
+          margin-top: 20px;
+          padding-top: 20px;
+          text-align: center;
+          font-size: 0.9rem;
+          color: #666;
+          border-top: 1px solid #666;
+        }
       </style>
     </head>
     <body>
       <div class="header">
-      <img src="cid:logo" alt="Logotipo VIMYP" class="logo">
-      <h1>Te damos la bienvenida a VIMYP</h1>
+        <img src="cid:logo" alt="Logotipo VIMYP" class="logo">
+        <h1>Te damos la bienvenida a VIMYP</h1>
       </div>
       <div class="content">
-      <p>Estimado usuario,</p>
-      <p>Nos complace darte la bienvenida a VIMYP. Desde ahora, podrás contar con información precisa y en tiempo real sobre la calidad del aire que respiras. Nos esforzamos por ofrecerte tranquilidad y facilidad en el acceso a datos de calidad.</p>
-      <p>Haciendo click en este botón ya estarás oficialmente dado de alta.</p>
-      <a href="http://localhost:8080/verificar-correo?email=${email}" class="button">Confirmar</a>
-      <p>¿No has sido tú? Si no solicitaste este registro, por favor ignora este mensaje o contáctanos.</p>
+        <p>Estimado usuario,</p>
+        <p>Nos complace darte la bienvenida a VIMYP. Desde ahora, podrás contar con información precisa y en tiempo real sobre la calidad del aire que respiras. Nos esforzamos por ofrecerte tranquilidad y facilidad en el acceso a datos de calidad.</p>
+        <p>Haciendo click en este botón ya estarás oficialmente dado de alta.</p>
+        <a href="http://localhost/html/login.html" class="button">Confirmar</a> <!---- Cambiar por la URL del sitio web ---->	
+        <p>¿No has sido tú? Si no solicitaste este registro, por favor ignora este mensaje o contáctanos.</p>
       </div>
       <div class="footer">
-      © 2024 VIMYP. Todos los derechos reservados.
+        © 2024 VIMYP. Todos los derechos reservados.
       </div>
     </body>
     </html>
-    `,
-    attachments: [
-      {
-        filename: 'logo.svg',
-        path: './img/logo.svg',
-        cid: 'logo'
-      }
-    ]
+  `,
+    attachments: [{
+      filename: 'logo.png',
+      path: __dirname + '/logo.png',
+      cid: 'logo' // same cid value as in the html img src
+    }]
   };
 
   console.log('Preparando para enviar correo con las siguientes opciones:', mailOptions);
