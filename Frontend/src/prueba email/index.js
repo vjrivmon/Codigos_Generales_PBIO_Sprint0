@@ -91,7 +91,7 @@ var mailOptions = {
     </head>
     <body>
       <div class="header">
-        <img src="logo.svg" alt="Logotipo VIMYP" class="logo">
+        <img src="__dirname +'/img/logo.png" alt="Logotipo VIMYP" class="logo">
         <h1>Te damos la bienvenida a VIMYP</h1>
       </div>
       <div class="content">
