@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F7F7"
+    tools:context=".SobreNosotrosActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <!-- Toolbar personalizado -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="Logo"
+            android:src="@drawable/ic_logobac"
+            android:layout_gravity="start|center_vertical"
+            android:scaleType="fitCenter"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu"
+            android:contentDescription="Menu"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_user"
+            android:contentDescription="User"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/menu_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <!-- 标题 -->
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="Información sobre Gases Contaminantes"
+                android:textColor="#2E7D32"
+                android:textSize="24sp" />
+
+            <!-- 紧急联系信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFCCCC"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="¿Qué hacer en caso de intoxicación?"
+                    android:textColor="#D32F2F"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:text="Si crees que has estado expuesto a niveles peligrosos, contacta con emergencias al 112.La intervención rápida es fundamental para evitar daños graves a la salud. Describe tus síntomas y el posible gas al que has estado expuesto para que puedan ofrecerte la asistencia adecuada."
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <!-- Ozono (O3) 信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/ozono_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Ozono (O3)▼"
+                    android:textColor="#2E7D32"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ozono_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="El ozono es un gas de color azul pálido compuesto por tres átomos de oxígeno. En la troposfera, es un contaminante que se forma por la reacción entre la luz solar y otros contaminantes como compuestos orgánicos volátiles y dióxido de nitrógeno.\n\nEl valor objetivo (VO) para la protección de la salud es de 120 µg/m³, y no debe superarse más de 25 días por promedio de tres años.También existen valores de umbrales: el umbral de información es de 180 µg/m³ y el umbral de alerta es de 240 µg/m³."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/recomendaciones_ozono_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Recomendaciones:▼"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recomendaciones_ozono_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- Evitar actividades físicas intensas al aire libre durante horas de alta concentración de ozono.
+\n-Permanecer en interiores con ventanas cerradas en días de alerta ambiental."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/precaucion_ozono_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Precaución:▼"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/precaucion_ozono_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grupos de riesgo: personas con problemas respiratorios, niños, adultos mayores y personas que trabajan al aire libre. En caso de dificultad para respirar o síntomas persistentes, busca ayuda médica."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#00FF00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bueno: 0-120 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#FFFF00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Moderado: 121-180 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#FF0000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Malo: > 240 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Dióxido de Nitrógeno (NO2) 信息 -->
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#FFFFFF"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/no2_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Dióxido de Nitrógeno (NO2)▼"
+                    android:textColor="#2E7D32"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/no2_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="El dióxido de nitrógeno es un gas de color marrón rojizo, que se genera en la combustión de motores y plantas industriales. Es un indicador de la contaminación por óxidos de nitrógeno.
+
+\n\nEl valor límite (VL) horario es de 200 µg/m³, no debiendo superarse en más de 18 ocasiones al año. El valor límite anual es de 40 µg/m³."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/recomendaciones_no2_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Recomendaciones:▼"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recomendaciones_no2_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-Evitar zonas de tráfico intenso y áreas industriales en períodos de alta contaminación.
+\n-Mantener ventanas cerradas en días con altos niveles de NO2.
+\n-Utilizar sistemas de ventilación o purificadores de aire en interiores si es necesario."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/precaucion_no2_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Precaución:▼"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/precaucion_no2_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grupos de riesgo: personas con asma, alergias, problemas cardíacos y niños. En caso de irritación en los ojos, garganta o vías respiratorias, se recomienda consultar a un médico."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#00FF00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bueno: 0-40 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#FFFF00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Moderado: 41-200 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#FF0000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Malo: > 200 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Trióxido de Azufre (SO3) 信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#FFFFFF"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/so3_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Trióxido de Azufre (SO3)▼"
+                    android:textColor="#2E7D32"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/so3_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="El trióxido de azufre es un gas incoloro con un olor picante, producido en la quema de combustibles fósiles. Al combinarse con agua, forma ácido sulfúrico, altamente dañino para la salud.
+
+\n\nEl valor límite (VL) horario es de 350 µg/m³, no debiendo superarse en más de 24 ocasiones al año. Además, el valor límite diario es de 125 µg/m³, que no debe superarse en más de 3 ocasiones al año."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/recomendaciones_so3_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Recomendaciones:▼"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recomendaciones_so3_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- Evitar áreas industriales o sitios de emisión en días de alta concentración de SO2.
+                \n-Usar mascarillas y equipo de protección si es necesario, especialmente en entornos industriales."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/precaucion_so3_title"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Precaución:▼"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/precaucion_so3_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grupos de riesgo: trabajadores industriales y personas con enfermedades respiratorias. En caso de exposición prolongada, se debe buscar asistencia médica de inmediato."
+                    android:textColor="#000000"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#00FF00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bueno: 0-125 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#FFFF00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Moderado: 126-350 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="#FF0000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Malo: > 350 µg/m³"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+            <!-- Enlaces de Interés -->
+            <!-- Enlaces de Interés -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#E0E0E0"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/enlace_documento_oficial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Para más información sobre la normativa y recomendaciones sobre la calidad del aire, consulta el siguiente documento oficial."
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

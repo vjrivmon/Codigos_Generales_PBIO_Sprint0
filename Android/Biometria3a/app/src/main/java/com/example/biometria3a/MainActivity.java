@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     // Crear la instancia de BluetoothHelper
     private BluetoothHelper bluetoothHelper;
 
+    private MenuHandler menuHandler;
     private Runnable timeoutRunnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,17 +219,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
 
 
-        // Encontrar el icono del menú en el Toolbar
+        menuHandler = new MenuHandler(this);
         menuIcon = findViewById(R.id.menu_icon);
-
-        // Establecer el listener para abrir el PopupMenu al hacer clic en el icono
-        menuIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenu(v);
-            }
-        });
-
+        menuIcon.setOnClickListener(menuHandler::showPopupMenu);
 
         // Inicializar el receiver
         ozoneLevelReceiver = new OzoneLevelReceiver();
@@ -239,13 +232,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Ejemplo de valor de CO2 (este valor se podría obtener de tu sensor)
         //int valorO3 = 280; // Este es solo un ejemplo, cámbialo por el valor real del sensor
-         double valorO3= valorMajor/10000;
+        // double valorO3= valorMajor/10000;
         // Llamar al método para lanzar la notificación según el valor
        // lanzarNoti((int) valorO3);
-        Log.d("MiEtiqueta", "El valor de O3 es: " + valorO3);
+      //  Log.d("MiEtiqueta", "El valor de O3 es: " + valorO3);
 
         Context context = this;
-        sendOzoneLevelBroadcast(context, (int) valorO3); // Enviar el broadcast para mostrar la notificación
+      //  sendOzoneLevelBroadcast(context, (int) valorO3); // Enviar el broadcast para mostrar la notificación
 
 
 
@@ -282,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     public void lanzarNoti(double valorO3) {
-        if (valorO3 >= SENSOR_DANADO_THRESHOLD) {
+     /*   if (valorO3 >= SENSOR_DANADO_THRESHOLD) {
             // Si el valor de CO2 es mayor o igual a 500, el sensor puede estar dañado o haciendo lecturas erróneas
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
         } else if (valorO3 >= RANGO_MODERADO_MIN && valorO3 <= RANGO_MODERADO_MAX) {
@@ -292,6 +285,10 @@ public class MainActivity extends AppCompatActivity {
             // Si el valor de CO2 es mayor a 240, es un nivel alto de calidad del aire
             CO2NotificationManager.showCO2AlertNotification(this, valorO3); // Llama a la clase CO2NotificationManager
         }
+
+      */
+
+        CO2NotificationManager.showCO2AlertNotification(this, valorO3);
     }
 
     // Método para enviar el Broadcast
@@ -321,10 +318,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(ozoneLevelReceiver);
     }
 
-    private void enviarNotificacionAlerta() {
-        NotificationHalper notificationHelper = new NotificationHalper(MainActivity.this);
-        notificationHelper.showNotification("Alerta", "¡Niveles de O3 muy altos! Valor Major: " + valorMajor);
-    }
+
 
     private void buscarTodosLosDispositivosBTLE() {
         Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empieza ");
@@ -722,41 +716,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Método para mostrar el PopupMenu
     // Método para mostrar el PopupMenu
-    private void showPopupMenu(View view) {
-        // Crear el PopupMenu
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.menu, popupMenu.getMenu());
 
-        // Manejar las acciones del menú
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                // Usar if-else en lugar de switch para evitar el error
-                if (item.getItemId() == R.id.action_about) {
-                    Toast.makeText(MainActivity.this, "Sobre Nosotros", Toast.LENGTH_SHORT).show();
-                    lanzarSobreNosotros();
-                    return true;
-                } else if (item.getItemId() == R.id.action_faq) {
-                    Toast.makeText(MainActivity.this, "FAQ", Toast.LENGTH_SHORT).show();
-                    lanzarFAQ();
-                    return true;
-                } else if (item.getItemId() == R.id.action_packs) {
-                    Toast.makeText(MainActivity.this, "Packs", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (item.getItemId() == R.id.action_privacidad) {
-                    Toast.makeText(MainActivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
-                    lanzarPrivacidad();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-
-        // Mostrar el menú
-        popupMenu.show();
-    }
 
     // Inflar el menú cuando se crea la actividad
     @Override
@@ -765,33 +725,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void lanzarSobreNosotros() {
-        Intent intent = new Intent(this, SobreNosotrosActivity.class);
-        startActivity(intent);
-    }
-
-    private void lanzarFAQ() {
-        Intent intent = new Intent(this, FAQActivity.class);
-        startActivity(intent);
-    }
-
-    private void lanzarPacks() {
-        // Acción o navegación para la opción de "Packs"
-        Intent intent = new Intent(this, PacksActivity.class);
-        startActivity(intent);
-    }
-
-    private void lanzarPrivacidad() {
-        // Acción o navegación para la opción de "Packs"
-        Intent intent = new Intent(this, PrivacidadAcitivity.class);
-        startActivity(intent);
-    }
-
-    private void lanzarMapa() {
-        // Acción o navegación para la opción de "Packs"
-        Intent intent = new Intent(this, Mapa_Activity.class);
-        startActivity(intent);
-    }
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
