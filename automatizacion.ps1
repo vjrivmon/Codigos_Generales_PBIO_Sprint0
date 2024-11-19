@@ -67,6 +67,7 @@ Copy-Item -Recurse "Backend/src/nodejs/*" "$TEMP_DIR/Backend/src/nodejs" -Exclud
 Copy-Item -Recurse "Backend/src/mariadb/*" "$TEMP_DIR/Backend/src/mariadb"
 Copy-Item -Recurse "Frontend/*" "$TEMP_DIR/Backend/src/nodejs/app_web"
 Copy-Item "Backend/src/variables.env" "$TEMP_DIR/Backend/src"
+Copy-Item "Frontend/src/img/logo.png" "$TEMP_DIR/Backend/src/nodejs"
 
 # Copiar los archivos SQL al contenedor de MariaDB
 if (Test-Path "Backend/src/mariadb/sql/ejemploBBDD.sql") {
