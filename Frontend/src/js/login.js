@@ -98,7 +98,7 @@ async function ConsultarDatosUsuario(email, password) {
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
                 console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
                 // Redirigir según el correo electrónico
-                if (email === 'visi02@gmail.com') {
+                if (email.trim().toLowerCase() === 'irene08@gmail.com') {
                     window.location.href = 'admin.html';
                 } else {
                     window.location.href = 'datosYMapa.html';
