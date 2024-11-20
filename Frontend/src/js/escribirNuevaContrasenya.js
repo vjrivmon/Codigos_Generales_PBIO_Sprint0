@@ -1,31 +1,52 @@
-// Este archivo contiene el código JavaScript para la página de escribir nueva contraseña de la aplicación web.
-// Se encarga de manejar las interacciones con el usuario y de enviar el correo de confirmación de cambio de contraseña.
-// Se debe cambiar la dirección de correo electrónico del remitente, la dirección de correo electrónico del destinatario y la URL del sitio web en el botón de confirmación.
+// Referencias a los elementos del DOM
+const popupConfirmarNuevaContrasenya = document.getElementById('popup-cambiar-contrasenya');
+const cancelBtnContra = document.getElementById('cancelBtnContrasenya');
+const confirmBtnContra = document.getElementById('confirmBtnContrasenya');
+const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 
+// Evento del botón "Restablecer Contraseña"
+resetPasswordBtn.addEventListener('click', function (event) {
+    event.preventDefault(); // Evitar envío del formulario
 
-// Manejar el evento de clic en el botón de registrarse
-document.getElementById('resetPasswordBtn').addEventListener('click', function(event) { // Agregar un 'escuchador' de eventos al botón de registrarse
-    event.preventDefault(); // Evitar el envío del formulario
-    const newPass = document.getElementById('newPassword').value; // Obtener el correo
-    const newPassConfirm = document.getElementById('confirmPassword').value; // Obtener la contraseña
+    // Obtener los valores actuales de los campos
+    const currentNewPass = document.getElementById('newPassword').value.trim();
+    const currentNewPassConfirm = document.getElementById('confirmPassword').value.trim();
 
-    
-    // Validar que los campos no estén vacíos
-    if (!newPass || !newPassConfirm) {
-        alert('Todos los campos son obligatorios.'); // Mensaje de error
-        return; // Salir de la función si hay campos vacíos
-    }
-    
-    // Validar formato de contraseña
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,200}$/;
-    if (!passwordRegex.test(newPass)) {
-        alert('La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)'); // Mensaje de error
-        return; // Salir de la función si la contraseña no es válida
-    }
-	
-    alert('Se han confirmado los cambios, revisa tu bandeja de entrada'); // Mensaje de error
+    // Mostrar el popup
+    popupConfirmarNuevaContrasenya.style.display = 'flex';
 
-	// Llamar a la función para enviar el correo
-    //enviarCorreo(email);
-	
+    // Evento para confirmar los cambios
+    confirmBtnContra.addEventListener('click', function confirmar() {
+        // Validar los campos con if, else if, else
+        if (!currentNewPass || !currentNewPassConfirm) {
+            // Si algún campo está vacío
+            alert('Todos los campos son obligatorios.');
+            popupConfirmarNuevaContrasenya.style.display = 'none';
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(currentNewPass)) {
+            // Si el formato de la contraseña es inválido
+            alert(
+                'La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*).'
+            );
+            popupConfirmarNuevaContrasenya.style.display = 'none';
+        } else if (currentNewPass !== currentNewPassConfirm) {
+            // Si las contraseñas no coinciden
+            alert('Las contraseñas no coinciden.');
+            popupConfirmarNuevaContrasenya.style.display = 'none';
+        } else {
+            // Si todas las validaciones son correctas
+            alert('Se han confirmado los cambios. Revisa tu bandeja de entrada.');
+            popupConfirmarNuevaContrasenya.style.display = 'none';
+        }
+
+        // Remover el listener para evitar duplicados si se vuelve a abrir el popup
+        confirmBtnContra.removeEventListener('click', confirmar);
+    });
+
+    // Evento para cancelar el cambio de contraseña
+    cancelBtnContra.addEventListener('click', function cancelar() {
+        popupConfirmarNuevaContrasenya.style.display = 'none';
+
+        // Remover listener para evitar duplicados
+        cancelBtnContra.removeEventListener('click', cancelar);
+    });
 });

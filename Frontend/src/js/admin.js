@@ -116,10 +116,6 @@ displaySensors(sensors);
 
 
 /* --------------- POPUP BORRAR CAMBIOS ---------------- */
-// Este código se encarga de mostrar un popup para que el usuario pueda introducir su número de teléfono y recibir un correo con un enlace para reestablecer su contraseña.
-// Se encarga de validar que el número de teléfono introducido sea correcto y de enviar un correo al usuario con un enlace para reestablecer su contraseña.
-// Falta por implementar el envío del correo al usuario.
-
 /*-------------------------------- APARECER POPUP ---------------------------------*/
 const popupBorrarFiltros = document.getElementById('popup-borrar-filtros');
 const cancelBtnFiltros = document.getElementById('cancelBtn-filtros');
