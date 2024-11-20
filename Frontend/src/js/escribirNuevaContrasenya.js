@@ -4,6 +4,33 @@ const cancelBtnContra = document.getElementById('cancelBtnContrasenya');
 const confirmBtnContra = document.getElementById('confirmBtnContrasenya');
 const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 
+/* ----------- Para que salga rojo o verde si las contraseñas coinciden o no ----------- */
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordInput = document.getElementById("newPassword");
+    const passwordConfirmInput = document.getElementById("confirmPassword"); // Cambié el ID para que coincida
+
+    // Función para verificar si las contraseñas coinciden
+    function checkPasswordsMatch() {
+        const password = passwordInput.value;
+        const confirmPassword = passwordConfirmInput.value;
+
+        // Cambiar el borde según si coinciden o no
+        if (password && confirmPassword) {
+            if (password === confirmPassword) {
+                passwordConfirmInput.style.border = "2px solid green"; // Borde verde si coinciden
+            } else {
+                passwordConfirmInput.style.border = "2px solid red"; // Borde rojo si no coinciden
+            }
+        } else {
+            passwordConfirmInput.style.border = ""; // Sin borde si está vacío
+        }
+    }
+
+    // Añadir los eventos de escucha a ambos campos de contraseña
+    passwordInput.addEventListener("input", checkPasswordsMatch);
+    passwordConfirmInput.addEventListener("input", checkPasswordsMatch);
+});
+
 // Evento del botón "Restablecer Contraseña"
 resetPasswordBtn.addEventListener('click', function (event) {
     event.preventDefault(); // Evitar envío del formulario
