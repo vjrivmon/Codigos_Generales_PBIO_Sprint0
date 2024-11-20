@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("El número de teléfono debe tener exactamente 9 dígitos.");
             return;
         }
-
+        
         try {
             const id_usuario = getCookie('id_usuario');
             if (!id_usuario) {
@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 correo: userEmail.value
             };
             
+            console.log(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`);
+            
             // Enviar los datos al servidor
             const response = await fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`, {
                 method: 'PUT',
@@ -112,7 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!response.ok) { // Verificar si la respuesta tuvo éxito
                 throw new Error('No se pudieron actualizar los datos del usuario');
-                popup.style.display = 'none';
             }
 
             const resultado = await response.text(); // Obtener el mensaje de éxito desde la respuesta del servidor
@@ -125,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error al actualizar los datos del usuario:', error);
             alert('Hubo un problema al actualizar los datos del usuario.');
             popup.style.display = 'none'; // Oculta el popup
+            editBtn.disabled = false;
         }
     });
 
