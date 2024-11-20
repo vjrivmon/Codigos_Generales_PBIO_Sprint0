@@ -574,7 +574,8 @@ async function recuperarContrasena(req, res) {
  * @param res Objeto de respuesta HTTP (Express.js).
  */
 async function editarDatosUsuario(req, res) {
-  const { id_usuario, nombre, telefono, correo, contrasena } = req.body;
+  const { id_usuario } = req.params;
+  const { nombre, telefono, correo, contrasena } = req.body;
   let connection;
   try {
     console.log(`Datos recibidos para la actualización: id_usuario: ${id_usuario}, nombre: ${nombre}, telefono: ${telefono}, correo: ${correo}, contrasena: ${contrasena}`);
@@ -598,10 +599,12 @@ async function editarDatosUsuario(req, res) {
     let query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ? WHERE id_usuario = ?';
     let params = [nombre, telefono, correo, id_usuario];
 
-    // Si la contraseña es proporcionada, incluirla en la actualización
+    // Si la contraseña es proporcionada, encriptarla e incluirla en la actualización
     if (contrasena) {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(contrasena, salt);
       query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
-      params = [nombre, telefono, correo, contrasena, id_usuario];
+      params = [nombre, telefono, correo, hash, id_usuario];
     }
 
     // Ejecutar la actualización
