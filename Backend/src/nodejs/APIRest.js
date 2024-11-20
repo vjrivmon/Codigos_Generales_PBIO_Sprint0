@@ -96,6 +96,11 @@ router.get('/mediciones/:id_sensor', (req, res) => {
   ConsultarSiHayAlerta(req, res);
 });
 
+router.put('/usuarios/:id_usuario', (req, res) => {
+  console.log('Ruta /usuarios/:id_usuario accedida');
+  editarDatosUsuario(req, res);
+});
+
 router.get('/base-datos', ConsultarBaseDeDatos);
 
 // Pruebas de depuración

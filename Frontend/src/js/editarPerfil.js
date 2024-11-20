@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const datosUsuario = {
+                id_usuario: id_usuario,
                 nombre: userName.value,
                 telefono: userPhone.value,
                 correo: userEmail.value
@@ -120,18 +121,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
             alert(resultado); // Muestra mensaje de éxito
             alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
+            
             // Enviar correo de verificación edición de perfil
             const correoResponse = await fetch('http://localhost:8080/editar-datos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email: email })
+                body: JSON.stringify({ email: userEmail.value }) // Asegúrate de enviar el correo correcto
             });
 
             if (!correoResponse.ok) {
                 throw new Error('Error al enviar el correo de edición de datos: ' + correoResponse.status);
             }
+
             popup.style.display = 'none'; // Oculta el popup
             
         } catch (error) { // Capturar errores

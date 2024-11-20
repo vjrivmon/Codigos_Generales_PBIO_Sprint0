@@ -250,10 +250,10 @@ async function enviarCorreoParaEditarDatos(email) {
       </div>
       <div class="content">
         <p>Estimado usuario,</p>
-        <p>Nos complace darte la bienvenida a VIMYP. Desde ahora, podrás contar con información precisa y en tiempo real sobre la calidad del aire que respiras. Nos esforzamos por ofrecerte tranquilidad y facilidad en el acceso a datos de calidad.</p>
-        <p>Haciendo click en este botón ya estarás oficialmente dado de alta.</p>
-        <a href="http://localhost/html/login.html" class="button">Confirmar</a> <!---- Cambiar por la URL del sitio web ---->	
-        <p>¿No has sido tú? Si no solicitaste este registro, por favor ignora este mensaje o contáctanos.</p>
+        <p>Nos complace informarte que se ha realizado con exito la petición de cambios de datos personales en tu perfil de VIMYP</p>
+        <p>Haciendo click en este botón verificas la petición y se guardaran los datos en la base de datos.</p>
+        <a href="http://localhost/html/perfil.html" class="button">Confirmar</a> <!---- Cambiar por la URL del sitio web ---->	
+        <p>¿No has sido tú? Si no solicitaste este cambio de datos personales, por favor ponte en contácto con nosotros.</p>
       </div>
       <div class="footer">
         © 2024 VIMYP. Todos los derechos reservados.
@@ -925,64 +925,63 @@ async function recuperarContrasena(req, res) {
  * @param res Objeto de respuesta HTTP (Express.js).
  */
 async function editarDatosUsuario(req, res) {
-  try {
     const { id_usuario, nombre, telefono, correo, contrasena } = req.body;
     console.log('Datos recibidos para actualizar el usuario:', req.body);
     let connection;
     try {
-      console.log(`Datos recibidos para la actualización: id_usuario: ${id_usuario}, nombre: ${nombre}, telefono: ${telefono}, correo: ${correo}, contrasena: ${contrasena}`);
+        console.log(`Datos recibidos para la actualización: id_usuario: ${id_usuario}, nombre: ${nombre}, telefono: ${telefono}, correo: ${correo}, contrasena: ${contrasena}`);
 
-      // Obtener conexión a la base de datos
-      console.log(`Intentando obtener conexión para actualizar datos del usuario con ID: ${id_usuario}`);
-      connection = await pool.getConnection();
-      console.log('Conexión obtenida con éxito');
+        // Obtener conexión a la base de datos
+        console.log(`Intentando obtener conexión para actualizar datos del usuario con ID: ${id_usuario}`);
+        connection = await pool.getConnection();
+        console.log('Conexión obtenida con éxito');
 
-      // Verificar si el usuario existe
-      const checkUserQuery = 'SELECT * FROM usuarios WHERE id_usuario = ?';
-      const userRows = await connection.query(checkUserQuery, [id_usuario]);
-      console.log('Resultado de la consulta de usuario:', userRows);
+        // Verificar si el usuario existe
+        const checkUserQuery = 'SELECT * FROM usuarios WHERE id_usuario = ?';
+        const userRows = await connection.query(checkUserQuery, [id_usuario]);
+        console.log('Resultado de la consulta de usuario:', userRows);
 
-      if (userRows.length === 0) {
-        console.warn('Usuario no encontrado');
-        return res.status(404).send('Usuario no encontrado');
-      }
+        if (userRows.length === 0) {
+            console.warn('Usuario no encontrado');
+            return res.status(404).send('Usuario no encontrado');
+        }
 
-      // Construir la consulta de actualización sin la contraseña, si no se proporciona
-      let query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ? WHERE id_usuario = ?';
-      let params = [nombre, telefono, correo, id_usuario];
+        // Construir la consulta de actualización sin la contraseña, si no se proporciona
+        let query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ? WHERE id_usuario = ?';
+        let params = [nombre, telefono, correo, id_usuario];
 
-      // Si la contraseña es proporcionada, encriptarla e incluirla en la actualización
-      if (contrasena) {
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(contrasena, salt);
-        query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
-        params = [nombre, telefono, correo, hash, id_usuario];
-      }
+        // Si la contraseña es proporcionada, encriptarla e incluirla en la actualización
+        if (contrasena) {
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(contrasena, salt);
+            query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
+            params = [nombre, telefono, correo, hash, id_usuario];
+        }
 
-      // Ejecutar la actualización
-      const result = await connection.query(query, params);
-      console.log('Resultado de la actualización de datos del usuario:', result);
+        // Ejecutar la actualización
+        const result = await connection.query(query, params);
+        console.log('Resultado de la actualización de datos del usuario:', result);
 
-      if (result.affectedRows === 0) {
-        console.warn('No se pudieron actualizar los datos del usuario');
-        return res.status(500).send('No se pudieron actualizar los datos del usuario');
-      }
+        if (result.affectedRows === 0) {
+            console.warn('No se pudieron actualizar los datos del usuario');
+            return res.status(500).send('No se pudieron actualizar los datos del usuario');
+        }
 
-      console.log('Datos del usuario actualizados correctamente para el usuario con ID:', id_usuario);
-      res.status(200).send('Datos del usuario actualizados correctamente');
+        console.log('Datos del usuario actualizados correctamente para el usuario con ID:', id_usuario);
+
+        // Enviar correo de notificación
+        await enviarCorreoParaEditarDatos(correo);
+
+        res.status(200).send('Datos del usuario actualizados correctamente');
     } catch (err) {
-      console.error('Error al actualizar los datos del usuario:', err);
-      res.status(500).send('Error al actualizar los datos del usuario');
+        console.error('Error al actualizar los datos del usuario:', err);
+        res.status(500).send('Error al actualizar los datos del usuario');
     } finally {
-      if (connection) {
-        console.log('Liberando conexión');
-        connection.release();
-      }
+        if (connection) {
+            console.log('Liberando conexión');
+            connection.release();
+        }
     }
-  } catch (error) {
-    console.error('Error al actualizar los datos del usuario:', error);
-    res.status(500).send('Error al actualizar los datos del usuario');
-  }
 }
 
 /**
@@ -1049,7 +1048,7 @@ encriptarContrasenas();
 async function enviarCorreoVerificacion(req, res) {
     const { email } = req.body;
     try {
-        await enviarCorreo(email);
+        await enviarCorreoParaVerificacion(email);
         res.status(200).send('Correo de verificación enviado correctamente');
     } catch (error) {
         console.error('Error al enviar el correo de verificación:', error);
@@ -1059,7 +1058,7 @@ async function enviarCorreoVerificacion(req, res) {
 async function enviarCorreoEditarDatos(req, res) {
   const { email } = req.body;
   try {
-      await enviarCorreo(email);
+      await enviarCorreoParaEditarDatos(email);
       res.status(200).send('Correo de Editar datos enviado correctamente');
   } catch (error) {
       console.error('Error al enviar el correo de Editar datos:', error);
@@ -1069,7 +1068,7 @@ async function enviarCorreoEditarDatos(req, res) {
 async function enviarCorreoRestablecerContrasena(req, res) {
   const { email } = req.body;
   try {
-      await enviarCorreo(email);
+      await enviarCorreoParaRestablecerContrasena(email);
       res.status(200).send('Correo de Restablecer Contrasena enviado correctamente');
   } catch (error) {
       console.error('Error al enviar el correo de Restablecer Contrasena:', error);
@@ -1079,7 +1078,7 @@ async function enviarCorreoRestablecerContrasena(req, res) {
 async function enviarCorreoRecuperarContrasena(req, res) {
   const { email } = req.body;
   try {
-      await enviarCorreo(email);
+      await enviarCorreoParaRecuperarContrasena(email);
       res.status(200).send('Correo de Recuperar Contrasena enviado correctamente');
   } catch (error) {
       console.error('Error al enviar el correo de Recuperar Contrasena:', error);
