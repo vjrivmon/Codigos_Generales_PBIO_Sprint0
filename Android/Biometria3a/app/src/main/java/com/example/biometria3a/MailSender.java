@@ -18,8 +18,8 @@ public class MailSender extends AsyncTask<Void, Void, Void> {
     private final String subject;
     private final String message;
     // 使用您的邮箱和应用专用密码
-    private final String senderEmail = "irenebati4@gmail.com";
-    private final String senderPassword = "dwcyhzilzahwuvmh";
+    private final String senderEmail = "vimyp.s.l@gmail.com";
+    private final String senderPassword = "qejv suwv cykj wcjj";
 
     public MailSender(String recipientEmail, String subject, String message) {
         this.recipientEmail = recipientEmail;

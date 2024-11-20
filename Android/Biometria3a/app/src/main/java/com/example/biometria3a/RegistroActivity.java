@@ -180,13 +180,19 @@ public class RegistroActivity extends AppCompatActivity {
             if (!checkBoxPolitica.isChecked()) {
                 Toast.makeText(RegistroActivity.this, "Por favor, acepta la política de privacidad", Toast.LENGTH_SHORT).show();
                 return;
-            }
 
+            }
+            // Generar y enviar código de verificación
+            String verificationCode = generateVerificationCode();
+            sendVerificationCode(email, verificationCode);
+
+            // Mostrar pop-up para verificar el código
+            showVerificationPopup(email, verificationCode);
 
 
             //----------------------REGISTRO------------------------------
 
-            Usuario newUser = new Usuario(username, phone, email, password);
+          /*  Usuario newUser = new Usuario(username, phone, email, password);
 
             // Llamar a la API para registrar el usuario
             ApiService apiService = ApiClient.getClient().create(ApiService.class);
@@ -197,8 +203,8 @@ public class RegistroActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Toast.makeText(RegistroActivity.this, "Usuario registrado exitosamente.", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(RegistroActivity.this, VerificationActivity.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(RegistroActivity.this, VerificationActivity.class);
+                       // startActivity(intent);
 
                         finish(); // Cerrar la actividad después del registro
                     } else {
@@ -229,6 +235,8 @@ public class RegistroActivity extends AppCompatActivity {
                 }
             });
 
+
+           */
         });
 
         // Asignamos el OnClickListener al TextView "Inicia sesión"
@@ -306,6 +314,68 @@ public class RegistroActivity extends AppCompatActivity {
 
     }
 
+
+    private String generateVerificationCode() {
+        int randomCode = (int) (Math.random() * 900000) + 100000; // Genera un código de 6 dígitos
+        return String.valueOf(randomCode);
+    }
+
+    private void sendVerificationCode(String email, String code) {
+        String subject = "Código de Verificación";
+        String message = "Tu código de verificación es: " + code;
+        new MailSender(email, subject, message).execute(); // Llama a MailSender para enviar el correo
+    }
+    private void showVerificationPopup(String email, String generatedCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Verificación de Correo");
+
+        // EditText para que el usuario introduzca el código
+        final EditText input = new EditText(this);
+        input.setHint("Introduce el código");
+        builder.setView(input);
+
+        builder.setPositiveButton("Verificar", (dialog, which) -> {
+            String enteredCode = input.getText().toString().trim();
+
+            if (enteredCode.equals(generatedCode)) {
+                Toast.makeText(RegistroActivity.this, "Verificación exitosa.", Toast.LENGTH_SHORT).show();
+                completeRegistration(); // Llama al método para registrar al usuario
+            } else {
+                Toast.makeText(RegistroActivity.this, "Código incorrecto, intenta de nuevo.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        builder.setCancelable(false);
+        builder.show();
+    }
+    private void completeRegistration() {
+        String username = edtUsername.getText().toString().trim();
+        String email = edtEmail.getText().toString().trim();
+        String password = edtPassword.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+
+        Usuario newUser = new Usuario(username, phone, email, password);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+
+        Call<Void> call = apiService.registerUser(newUser);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RegistroActivity.this, "Usuario registrado exitosamente.", Toast.LENGTH_SHORT).show();
+                    goToMainActivity();
+                } else {
+                    Toast.makeText(RegistroActivity.this, "Error al registrar usuario.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(RegistroActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 
