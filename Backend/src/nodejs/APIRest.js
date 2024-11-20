@@ -21,7 +21,7 @@ const {
   recuperarContrasena,
   editarDatosUsuario,
   encriptarContrasenas,
-  verificarCorreo,
+  //verificarCorreo,
   enviarCorreoVerificacion
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 // Inicializar app y cargar variables de entorno
@@ -54,7 +54,7 @@ router.get('/usuarios', verificarUsuario);
 router.put('/usuarios/contrasena', recuperarContrasena);
 router.put('/usuarios/:id_usuario', editarDatosUsuario);
 router.post('/usuarios/verificar', verificarUsuario);
-router.get('/verificar-correo', verificarCorreo);
+//router.get('/verificar-correo', verificarCorreo);
 router.post('/verificar-correo', enviarCorreoVerificacion);
 //router.post('/asociar-sensor', asociarSensorAUsuario);
 
