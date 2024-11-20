@@ -78,7 +78,7 @@ public class CO2NotificationManager {
                 contentText = "Nivel moderado de ozono detectado.\n";
                 additionalInfo = "La concentración de ozono está en un nivel moderado (entre 240 y 500 ppb). Se recomienda tomar precauciones.\n" +
                         "Fecha y hora: " + currentTime + ".\n" +
-                        "Nivel de Ozono: " + co2Value + ".\n" +
+                        "Nivel de Ozono: " + co2Value + "PPM .\n" +
                         "Coordenadas GPS: " + gpsCoordinates + ".\n";
             } else if (co2Value >= 180) {
                 // Nivel bajo pero no ideal
