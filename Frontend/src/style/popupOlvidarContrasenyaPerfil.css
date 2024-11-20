@@ -1,5 +1,5 @@
 /* Popup */
-.popup {
+#popupOlvidado {
     display: none; /* Inicialmente está oculto */
     position: fixed;
     top: 0;
@@ -12,7 +12,7 @@
     z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
 }
 
-.popup-content {
+#popup-content-olvidado {
     background-color: white;
     padding: 1.2rem;
     border-radius: 20px; /* Ajusta el borde redondeado */
