@@ -99,8 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!id_usuario) {
                 alert('No se pudo obtener el ID del usuario.');
                 return;
-            }
-                // const id_usuario =4;
+            }            
 
     fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`)
         .then(response => {
