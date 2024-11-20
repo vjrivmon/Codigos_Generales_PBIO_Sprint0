@@ -73,6 +73,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -84,7 +94,7 @@ import retrofit2.Response;
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -124,14 +134,26 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     private TextView tvCurrentTime, tvTemperature, tvOzone;
-    private WebView webView;
+   // private WebView webView;
     private Button btnUpdate;
     private static final int REQUEST_ENABLE_BT = 1;
+
     // Crear la instancia de BluetoothHelper
     private BluetoothHelper bluetoothHelper;
 
     private MenuHandler menuHandler;
     private Runnable timeoutRunnable;
+
+    //---------------------MAPA-------------------------------
+
+    private GoogleMap mMap;
+    private FusedLocationProviderClient fusedLocationClient;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,7 +190,25 @@ public class MainActivity extends AppCompatActivity {
         tvTemperature = findViewById(R.id.tv_temperature);
         tvOzone = findViewById(R.id.tv_ozone);
         btnUpdate = findViewById(R.id.btn_update);
-        webView = findViewById(R.id.webview_map);
+
+        // Inicializa el fragmento del mapa
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(MainActivity.this);
+        }
+
+        // Inicializa el cliente de ubicación
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Verifica permisos
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        }
+
+        //webView = findViewById(R.id.webview_map);
 
 
        // loadVerificationFragment();
@@ -244,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //------------------mapa------------------------
-        // WebView设置
+      /*  // WebView设置
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true); // 启用JavaScript
         webView.setWebViewClient(new WebViewClient()); // 在WebView中打开URL
@@ -254,6 +294,8 @@ public class MainActivity extends AppCompatActivity {
         String googleMapsUrl = "https://www.google.com/maps?q=Valencia&z=12";
         webView.loadUrl(googleMapsUrl);
 
+
+       */
         // 显示当前时间
         updateTime();
 
@@ -265,6 +307,44 @@ public class MainActivity extends AppCompatActivity {
                     updateTime(); // 更新时间
         });
     }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Habilitar el botón de ubicación si los permisos están concedidos
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            getUserLocation();
+        } else {
+            Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getUserLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        // Obtén la ubicación actual
+                        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                        // Mueve la cámara al lugar actual
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+
+                        // Añade un marcador en la ubicación actual
+                        mMap.addMarker(new MarkerOptions().position(userLocation).title("Estás aquí"));
+                    } else {
+                        Toast.makeText(MainActivity.this, "No se pudo obtener tu ubicación", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
 
     // 更新显示时间
     private void updateTime() {
@@ -376,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
         // Convertir los valores Major y Minor
         valorMajor = Utilidades.bytesToInt(tib.getMajor());
         //  valorMajor=50;
-       lanzarNoti(valorMajor);
+       lanzarNoti(valorMajor/10);
         // Usar Handler para esperar 10 segundos antes de mostrar la notificación
 
         Log.d(ETIQUETA_LOG, "Valor Major detectado: " + valorMajor);
@@ -518,8 +598,19 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             TextView tvBluetoothName = findViewById(R.id.valoresSensor);
                             tvBluetoothName.setText("Valores: " + sensorDatos);
+
+                            TextView tvTemperature = findViewById(R.id.tv_temperature);
+                            double valorTemperatura = valorMinor / 100;
+                            tvTemperature.setText("Temperatura: " +valorTemperatura + " °C");
+
+                            TextView tvOzone = findViewById(R.id.tv_ozone);
+                            double valorOzone = valorMajor / 10;
+                            tvOzone.setText("Ozono: " +valorOzone + " ppm");
                         }
+                        // Actualizar el TextView de la temperatura
+
                     });
+
 
 
                 } else {
