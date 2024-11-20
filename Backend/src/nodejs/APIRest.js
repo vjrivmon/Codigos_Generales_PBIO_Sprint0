@@ -273,7 +273,7 @@ module.exports = router; // Exportar el router
  *         nombre:
  *           type: string
  *           description: Nombre del usuario
- *         teléfono:
+ *         telefono:
  *           type: string
  *           description: Teléfono del usuario
  *         correo:
