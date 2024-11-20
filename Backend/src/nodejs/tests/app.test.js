@@ -258,6 +258,9 @@ describe('API REST Tests', () => {
       const response = await request(app).put('/usuarios').send(updateUser);
       console.log('Respuesta del servidor:', response.body);
       console.log('Estado de respuesta del servidor:', response.statusCode);
+      if (response.statusCode !== 200) {
+        console.error('Error del servidor:', response.body);
+      }
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
       expect(response.text).toBe('Datos del usuario actualizados correctamente'); // El mensaje debe ser "Datos del usuario actualizados correctamente"
     });

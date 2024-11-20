@@ -574,58 +574,63 @@ async function recuperarContrasena(req, res) {
  * @param res Objeto de respuesta HTTP (Express.js).
  */
 async function editarDatosUsuario(req, res) {
-  const { id_usuario } = req.params;
-  const { nombre, telefono, correo, contrasena } = req.body;
-  let connection;
   try {
-    console.log(`Datos recibidos para la actualización: id_usuario: ${id_usuario}, nombre: ${nombre}, telefono: ${telefono}, correo: ${correo}, contrasena: ${contrasena}`);
+    const { id_usuario, nombre, telefono, correo, contrasena } = req.body;
+    console.log('Datos recibidos para actualizar el usuario:', req.body);
+    let connection;
+    try {
+      console.log(`Datos recibidos para la actualización: id_usuario: ${id_usuario}, nombre: ${nombre}, telefono: ${telefono}, correo: ${correo}, contrasena: ${contrasena}`);
 
-    // Obtener conexión a la base de datos
-    console.log(`Intentando obtener conexión para actualizar datos del usuario con ID: ${id_usuario}`);
-    connection = await pool.getConnection();
-    console.log('Conexión obtenida con éxito');
+      // Obtener conexión a la base de datos
+      console.log(`Intentando obtener conexión para actualizar datos del usuario con ID: ${id_usuario}`);
+      connection = await pool.getConnection();
+      console.log('Conexión obtenida con éxito');
 
-    // Verificar si el usuario existe
-    const checkUserQuery = 'SELECT * FROM usuarios WHERE id_usuario = ?';
-    const userRows = await connection.query(checkUserQuery, [id_usuario]);
-    console.log('Resultado de la consulta de usuario:', userRows);
+      // Verificar si el usuario existe
+      const checkUserQuery = 'SELECT * FROM usuarios WHERE id_usuario = ?';
+      const userRows = await connection.query(checkUserQuery, [id_usuario]);
+      console.log('Resultado de la consulta de usuario:', userRows);
 
-    if (userRows.length === 0) {
-      console.warn('Usuario no encontrado');
-      return res.status(404).send('Usuario no encontrado');
+      if (userRows.length === 0) {
+        console.warn('Usuario no encontrado');
+        return res.status(404).send('Usuario no encontrado');
+      }
+
+      // Construir la consulta de actualización sin la contraseña, si no se proporciona
+      let query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ? WHERE id_usuario = ?';
+      let params = [nombre, telefono, correo, id_usuario];
+
+      // Si la contraseña es proporcionada, encriptarla e incluirla en la actualización
+      if (contrasena) {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(contrasena, salt);
+        query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
+        params = [nombre, telefono, correo, hash, id_usuario];
+      }
+
+      // Ejecutar la actualización
+      const result = await connection.query(query, params);
+      console.log('Resultado de la actualización de datos del usuario:', result);
+
+      if (result.affectedRows === 0) {
+        console.warn('No se pudieron actualizar los datos del usuario');
+        return res.status(500).send('No se pudieron actualizar los datos del usuario');
+      }
+
+      console.log('Datos del usuario actualizados correctamente para el usuario con ID:', id_usuario);
+      res.status(200).send('Datos del usuario actualizados correctamente');
+    } catch (err) {
+      console.error('Error al actualizar los datos del usuario:', err);
+      res.status(500).send('Error al actualizar los datos del usuario');
+    } finally {
+      if (connection) {
+        console.log('Liberando conexión');
+        connection.release();
+      }
     }
-
-    // Construir la consulta de actualización sin la contraseña, si no se proporciona
-    let query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ? WHERE id_usuario = ?';
-    let params = [nombre, telefono, correo, id_usuario];
-
-    // Si la contraseña es proporcionada, encriptarla e incluirla en la actualización
-    if (contrasena) {
-      const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hash(contrasena, salt);
-      query = 'UPDATE usuarios SET nombre = ?, telefono = ?, correo = ?, contrasena = ? WHERE id_usuario = ?';
-      params = [nombre, telefono, correo, hash, id_usuario];
-    }
-
-    // Ejecutar la actualización
-    const result = await connection.query(query, params);
-    console.log('Resultado de la actualización de datos del usuario:', result);
-
-    if (result.affectedRows === 0) {
-      console.warn('No se pudieron actualizar los datos del usuario');
-      return res.status(500).send('No se pudieron actualizar los datos del usuario');
-    }
-
-    console.log('Datos del usuario actualizados correctamente para el usuario con ID:', id_usuario);
-    res.status(200).send('Datos del usuario actualizados correctamente');
-  } catch (err) {
-    console.error('Error al actualizar los datos del usuario:', err);
+  } catch (error) {
+    console.error('Error al actualizar los datos del usuario:', error);
     res.status(500).send('Error al actualizar los datos del usuario');
-  } finally {
-    if (connection) {
-      console.log('Liberando conexión');
-      connection.release();
-    }
   }
 }
 
