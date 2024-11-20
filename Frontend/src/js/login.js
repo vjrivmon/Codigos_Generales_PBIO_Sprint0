@@ -97,7 +97,12 @@ async function ConsultarDatosUsuario(email, password) {
                 // Almacenar el id_usuario en una cookie segura
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
                 console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
-                window.location.href = 'datosYMapa.html';
+                // Redirigir según el correo electrónico
+                if (email === 'visi02@gmail.com') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'datosYMapa.html';
+                }
             } else {
                 alert('Contraseña incorrecta');
             }
@@ -108,7 +113,7 @@ async function ConsultarDatosUsuario(email, password) {
         }
     } catch (error) {
         console.error('Error al verificar el usuario:', error);
-        alert('Ocurrió un error al conectar con el servidor');
+        alert('Porfavor verifica tu correo, para poder iniciar sesión');
     }
     // ------------------------------------------------------------------------------------------------------------------------------------
 
