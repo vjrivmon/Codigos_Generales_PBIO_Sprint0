@@ -23,7 +23,7 @@ popupPhone.addEventListener("input", function() {
 });
 
 // Confirmar y cerrar el popup con validación
-confirmBtnOlvidada.addEventListener('click', function(event) {
+confirmBtnOlvidada.addEventListener('click', async function(event) {
     if (!popupPhone.value) {
         alert('Rellene el campo con su número de teléfono.');
         return;
@@ -32,6 +32,18 @@ confirmBtnOlvidada.addEventListener('click', function(event) {
         return;
     } else {
         alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
+        // Enviar correo de verificación reestablecer contraseña
+        const correoResponse = await fetch('http://localhost:8080/restablecer-contrasena', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        });
+
+        if (!correoResponse.ok) {
+            throw new Error('Error al enviar el correo de restablecer contrasena: ' + correoResponse.status);
+        }
         popupContrasenya.style.display = 'none';
     }
 });
