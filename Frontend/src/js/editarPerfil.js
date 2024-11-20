@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userPhone = document.getElementById('userPhone');
     const userEmail = document.getElementById('userEmail');
     const sensorName = document.getElementById('sensorName');
+    const userPassword = document.getElementById('userPassword');
 
     if (!popup || !editBtn || !confirmBtn || !cancelBtn || !userName || !userPhone || !userEmail || !sensorName) {
         console.error('Error: Uno o más elementos del DOM no se encontraron.');
@@ -17,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const inputs = [userName, userPhone, userEmail, sensorName];
         if (this.textContent === "Editar") {
             inputs.forEach(input => input.disabled = false);
+            userPassword.disabled = true;
             this.textContent = "Guardar";
+            editBtn.disabled = false;
         } else {
             inputs.forEach(input => input.disabled = true);
             this.textContent = "Editar";
@@ -42,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const id_usuario = getCookie('id_usuario');
             if (!id_usuario) {
                 alert('No se pudo obtener el ID del usuario.');
+                popup.style.display = 'none';
+                editBtn.disabled = false;
                 return;
             }
 
@@ -51,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 correo: userEmail.value
             };
 
-            const response = await fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`, {
+            const response = await fetch(`http://localhost:8080/usuarios/2`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -61,10 +66,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!response.ok) {
                 throw new Error('No se pudieron actualizar los datos del usuario');
+                popup.style.display = 'none';
             }
 
             const resultado = await response.text();
-            alert(resultado);
+            alert('Datos actualizados correctamente');
             popup.style.display = 'none';
         } catch (error) {
             console.error('Error al actualizar los datos del usuario:', error);
@@ -75,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cancelBtn.addEventListener('click', function() {
         popup.style.display = 'none';
+        editBtn.disabled = false;
     });
 
     function getCookie(name) {
