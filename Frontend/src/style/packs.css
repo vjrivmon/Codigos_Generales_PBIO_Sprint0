@@ -192,6 +192,13 @@ section div p{
     display: block;
     margin-top: 10px;
 }
+.review-item img {
+    width: 100%; /* Ajusta el ancho al contenedor */
+    max-height: 200px; /* Limita la altura máxima */
+    object-fit: cover; /* Recorta la imagen para ajustarse al contenedor */
+    border-radius: 20px; /* Bordes redondeados */
+    margin: 15px 0; /* Espaciado alrededor de la imagen */
+}
 
 /* General Button Styles */
 .btn {
@@ -274,6 +281,9 @@ section div p{
     }
 	.purchase-card {
         flex: 1 1 100%; /* Cada tarjeta ocupa el 100% del ancho en pantallas pequeñas */
+    }
+    .review-item img {
+        max-height: 150px; /* Ajusta la altura máxima para pantallas más pequeñas */
     }
 	
 	
