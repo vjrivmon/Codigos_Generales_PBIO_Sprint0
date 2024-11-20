@@ -657,35 +657,35 @@ async function encriptarContrasenas() {
 // Llamar a la función encriptarContrasenas al iniciar el servidor
 encriptarContrasenas();
 
-async function verificarCorreo(req, res) {
-  const { email } = req.query;
-  let connection;
-  try {
-    console.log(`Intentando obtener conexión para verificar correo: ${email}`);
-    connection = await pool.getConnection();
-    console.log('Conexión obtenida con éxito');
+// async function verificarCorreo(req, res) {
+//   const { email } = req.query;
+//   let connection;
+//   try {
+//     console.log(`Intentando obtener conexión para verificar correo: ${email}`);
+//     connection = await pool.getConnection();
+//     console.log('Conexión obtenida con éxito');
 
-    const query = 'UPDATE usuarios SET verificado = 1 WHERE correo = ?';
-    const result = await connection.query(query, [email]);
-    console.log('Resultado de la verificación de correo:', result);
+//     const query = 'UPDATE usuarios SET verificado = 1 WHERE correo = ?';
+//     const result = await connection.query(query, [email]);
+//     console.log('Resultado de la verificación de correo:', result);
 
-    if (result.affectedRows === 0) {
-      console.warn('No se pudo verificar el correo');
-      return res.status(500).send('No se pudo verificar el correo');
-    }
+//     if (result.affectedRows === 0) {
+//       console.warn('No se pudo verificar el correo');
+//       return res.status(500).send('No se pudo verificar el correo');
+//     }
 
-    console.log('Correo verificado correctamente para el usuario con correo:', email);
-    res.status(200).send('Correo verificado correctamente');
-  } catch (err) {
-    console.error('Error al verificar el correo:', err);
-    res.status(500).send('Error al verificar el correo');
-  } finally {
-    if (connection) {
-      console.log('Liberando conexión');
-      connection.release();
-    }
-  }
-}
+//     console.log('Correo verificado correctamente para el usuario con correo:', email);
+//     res.status(200).send('Correo verificado correctamente');
+//   } catch (err) {
+//     console.error('Error al verificar el correo:', err);
+//     res.status(500).send('Error al verificar el correo');
+//   } finally {
+//     if (connection) {
+//       console.log('Liberando conexión');
+//       connection.release();
+//     }
+//   }
+// }
 
 async function enviarCorreoVerificacion(req, res) {
     const { email } = req.body;
@@ -711,7 +711,7 @@ module.exports = {
   recuperarContrasena,
   editarDatosUsuario,
   encriptarContrasenas,
-  verificarCorreo,
+  //verificarCorreo,
   enviarCorreoVerificacion,
   enviarCorreo
 };
