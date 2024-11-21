@@ -116,30 +116,62 @@
         app:layout_constraintTop_toBottomOf="@+id/txtOr" />
 
     <!-- Campo de texto para la contraseña -->
-    <EditText
-        android:id="@+id/edtPassword"
+    <!-- Contenedor para el campo de contraseña y el ícono del ojo -->
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@id/edtEmail"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtEmail">
 
+        <!-- Campo de texto para la contraseña -->
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp" />
+
+        <!-- Icono del ojo -->
+        <ImageView
+            android:id="@+id/imgTogglePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="Toggle password visibility"
+            android:padding="12dp"
+            android:src="@drawable/eyeclosed" />
+    </LinearLayout>
+    <!-- 忘记密码的 TextView -->
+    <TextView
+        android:id="@+id/txtOlvidarContrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnIniSesion"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="¿Olvidaste tu contraseña?"
+        android:textColor="@color/colorAccent"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
     <!-- Botón de Registro -->
     <Button
         android:id="@+id/btnIniSesion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Inicia sesión"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <TextView
         android:id="@+id/txtNoTienesAccount"

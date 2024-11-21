@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,9 @@ public class RegistroActivity extends AppCompatActivity {
     private TextView  txtRegistrate;
     private CheckBox checkBoxPolitica,cbUppercase, cbNumber, cbSpecialChar, cbLength;
     private ProgressBar progressBar;  // Barra de progreso
+
+    private ImageView imgTogglePassword;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,28 @@ public class RegistroActivity extends AppCompatActivity {
 
         // Enlazar la ProgressBar
         progressBar = findViewById(R.id.progressBar);
+
+
+        imgTogglePassword = findViewById(R.id.imgTogglePassword);
+
+        imgTogglePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Alternar visibilidad de la contraseña
+                if (isPasswordVisible) {
+                    edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    imgTogglePassword.setImageResource(R.drawable.eye); // Cambia al icono de ojo cerrado
+                } else {
+                    edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    imgTogglePassword.setImageResource(R.drawable.eyeclosed); // Cambia al icono de ojo abierto
+                }
+                isPasswordVisible = !isPasswordVisible;
+
+                // Mover el cursor al final del texto
+                edtPassword.setSelection(edtPassword.getText().length());
+            }
+        });
+
 
         // Establecer un TextWatcher para verificar la contraseña mientras el usuario escribe
         edtPassword.addTextChangedListener(new TextWatcher() {
@@ -389,13 +416,13 @@ public class RegistroActivity extends AppCompatActivity {
     // Método para iniciar la actividad "IniciaSesionActivity"
     private void goToMainActivity() {
         // Creamos un Intent para abrir la actividad de inicio de sesión
-        Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
+        Intent intent = new Intent(RegistroActivity.this, LoginActivity.class);
         startActivity(intent);  // Iniciamos la nueva actividad
     }
     // Método para validar el formato del teléfono
     public boolean isValidPhoneNumber(String phoneNumber) {
         // Validación simple para asegurar que el número tiene solo dígitos (puedes ajustarlo a tu necesidad)
-        return phoneNumber.matches("[0-9]{10}");  // Acepta solo números de 10 dígitos
+        return phoneNumber.matches("[0-9]{9}");  // Acepta solo números de 9 dígitos
     }
 
 /*
