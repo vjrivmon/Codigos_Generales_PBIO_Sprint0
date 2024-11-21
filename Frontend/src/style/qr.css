@@ -1,0 +1,63 @@
+/* QR Section */
+.qr-section {
+    padding: 2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: auto;
+}
+
+.qr-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.qr-section p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.qr-section #qrcode {
+    margin: 1.5rem auto;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.qr-section input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 33px;
+    border: 1px solid lightgray;
+    background-color: #eee;
+    outline: none;
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 1rem;
+}
+
+#btn-submit-qr {
+        background-color: var(--button-color);
+        border: 2px solid var(--button-color);
+        color: white;
+        padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  margin-left: 0;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+  
+#btn-submit-qr:hover {
+    background-color: white;
+    border: 2px solid var(--button-color);
+    color: var(--text-color);
+  }
+  
