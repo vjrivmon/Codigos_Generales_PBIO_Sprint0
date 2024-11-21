@@ -142,29 +142,48 @@
         app:layout_constraintTop_toBottomOf="@+id/edtTelefono" />
 
     <!-- Campo de texto para la contraseña -->
-    <EditText
-        android:id="@+id/edtPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@id/edtEmail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtEmail">
+
+            <!-- Campo de texto para la contraseña -->
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:padding="12dp" />
+
+            <!-- Icono del ojo para mostrar/ocultar contraseña -->
+            <ImageView
+                android:id="@+id/imgTogglePassword"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="Toggle password visibility"
+                android:padding="12dp"
+                android:src="@drawable/eye" />
+        </LinearLayout>
+
 
         <EditText
             android:id="@+id/edtconfirmPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="15dp"
             android:hint="Confirmar Contraseña"
             android:inputType="textPassword"
             android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
 
