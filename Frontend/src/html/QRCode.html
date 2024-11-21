@@ -45,11 +45,11 @@
             <h2>Enlaza tu nuevo dispositivo</h2>
             <p>Escanea el siguiente código QR desde la app de VIMYP o introduce el pin que viene junto al sensor para dar de al ta el dispositivo.</p>
             <div id="qrcode">
-                <img id="qrImage" alt="QR Code"/>
+                <img id="qrImage" alt="QR Code" />
             </div>    
 
-            <input type="text" id="piInputn" placeholder="Escribe aquí tu pin" minlength="12" maxlength="12" required/>
-            <button onclick=""submitPin()" id="btn-submit-qr">Enviar</button>
+            <input type="text" id="pinInput" placeholder="Escribe aquí tu pin" maxlength="12" minlength="12">
+            <button onclick="submitPin()" id="btn-submit-qr">Enviar</button>
        </section>
 
     <!-- Footer -->
