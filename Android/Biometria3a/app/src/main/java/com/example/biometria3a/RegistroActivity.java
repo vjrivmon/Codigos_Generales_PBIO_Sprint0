@@ -389,7 +389,7 @@ public class RegistroActivity extends AppCompatActivity {
     // Método para iniciar la actividad "IniciaSesionActivity"
     private void goToMainActivity() {
         // Creamos un Intent para abrir la actividad de inicio de sesión
-        Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
+        Intent intent = new Intent(RegistroActivity.this, LoginActivity.class);
         startActivity(intent);  // Iniciamos la nueva actividad
     }
     // Método para validar el formato del teléfono
