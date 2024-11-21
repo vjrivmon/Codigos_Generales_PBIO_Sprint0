@@ -106,7 +106,7 @@ async function enviarCorreoParaVerificacion(email) {
           background-color: #395886;
           border: 2px solid #395886;
           color: white !important; /* Aseguramos que el texto sea blanco */
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Montserrat', sans-serif !important;
         }
 
         .button:hover {
@@ -165,7 +165,7 @@ async function enviarCorreoParaEditarDatos(email) {
   var mailOptions = {
     from: 'vimyp.s.l@gmail.com',
     to: email,
-    subject: 'Editar datos de usuario',
+    subject: 'Hemos visto que has hecho algunos cambios...',
     html: `
     <!DOCTYPE html>
     <html lang="es">
@@ -223,7 +223,7 @@ async function enviarCorreoParaEditarDatos(email) {
           background-color: #395886;
           border: 2px solid #395886;
           color: white !important; /* Aseguramos que el texto sea blanco */
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Montserrat', sans-serif !important;
         }
 
         .button:hover {
@@ -246,14 +246,14 @@ async function enviarCorreoParaEditarDatos(email) {
     <body>
       <div class="header">
         <img src="cid:logo" alt="Logotipo VIMYP" class="logo">
-        <h1>Te damos la bienvenida a VIMYP</h1>
+        <h1>Hemos visto que has hecho algunos cambios...</h1>
       </div>
       <div class="content">
         <p>Estimado usuario,</p>
-        <p>Nos complace informarte que se ha realizado con exito la petición de cambios de datos personales en tu perfil de VIMYP</p>
-        <p>Haciendo click en este botón verificas la petición y se guardaran los datos en la base de datos.</p>
-        <a href="http://localhost/html/perfil.html" class="button">Confirmar</a> <!---- Cambiar por la URL del sitio web ---->	
-        <p>¿No has sido tú? Si no solicitaste este cambio de datos personales, por favor ponte en contácto con nosotros.</p>
+        <p>Hemos visto que has realizado algunos cambios en los datos de tu perfil.</p>
+        <p>Haciendo click en este botón confirmarás estos cambios.</p>
+        <a href="http://localhost/html/login.html" class="button">Confirmar cambios</a> <!---- Cambiar por la URL del sitio web ---->	
+        <p>¿No has sido tú? Si no solicitaste este cambio de datos por favor ponte en contácto con nosotros lo antes posible para asegurarnos de que nadie más ha accedido a tu cuenta.</p>
       </div>
       <div class="footer">
         © 2024 VIMYP. Todos los derechos reservados.
@@ -282,7 +282,7 @@ async function enviarCorreoParaRestablecerContrasena(email) {
   var mailOptions = {
     from: 'vimyp.s.l@gmail.com',
     to: email,
-    subject: 'Restablecer contraseña',
+    subject: 'Hemos visto que has hecho algunos cambios...',
     html: `
     <!DOCTYPE html>
     <html lang="es">
@@ -340,7 +340,7 @@ async function enviarCorreoParaRestablecerContrasena(email) {
           background-color: #395886;
           border: 2px solid #395886;
           color: white !important; /* Aseguramos que el texto sea blanco */
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Montserrat', sans-serif !important;
         }
 
         .button:hover {
@@ -363,14 +363,14 @@ async function enviarCorreoParaRestablecerContrasena(email) {
     <body>
       <div class="header">
         <img src="cid:logo" alt="Logotipo VIMYP" class="logo">
-        <h1>Te damos la bienvenida a VIMYP</h1>
+        <h1>Hemos visto que has hecho algunos cambios...</h1>
       </div>
       <div class="content">
-        <p>Estimado usuario,</p>
-        <p>Nos complace darte la bienvenida a VIMYP. Desde ahora, podrás contar con información precisa y en tiempo real sobre la calidad del aire que respiras. Nos esforzamos por ofrecerte tranquilidad y facilidad en el acceso a datos de calidad.</p>
-        <p>Haciendo click en este botón ya estarás oficialmente dado de alta.</p>
-        <a href="http://localhost/html/login.html" class="button">Confirmar</a> <!---- Cambiar por la URL del sitio web ---->	
-        <p>¿No has sido tú? Si no solicitaste este registro, por favor ignora este mensaje o contáctanos.</p>
+       <p>Estimado usuario,</p>
+        <p>Hemos visto que has cambiado la contraseña de tu perfil.</p>
+        <p>Haciendo click en este botón confirmarás estos cambios.</p>
+        <a href="http://localhost/html/login.html" class="button">Confirmar cambios</a> <!---- Cambiar por la URL del sitio web ---->	
+        <p>¿No has sido tú? Si no solicitaste este cambio de datos por favor ponte en contácto con nosotros lo antes posible para asegurarnos de que nadie más ha accedido a tu cuenta.</p>
       </div>
       <div class="footer">
         © 2024 VIMYP. Todos los derechos reservados.
