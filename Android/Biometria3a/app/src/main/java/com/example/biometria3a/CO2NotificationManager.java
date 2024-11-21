@@ -75,25 +75,28 @@ public class CO2NotificationManager {
                         "Por favor, revisa el sensor o las condiciones de medición.";
             } else if (co2Value >= 240 && co2Value <= 500) {
                 // Nivel moderado
-                contentText = "Nivel moderado de ozono detectado.\n";
-                additionalInfo = "La concentración de ozono está en un nivel moderado (entre 240 y 500 ppb). Se recomienda tomar precauciones.\n" +
+                contentText = "Nivel Extremo de ozono detectado.\n";
+                additionalInfo = "La concentración de ozono está en un nivel extremo (entre 240 y 500 ppb). Se recomienda tomar medidas preventivas para proteger la saludSe recomienda tomar precauciones.\n" +
                         "Fecha y hora: " + currentTime + ".\n" +
                         "Nivel de Ozono: " + co2Value + "PPM .\n" +
-                        "Coordenadas GPS: " + gpsCoordinates + ".\n";
-            } else if (co2Value >= 180) {
+                        "Coordenadas GPS: " + gpsCoordinates + ".\n" +
+                        "Precaución: Manténgase alejado de áreas con alta exposición al ozono, especialmente si es sensible a este contaminante.";
+            } else if (co2Value >= 121 && co2Value <= 180) {
                 // Nivel bajo pero no ideal
-                contentText = "Nivel de CO2 aceptable, pero mejorable.";
-                additionalInfo = "El nivel de O3 está dentro del rango aceptable, pero se pueden tomar medidas para mejorarlo. \n" +
+                contentText = "Nivel Moderado de ozono";
+                additionalInfo = "El nivel de ozono está en un nivel moderado (entre 121 y 180 ppb).Aunque no se considera peligroso, se recomienda monitorear la calidad del aire para asegurar un ambiente saludable. \n" +
                         "Fecha y hora: " + currentTime + ".\n" +
                         "Nivel de Ozono: " + co2Value + ".\n" +
-                        "Coordenadas GPS: " + gpsCoordinates + ".\n";;
+                        "Coordenadas GPS: " + gpsCoordinates + ".\n" +
+                        "Recomendación: Mantener las ventanas cerradas y evitar actividades al aire libre durante este nivel.";
             } else {
                 // Nivel bajo
                 contentText = "Nivel de CO2 normal.";
                 additionalInfo = "El nivel de O3 está dentro del rango saludable.\n" +
                         "Fecha y hora: " + currentTime + ".\n" +
                         "Nivel de Ozono: " + co2Value + ".\n" +
-                        "Coordenadas GPS: " + gpsCoordinates + ".\n";
+                        "Coordenadas GPS: " + gpsCoordinates + ".\n" +
+                        "Recomendación: Mantener las condiciones de monitoreo actual y seguir con las actividades normales.";
             }
             // Crear la notificación
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
