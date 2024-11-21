@@ -3,63 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Añadir un nuevo dispositivo | VIMYP</title>
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 50px;
-        }
-        #qrcode {
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        input, button {
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Enlaza tu nuevo dispositivo | VIMYP</title>
+    <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="stylesheet" href="../style/qr.css"> <!-- Archivo CSS específico para FAQ -->
+    <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 </head>
 <body>
-    <h2>Asocia tu nuevo sensor</h2>
-    <p>Escanea este código QR desde la app o introduce el pin que viene junto al sensor para dar de alta el dispositivo.</p>
+     <!-- Header -->
+     <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                    <span>VIMYP</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="packs.html">Packs</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="infoExtra.html">Info sobre los gases</a></li>
+                <li><a href="datosYMapa.html">Mapa</a></li>
+                <li><a href="perfil.html">Mi perfil</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    <!-- 显示二维码 -->
-    <div id="qrcode">
-        <img id="qrImage" alt="QR Code" />
+
+      <!-- Sección del qr -->
+       <section class="qr-section">
+            <h2>Enlaza tu nuevo dispositivo</h2>
+            <p>Escanea el siguiente código QR desde la app de VIMYP o introduce el pin que viene junto al sensor para dar de al ta el dispositivo.</p>
+            <div id="qrcode">
+                <img id="qrImage" alt="QR Code"/>
+            </div>    
+
+            <input type="text" id="piInputn" placeholder="Escribe aquí tu pin" minlength="12" maxlength="12" required/>
+            <button onclick=""submitPin()">Enviar</button>
+       </section>
+
+    <!-- Footer -->
+    <footer class="apple-footer">
+        <div class="footer-top">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
+                    <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
+                    <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
+                    <li><a href="avisosLegales.html">Avisos Legales</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP - Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
     </div>
 
-    <!-- PIN 输入作为备用 -->
-    <input type="text" id="pinInput" placeholder="Escribe aquí tu pin" minlength="12" maxlength="12">
-    <button onclick="submitPin()">Enviar</button>
-
-    <script>
-        // 加载二维码图片
-        document.getElementById("qrImage").src = "http://127.0.0.1:5000/generate_qr";
-
-        // 发送 PIN 码到后端
-        function submitPin() {
-            const pin = document.getElementById("pinInput").value;
-            fetch('http://127.0.0.1:5000/api/associate_device', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ pin: pin })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                } else {
-                    alert("Pin inválido o fallo de vinculación.");
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    </script>
+    <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+    <script src="../js/codigoQR.js"></script> <!-- Archivo JS para generar códigos QR -->
+    <script src="../js/cerrarSesion.js"></script>
 </body>
 </html>
