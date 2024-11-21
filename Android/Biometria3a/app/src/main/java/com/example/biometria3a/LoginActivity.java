@@ -7,11 +7,13 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
     private Button btnIniSesion;
     private TextView txtLogin;
+    private ImageView imgTogglePassword;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,25 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnIniSesion = findViewById(R.id.btnIniSesion);
         txtLogin = findViewById(R.id.txtRegistrate);
+        imgTogglePassword = findViewById(R.id.imgTogglePassword);
+
+        imgTogglePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Alternar visibilidad de la contraseña
+                if (isPasswordVisible) {
+                    edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    imgTogglePassword.setImageResource(R.drawable.eye); // Cambia al icono de ojo cerrado
+                } else {
+                    edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    imgTogglePassword.setImageResource(R.drawable.eyeclosed); // Cambia al icono de ojo abierto
+                }
+                isPasswordVisible = !isPasswordVisible;
+
+                // Mover el cursor al final del texto
+                edtPassword.setSelection(edtPassword.getText().length());
+            }
+        });
 
         // Configurar el botón de inicio de sesión
         btnIniSesion.setOnClickListener(new View.OnClickListener() {
