@@ -125,7 +125,7 @@ if (Get-Command docker-compose -ErrorAction SilentlyContinue) {
 print-message "Green" "Contenedores levantados correctamente!"
 
 # Esperar un momento para asegurarse de que los contenedores estén completamente levantados
-Start-Sleep -Seconds 8
+Start-Sleep -Seconds 10
 
 # Ejecutar el archivo SQL dentro del contenedor de MariaDB usando variables de entorno
 print-message "Yellow" "Ejecutando el archivo SQL dentro del contenedor de MariaDB..."
