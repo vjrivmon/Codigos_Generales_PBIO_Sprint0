@@ -457,7 +457,7 @@ async function enviarCorreoParaRecuperarContrasena(email) {
           background-color: #395886;
           border: 2px solid #395886;
           color: white !important; /* Aseguramos que el texto sea blanco */
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Montserrat', sans-serif !important;
         }
 
         .button:hover {
@@ -484,10 +484,10 @@ async function enviarCorreoParaRecuperarContrasena(email) {
       </div>
       <div class="content">
         <p>Estimado usuario,</p>
-        <p>Nos complace darte la bienvenida a VIMYP. Desde ahora, podrás contar con información precisa y en tiempo real sobre la calidad del aire que respiras. Nos esforzamos por ofrecerte tranquilidad y facilidad en el acceso a datos de calidad.</p>
-        <p>Haciendo click en este botón ya estarás oficialmente dado de alta.</p>
-        <a href="http://localhost/html/login.html" class="button">Confirmar</a> <!---- Cambiar por la URL del sitio web ---->	
-        <p>¿No has sido tú? Si no solicitaste este registro, por favor ignora este mensaje o contáctanos.</p>
+        <p>Hemos visto que has cambiado la contraseña de tu perfil.</p>
+        <p>Haciendo click en este botón confirmarás estos cambios.</p>
+        <a href="http://localhost/html/login.html" class="button">Confirmar cambios</a> <!---- Cambiar por la URL del sitio web ---->	
+        <p>¿No has sido tú? Si no solicitaste este cambio de datos por favor ponte en contácto con nosotros lo antes posible para asegurarnos de que nadie más ha accedido a tu cuenta.</p>
       </div>
       <div class="footer">
         © 2024 VIMYP. Todos los derechos reservados.
