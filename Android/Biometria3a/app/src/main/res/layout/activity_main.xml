@@ -81,19 +81,31 @@
             android:textSize="24sp" />
 
         <!-- WebView for the map -->
-        <WebView
+     <!--   <WebView
             android:id="@+id/webview_map"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_below="@id/tv_map_title"
             android:layout_marginTop="16dp" />
+-->
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_below="@+id/tv_map_title"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_marginTop="-100dp" />
+
 
         <!-- Contenedor de los botones -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/webview_map"
+            android:layout_below="@id/map"
             android:layout_marginTop="14dp"
             android:padding="16dp">
 
@@ -102,15 +114,14 @@
                 android:id="@+id/botonBuscarDispositivosBTLE"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:backgroundTint="#FF5aa4"
                 android:text="Buscar Dispositivos BTLE"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/valoresSensor" />
 
             <!-- Botón 2: Detener búsqueda Dispositivos BTLE -->
             <Button
@@ -138,6 +149,7 @@
                 android:text="Enviar datos"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/botonDetenerBusquedaDispositivosBTLE" />
@@ -150,10 +162,9 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="#690D7C"
-                app:layout_constraintTop_toBottomOf="@id/mandarPost"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/nuestrodisp"
@@ -174,6 +185,7 @@
                 android:text="Valores del sensor"
                 android:textColor="#00A2F0"
                 android:textSize="20sp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/nuestrodisp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -185,9 +197,9 @@
             android:id="@+id/info_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/button_container"
+            android:layout_alignTop="@+id/button_container"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="290dp"
             android:padding="20dp">
 
             <!-- Hora actual -->
