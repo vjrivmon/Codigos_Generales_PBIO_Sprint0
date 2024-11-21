@@ -127,7 +127,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
-
+    <!-- 忘记密码的 TextView -->
+    <TextView
+        android:id="@+id/txtOlvidarContrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnIniSesion"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="¿Olvidaste tu contraseña?"
+        android:textColor="@color/colorAccent"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
     <!-- Botón de Registro -->
     <Button
         android:id="@+id/btnIniSesion"
