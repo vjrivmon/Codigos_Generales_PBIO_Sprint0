@@ -97,6 +97,8 @@ async function ConsultarDatosUsuario(email, password) {
                 // Almacenar el id_usuario en una cookie segura
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
                 console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
+                // Set a cookie to indicate the user is logged in
+                document.cookie = `session_active=true; path=/; secure; SameSite=Strict`;
                 // Redirigir según el correo electrónico
                 if (email.trim().toLowerCase() === 'irene08@gmail.com') {
                     window.location.href = 'admin.html';

@@ -20,6 +20,8 @@ cancelBtn.addEventListener('click', () => {
 
 // Confirmar cierre de sesión
 confirmBtn.addEventListener('click', () => {
-    // Aquí redirige o realiza una acción específica, por ejemplo:
+    // Borrar la cookie de sesión
+    document.cookie = `session_active=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; SameSite=Strict`;
+    // Redirigir al inicio
     window.location.href = '../index.html'; // Redirige al inicio
 });
