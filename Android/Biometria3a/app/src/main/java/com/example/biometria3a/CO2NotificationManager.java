@@ -86,7 +86,7 @@ public class CO2NotificationManager {
                 contentText = "Nivel Moderado de ozono";
                 additionalInfo = "El nivel de ozono está en un nivel moderado (entre 121 y 180 ppb).Aunque no se considera peligroso, se recomienda monitorear la calidad del aire para asegurar un ambiente saludable. \n" +
                         "Fecha y hora: " + currentTime + ".\n" +
-                        "Nivel de Ozono: " + co2Value + ".\n" +
+                        "Nivel de Ozono: " + co2Value + "PPM.\n" +
                         "Coordenadas GPS: " + gpsCoordinates + ".\n" +
                         "Recomendación: Mantener las ventanas cerradas y evitar actividades al aire libre durante este nivel.";
             } else {
@@ -94,7 +94,7 @@ public class CO2NotificationManager {
                 contentText = "Nivel de CO2 normal.";
                 additionalInfo = "El nivel de O3 está dentro del rango saludable.\n" +
                         "Fecha y hora: " + currentTime + ".\n" +
-                        "Nivel de Ozono: " + co2Value + ".\n" +
+                        "Nivel de Ozono: " + co2Value + "PPM.\n" +
                         "Coordenadas GPS: " + gpsCoordinates + ".\n" +
                         "Recomendación: Mantener las condiciones de monitoreo actual y seguir con las actividades normales.";
             }

@@ -177,7 +177,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
         }
 
         // Validar el formato del teléfono (si es necesario)
-        if (telefono.length() < 10) {
+        if (telefono.length() < 9) {
             Toast.makeText(this, "El número de teléfono es demasiado corto.", Toast.LENGTH_SHORT).show();
             return;
         }
