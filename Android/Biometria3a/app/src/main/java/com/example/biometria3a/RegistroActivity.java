@@ -422,7 +422,7 @@ public class RegistroActivity extends AppCompatActivity {
     // Método para validar el formato del teléfono
     public boolean isValidPhoneNumber(String phoneNumber) {
         // Validación simple para asegurar que el número tiene solo dígitos (puedes ajustarlo a tu necesidad)
-        return phoneNumber.matches("[0-9]{10}");  // Acepta solo números de 10 dígitos
+        return phoneNumber.matches("[0-9]{9}");  // Acepta solo números de 9 dígitos
     }
 
 /*
