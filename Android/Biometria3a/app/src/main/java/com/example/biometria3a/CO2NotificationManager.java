@@ -76,7 +76,7 @@ public class CO2NotificationManager {
             } else if (co2Value >= 240 && co2Value <= 500) {
                 // Nivel moderado
                 contentText = "Nivel Extremo de ozono detectado.\n";
-                additionalInfo = "La concentración de ozono está en un nivel extremo (entre 240 y 500 ppb). Se recomienda tomar medidas preventivas para proteger la saludSe recomienda tomar precauciones.\n" +
+                additionalInfo = "La concentración de ozono está en un nivel extremo (entre 240 y 500 ppb). Se recomienda tomar medidas preventivas para proteger la salud.\n" +
                         "Fecha y hora: " + currentTime + ".\n" +
                         "Nivel de Ozono: " + co2Value + "PPM .\n" +
                         "Coordenadas GPS: " + gpsCoordinates + ".\n" +
