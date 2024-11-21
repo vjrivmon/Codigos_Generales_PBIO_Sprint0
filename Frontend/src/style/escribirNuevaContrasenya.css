@@ -134,14 +134,14 @@ body{
 
 
 .sign-up label a{
-    font-size: 12px;
-    color: var(--button-color);
-        text-decoration: underline; /* Subrayado para el enlace */
-    padding-bottom: 0px;
+    font-size: 12px;
+    color: var(--button-color);
+    text-decoration: underline; /* Subrayado para el enlace */
+    padding-bottom: 0px;
 }
 
 .sign-up span {
-    font-size: 12px;
+    ont-size: 12px;
 }
 
 /* Estilo para el contenedor del checkbox y el texto */
