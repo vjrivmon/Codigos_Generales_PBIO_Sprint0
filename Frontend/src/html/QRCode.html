@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAC Address QR Code</title>
+    <title>Añadir un nuevo dispositivo | VIMYP</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,8 +26,8 @@
     </style>
 </head>
 <body>
-    <h2>Device Association</h2>
-    <p>Scan this QR code to associate your device</p>
+    <h2>Asocia tu nuevo sensor</h2>
+    <p>Escanea este código QR desde la app o introduce el pin que viene junto al sensor para dar de alta el dispositivo.</p>
 
     <!-- 显示二维码 -->
     <div id="qrcode">
@@ -35,8 +35,8 @@
     </div>
 
     <!-- PIN 输入作为备用 -->
-    <input type="text" id="pinInput" placeholder="Enter PIN" maxlength="4">
-    <button onclick="submitPin()">Submit PIN</button>
+    <input type="text" id="pinInput" placeholder="Escribe aquí tu pin" minlength="12" maxlength="12">
+    <button onclick="submitPin()">Enviar</button>
 
     <script>
         // 加载二维码图片
@@ -55,7 +55,7 @@
                 if (data.success) {
                     alert(data.message);
                 } else {
-                    alert("Invalid PIN or association failed.");
+                    alert("Pin inválido o fallo de vinculación.");
                 }
             })
             .catch(error => console.error("Error:", error));
