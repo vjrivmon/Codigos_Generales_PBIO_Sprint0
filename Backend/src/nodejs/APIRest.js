@@ -22,7 +22,10 @@ const {
   editarDatosUsuario,
   encriptarContrasenas,
   //verificarCorreo,
-  enviarCorreoVerificacion
+  enviarCorreoVerificacion,
+  enviarCorreoEditarDatos,
+  enviarCorreoRecuperarContrasena,
+  enviarCorreoRestablecerContrasena
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 // Inicializar app y cargar variables de entorno
 // const app = express();
@@ -54,8 +57,10 @@ router.get('/usuarios', verificarUsuario);
 router.put('/usuarios/contrasena', recuperarContrasena);
 router.put('/usuarios/:id_usuario', editarDatosUsuario);
 router.post('/usuarios/verificar', verificarUsuario);
-//router.get('/verificar-correo', verificarCorreo);
 router.post('/verificar-correo', enviarCorreoVerificacion);
+router.post('/editar-datos', enviarCorreoEditarDatos);
+router.post('/restablecer-contrasena', enviarCorreoRestablecerContrasena);
+router.post('/recuperar-contrasena', enviarCorreoRecuperarContrasena);
 //router.post('/asociar-sensor', asociarSensorAUsuario);
 
 // Pruebas de depuración
@@ -89,6 +94,11 @@ router.delete('/usuarios/:id_usuario', (req, res) => {
 router.get('/mediciones/:id_sensor', (req, res) => {
   console.log('Ruta /mediciones/:id_sensor accedida');
   ConsultarSiHayAlerta(req, res);
+});
+
+router.put('/usuarios/:id_usuario', (req, res) => {
+  console.log('Ruta /usuarios/:id_usuario accedida');
+  editarDatosUsuario(req, res);
 });
 
 router.get('/base-datos', ConsultarBaseDeDatos);
@@ -273,7 +283,7 @@ module.exports = router; // Exportar el router
  *         nombre:
  *           type: string
  *           description: Nombre del usuario
- *         teléfono:
+ *         telefono:
  *           type: string
  *           description: Teléfono del usuario
  *         correo:

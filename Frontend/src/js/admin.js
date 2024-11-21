@@ -109,11 +109,32 @@ function applyFilters() {
 
 // Eventos
 applyFiltersButton.addEventListener("click", applyFilters);
-clearFiltersButton.addEventListener("click", () => {
-    filterStatus.value = "all";
-    sortField.value = "nameAsc";
-    displaySensors(sensors);
-});
 
 // Mostrar sensores al cargar
 displaySensors(sensors);
+
+
+
+/* --------------- POPUP BORRAR CAMBIOS ---------------- */
+/*-------------------------------- APARECER POPUP ---------------------------------*/
+const popupBorrarFiltros = document.getElementById('popup-borrar-filtros');
+const cancelBtnFiltros = document.getElementById('cancelBtn-filtros');
+const confirmBtnFiltros = document.getElementById('confirmBtn-filtros'); // Referencia al contenedor del teléfono
+
+// Mostrar el popup cuando se hace clic en "¿Has olvidado tu contraseña?"
+clearFiltersButton.addEventListener('click', function() {
+    popupBorrarFiltros.style.display = 'flex'; 
+});
+
+/*-------------------- CONFIRMAR --------------------------*/
+confirmBtnFiltros.addEventListener('click', () => { 
+    filterStatus.value = "all";
+    sortField.value = "nameAsc";
+    displaySensors(sensors);
+    popupBorrarFiltros.style.display = 'none'; // Oculta el popup
+});
+
+/*----------------------- CANCELAR  ------------------------*/
+cancelBtnFiltros.addEventListener('click', function() {
+    popupBorrarFiltros.style.display = 'none'; // Oculta el popup
+});

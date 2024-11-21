@@ -9,7 +9,7 @@ body {
 
 /* Secciones y artículos */
 section {
-    padding: 1rem;
+    padding: .3rem .5rem;
     background-color: var(--button-color);
     margin: 1rem auto;
     width: 90%;
@@ -22,7 +22,7 @@ article {
     margin: 1rem 0;
     padding: 1.5rem;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 33px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
 }
 
