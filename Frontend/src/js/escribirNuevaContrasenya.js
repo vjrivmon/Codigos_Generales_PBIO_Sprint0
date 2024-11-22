@@ -4,10 +4,30 @@ const cancelBtnContra = document.getElementById('cancelBtnContrasenya');
 const confirmBtnContra = document.getElementById('confirmBtnContrasenya');
 const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 
+// Función para obtener los datos del usuario con id_usuario 3 desde la base de datos
+async function obtenerDatosUsuario() {
+    try {
+        const response = await fetch('http://localhost:8080/usuarios/8');
+        if (!response.ok) {
+            throw new Error('Error al obtener los datos del usuario');
+        }
+        const usuario = await response.json();
+        return usuario[0];
+    } catch (error) {
+        console.error('Error:', error);
+        return {};
+    }
+}
+
 /* ----------- Para que salga rojo o verde si las contraseñas coinciden o no ----------- */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const passwordInput = document.getElementById("newPassword");
     const passwordConfirmInput = document.getElementById("confirmPassword"); // Cambié el ID para que coincida
+
+    // Mostrar los datos del usuario con id_usuario 3
+    const usuario = await obtenerDatosUsuario();
+    const correoInput = document.getElementById('correo');
+    correoInput.value = usuario.correo;
 
     // Función para verificar si las contraseñas coinciden
     function checkPasswordsMatch() {
@@ -43,7 +63,7 @@ resetPasswordBtn.addEventListener('click', function (event) {
     popupConfirmarNuevaContrasenya.style.display = 'flex';
 
     // Evento para confirmar los cambios
-    confirmBtnContra.addEventListener('click', function confirmar() {
+    confirmBtnContra.addEventListener('click', async function confirmar() {
         // Validar los campos con if, else if, else
         if (!currentNewPass || !currentNewPassConfirm) {
             // Si algún campo está vacío
@@ -61,9 +81,47 @@ resetPasswordBtn.addEventListener('click', function (event) {
             popupConfirmarNuevaContrasenya.style.display = 'none';
         } else {
             // Si todas las validaciones son correctas
-            
-            alert('Se han confirmado los cambios. Revisa tu bandeja de entrada.');
-            
+            const usuario = await obtenerDatosUsuario();
+            const datosUsuario = {
+                id_usuario: 8,
+                nombre: usuario.nombre,
+                telefono: usuario.telefono,
+                correo: usuario.correo,
+                contrasena: currentNewPass
+            };
+
+            // Enviar los datos al servidor
+            const response = await fetch(`http://localhost:8080/usuarios/8`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosUsuario)
+            });
+
+            if (!response.ok) { // Verificar si la respuesta tuvo éxito
+                throw new Error('No se pudieron actualizar los datos del usuario');
+            }
+
+            const resultado = await response.text(); // Obtener el mensaje de éxito desde la respuesta del servidor
+
+            alert(resultado); // Muestra mensaje de éxito
+            const email = usuario.correo;
+            console.log('Email del usuario es:', email);
+            // Enviar correo de verificación edición de contraseña
+            const correoResponse = await fetch('http://localhost:8080/restablecer-contrasena', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email }) // Asegúrate de enviar el correo correcto
+            });
+
+            if (!correoResponse.ok) {
+                throw new Error('Error al enviar el correo de restablecer contrasena: ' + correoResponse.status);
+            }
+            alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
+
             popupConfirmarNuevaContrasenya.style.display = 'none';
         }
 
