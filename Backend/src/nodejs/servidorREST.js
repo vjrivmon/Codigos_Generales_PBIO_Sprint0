@@ -484,7 +484,7 @@ async function enviarCorreoParaRecuperarContrasena(email) {
       </div>
       <div class="content">
         <p>Estimado usuario,</p>
-        <p>Hemos visto que quieres cambiar la contraseña de tu perfil.</p>
+        <p>Hemos visto que has olvidado tu contraseña.</p>
         <p>Haciendo click en este botón podrás cambiar tu contraseña.</p>
         <a href="http://localhost/html/escribirNuevaContrasenya.html" class="button">Confirmar cambios</a> <!---- Cambiar por la URL del sitio web ---->	
         <p>¿No has sido tú? Si no solicitaste este cambio de datos por favor ponte en contácto con nosotros lo antes posible para asegurarnos de que nadie más ha accedido a tu cuenta.</p>

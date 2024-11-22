@@ -61,7 +61,9 @@ resetPasswordBtn.addEventListener('click', function (event) {
             popupConfirmarNuevaContrasenya.style.display = 'none';
         } else {
             // Si todas las validaciones son correctas
+            
             alert('Se han confirmado los cambios. Revisa tu bandeja de entrada.');
+            
             popupConfirmarNuevaContrasenya.style.display = 'none';
         }
 
