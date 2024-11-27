@@ -34,53 +34,60 @@
             <!-- Filtros -->
             <div class="filters">
                 <div class="filt">
-                    <p><strong>Filtrar:</strong></p>
+                    <p><strong>Filtrar por estado:</strong></p>
                     <select id="filter-status">
                         <option value="all">Todos</option>
                         <option value="active">Activos actualmente</option>
                         <option value="inactive">Inactivos actualmente</option>
-                        <option value="min24h">Activos en las últimas 24h</option>
-                        <option value="max24h">Más de 24h inactivos</option>
                     </select>
-                </div>
-                <div class="filt">
-                    <p><strong>Ordenar por:</strong></p>
-                    <select id="sort-field">
-                        <option value="nameAsc">Nombre ascendente</option>
-                        <option value="nameDesc">Nombre descendente</option>
-                        <option value="macAddressAsc">MAC ascendente</option>
-                        <option value="macAddressDesc">MAC descendente</option>
-                        <option value="statusAct">Activos primero</option>
-                        <option value="statusDesact">Inactivos primero</option>
-                        <option value="dateAsc">Fecha más reciente</option>
-                        <option value="dateDesc">Fecha más lejana</option>
-                    </select>
-                </div>
-                <div class="btns">
-                    <button id="apply-filters">Aplicar filtros</button>
-                    <button id="clear-filters">Borrar filtros</button>
                 </div>
             </div>
 
             <!-- Tabla de Sensores -->
             <div class="sensor-table-container">
                 <table class="sensor-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Dirección MAC</th>
-                            <th>Ubicación</th>
-                            <th>Última actividad</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sensor-list">
-                        <!-- Datos generados dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+                            <thead>
+                                <tr>
+                                   <!-- <th onclick="sortTable('name')"><span>Nombre</span>
+                                        <span class="sort-icons" data-column="name">
+                                            <span class="asc active">▲</span><span class="desc">▼</span>
+                                        </span>-->
+                                    </th>
+                                    <th onclick="sortTable('macAddress')"><span>Dirección MAC</span>
+                                        <span class="sort-icons" data-column="macAddress">
+                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('location')"><span>Ubicación</span>
+                                        <span class="sort-icons" data-column="location">
+                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('lastActive')"><span>Última actividad</span>
+                                        <span class="sort-icons" data-column="lastActive">
+                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('status')"><span>Estado</span>
+                                        <span class="sort-icons" data-column="status">
+                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('failureType')"><span>Avería</span>
+                                        <span class="sort-icons" data-column="failureType">
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            
+                            
+                            <tbody id="sensor-list">
+                                <!-- Datos generados dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
     <!-- Popup para cerrar sesión -->
     <div id="popup-cerrar-sesion" class="popup">
