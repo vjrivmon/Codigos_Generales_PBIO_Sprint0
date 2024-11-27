@@ -1,5 +1,7 @@
 const now = new Date();
 const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+const eightHoursAgo = new Date(now.getTime() - 8 * 60 * 60 * 1000);
+const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
 const sensors = [
     { name: "Sensor 1", status: "inactive", issue: "Sin conexión", lastActive: "2024-11-14T12:18:31Z", macAddress: "00:14:22:01:23:45", latitude: 39.4699, longitude: -0.3763 },
@@ -21,7 +23,7 @@ let currentSort = { column: null, order: null }; // Para rastrear columna y orde
 let currentSortColumn = "name";
 let sortDirection = "asc";
 
-// Función para mostrar los sensores en la tabla
+// Mostrar sensores en la tabla
 function displaySensors(sensors) {
     sensorList.innerHTML = "";
     sensors.forEach(sensor => {
@@ -41,25 +43,47 @@ function displaySensors(sensors) {
     });
 }
 
+// Formatear coordenadas geográficas
 function formatCoordinates(lat, lon) {
     return `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(4)}° ${lon >= 0 ? "E" : "W"}`;
 }
 
+// Formatear fechas
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleString("es-ES", { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
+// Filtra los sensores según el tipo seleccionado
 function applyFilters() {
     let filteredSensors = [...sensors];
+    
+    // Filtrado por estado
     if (filterStatus.value === "active") {
         filteredSensors = filteredSensors.filter(sensor => sensor.status === "active");
     } else if (filterStatus.value === "inactive") {
         filteredSensors = filteredSensors.filter(sensor => sensor.status === "inactive");
+    } else if (filterStatus.value === "averiados") {
+        filteredSensors = filteredSensors.filter(sensor => sensor.issue && sensor.status === "inactive");
+    } else if (filterStatus.value === "noaveriados") {
+        filteredSensors = filteredSensors.filter(sensor => !sensor.issue && sensor.status === "inactive");
     }
+
+    // Filtrado por tiempo de inactividad
+    else if (filterStatus.value === "act1h") {
+        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) > now - 1 * 60 * 60 * 1000);
+    } else if (filterStatus.value === "act8h") {
+        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) > eightHoursAgo);
+    } else if (filterStatus.value === "act24h") {
+        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) > twentyFourHoursAgo);
+    } else if (filterStatus.value === "act24hmas") {
+        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) <= twentyFourHoursAgo);
+    }
+
     sortSensors(filteredSensors);
 }
 
+// Función para ordenar los sensores
 function sortSensors(sensorData) {
     sensorData.sort((a, b) => {
         const valueA = a[currentSortColumn];
@@ -80,11 +104,11 @@ document.querySelectorAll(".sortable").forEach(header => {
     });
 });
 
+// Actualizar la tabla cuando cambie el filtro
 filterStatus.addEventListener("change", applyFilters);
 applyFilters();
 
-
-// Ejemplo para llamar la función después de clasificar
+// Función para ordenar la tabla por columna
 function sortTable(column) {
     const newOrder = sortDirection === "asc" ? "desc" : "asc";
     sortDirection = newOrder;
@@ -105,7 +129,6 @@ function updateSortIndicators(column, order) {
         }
     });
 }
-
 
 // Mostrar sensores al cargar
 displaySensors(sensors);
