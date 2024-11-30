@@ -538,7 +538,12 @@ async function ConsultarMedida(req, res) {
       return;
     }
 
-    const rows = await connection.query('SELECT * FROM mediciones WHERE id_sensor = ?', [id_sensor]);
+    const rows = await connection.query(`
+      SELECT m.*, s.nombre AS sensor_nombre 
+      FROM mediciones m 
+      JOIN medsen ms ON m.id_medicion = ms.id_medicion 
+      JOIN sensores s ON ms.id_sensor = s.id_sensor 
+      WHERE s.id_sensor = ?`, [id_sensor]);
     console.log('Consulta ejecutada con éxito');
     res.json(rows);
   } catch (err) {
@@ -577,20 +582,18 @@ async function agregarMedicion(req, res) {
       return res.status(400).send('Sensor no encontrado');
     }
 
-    const query = 'INSERT INTO mediciones (fecha, hora, latitud, longitud, id_sensor, valorO3, valorTemperatura, valorNO2, valorSO3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO mediciones (fecha_hora, ubicacion, tipo, valor) VALUES (?, ?, ?, ?)';
     const result = await connection.query(query, [
-      nuevaMedicion.fecha,
-      nuevaMedicion.hora,
-      nuevaMedicion.latitud,
-      nuevaMedicion.longitud,
-      nuevaMedicion.id_sensor,
-      nuevaMedicion.valorO3,
-      nuevaMedicion.valorTemperatura,
-      nuevaMedicion.valorNO2,
-      nuevaMedicion.valorSO3
+      nuevaMedicion.fecha_hora,
+      JSON.stringify(nuevaMedicion.ubicacion),
+      nuevaMedicion.tipo,
+      nuevaMedicion.valor
     ]);
 
-    nuevaMedicion.id = result.insertId;
+    const medsenQuery = 'INSERT INTO medsen (id_medicion, id_sensor) VALUES (?, ?)';
+    await connection.query(medsenQuery, [result.insertId, nuevaMedicion.id_sensor]);
+
+    nuevaMedicion.id_medicion = result.insertId;
     console.log('Medición agregada con éxito:', nuevaMedicion);
     res.status(201).json(nuevaMedicion);
   } catch (err) {
@@ -851,7 +854,23 @@ async function ConsultarBaseDeDatos(req, res) {
     const sensores = await connection.query('SELECT * FROM sensores');
     console.log('Consulta de sensores ejecutada con éxito');
 
-    res.json({ mediciones, usuarios, sensores });
+    console.log('Ejecutando consulta para obtener datos de la tabla roles');
+    const roles = await connection.query('SELECT * FROM roles');
+    console.log('Consulta de roles ejecutada con éxito');
+
+    console.log('Ejecutando consulta para obtener datos de la tabla medsen');
+    const medsen = await connection.query('SELECT * FROM medsen');
+    console.log('Consulta de medsen ejecutada con éxito');
+
+    console.log('Ejecutando consulta para obtener datos de la tabla senusu');
+    const senusu = await connection.query('SELECT * FROM senusu');
+    console.log('Consulta de senusu ejecutada con éxito');
+
+    console.log('Ejecutando consulta para obtener datos de la tabla usro');
+    const usro = await connection.query('SELECT * FROM usro');
+    console.log('Consulta de usro ejecutada con éxito');
+  
+    res.json({ mediciones, medsen, sensores, senusu, usuarios, usro, roles });
   } catch (err) {
     console.error('Error en la consulta a la base de datos:', err);
     res.status(500).send('Error en la consulta a la base de datos');
