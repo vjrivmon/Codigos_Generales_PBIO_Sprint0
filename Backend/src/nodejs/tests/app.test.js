@@ -103,15 +103,11 @@ describe('API REST Tests', () => {
   test('POST /mediciones - debería agregar una nueva medicion', async () => {
     await runTest('POST /mediciones', async () => {
       const newMeasurement = { // Datos para la nueva medición
-        fecha:'21/11/2024',
-        hora: '14:00',
-        latitud: 40.416775,
-        longitud: -3.703790,
-        id_sensor: '00:1A:2B:3M:4D:5E',
-        valorO3: 10.00,
-        valorTemperatura: 30.00,
-        valorNO2: 10.00,
-        valorSO3: 10.00
+        fecha_hora: '2024-11-21 14:00:00',
+        ubicacion: { latitud: 40.416775, longitud: -3.703790 },
+        tipo: 'valorO3',
+        valor: 10.00,
+        id_sensor: '00:1A:2B:3M:4D:5E'
       };
       console.log('Datos de la nueva medición para el test:', newMeasurement);
       const response = await request(app).post('/mediciones').send(newMeasurement);
