@@ -9,7 +9,7 @@ const sensors = [
     { name: "Sensor 5", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 12 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:49", latitude: 39.4620, longitude: -0.3850 },
     { name: "Sensor 7", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 2 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:51", latitude: 39.1234, longitude: -0.2456 },
     { name: "Sensor 9", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:53", latitude: 39.4850, longitude: -0.4110 },
-    { name: "Sensor 2", status: "active", issue: "Toma de datos aleatorios", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46", latitude: 39.2974, longitude: -0.1900 },
+    { name: "Sensor 2", status: "active", issue: "Toma datos aleatorios", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46", latitude: 39.2974, longitude: -0.1900 },
     { name: "Sensor 4", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48", latitude: 39.4667, longitude: -0.3760 },
     { name: "Sensor 6", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50", latitude: 39.4800, longitude: -0.3700 },
     { name: "Sensor 8", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52", latitude: 39.5500, longitude: -0.4000 },
@@ -47,6 +47,15 @@ function displaySensors(sensors) {
 function formatCoordinates(lat, lon) {
     return `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(4)}° ${lon >= 0 ? "E" : "W"}`;
 }
+
+// Añadir la propiedad `location` a cada sensor antes de mostrar la lista
+sensors.forEach(sensor => {
+    if (sensor.latitude !== undefined && sensor.longitude !== undefined) {
+        sensor.location = formatCoordinates(sensor.latitude, sensor.longitude);
+    } else {
+        sensor.location = "Ubicación no disponible";
+    }
+});
 
 // Formatear fecha a un formato legible
 function formatDate(dateString) {
