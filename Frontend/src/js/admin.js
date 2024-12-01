@@ -126,26 +126,68 @@ filterStatus.addEventListener("change", applyFilters);
 applyFilters();
 
 // Función para ordenar la tabla por columna
-function sortTable(column) {
-    const newOrder = sortDirection === "asc" ? "desc" : "asc";
-    sortDirection = newOrder;
+function sortTable(column, direction) {
+    sortDirection = direction; // Actualizamos la dirección según lo que se hizo clic
     currentSortColumn = column;
-    applyFilters();
-    updateSortIndicators(column, newOrder);
+    applyFilters(); // Filtramos y ordenamos los datos
+    updateSortIndicators(column, direction);
 }
 
 // Función para actualizar las flechas de ordenamiento
-function updateSortIndicators(column, order) {
-    const icons = document.querySelectorAll(".sort-icons");
+function updateSortIndicators(column, direction) {
+    const icons = document.querySelectorAll(".sort-icons"); // Seleccionamos todos los íconos de las columnas
     icons.forEach(icon => {
         const col = icon.getAttribute("data-column");
-        icon.querySelector(".asc").classList.remove("active");
-        icon.querySelector(".desc").classList.remove("active");
+        const ascIcon = icon.querySelector(".asc");
+        const descIcon = icon.querySelector(".desc");
+
+        // Reiniciamos las clases activas
+        ascIcon.classList.remove("active");
+        descIcon.classList.remove("active");
+
+        // Activamos solo la flecha correcta para la columna actual
         if (col === column) {
-            icon.querySelector(`.${order}`).classList.add("active");
+            if (direction === "asc") {
+                ascIcon.classList.add("active");
+            } else if (direction === "desc") {
+                descIcon.classList.add("active");
+            }
         }
     });
 }
+
+
+// Configurar los eventos de clic para las columnas con ordenamiento
+document.querySelectorAll("th span.sort-icons").forEach(header => {
+    header.addEventListener("click", event => {
+        const column = header.getAttribute("data-column");
+        const isAscActive = header.querySelector(".asc").classList.contains("active");
+
+        // Alternamos entre 'asc' y 'desc' según el estado actual
+        const direction = isAscActive ? "desc" : "asc";
+        sortTable(column, direction);
+    });
+});
+
+
+
+
+
+let sortDirections = {};
+
+function toggleSortDirection(column) {
+    // Si no existe, se inicializa como 'asc'
+    if (!sortDirections[column]) {
+        sortDirections[column] = 'asc';
+    } else {
+        // Alternar entre 'asc' y 'desc'
+        sortDirections[column] = sortDirections[column] === 'asc' ? 'desc' : 'asc';
+    }
+    return sortDirections[column];
+}
+
+
+
 
 // Mostrar sensores al cargar
 displaySensors(sensors);

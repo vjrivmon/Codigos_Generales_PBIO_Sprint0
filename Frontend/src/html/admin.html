@@ -52,36 +52,41 @@
                 <table class="sensor-table">
                             <thead>
                                 <tr>
-                                   <!-- <th onclick="sortTable('name')"><span>Nombre</span>
-                                        <span class="sort-icons" data-column="name">
-                                            <span class="asc active">▲</span><span class="desc">▼</span>
-                                        </span>-->
-                                    </th>
-                                    <th onclick="sortTable('macAddress')"><span>Dirección MAC</span>
+                                    <th onclick="sortTable('macAddress', toggleSortDirection('macAddress'))">
+                                        <span>Dirección MAC</span>
                                         <span class="sort-icons" data-column="macAddress">
-                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
                                         </span>
                                     </th>
-                                    <th onclick="sortTable('location')"><span>Ubicación</span>
+                                    <th onclick="sortTable('location', toggleSortDirection('location'))">
+                                        <span>Ubicación</span>
                                         <span class="sort-icons" data-column="location">
-                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
                                         </span>
                                     </th>
-                                    <th onclick="sortTable('lastActive')"><span>Última actividad</span>
+                                    <th onclick="sortTable('lastActive', toggleSortDirection('lastActive'))">
+                                        <span>Última actividad</span>
                                         <span class="sort-icons" data-column="lastActive">
-                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
                                         </span>
                                     </th>
-                                    <th onclick="sortTable('status')"><span>Estado</span>
+                                    <th onclick="sortTable('status', toggleSortDirection('status'))">
+                                        <span>Estado</span>
                                         <span class="sort-icons" data-column="status">
-                                            <span class="asc">▲</span><span class="desc">▼</span>
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
                                         </span>
                                     </th>
-                                    <th onclick="sortTable('failureType')"><span>Avería</span>
-                                        <span class="sort-icons" data-column="failureType">
+                                    <th onclick="sortTable('failureType', toggleSortDirection('failureType'))">
+                                        <span>Avería</span>
                                         </span>
                                     </th>
                                 </tr>
+                                
+                                
                             </thead>
                             
                             

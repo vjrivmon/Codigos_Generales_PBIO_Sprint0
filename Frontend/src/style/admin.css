@@ -181,3 +181,28 @@ h1 {
 .status.inactive {
   background-color: rgb(255, 50, 50);
 }
+
+
+/* Estilo para las flechas de orden activas */
+.sort-icons .asc.active {
+  color: black; /* Cambia el color para indicar que está activo */
+  font-weight: bold; /* Opcional: resalta la flecha activa */
+}
+
+.sort-icons .desc.active {
+  color: black; /* Cambia el color para indicar que está activo */
+  font-weight: bold; /* Opcional: resalta la flecha activa */
+}
+
+
+
+.sort-icons span {
+  cursor: pointer;
+  color: gray; /* Color predeterminado */
+  font-size: 0.9rem;
+}
+
+.sort-icons span.active {
+  color: black; /* Color de la flecha activa */
+  font-weight: bold; /* Opcional: resaltar */
+}
