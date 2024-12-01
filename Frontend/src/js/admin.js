@@ -76,21 +76,26 @@ function applyFilters() {
     } else if (filterStatus.value === "inactive") {
         filteredSensors = filteredSensors.filter(sensor => sensor.status === "inactive");
     } else if (filterStatus.value === "averiados") {
-        filteredSensors = filteredSensors.filter(sensor => sensor.issue && sensor.status === "inactive");
-    } else if (filterStatus.value === "noaveriados") {
-        filteredSensors = filteredSensors.filter(sensor => !sensor.issue && sensor.status === "inactive");
-    }
+        filteredSensors = filteredSensors.filter(sensor => sensor.issue.trim().length >= 2);
+    } 
 
-    // Filtrado por tiempo de inactividad
-    else if (filterStatus.value === "act1h") {
-        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) > now - 1 * 60 * 60 * 1000);
-    } else if (filterStatus.value === "act8h") {
-        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) > eightHoursAgo);
-    } else if (filterStatus.value === "act24h") {
-        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) > twentyFourHoursAgo);
-    } else if (filterStatus.value === "act24hmas") {
-        filteredSensors = filteredSensors.filter(sensor => new Date(sensor.lastActive) <= twentyFourHoursAgo);
-    }
+   else if (filterStatus.value === "act8h") {
+    // Inactivos en las últimas 8 horas
+    filteredSensors = filteredSensors.filter(sensor => 
+        sensor.status === "inactive" && new Date(sensor.lastActive) >= eightHoursAgo
+    );
+} else if (filterStatus.value === "act24h") {
+    // Inactivos en las últimas 24 horas
+    filteredSensors = filteredSensors.filter(sensor => 
+        sensor.status === "inactive" && new Date(sensor.lastActive) >= twentyFourHoursAgo
+    );
+}
+    else if (filterStatus.value === "act24hmas") {
+         // Inactivos hace más de 24 horas
+    filteredSensors = filteredSensors.filter(sensor => 
+        sensor.status === "inactive" && new Date(sensor.lastActive) > twentyFourHoursAgo
+    );
+}
 
     sortSensors(filteredSensors);
 }
