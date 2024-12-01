@@ -162,3 +162,22 @@ h1 {
     font-size: 0.9rem;
   }
 }
+
+
+/* Estilo para las etiquetas de estado activo e inactivo */
+.status {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.status.active {
+  background-color: rgb(53, 175, 53);
+}
+
+.status.inactive {
+  background-color: rgb(255, 50, 50);
+}

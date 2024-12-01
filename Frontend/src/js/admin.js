@@ -5,14 +5,14 @@ const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
 const sensors = [
     { name: "Sensor 1", status: "inactive", issue: "Sin conexión", lastActive: "2024-11-14T12:18:31Z", macAddress: "00:14:22:01:23:45", latitude: 39.4699, longitude: -0.3763 },
-    { name: "Sensor 2", status: "active", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46", latitude: 39.2974, longitude: -0.1900 },
     { name: "Sensor 3", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 6 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:47", latitude: 39.1200, longitude: -0.2734 },
-    { name: "Sensor 4", status: "active", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48", latitude: 39.4667, longitude: -0.3760 },
     { name: "Sensor 5", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 12 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:49", latitude: 39.4620, longitude: -0.3850 },
-    { name: "Sensor 6", status: "active", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50", latitude: 39.4800, longitude: -0.3700 },
     { name: "Sensor 7", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 2 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:51", latitude: 39.1234, longitude: -0.2456 },
-    { name: "Sensor 8", status: "active", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52", latitude: 39.5500, longitude: -0.4000 },
     { name: "Sensor 9", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:53", latitude: 39.4850, longitude: -0.4110 },
+    { name: "Sensor 2", status: "active", issue: "Toma de datos aleatorios", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46", latitude: 39.2974, longitude: -0.1900 },
+    { name: "Sensor 4", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48", latitude: 39.4667, longitude: -0.3760 },
+    { name: "Sensor 6", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50", latitude: 39.4800, longitude: -0.3700 },
+    { name: "Sensor 8", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52", latitude: 39.5500, longitude: -0.4000 },
 ];
 
 
@@ -25,19 +25,19 @@ let sortDirection = "asc";
 
 // Mostrar sensores en la tabla
 function displaySensors(sensors) {
-    sensorList.innerHTML = "";
+    sensorList.innerHTML = ""; // Limpia la tabla
     sensors.forEach(sensor => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${sensor.macAddress}</td>
-            <td>${formatCoordinates(sensor.latitude, sensor.longitude)}</td>
+            <td>${sensor.location}</td>
             <td>${formatDate(sensor.lastActive)}</td>
             <td>
                 <span class="status ${sensor.status}">
                     ${sensor.status === "active" ? "Activo" : "Inactivo"}
                 </span>
             </td>
-            <td>${sensor.issue || "N/A"}</td>
+            <td>${sensor.issue}</td>
         `;
         sensorList.appendChild(row);
     });
@@ -48,10 +48,13 @@ function formatCoordinates(lat, lon) {
     return `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(4)}° ${lon >= 0 ? "E" : "W"}`;
 }
 
-// Formatear fechas
+// Formatear fecha a un formato legible
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleString("es-ES", { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return date.toLocaleString("es-ES", { 
+        day: '2-digit', month: '2-digit', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit'
+    });
 }
 
 // Filtra los sensores según el tipo seleccionado
