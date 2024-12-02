@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 # Variables
 TEMP_DIR="tempdir"
-DOCKER_IMAGE="sprint1_ngx"
+DOCKER_IMAGE="sprint3_ngx"
 DOCKER_CONTAINER="sprint1"
 PORT=80
 DOCKERFILE_PATH="Dockerfile"
@@ -154,7 +154,7 @@ fi
 
 # Ejecutar pruebas dentro del contenedor de la aplicación
 print_message $YELLOW "Ejecutando pruebas dentro del contenedor..."
-docker exec sprint1_njs npm test
+docker exec sprint3_njs npm test
 
 # Mostrar logs de los contenedores
 print_message $YELLOW "Mostrando logs de los contenedores..."
