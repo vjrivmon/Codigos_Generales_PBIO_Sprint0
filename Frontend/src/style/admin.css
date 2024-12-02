@@ -90,8 +90,9 @@ h1 {
 /* Tabla */
 .sensor-table {
   width: 100%;
+  min-width: 1122px; /* No permite que la tabla sea más pequeña */
   border-collapse: collapse;
-  table-layout: fixed; /* Para que las celdas no se alarguen excesivamente */
+  table-layout: auto; /* Permite que las columnas mantengan su ancho natural */
 }
 
 .sensor-table th, .sensor-table td {
@@ -99,6 +100,7 @@ h1 {
   text-align: center;
   border-bottom: 1px solid #ddd;
   font-size: 0.85rem;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
 .sensor-table th {
@@ -119,9 +121,10 @@ h1 {
 
 /* Estilos responsivos para la tabla */
 .sensor-table-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: auto; /* Activa el scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
   border-radius: 10px;
+  margin-bottom: 1rem; /* Espacio inferior */
 }
 
 @media (max-width: 768px) {
@@ -153,7 +156,6 @@ h1 {
 
 @media (max-width: 480px) {
   .sensor-table th, .sensor-table td {
-    font-size: 0.7rem;
     padding: 0.4rem;
   }
 
@@ -205,4 +207,28 @@ h1 {
 .sort-icons span.active {
   color: black; /* Color de la flecha activa */
   font-weight: bold; /* Opcional: resaltar */
+}
+
+
+/* Evitar estrechamiento en pantallas más pequeñas */
+@media (max-width: 1122px) {
+  .sensor-table-container {
+    overflow-x: auto; /* Activar desplazamiento horizontal */
+  }
+
+  .sensor-table {
+    min-width: 1122px; /* Mantener ancho mínimo */
+  }
+}
+
+@media (max-width: 768px) {
+  .sensor-table th, .sensor-table td {
+    padding: 0.6rem; /* Reducir el padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-table th, .sensor-table td {
+    padding: 0.4rem;
+  }
 }
