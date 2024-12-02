@@ -10,27 +10,87 @@ function generateRandomData() {
     return Array.from({ length: 3 }, () => (Math.random() * 50 + 10).toFixed(2)); // Valores entre 10 y 60
 }
 
-// Función para crear una gráfica en el popup
-function createChart(data) {
+
+// Generar datos de ejemplo para las últimas 8 horas
+function generate8HourData() {
+    const now = new Date();
+    const data = {
+        O3: [],
+        NO2: [],
+        SO3: [],
+        labels: []
+    };
+
+    for (let i = 7; i >= 0; i--) {
+        const timestamp = new Date(now.getTime() - i * 60 * 60 * 1000); // Cada hora
+        data.labels.push(timestamp.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }));
+        data.O3.push((Math.random() * 50 + 10).toFixed(2)); // Valores entre 10 y 60
+        data.NO2.push((Math.random() * 50 + 10).toFixed(2));
+        data.SO3.push((Math.random() * 50 + 10).toFixed(2));
+    }
+
+    return data;
+}
+
+
+// Crear el gráfico con datos de las últimas 8 horas
+function create8HourChart(data) {
     const ctx = document.createElement("canvas");
-    sensorChart.innerHTML = ""; // Limpia la gráfica anterior
+    sensorChart.innerHTML = ""; // Limpia el gráfico anterior
     sensorChart.appendChild(ctx);
 
     new Chart(ctx, {
-        type: "bar",
+        type: "line",
         data: {
-            labels: ["O3", "NO2", "SO3"],
-            datasets: [{
-                label: "Medidas (µg/m³)",
-                data: data,
-                backgroundColor: ["#4caf50", "#ff9800", "#2196f3"],
-                borderWidth: 1,
-            }],
+            labels: data.labels,
+            datasets: [
+                {
+                    label: "O3 (µg/m³)",
+                    data: data.O3,
+                    borderColor: "#4caf50",
+                    backgroundColor: "rgba(76, 175, 80, 0.2)",
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: "NO2 (µg/m³)",
+                    data: data.NO2,
+                    borderColor: "#ff9800",
+                    backgroundColor: "rgba(255, 152, 0, 0.2)",
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: "SO3 (µg/m³)",
+                    data: data.SO3,
+                    borderColor: "#2196f3",
+                    backgroundColor: "rgba(33, 150, 243, 0.2)",
+                    fill: true,
+                    tension: 0.3
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-        },
+            plugins: {
+                legend: { display: true, position: "top" },
+                tooltip: { mode: "index", intersect: false }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: "Hora" }
+                },
+                y: {
+                    title: { display: true, text: "Concentración (µg/m³)" },
+                    beginAtZero: true
+                }
+            },
+            interaction: {
+                mode: "index",
+                intersect: false
+            }
+        }
     });
 }
 
@@ -39,21 +99,24 @@ function showSensorInfo(macAddress) {
     const sensor = sensors.find(s => s.macAddress === macAddress);
     if (!sensor) return;
 
-    // Actualizar contenido del popup
-    sensorTitle.textContent = `Información de ${sensor.name} (${sensor.macAddress})`;
-    createChart(generateRandomData());
+      // Actualizar título del popup
+      sensorTitle.textContent = `Información del sensor ${sensor.macAddress}`;
 
-    // Crear el historial dinámicamente
+
+   // Crear gráfico con datos de las últimas 8 horas
+    const data = generate8HourData();
+    create8HourChart(data);
+
+    // Crear el historial dinámico
     historyList.innerHTML = `
         <li>Última actividad: ${formatDate(sensor.lastActive)}</li>
         <li>Estado: ${sensor.status === "active" ? "Activo" : "Inactivo"}</li>
         <li>Avería: ${sensor.issue || "Sin averías"}</li>
     `;
 
-    // Mostrar el popup
+    // Mostrar popup
     sensorInfoPopup.style.display = "flex";
 }
-
 // Cerrar el popup
 closePopup.addEventListener("click", () => {
     sensorInfoPopup.style.display = "none";

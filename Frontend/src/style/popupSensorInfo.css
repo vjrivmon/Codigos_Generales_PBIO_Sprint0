@@ -1,67 +1,124 @@
+/* Popup */
 #sensor-info-popup {
-    display: none; /* Oculto por defecto */
+    display: none; /* Inicialmente está oculto */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
 }
 
+
 #sensor-info-popup .popup-content {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 20px; /* Ajusta el borde redondeado */
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    opacity: 1;
+    visibility: visible; /* Inicialmente visible */
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Desvanecimiento y visibilidad suave */
+    width: 90%; /* Toma el 90% del ancho disponible */
+    max-width: 600px; /* Limita el ancho máximo */
+    min-width: 90%;
+    max-height: 80%; /* Altura máxima en pantallas pequeñas */
+    overflow-y: auto; /* Activa el scroll si es necesario */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espacio entre elementos */
 }
 
 #sensor-info-popup .btn {
-    background-color: #395886;
+    background-color: var(--button-color, #395886); /* Usa color de botón predeterminado */
     color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px auto 0 auto; /* Centrado */
     cursor: pointer;
+    border-radius: 20px; /* Ajuste de borde redondeado */
+    border: 2px solid var(--button-color, #395886);
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 90%; /* Ancho adaptativo */
+    max-width: 200px; /* Máximo para pantallas grandes */
 }
 
 #sensor-info-popup .btn:hover {
-    background-color: #2c3e50;
+    background-color: white;
+    color: var(--button-color, #395886);
 }
 
-
-/* POPUP */
-.mac-link {
-    text-decoration: underline;
-    color: blue;
-    cursor: pointer;
+/* Historial y título */
+#sensor-info-popup h3,
+#sensor-info-popup h4 {
+    margin: 0.5rem auto;
+    font-size: 1.5rem; /* Tamaño del texto adaptativo */
 }
 
-#sensor-info-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+#sensor-info-popup p,
+#sensor-info-popup ul {
+    margin: 1rem auto;
+    text-align: left; /* Mejor legibilidad */
+    font-size: 1rem;
+    padding:1.5rem;
 }
 
-#sensor-info-popup h2 {
-    margin-top: 0;
-}
-
-#sensor-info-popup button {
-    margin-top: 10px;
-}
-
+/* Lista sin viñetas */
 #sensor-info-popup ul {
     list-style-type: none;
     padding: 0;
+}
+
+/* Gráfico responsivo */
+#sensor-info-popup #sensor-chart canvas {
+    width: 100%;
+    max-width: 500px; /* Tamaño máximo en pantallas grandes */
+    height: auto;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    #sensor-info-popup .popup-content {
+        width: 95%; /* Más ancho en pantallas pequeñas */
+        max-width: 400px;
+        padding: 1rem; /* Menor padding */
+    }
+
+    #sensor-info-popup h3,
+    #sensor-info-popup h4 {
+        font-size: 1.25rem; /* Texto más pequeño */
+    }
+
+    #sensor-info-popup p,
+    #sensor-info-popup ul {
+        font-size: 0.9rem; /* Texto más pequeño */
+    }
+
+    #sensor-info-popup .btn {
+        width: 100%; /* Botones ocupan todo el ancho */
+        max-width: 180px; /* Limita el tamaño máximo */
+    }
+}
+
+@media (max-width: 480px) {
+    #sensor-info-popup .popup-content {
+        padding: 0.5rem; /* Ajustar el espaciado */
+    }
+
+    #sensor-info-popup h3,
+    #sensor-info-popup h4 {
+        font-size: 1rem;
+    }
+
+    #sensor-info-popup p,
+    #sensor-info-popup ul {
+        font-size: 0.8rem;
+    }
+
+    #sensor-info-popup .btn {
+        padding: 8px 16px; /* Botones más pequeños */
+    }
 }
