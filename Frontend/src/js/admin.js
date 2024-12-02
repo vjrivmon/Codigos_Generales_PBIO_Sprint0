@@ -25,6 +25,7 @@ let sortDirection = "asc";
 
 // Mostrar sensores en la tabla
 function displaySensors(sensors) {
+    const tbody = document.getElementById("sensor-list");
     sensorList.innerHTML = ""; // Limpia la tabla
     sensors.forEach(sensor => {
         const row = document.createElement("tr");

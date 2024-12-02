@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../style/styles.css">
     <link rel="stylesheet" href="../style/admin.css">  
     <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="stylesheet" href="../style/popupSensorInfo.css">
     <link rel="icon" href="../img/logo.svg" type="image/x-icon">
 </head>
 <body>
@@ -108,16 +109,23 @@
     </div>
 
 
-     <!-- Popup para cerrar sesión -->
-     <div id="popup-borrar-filtros" class="popup">
+    <div id="sensor-info-popup" class="popup">
         <div class="popup-content">
-            <p>¿Seguro que quieres borrar los filtros?</p>
-            <button id="confirmBtn-filtros" class="btn">Confirmar</button>
-            <button id="cancelBtn-filtros" class="btn">Cancelar</button>
+            <h3 id="sensor-title"></h3>
+            <div id="sensor-chart"></div>
+            <div id="sensor-history">
+                <h4>Historial de Datos:</h4>
+                <ul id="history-list"></ul>
+            </div>
+            <button id="close-popup" class="btn">Cerrar</button>
         </div>
     </div>
+    
+
 
     <script src="../js/admin.js"></script>
     <script src="../js/cerrarSesion.js"></script>
+    <script src="../js/historicoAdmin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
