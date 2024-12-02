@@ -4,15 +4,15 @@ const eightHoursAgo = new Date(now.getTime() - 8 * 60 * 60 * 1000);
 const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
 const sensors = [
-    { name: "Sensor 1", status: "inactive", issue: "Sin conexión", lastActive: "2024-11-14T12:18:31Z", macAddress: "00:14:22:01:23:45", latitude: 39.4699, longitude: -0.3763 },
-    { name: "Sensor 3", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 6 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:47", latitude: 39.1200, longitude: -0.2734 },
-    { name: "Sensor 5", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 12 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:49", latitude: 39.4620, longitude: -0.3850 },
-    { name: "Sensor 7", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 2 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:51", latitude: 39.1234, longitude: -0.2456 },
-    { name: "Sensor 9", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:53", latitude: 39.4850, longitude: -0.4110 },
-    { name: "Sensor 2", status: "active", issue: "Toma datos aleatorios", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46", latitude: 39.2974, longitude: -0.1900 },
-    { name: "Sensor 4", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48", latitude: 39.4667, longitude: -0.3760 },
-    { name: "Sensor 6", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50", latitude: 39.4800, longitude: -0.3700 },
-    { name: "Sensor 8", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52", latitude: 39.5500, longitude: -0.4000 },
+    { name: "Sensor 1", status: "inactive", issue: "Sin conexión", lastActive: "2024-11-14T12:18:31Z", macAddress: "00:14:22:01:23:45 ℹ️", latitude: 39.4699, longitude: -0.3763 },
+    { name: "Sensor 3", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 6 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:47 ℹ️", latitude: 39.1200, longitude: -0.2734 },
+    { name: "Sensor 5", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 12 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:49 ℹ️", latitude: 39.4620, longitude: -0.3850 },
+    { name: "Sensor 7", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 2 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:51 ℹ️", latitude: 39.1234, longitude: -0.2456 },
+    { name: "Sensor 9", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:53 ℹ️", latitude: 39.4850, longitude: -0.4110 },
+    { name: "Sensor 2", status: "active", issue: "Toma datos aleatorios", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46 ℹ️", latitude: 39.2974, longitude: -0.1900 },
+    { name: "Sensor 4", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48 ℹ️", latitude: 39.4667, longitude: -0.3760 },
+    { name: "Sensor 6", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50 ℹ️", latitude: 39.4800, longitude: -0.3700 },
+    { name: "Sensor 8", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52 ℹ️", latitude: 39.5500, longitude: -0.4000 },
 ];
 
 
@@ -24,7 +24,7 @@ let currentSortColumn = "name";
 let sortDirection = "asc";
 
 // Mostrar sensores en la tabla
-function displaySensors(sensors) {
+/*function displaySensors(sensors) {
     const tbody = document.getElementById("sensor-list");
     sensorList.innerHTML = ""; // Limpia la tabla
     sensors.forEach(sensor => {
@@ -42,7 +42,59 @@ function displaySensors(sensors) {
         `;
         sensorList.appendChild(row);
     });
+}*/
+
+
+function displaySensors(sensors) {
+    const sensorList = document.getElementById("sensor-list");
+    sensorList.innerHTML = ""; // Limpia el contenido actual de la tabla
+
+    sensors.forEach(sensor => {
+        const row = document.createElement("tr");
+
+        // Dirección MAC
+        const macCell = document.createElement("td");
+        const macLink = document.createElement("a");
+        macLink.textContent = sensor.macAddress;
+        macLink.style.color = "blue";
+        macLink.style.textDecoration = "underline";
+        macLink.style.cursor = "pointer";
+        macCell.appendChild(macLink);
+        row.appendChild(macCell);
+
+        // Ubicación
+        const locationCell = document.createElement("td");
+        locationCell.textContent = sensor.location || "Ubicación no disponible";
+        row.appendChild(locationCell);
+
+        // Última Actividad
+        const lastActiveCell = document.createElement("td");
+        lastActiveCell.textContent = formatDate(sensor.lastActive);
+        row.appendChild(lastActiveCell);
+
+        // Estado
+        const statusCell = document.createElement("td");
+        const statusSpan = document.createElement("span");
+        statusSpan.className = `status ${sensor.status}`;
+        statusSpan.textContent = sensor.status === "active" ? "Activo" : "Inactivo";
+        statusCell.appendChild(statusSpan);
+        row.appendChild(statusCell);
+
+        // Avería
+        const issueCell = document.createElement("td");
+        issueCell.textContent = sensor.issue.trim() || "Sin averías";
+        row.appendChild(issueCell);
+
+        // Añadir la fila a la tabla
+        sensorList.appendChild(row);
+    });
 }
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    displaySensors(sensors);
+});
 
 // Formatear coordenadas geográficas
 function formatCoordinates(lat, lon) {
