@@ -32,6 +32,31 @@ function generate8HourData() {
     return data;
 }
 
+// Función para generar averías aleatorias
+function generateRandomFailures() {
+    const failureOptions = [
+        "Sin batería", 
+        "Envío de datos aleatorios", 
+        "Avería interna", 
+        "Cortocircuito", 
+        "Componentes internos fundidos"
+    ];
+
+    // Selecciona un número aleatorio de averías entre 1 y 3
+    const numFailures = Math.floor(Math.random() * 3) + 1;
+    const selectedFailures = [];
+
+    // Elegir aleatoriamente las averías sin repetirse
+    while (selectedFailures.length < numFailures) {
+        const randomFailure = failureOptions[Math.floor(Math.random() * failureOptions.length)];
+        if (!selectedFailures.includes(randomFailure)) {
+            selectedFailures.push(randomFailure);
+        }
+    }
+
+    return selectedFailures;
+}
+
 
 // Crear el gráfico con datos de las últimas 8 horas
 function create8HourChart(data) {
@@ -108,12 +133,16 @@ function showSensorInfo(macAddress) {
    // Crear gráfico con datos de las últimas 8 horas
     const data = generate8HourData();
     create8HourChart(data);
+    const oldFailures = generateRandomFailures();
+
 
     // Crear el historial dinámico
     historyList.innerHTML = `
         <li>Última actividad: ${formatDate(sensor.lastActive)}</li>
         <li>Estado: ${sensor.status === "active" ? "Activo" : "Inactivo"}</li>
         <li>Avería: ${sensor.issue || "Sin averías"}</li>
+        <li>Antiguas Averías: ${oldFailures.join(", ") || "Ninguna"}</li>
+
     `;
 
     // Mostrar popup

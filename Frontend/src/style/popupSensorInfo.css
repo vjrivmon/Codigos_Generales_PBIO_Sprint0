@@ -23,8 +23,8 @@
     visibility: visible; /* Inicialmente visible */
     transition: opacity 0.4s ease, visibility 0.4s ease; /* Desvanecimiento y visibilidad suave */
     width: 90%; /* Toma el 90% del ancho disponible */
-    max-width: 600px; /* Limita el ancho máximo */
-    min-width: 90%;
+    max-width: 800px; /* Limita el ancho máximo */
+    min-width: 600px;
     max-height: 80%; /* Altura máxima en pantallas pequeñas */
     overflow-y: auto; /* Activa el scroll si es necesario */
     display: flex;
@@ -69,14 +69,25 @@
 /* Lista sin viñetas */
 #sensor-info-popup ul {
     list-style-type: none;
-    padding: 0;
+    padding: 0 1.5rem 0 1.5rem;
 }
+
+#sensor-history {
+    padding: 0 1.5rem 0 1.5rem;
+    text-align: left;
+}
+
 
 /* Gráfico responsivo */
 #sensor-info-popup #sensor-chart canvas {
     width: 100%;
-    max-width: 500px; /* Tamaño máximo en pantallas grandes */
+    max-width: 600px; /* Tamaño máximo en pantallas grandes */
     height: auto;
+    min-height: 200px;
+    max-height: 300px;
+    min-width: 500px;
+    display:block;
+    box-sizing: border-box;
 }
 
 /* Media Queries */
