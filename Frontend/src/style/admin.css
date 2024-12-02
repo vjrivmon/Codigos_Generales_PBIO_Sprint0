@@ -24,13 +24,12 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center; /* Asegura que todo esté centrado verticalmente */
   margin-bottom: 1.5rem;
-  gap: 1rem; /* Espaciado entre elementos */
+  gap: 1rem;
 }
 
 .filt {
-  flex: 1; /* Hace que los filtros ocupen el espacio necesario */
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -38,9 +37,8 @@ h1 {
 
 .filt p {
   margin: 0;
-  white-space: nowrap; /* Evita que el texto salte a una nueva línea */
+  white-space: nowrap;
 }
-
 
 .filters .btns {
   display: flex;
@@ -55,15 +53,12 @@ h1 {
   font-family: 'Montserrat', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
   cursor: pointer;
-  min-width: 150px; /* Garantiza un tamaño mínimo consistente */
+  min-width: 150px;
 }
-
 
 .filters button:hover {
   transform: scale(1.02);
 }
-
-
 
 /* Botones */
 #clear-filters {
@@ -92,18 +87,20 @@ h1 {
   color: var(--button-color);
 }
 
+/* Tabla */
 .sensor-table {
   width: 100%;
+  min-width: 1122px; /* No permite que la tabla sea más pequeña */
   border-collapse: collapse;
-  overflow-x: auto;
+  table-layout: auto; /* Permite que las columnas mantengan su ancho natural */
 }
 
 .sensor-table th, .sensor-table td {
   padding: 0.8rem;
   text-align: center;
   border-bottom: 1px solid #ddd;
-  font-size: 0.9rem;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
 .sensor-table th {
@@ -111,6 +108,7 @@ h1 {
   color: var(--text-color);
   text-transform: uppercase;
   font-weight: bold;
+  padding: 0.5rem;
 }
 
 .sensor-table tr:hover {
@@ -121,202 +119,118 @@ h1 {
   color: var(--text-color);
 }
 
+/* Estilos responsivos para la tabla */
+.sensor-table-container {
+  overflow-x: auto; /* Activa el scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
+  border-radius: 10px;
+  margin-bottom: 1rem; /* Espacio inferior */
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters .btns {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .filters select, .filters button {
+    width: 100%;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .sensor-table th, .sensor-table td {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-table th, .sensor-table td {
+    padding: 0.4rem;
+  }
+
+  .filters select, .filters button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+
+/* Estilo para las etiquetas de estado activo e inactivo */
 .status {
   display: inline-block;
-  padding: 5px 15px;
-  border-radius: 15px;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: bold;
   color: white;
-  font-weight: 500;
   text-align: center;
 }
 
 .status.active {
-  background-color: #62be77eb;
+  background-color: rgb(53, 175, 53);
 }
 
 .status.inactive {
-  background-color: #dc3546eb;
+  background-color: rgb(255, 50, 50);
 }
 
-.icon {
-  text-align: center;
-  font-size: 1.5rem;
+
+/* Estilo para las flechas de orden activas */
+.sort-icons .asc.active {
+  color: black; /* Cambia el color para indicar que está activo */
+  font-weight: bold; /* Opcional: resalta la flecha activa */
 }
 
-/* Icon colors */
-.icon .check-icon {
-  color: #458f56eb;
-}
-
-.icon .alert-icon {
-  color: #c53026;
-}
-
-/* Sort indicator */
-.sort-indicator {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 5px;
-  border-style: solid;
-  border-width: 0 6px 8px 6px;
-  border-color: transparent transparent var(--text-color) transparent;
-  transition: transform 0.2s ease;
-}
-
-.sort-indicator.asc {
-  border-width: 8px 6px 0 6px;
-  border-color: var(--text-color) transparent transparent transparent;
+.sort-icons .desc.active {
+  color: black; /* Cambia el color para indicar que está activo */
+  font-weight: bold; /* Opcional: resalta la flecha activa */
 }
 
 
 
-/*-------------- sección responsive ---------------*/
-@media (max-width: 1220px) {
-  .filters {
-    flex-wrap: wrap; /* Permite que los elementos bajen a la siguiente línea si es necesario */
-    gap: 1rem; /* Espaciado uniforme */
-    justify-content: space-around; /* Espaciado entre filtros */
-  }
+.sort-icons span {
+  cursor: pointer;
+  color: gray; /* Color predeterminado */
+  font-size: 0.9rem;
+}
 
-  .filters .btns {
-    flex-direction: row; /* Mantén los botones en fila */
-    gap: 1rem; /* Espaciado entre botones */
-  }
-
-  .filters select, .filters button {
-    width: auto; /* Ajusta el ancho automáticamente */
-    min-width: 130px; /* Ancho mínimo menor para pantallas medianas */
-    height: 40px; /* Mantén la altura consistente */
-  }
-
-  h1 {
-    font-size: 1.75rem; /* Reduce ligeramente el tamaño del encabezado */
-  }
-
-  .sensor-table th, .sensor-table td {
-    font-size: 0.85rem; /* Ajusta el tamaño del texto */
-    padding: 0.6rem; /* Reduce el espacio entre celdas */
-  }
-
-  .status {
-    padding: 4px 12px; /* Ajusta el tamaño del estado */
-    font-size: 0.85rem; /* Reduce ligeramente el texto */
-  }
+.sort-icons span.active {
+  color: black; /* Color de la flecha activa */
+  font-weight: bold; /* Opcional: resaltar */
 }
 
 
-
-
-
-/* Responsive adjustments */
-@media (max-width: 854px) {
-  .filters {
-    flex-direction: column; /* Cambia a columnas en pantallas pequeñas */
-    align-items: stretch;
-    justify-content: space-evenly;
-}
-
-.filters .btns {
-  flex-direction: row; /* Los botones permanecen en fila */ 
-  gap: 1rem;
-}
-
-
-.filters select, .filters button {
-  width: 100%; /* Asegura que se ajusten al contenedor */
-  min-width: unset;
-  height: 40px; /* Conserva la altura fija */
-
-} 
-
-  h1 {
-      font-size: 1.5rem;
-  }
-
-  .sensor-table th, .sensor-table td {
-      font-size: 0.8rem;
-      padding: 0.5rem;
-  }
-
-  .status {
-      padding: 3px 10px;
-      font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .sensor-table th, .sensor-table td {
-      font-size: 0.7rem;
-      padding: 0.3rem;
-  }
-
-  .filters {
-      gap: 0.5rem;
-  }
-
-  .filters select, .filters button {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.9rem;
-      height: 40px; /* Conserva la altura fija */
-
-  }
-}
-
-
-/*---------- Propiedades responsive de la tabla ---------*/
-/* Hacer la tabla responsive */
-.sensor-table-container {
-  overflow-x: auto; /* Activa el desplazamiento horizontal si es necesario */
-  -webkit-overflow-scrolling: touch; /* Mejora la experiencia en dispositivos táctiles */
-  border-radius: 10px; /* Opcional: redondea los bordes del contenedor */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Opcional: da un efecto visual */
-}
-
-
-.sensor-table {
-  width: 100%;
-  min-width: 600px; /* Asegura que la tabla no se colapse demasiado */
-  border-collapse: collapse;
-}
-
-.sensor-table th, .sensor-table td {
-  white-space: nowrap; /* Evita que el contenido de las celdas se divida en varias líneas */
-}
-
-/* Ajustes responsivos para pantallas pequeñas */
-@media (max-width: 768px) {
+/* Evitar estrechamiento en pantallas más pequeñas */
+@media (max-width: 1122px) {
   .sensor-table-container {
-    overflow-x: auto;
+    overflow-x: auto; /* Activar desplazamiento horizontal */
   }
 
   .sensor-table {
-    /* width: 100%; Permite que la tabla ocupe todo el ancho disponible */
-    font-size: 0.8rem; /* Reduce el tamaño de fuente */
+    min-width: 1122px; /* Mantener ancho mínimo */
   }
+}
 
+@media (max-width: 768px) {
   .sensor-table th, .sensor-table td {
-    padding: 0.5rem; /* Reduce el espacio en las celdas */
-  }
-
-  .status {
-    padding: 3px 8px; /* Ajusta el tamaño del texto en el estado */
-    font-size: 0.75rem;
+    padding: 0.6rem; /* Reducir el padding */
   }
 }
 
 @media (max-width: 480px) {
-  .sensor-table {
-    font-size: 0.7rem; /* Reduce más el tamaño del texto */
-  }
-
   .sensor-table th, .sensor-table td {
-    padding: 0.4rem; /* Reduce aún más el espacio en las celdas */
-  }
-
-  .status {
-    font-size: 0.7rem; /* Reduce el texto en el estado */
-    padding: 2px 6px; /* Ajusta el relleno del estado */
+    padding: 0.4rem;
   }
 }
+
 
