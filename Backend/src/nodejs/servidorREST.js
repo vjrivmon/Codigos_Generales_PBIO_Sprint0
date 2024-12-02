@@ -37,16 +37,16 @@ const pool = mariadb.createPool({
 });
 
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: process.env.EMAIL_SERVICE,
   auth: {
-      user: 'vimyp.s.l@gmail.com',
-      pass: 'qejv suwv cykj wcjj'
+      user: process.env.EMAIL_FROM,
+      pass: process.env.EMAIL_PASS
   }
 });
 
 async function enviarCorreoParaVerificacion(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Bienvenido a VIMYP',
     html: `
@@ -163,7 +163,7 @@ async function enviarCorreoParaVerificacion(email) {
 }
 async function enviarCorreoParaEditarDatos(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Hemos visto que has hecho algunos cambios...',
     html: `
@@ -280,7 +280,7 @@ async function enviarCorreoParaEditarDatos(email) {
 }
 async function enviarCorreoParaRestablecerContrasena(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Hemos visto que has hecho algunos cambios...',
     html: `
@@ -397,7 +397,7 @@ async function enviarCorreoParaRestablecerContrasena(email) {
 }
 async function enviarCorreoParaRecuperarContrasena(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Restablecer contraseña',
     html: `
