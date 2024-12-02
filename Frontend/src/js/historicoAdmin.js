@@ -45,7 +45,7 @@ function create8HourChart(data) {
             labels: data.labels,
             datasets: [
                 {
-                    label: "O3 (µg/m³)",
+                    label: "O3",
                     data: data.O3,
                     borderColor: "#4caf50",
                     backgroundColor: "rgba(76, 175, 80, 0.2)",
@@ -53,7 +53,7 @@ function create8HourChart(data) {
                     tension: 0.3
                 },
                 {
-                    label: "NO2 (µg/m³)",
+                    label: "NO2",
                     data: data.NO2,
                     borderColor: "#ff9800",
                     backgroundColor: "rgba(255, 152, 0, 0.2)",
@@ -61,7 +61,7 @@ function create8HourChart(data) {
                     tension: 0.3
                 },
                 {
-                    label: "SO3 (µg/m³)",
+                    label: "SO3",
                     data: data.SO3,
                     borderColor: "#2196f3",
                     backgroundColor: "rgba(33, 150, 243, 0.2)",
@@ -99,9 +99,11 @@ function showSensorInfo(macAddress) {
     const sensor = sensors.find(s => s.macAddress === macAddress);
     if (!sensor) return;
 
-      // Actualizar título del popup
-      sensorTitle.textContent = `Información del sensor ${sensor.macAddress}`;
+      // Asegurarse de eliminar el carácter ℹ️ del título, si está presente
+    const sanitizedMacAddress = macAddress.replace(/ℹ️/g, ""); 
 
+    // Actualizar título del popup con la dirección MAC limpia
+    sensorTitle.textContent = `Información del sensor ${sanitizedMacAddress}`;
 
    // Crear gráfico con datos de las últimas 8 horas
     const data = generate8HourData();
