@@ -24,6 +24,7 @@ popupPhone.addEventListener("input", function() {
 
 // Confirmar y cerrar el popup con validación
 confirmBtnOlvidada.addEventListener('click', async function(event) {
+    // Validar que el campo no esté vacío y tenga exactamente 9 dígitos
     if (!popupPhone.value) {
         alert('Rellene el campo con su número de teléfono.');
         return;
@@ -31,20 +32,34 @@ confirmBtnOlvidada.addEventListener('click', async function(event) {
         alert("El número de teléfono debe tener exactamente 9 dígitos.");
         return;
     } else {
-        alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
-        // Enviar correo de verificación reestablecer contraseña
-        const correoResponse = await fetch('http://localhost:8080/restablecer-contrasena', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: email })
-        });
+        try {
+            // Fetch the email of the user with id_usuario 8
+            const response = await fetch('http://localhost:8080/usuarios/8');
+            if (!response.ok) {
+                throw new Error('Error al obtener el correo del usuario: ' + response.status);
+            }
+            const userData = await response.json();
+            const email = userData[0].correo;
+            console.log('Email del usuario es:', email);
+            // Send password reset email
+            const correoResponse = await fetch('http://localhost:8080/recuperar-contrasena', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            });
 
-        if (!correoResponse.ok) {
-            throw new Error('Error al enviar el correo de restablecer contrasena: ' + correoResponse.status);
+            if (!correoResponse.ok) {
+                throw new Error('Error al enviar el correo de restablecer contrasena: ' + correoResponse.status);
+            }
+
+            alert('Se ha enviado un correo para reestablecer su contraseña al correo asociado al teléfono que nos ha proporcionado.');
+            popup.style.display = 'none'; // Oculta el popup
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Ocurrió un error al intentar enviar el correo de restablecer contraseña.');
         }
-        popupContrasenya.style.display = 'none';
     }
 });
 
