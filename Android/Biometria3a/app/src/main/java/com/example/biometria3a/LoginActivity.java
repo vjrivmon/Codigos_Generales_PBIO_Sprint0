@@ -1,9 +1,11 @@
 package com.example.biometria3a;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -32,9 +34,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
     private Button btnIniSesion;
+<<<<<<< Updated upstream
     private TextView txtLogin;
     private ImageView imgTogglePassword;
     private boolean isPasswordVisible = false;
+=======
+    private TextView txtLogin,xtOlvidarContrasena;
+>>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnIniSesion = findViewById(R.id.btnIniSesion);
         txtLogin = findViewById(R.id.txtRegistrate);
+<<<<<<< Updated upstream
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
 
         imgTogglePassword.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
                 edtPassword.setSelection(edtPassword.getText().length());
             }
         });
+=======
+        xtOlvidarContrasena = findViewById(R.id.txtOlvidarContrasena);
+>>>>>>> Stashed changes
 
         // Configurar el botón de inicio de sesión
         btnIniSesion.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +93,156 @@ public class LoginActivity extends AppCompatActivity {
                 goToRegistroActivity();  // Llamamos al método que lleva a la actividad de inicio de sesión
             }
         });
+
+        // Agregar esto en tu onCreate() después de los demás listeners
+        xtOlvidarContrasena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Mostrar un cuadro de texto para ingresar el correo electrónico
+                final EditText emailInput = new EditText(LoginActivity.this);
+                emailInput.setHint("Introduce tu correo electrónico");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("Recuperar Contraseña")
+                        .setMessage("Por favor, introduce tu correo electrónico para recuperar la contraseña.")
+                        .setView(emailInput)
+                        .setPositiveButton("Enviar código", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String email = emailInput.getText().toString().trim();
+
+                                if (TextUtils.isEmpty(email) || !isValidEmail(email)) {
+                                    Toast.makeText(LoginActivity.this, "Por favor, introduce un correo electrónico válido.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+
+                                // Generar y enviar el código de verificación
+                                String verificationCode = generateVerificationCode();
+                                sendVerificationCode(email, verificationCode);
+
+                                // Mostrar pop-up para ingresar el código de verificación
+                                showVerificationPopup(email, verificationCode);
+                            }
+                        })
+                        .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                        .setCancelable(false) // Evitar que se cierre sin interacción
+                        .show();
+            }
+        });
+
     }
+    // Método para verificar si el correo es válido
+    private boolean isValidEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private String generateVerificationCode() {
+        // Generar un código aleatorio (por ejemplo, de 6 dígitos)
+        int code = (int) (Math.random() * 1000000);
+        return String.format("%06d", code);
+    }
+    private void sendVerificationCode(String email, String code) {
+        String subject = "Código de Verificación para Recuperación de Contraseña";
+        String message = "Tu código de verificación es: " + code;
+        new MailSender(email, subject, message).execute(); // Llama a MailSender para enviar el correo
+    }
+    private void showVerificationPopup(String email, String generatedCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Verificación de Correo");
+
+        // EditText para que el usuario introduzca el código
+        final EditText input = new EditText(this);
+        input.setHint("Introduce el código");
+        builder.setView(input);
+
+        builder.setPositiveButton("Verificar", (dialog, which) -> {
+            String enteredCode = input.getText().toString().trim();
+
+            if (enteredCode.equals(generatedCode)) {
+                Toast.makeText(LoginActivity.this, "Verificación exitosa.", Toast.LENGTH_SHORT).show();
+                // Aquí puedes redirigir al usuario para cambiar la contraseña
+                showResetPasswordDialog(email); // Método que muestra el diálogo para cambiar la contraseña
+            } else {
+                Toast.makeText(LoginActivity.this, "Código incorrecto, intenta de nuevo.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        builder.setCancelable(false);
+        builder.show();
+    }
+    private void showResetPasswordDialog(String email) {
+        final EditText newPasswordInput = new EditText(this);
+        newPasswordInput.setHint("Introduce tu nueva contraseña");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cambiar Contraseña")
+                .setMessage("Introduce una nueva contraseña.")
+                .setView(newPasswordInput)
+                .setPositiveButton("Actualizar Contraseña", (dialog, which) -> {
+                    String newPassword = newPasswordInput.getText().toString().trim();
+                    if (TextUtils.isEmpty(newPassword)) {
+                        Toast.makeText(LoginActivity.this, "Por favor, introduce una nueva contraseña.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Aquí puedes llamar a tu API para actualizar la contraseña del usuario
+                    updatePassword(email, newPassword);
+                })
+                .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .show();
+    }
+    private void updatePassword(String email, String newPassword) {
+        // Aquí obtienes el ID del usuario que está almacenado (podrías almacenarlo en las SharedPreferences al hacer login)
+        int userId = getUserIdFromSession();  // Método para obtener el ID del usuario almacenado
+
+        if (userId == -1) {
+            Toast.makeText(LoginActivity.this, "No se pudo obtener el ID del usuario", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crea el objeto con los parámetros para la solicitud
+        HashMap<String, String> params = new HashMap<>();
+        params.put("correo", email);
+        params.put("nueva_contrasena", newPassword);
+
+        // Crear el servicio API usando Retrofit
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<Void> call = apiService.changePassword(userId, params);
+
+        // Hacer la solicitud al servidor
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Contraseña actualizada exitosamente.", Toast.LENGTH_SHORT).show();
+                    goToLoginActivity();  // Redirige a la pantalla de inicio de sesión
+                } else {
+                    Toast.makeText(LoginActivity.this, "Error al actualizar la contraseña.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private int getUserIdFromSession() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        return sharedPreferences.getInt("userId", -1);  // Devuelve -1 si no se ha guardado el ID
+    }
+
+
+
+    private void goToLoginActivity() {
+        // Creamos un Intent para abrir la actividad de inicio de sesión
+        Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+        startActivity(intent);  // Iniciamos la actividad de inicio de sesión
+        finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
+    }
+
 
     private void login() {
         String email = edtEmail.getText().toString();
