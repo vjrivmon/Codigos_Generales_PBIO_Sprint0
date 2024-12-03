@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Obtener el elemento del input de teléfono de manera global
-    const phoneInputPerfil = document.getElementById("userPhone");
+   /* const phoneInputPerfil = document.getElementById("userPhone");
 
     // Verificar que el elemento existe
     if (phoneInputPerfil) {
@@ -52,6 +52,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.error('Error: El elemento phoneInputPerfil no se encontró.');
-    }
+    }*/
 });
-
