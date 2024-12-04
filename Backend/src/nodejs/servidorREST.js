@@ -522,30 +522,17 @@ async function enviarCorreoParaRecuperarContrasena(email) {
  * @param req Objeto de solicitud HTTP (Express.js).
  * @param res Objeto de respuesta HTTP (Express.js).
  */
-async function ConsultarMedida(req, res) {
-  const { id_sensor } = req.params;
+const ConsultarMedida = async (req, res) => {
   let connection;
-
   try {
-    console.log(`Intentando obtener conexión para el sensor ID: ${id_sensor}`);
     connection = await pool.getConnection();
-    console.log('Conexión obtenida con éxito');
-    
-    // Verifica que la conexión esté activa antes de ejecutar la consulta
-    if (!connection) {
-      console.error('No se pudo obtener una conexión');
-      res.status(500).send('No se pudo obtener una conexión');
-      return;
-    }
-
-    const rows = await connection.query(`
-      SELECT m.*, s.nombre AS sensor_nombre 
-      FROM mediciones m 
-      JOIN medsen ms ON m.id_medicion = ms.id_medicion 
-      JOIN sensores s ON ms.id_sensor = s.id_sensor 
-      WHERE s.id_sensor = ?`, [id_sensor]);
-    console.log('Consulta ejecutada con éxito');
-    res.json(rows);
+    console.log('Intentando obtener conexión para el sensor ID:', req.params.id_sensor);
+    const rows = await connection.query(
+      'SELECT * FROM mediciones WHERE id_sensor = ?',
+      [req.params.id_sensor]
+    );
+    console.log('Resultado de la consulta de mediciones:', rows);
+    res.json(Array.isArray(rows) ? rows : [rows]);
   } catch (err) {
     console.error('Error al ejecutar la consulta:', err);
     res.status(500).send('Error en la consulta');
@@ -555,7 +542,8 @@ async function ConsultarMedida(req, res) {
       connection.release();
     }
   }
-}
+};
+
 /**
  * @brief Función para agregar una nueva medición.
  *
@@ -565,36 +553,17 @@ async function ConsultarMedida(req, res) {
  * @param req Objeto de solicitud HTTP (Express.js).
  * @param res Objeto de respuesta HTTP (Express.js).
  */
-async function agregarMedicion(req, res) {
-  const nuevaMedicion = req.body;
+const agregarMedicion = async (req, res) => {
   let connection;
   try {
-    console.log('Datos de la nueva medición:', nuevaMedicion);
     connection = await pool.getConnection();
-    console.log('Conexión obtenida con éxito');
-
-    // Verificar si el sensor existe
-    const checkSensorQuery = 'SELECT * FROM sensores WHERE id_sensor = ?';
-    const sensorRows = await connection.query(checkSensorQuery, [nuevaMedicion.id_sensor]);
-    console.log('Resultado de la consulta de sensores:', sensorRows);
-    if (sensorRows.length === 0) {
-      console.warn('Sensor no encontrado');
-      return res.status(400).send('Sensor no encontrado');
-    }
-
-    const query = 'INSERT INTO mediciones (fecha_hora, ubicacion, tipo, valor) VALUES (?, ?, ?, ?)';
-    const result = await connection.query(query, [
-      nuevaMedicion.fecha_hora,
-      JSON.stringify(nuevaMedicion.ubicacion),
-      nuevaMedicion.tipo,
-      nuevaMedicion.valor
-    ]);
-
-    const medsenQuery = 'INSERT INTO medsen (id_medicion, id_sensor) VALUES (?, ?)';
-    await connection.query(medsenQuery, [result.insertId, nuevaMedicion.id_sensor]);
-
-    nuevaMedicion.id_medicion = result.insertId;
-    console.log('Medición agregada con éxito:', nuevaMedicion);
+    const nuevaMedicion = req.body;
+    console.log('Datos de la nueva medición:', nuevaMedicion);
+    await connection.query(
+      'INSERT INTO mediciones (id_sensor, fecha_hora, ubicacion, tipo_medicion, valor) VALUES (?, ?, ?, ?, ?)',
+      [nuevaMedicion.id_sensor, nuevaMedicion.fecha_hora, JSON.stringify(nuevaMedicion.ubicacion), nuevaMedicion.tipo_medicion, nuevaMedicion.valor]
+    );
+    console.log('Medición agregada con éxito');
     res.status(201).json(nuevaMedicion);
   } catch (err) {
     console.error('Error al agregar la medición:', err);
@@ -605,7 +574,8 @@ async function agregarMedicion(req, res) {
       connection.release();
     }
   }
-}
+};
+
 /**
  * @brief Función para consultar datos de usuario.
  *
@@ -858,10 +828,6 @@ async function ConsultarBaseDeDatos(req, res) {
     const roles = await connection.query('SELECT * FROM roles');
     console.log('Consulta de roles ejecutada con éxito');
 
-    console.log('Ejecutando consulta para obtener datos de la tabla medsen');
-    const medsen = await connection.query('SELECT * FROM medsen');
-    console.log('Consulta de medsen ejecutada con éxito');
-
     console.log('Ejecutando consulta para obtener datos de la tabla senusu');
     const senusu = await connection.query('SELECT * FROM senusu');
     console.log('Consulta de senusu ejecutada con éxito');
@@ -870,7 +836,7 @@ async function ConsultarBaseDeDatos(req, res) {
     const usro = await connection.query('SELECT * FROM usro');
     console.log('Consulta de usro ejecutada con éxito');
   
-    res.json({ mediciones, medsen, sensores, senusu, usuarios, usro, roles });
+    res.json({ mediciones, sensores, senusu, usuarios, usro, roles });
   } catch (err) {
     console.error('Error en la consulta a la base de datos:', err);
     res.status(500).send('Error en la consulta a la base de datos');
