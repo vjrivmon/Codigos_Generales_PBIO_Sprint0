@@ -137,6 +137,8 @@
             android:inputType="textPassword"
             android:padding="12dp" />
 
+
+
         <!-- Icono del ojo -->
         <ImageView
             android:id="@+id/imgTogglePassword"
@@ -158,14 +160,14 @@
         android:text="¿Olvidaste tu contraseña?"
         android:textColor="@color/colorAccent"
         android:textStyle="italic"
-        app:layout_constraintStart_toStartOf="@+id/edtPassword"
-        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
     <!-- Botón de Registro -->
     <Button
         android:id="@+id/btnIniSesion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Inicia sesión"
         android:textColor="@android:color/white"
