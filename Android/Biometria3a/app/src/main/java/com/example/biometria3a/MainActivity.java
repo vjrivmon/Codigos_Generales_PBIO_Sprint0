@@ -127,11 +127,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     //--------------RSSI------------------
-    private static final int NUM_MUESTRAS = 10;  // Número de muestras para el promedio
-    private double[] rssiValores = new double[NUM_MUESTRAS];  // Array para almacenar los valores RSSI
-    private int indice = 0;  // Índice para el almacenamiento de valores RSSI
 
-
+    private long lastSignalTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -431,6 +428,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         BluetoothDevice bluetoothDevice = resultado.getDevice();
         byte[] bytes = resultado.getScanRecord().getBytes();
         int rssi = resultado.getRssi();
+        // Verificar si la señal es válida
+        if (rssi == -100) {
+            // Si no hay señal (RSSI == -100), considera que no hay señal
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                    TextView textViewDistancia = findViewById(R.id.dis);
+                    textViewDistancia.setText("Sin señal");
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen de sin señal
+                }
+            });
+            return; // Salir, ya que no hay datos de señal válidos
+        }
 
         TramaIBeacon tib = new TramaIBeacon(bytes);
 
@@ -439,7 +450,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int txPower = tib.getTxPower();
         // Calcular la distancia
         double distancia = calcularDistancia(rssi, txPower);
+        // Actualizar el tiempo de la última señal recibida
+        long currentTime = System.currentTimeMillis();
+        lastSignalTime = currentTime; // Actualizamos el último tiempo de señal
+
+
+
+
         // Mostrar la distancia promedio en el TextView "dis"
+        /*
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -459,6 +478,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
                 }
                 //textViewDistancia.setText("Distancia: " + String.format("%.2f", distancia) + " metros");
+            }
+
+         */
+        // Mostrar la distancia y la señal
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                TextView textViewDistancia = findViewById(R.id.dis); // Encuentra el TextView por su ID
+
+                if (distancia < 2) {
+                    textViewDistancia.setText("Estas al lado del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_3);
+                } else if (distancia >= 2 && distancia <= 5) {
+                    textViewDistancia.setText("Estas cerca del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_2);
+                } else if (distancia > 5) {
+                    textViewDistancia.setText("Estas lejos del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_1);
+                }
+
+                // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
+                if (distancia > 2 && rssi == -47) { // Asumimos que RSSI -100 indica sin señal
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
+                }
             }
         });
 
@@ -534,21 +578,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void mostrarDistancia(double distancia) {
-        TextView myTextView = findViewById(R.id.dis);
-        if (myTextView != null) {
-            Log.d("MainActivity", "TextView encontrado, actualizando texto.");
-            if (distancia < 2) {
-                myTextView.setText("Estas al lado del sensor");
-            } else if (distancia >= 2 && distancia <= 5) {
-                myTextView.setText("Estas cerca del sensor");
-            } else if (distancia > 5) {
-                myTextView.setText("Estas lejos");
-            }
-        } else {
-            Log.e("MainActivity", "El TextView no se encontró.");
-        }
-    }
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -693,49 +722,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-
-            private int calcularNivelSenal(int rssi) {
-                if (rssi >= -50) {
-                    return 4; // Señal excelente
-                } else if (rssi >= -60) {
-                    return 3; // Señal buena
-                } else if (rssi >= -70) {
-                    return 2; // Señal regular
-                } else if (rssi >= -80) {
-                    return 1; // Señal débil
-                } else {
-                    return 0; // Sin señal o fuera de rango
-                }
-            }
-            private void actualizarIconoSenal(int nivelDeSenal) {
-                ImageView ivSignal = findViewById(R.id.iv_signal);
-
-                switch (nivelDeSenal) {
-                    case 3:
-                        ivSignal.setImageResource(R.drawable.signal_3); // Imagen de 3 barras
-                        break;
-                    case 2:
-                        ivSignal.setImageResource(R.drawable.signal_1); // Imagen de 2 barras
-                        break;
-                    case 1:
-                        ivSignal.setImageResource(R.drawable.signal_1); // Imagen de 1 barra
-                        break;
-                    default:
-                        ivSignal.setImageResource(R.drawable.gris_wwifi); // Sin señal
-                        break;
-                }
-            }
-            private void detectarDesconexion() {
-                handler.postDelayed(() -> {
-                    NotificationHalper notificationHalper = new NotificationHalper(MainActivity.this);
-                    notificationHalper.showNotification("Desconexión", "El dispositivo se ha desconectado.");
-
-                    runOnUiThread(() -> {
-                        ImageView ivSignal = findViewById(R.id.iv_signal);
-                        ivSignal.setImageResource(R.drawable.gris_wwifi); // Actualiza el icono a sin señal
-                    });
-                }, TIMEOUT_MS);
-            }
             private void enviarNotificacionSinDatos() {
                 NotificationHalper notificationHalper = new NotificationHalper(MainActivity.this);
                 notificationHalper.showNotification("Alerta de Sensor", "No se han recibido datos del sensor. El sensor está apagado o no disponible.");
@@ -962,12 +948,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void boton_enviar_pulsado_client(View quien) {
         // Obtener fecha y hora actuales
-        String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String horaActual = CO2NotificationManager.getCurrentTime();
-        // Llama a obtener las coordenadas actuales
-
+     String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        //String fechaActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(new Date());
         double latitud = getLatitud();
         double longitud = getLongitud();
+
+
+        // Mostrar las coordenadas en un Toast
+        Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
+
+
+        String ubicacionJson = String.format("{\"latitud\": %f, \"longitud\": %f}", latitud, longitud);
+       String horaActual = CO2NotificationManager.getCurrentTime();
+        // Llama a obtener las coordenadas actuales
+        // Verificar las coordenadas antes de usarlas
+     //   Log.d("Coordenadas", "Latitud: " + latitud + ", Longitud: " + longitud);
+
         // Mostrar las coordenadas en un Toast
         //Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
         // Obtener el ID del sensor dinámicamente
@@ -986,11 +982,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
        // double valorGas = 200;
      //   double valorTemperatura = valorMinor / 100;
        // double valorTemperatura = 32;
+// Crear el objeto JSON para la ubicación
 
-        // Crea el objeto Medicion con los datos obtenidos
-        // Crear el objeto Medicion con los nuevos datos
-        Medicion medicion = new Medicion(fechaActual, horaActual, latitud, longitud, idSensor,
-                valorO3, valorTemperatura, valorNO2, valorSO3);
+        Log.d("Valor O3", "Valor antes de enviar: " + valorO3);
+
+
+        enviarMedicion  (idSensor, fechaActual, ubicacionJson, "O3", valorO3);
+
+
+
+   // }
+
+        Medicion medicion = new Medicion(idSensor,fechaActual,  ubicacionJson,"O3", valorO3);
         // Realiza la llamada para enviar la medición a la API
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<Void> call = apiService.enviarMedicion(medicion);
@@ -1010,6 +1013,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.d("clienterestandroid", "Error de conexión: " + t.getMessage());
                 Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+
+    public void enviarMedicion(String idSensor, String fechaHora, String ubicacionJson, String tipoMedicion, double valor) {
+        // Crear una instancia de la clase Medicion
+        Medicion medicion = new Medicion(idSensor, fechaHora, ubicacionJson, tipoMedicion, valor);
+
+        // Obtener la instancia de Retrofit y ApiService
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+
+        // Llamar al método para enviar medición
+        Call<Void> call = apiService.enviarMedicion(medicion);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Medicion", "Medición enviada con éxito");
+                } else {
+                    Log.e("Medicion", "Error al enviar la medición: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Medicion", "Fallo en la conexión: " + t.getMessage());
             }
         });
     }

@@ -52,11 +52,14 @@ public interface ApiService {
 
       */
 
-
-
         // Aquí asumo que tienes una ruta para actualizar la contraseña
         @PUT("usuarios/actualizarContrasena")
         Call<Void> updatePassword(@Body HashMap<String, String> params);
+
+    @GET("senusu/{id_usuario}")
+    Call<List<Sensor>> getSensorsByUser(@Path("id_usuario") int userId);
+
+
 
 }
 

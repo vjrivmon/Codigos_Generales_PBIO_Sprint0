@@ -1,6 +1,6 @@
 package com.example.biometria3a;
 
-
+/*
 public class Medicion {
     private String fecha; // Nuevo campo
     private String hora;
@@ -57,3 +57,65 @@ public class Medicion {
 
 }
 
+
+
+ */
+
+
+public class Medicion {
+    private String id_sensor;
+    private String fecha_hora;
+    private String ubicacion; // Se guarda como JSON
+    private String tipo_medicion;
+    private double valor;
+
+    // Constructor
+    public Medicion(String id_sensor, String fecha_hora, String ubicacion, String tipo_medicion, double valor) {
+        this.id_sensor = id_sensor;
+        this.fecha_hora = fecha_hora;
+        this.ubicacion = ubicacion;
+        this.tipo_medicion = tipo_medicion;
+        this.valor = valor;
+    }
+
+    // Getters y Setters
+    public String getId_sensor() {
+        return id_sensor;
+    }
+
+    public void setId_sensor(String id_sensor) {
+        this.id_sensor = id_sensor;
+    }
+
+    public String getFecha_hora() {
+        return fecha_hora;
+    }
+
+    public void setFecha_hora(String fecha_hora) {
+        this.fecha_hora = fecha_hora;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public String getTipo_medicion() {
+        return tipo_medicion;
+    }
+
+    public void setTipo_medicion(String tipo_medicion) {
+        this.tipo_medicion = tipo_medicion;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+}

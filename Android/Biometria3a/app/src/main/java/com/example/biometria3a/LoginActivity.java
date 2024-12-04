@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,13 +35,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
     private Button btnIniSesion;
-<<<<<<< Updated upstream
+
     private TextView txtLogin;
     private ImageView imgTogglePassword;
     private boolean isPasswordVisible = false;
-=======
-    private TextView txtLogin,xtOlvidarContrasena;
->>>>>>> Stashed changes
+
+    private TextView xtOlvidarContrasena;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnIniSesion = findViewById(R.id.btnIniSesion);
         txtLogin = findViewById(R.id.txtRegistrate);
-<<<<<<< Updated upstream
+
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
 
         imgTogglePassword.setOnClickListener(new View.OnClickListener() {
@@ -72,9 +73,9 @@ public class LoginActivity extends AppCompatActivity {
                 edtPassword.setSelection(edtPassword.getText().length());
             }
         });
-=======
+
         xtOlvidarContrasena = findViewById(R.id.txtOlvidarContrasena);
->>>>>>> Stashed changes
+
 
         // Configurar el botón de inicio de sesión
         btnIniSesion.setOnClickListener(new View.OnClickListener() {
@@ -264,6 +265,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Hacer la solicitud al servidor
         Call<JsonObject> call = apiService.loginUser(credentials);
+
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -274,17 +276,23 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (success) {
                         int userId = responseBody.get("id_usuario").getAsInt();
-                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. ID Usuario: " + userId, Toast.LENGTH_SHORT).show();
+                        Log.d("LoginActivity", "ID de usuario: " + userId);
+                        checkSensorAssignment(userId);
+                        //String userRole = responseBody.get("rol").getAsString();
+                        //Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. Rol: " + userRole, Toast.LENGTH_SHORT).show();
+                       Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. ID Usuario: " + userId, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         saveUserIdToSession(userId);
 
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo.", Toast.LENGTH_SHORT).show();
+                        Log.e("API Error", "Error al iniciar sesión1. Código: " + response.code() + ", Mensaje: " + response.message());
+                        Toast.makeText(LoginActivity.this, "Error al iniciar sesión111. Código: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Código: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e("API Error", "Error al iniciar sesión3. Código: " + response.code() + ", Mensaje: " + response.message());
                 }
             }
 
@@ -371,5 +379,40 @@ public class LoginActivity extends AppCompatActivity {
         editor.putInt("userId", userId);
         editor.apply();
     }
+
+    private void checkSensorAssignment(int userId) {
+        // Consultar si el usuario tiene un sensor asignado
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        apiService.getSensorsByUser(userId).enqueue(new Callback<List<Sensor>>() {
+            @Override
+            public void onResponse(Call<List<Sensor>> call, Response<List<Sensor>> response) {
+                if (response.isSuccessful()) {
+                    List<Sensor> sensores = response.body();
+                    Log.d("SensorResponse", "Sensores: " + (sensores != null ? sensores.size() : "null"));
+
+                    if (sensores == null || sensores.isEmpty()) {
+                        // El usuario no tiene sensor asignado, redirigir a la actividad QR
+                        Log.d("SensorResponse", "No se encontró un sensor asignado.");
+                        Intent intent = new Intent(LoginActivity.this, QrActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // El usuario tiene un sensor asignado, continuar con la aplicación normal
+                        Log.d("SensorResponse", "Sensor asignado: " + sensores.size());
+                        Toast.makeText(LoginActivity.this, "Sensor asignado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.e("SensorResponse", "Error en la respuesta del servidor: " + response.code() + " " + response.message());
+                    Toast.makeText(LoginActivity.this, "Error al verificar sensor", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<List<Sensor>> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }
