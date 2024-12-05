@@ -19,6 +19,8 @@ section {
 }
 .btn-ver-valores{
     margin-top: 20px;
+    display: block;
+    width: 100%;
 }
 article {
     margin: 1rem 0;
