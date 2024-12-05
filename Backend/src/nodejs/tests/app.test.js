@@ -92,8 +92,10 @@ describe('API REST Tests', () => {
   test('GET /mediciones/:id_sensor - debería devolver mediciones para un sensor', async () => {
     await runTest('GET /mediciones/:id_sensor', async () => {
       const response = await request(app).get('/mediciones/00:1A:2B:3M:4D:5E');
+      console.log('Respuesta del servidor:', response.body);
+      console.log('Estado de respuesta del servidor:', response.statusCode);
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
-      expect(response.body).toBeInstanceOf(Array); // La respuesta debe ser un array
+      expect(Array.isArray(response.body)).toBe(true); // La respuesta debe ser un array
     });
   }, 10000);
 
@@ -103,15 +105,11 @@ describe('API REST Tests', () => {
   test('POST /mediciones - debería agregar una nueva medicion', async () => {
     await runTest('POST /mediciones', async () => {
       const newMeasurement = { // Datos para la nueva medición
-        fecha:'21/11/2024',
-        hora: '14:00',
-        latitud: 40.416775,
-        longitud: -3.703790,
         id_sensor: '00:1A:2B:3M:4D:5E',
-        valorO3: 10.00,
-        valorTemperatura: 30.00,
-        valorNO2: 10.00,
-        valorSO3: 10.00
+        fecha_hora: '2024-11-21 14:00:00',
+        ubicacion: { latitud: 40.416775, longitud: -3.703790 },
+        tipo_medicion: 'O3',
+        valor: 10.00,
       };
       console.log('Datos de la nueva medición para el test:', newMeasurement);
       const response = await request(app).post('/mediciones').send(newMeasurement);
@@ -128,7 +126,6 @@ describe('API REST Tests', () => {
   test('POST /usuarios - debería agregar un nuevo usuario', async () => {
     await runTest('POST /usuarios', async () => {
       const newUser = { // Datos para el nuevo usuario
-        id: 6,
         nombre: 'Test',
         telefono: '123456789',
         correo: 'test@correo.com',
@@ -144,7 +141,6 @@ describe('API REST Tests', () => {
       expect(response.statusCode).toBe(201); // El estado de respuesta debe ser 201
       // Verificar las propiedades individuales, excluyendo la contraseña
       expect(response.body).toMatchObject({
-        id: newUser.id,
         nombre: newUser.nombre,
         telefono: newUser.telefono,
         correo: newUser.correo

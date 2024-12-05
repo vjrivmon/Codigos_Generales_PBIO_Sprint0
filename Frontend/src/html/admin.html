@@ -1,5 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="../style/styles.css">
     <link rel="stylesheet" href="../style/admin.css">  
     <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="stylesheet" href="../style/popupSensorInfo.css">
     <link rel="icon" href="../img/logo.svg" type="image/x-icon">
 </head>
 <body>
@@ -34,53 +36,69 @@
             <!-- Filtros -->
             <div class="filters">
                 <div class="filt">
-                    <p><strong>Filtrar:</strong></p>
+                    <p><strong>Filtrar por:</strong></p>
                     <select id="filter-status">
                         <option value="all">Todos</option>
                         <option value="active">Activos actualmente</option>
                         <option value="inactive">Inactivos actualmente</option>
-                        <option value="min24h">Activos en las últimas 24h</option>
-                        <option value="max24h">Más de 24h inactivos</option>
+                        <option value="averiados">Averiados actualmente</option>
+                        <option value="act8h">Inactivos en las últimas 8 horas</option>
+                        <option value="act24h">Inactivos en las últimas 24 horas</option>
+                        <option value="act24hmas">Inactivos más de 24 horas</option>
                     </select>
-                </div>
-                <div class="filt">
-                    <p><strong>Ordenar por:</strong></p>
-                    <select id="sort-field">
-                        <option value="nameAsc">Nombre ascendente</option>
-                        <option value="nameDesc">Nombre descendente</option>
-                        <option value="macAddressAsc">MAC ascendente</option>
-                        <option value="macAddressDesc">MAC descendente</option>
-                        <option value="statusAct">Activos primero</option>
-                        <option value="statusDesact">Inactivos primero</option>
-                        <option value="dateAsc">Fecha más reciente</option>
-                        <option value="dateDesc">Fecha más lejana</option>
-                    </select>
-                </div>
-                <div class="btns">
-                    <button id="apply-filters">Aplicar filtros</button>
-                    <button id="clear-filters">Borrar filtros</button>
                 </div>
             </div>
 
             <!-- Tabla de Sensores -->
             <div class="sensor-table-container">
                 <table class="sensor-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Dirección MAC</th>
-                            <th>Ubicación</th>
-                            <th>Última actividad</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sensor-list">
-                        <!-- Datos generados dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable('macAddress', toggleSortDirection('macAddress'))">
+                                        <span>Dirección MAC</span>
+                                        <span class="sort-icons" data-column="macAddress">
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('location', toggleSortDirection('location'))">
+                                        <span>Ubicación</span>
+                                        <span class="sort-icons" data-column="location">
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('lastActive', toggleSortDirection('lastActive'))">
+                                        <span>Última actividad</span>
+                                        <span class="sort-icons" data-column="lastActive">
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('status', toggleSortDirection('status'))">
+                                        <span>Estado</span>
+                                        <span class="sort-icons" data-column="status">
+                                            <span class="asc">▲</span>
+                                            <span class="desc">▼</span>
+                                        </span>
+                                    </th>
+                                    <th onclick="sortTable('failureType', toggleSortDirection('failureType'))">
+                                        <span>Avería</span>
+                                        </span>
+                                    </th>
+                                </tr>
+                                
+                                
+                            </thead>
+                            
+                            
+                            <tbody id="sensor-list">
+                                <!-- Datos generados dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
     <!-- Popup para cerrar sesión -->
     <div id="popup-cerrar-sesion" class="popup">
@@ -92,16 +110,25 @@
     </div>
 
 
-     <!-- Popup para cerrar sesión -->
-     <div id="popup-borrar-filtros" class="popup">
+    <div id="sensor-info-popup" class="popup">
         <div class="popup-content">
-            <p>¿Seguro que quieres borrar los filtros?</p>
-            <button id="confirmBtn-filtros" class="btn">Confirmar</button>
-            <button id="cancelBtn-filtros" class="btn">Cancelar</button>
+            <h3 id="sensor-title"></h3>
+            <div id="sensor-chart" style="margin: 0 auto;"><canvas></canvas></div>
+
+
+            <div id="sensor-history">
+                <h4>Historial de Datos:</h4>
+                <ul id="history-list"></ul>
+            </div>
+            <button id="close-popup" class="btn">Cerrar</button>
         </div>
     </div>
+    
+
 
     <script src="../js/admin.js"></script>
     <script src="../js/cerrarSesion.js"></script>
+    <script src="../js/historicoAdmin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

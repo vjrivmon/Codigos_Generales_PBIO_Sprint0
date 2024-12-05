@@ -60,6 +60,7 @@ android {
         implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
         implementation ("com.google.android.gms:play-services-maps:18.1.0")
         implementation ("com.google.android.gms:play-services-location:21.0.1")
+        implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
 
     }

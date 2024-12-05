@@ -37,16 +37,16 @@ const pool = mariadb.createPool({
 });
 
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: process.env.EMAIL_SERVICE,
   auth: {
-      user: 'vimyp.s.l@gmail.com',
-      pass: 'qejv suwv cykj wcjj'
+      user: process.env.EMAIL_FROM,
+      pass: process.env.EMAIL_PASS
   }
 });
 
 async function enviarCorreoParaVerificacion(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Bienvenido a VIMYP',
     html: `
@@ -163,7 +163,7 @@ async function enviarCorreoParaVerificacion(email) {
 }
 async function enviarCorreoParaEditarDatos(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Hemos visto que has hecho algunos cambios...',
     html: `
@@ -280,7 +280,7 @@ async function enviarCorreoParaEditarDatos(email) {
 }
 async function enviarCorreoParaRestablecerContrasena(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Hemos visto que has hecho algunos cambios...',
     html: `
@@ -397,7 +397,7 @@ async function enviarCorreoParaRestablecerContrasena(email) {
 }
 async function enviarCorreoParaRecuperarContrasena(email) {
   var mailOptions = {
-    from: 'vimyp.s.l@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Restablecer contraseña',
     html: `
@@ -522,25 +522,17 @@ async function enviarCorreoParaRecuperarContrasena(email) {
  * @param req Objeto de solicitud HTTP (Express.js).
  * @param res Objeto de respuesta HTTP (Express.js).
  */
-async function ConsultarMedida(req, res) {
-  const { id_sensor } = req.params;
+const ConsultarMedida = async (req, res) => {
   let connection;
-
   try {
-    console.log(`Intentando obtener conexión para el sensor ID: ${id_sensor}`);
     connection = await pool.getConnection();
-    console.log('Conexión obtenida con éxito');
-    
-    // Verifica que la conexión esté activa antes de ejecutar la consulta
-    if (!connection) {
-      console.error('No se pudo obtener una conexión');
-      res.status(500).send('No se pudo obtener una conexión');
-      return;
-    }
-
-    const rows = await connection.query('SELECT * FROM mediciones WHERE id_sensor = ?', [id_sensor]);
-    console.log('Consulta ejecutada con éxito');
-    res.json(rows);
+    console.log('Intentando obtener conexión para el sensor ID:', req.params.id_sensor);
+    const rows = await connection.query(
+      'SELECT * FROM mediciones WHERE id_sensor = ?',
+      [req.params.id_sensor]
+    );
+    console.log('Resultado de la consulta de mediciones:', rows);
+    res.json(Array.isArray(rows) ? rows : [rows]);
   } catch (err) {
     console.error('Error al ejecutar la consulta:', err);
     res.status(500).send('Error en la consulta');
@@ -550,7 +542,8 @@ async function ConsultarMedida(req, res) {
       connection.release();
     }
   }
-}
+};
+
 /**
  * @brief Función para agregar una nueva medición.
  *
@@ -560,38 +553,17 @@ async function ConsultarMedida(req, res) {
  * @param req Objeto de solicitud HTTP (Express.js).
  * @param res Objeto de respuesta HTTP (Express.js).
  */
-async function agregarMedicion(req, res) {
-  const nuevaMedicion = req.body;
+const agregarMedicion = async (req, res) => {
   let connection;
   try {
-    console.log('Datos de la nueva medición:', nuevaMedicion);
     connection = await pool.getConnection();
-    console.log('Conexión obtenida con éxito');
-
-    // Verificar si el sensor existe
-    const checkSensorQuery = 'SELECT * FROM sensores WHERE id_sensor = ?';
-    const sensorRows = await connection.query(checkSensorQuery, [nuevaMedicion.id_sensor]);
-    console.log('Resultado de la consulta de sensores:', sensorRows);
-    if (sensorRows.length === 0) {
-      console.warn('Sensor no encontrado');
-      return res.status(400).send('Sensor no encontrado');
-    }
-
-    const query = 'INSERT INTO mediciones (fecha, hora, latitud, longitud, id_sensor, valorO3, valorTemperatura, valorNO2, valorSO3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const result = await connection.query(query, [
-      nuevaMedicion.fecha,
-      nuevaMedicion.hora,
-      nuevaMedicion.latitud,
-      nuevaMedicion.longitud,
-      nuevaMedicion.id_sensor,
-      nuevaMedicion.valorO3,
-      nuevaMedicion.valorTemperatura,
-      nuevaMedicion.valorNO2,
-      nuevaMedicion.valorSO3
-    ]);
-
-    nuevaMedicion.id = result.insertId;
-    console.log('Medición agregada con éxito:', nuevaMedicion);
+    const nuevaMedicion = req.body;
+    console.log('Datos de la nueva medición:', nuevaMedicion);
+    await connection.query(
+      'INSERT INTO mediciones (id_sensor, fecha_hora, ubicacion, tipo_medicion, valor) VALUES (?, ?, ?, ?, ?)',
+      [nuevaMedicion.id_sensor, nuevaMedicion.fecha_hora, JSON.stringify(nuevaMedicion.ubicacion), nuevaMedicion.tipo_medicion, nuevaMedicion.valor]
+    );
+    console.log('Medición agregada con éxito');
     res.status(201).json(nuevaMedicion);
   } catch (err) {
     console.error('Error al agregar la medición:', err);
@@ -602,7 +574,8 @@ async function agregarMedicion(req, res) {
       connection.release();
     }
   }
-}
+};
+
 /**
  * @brief Función para consultar datos de usuario.
  *
@@ -851,7 +824,19 @@ async function ConsultarBaseDeDatos(req, res) {
     const sensores = await connection.query('SELECT * FROM sensores');
     console.log('Consulta de sensores ejecutada con éxito');
 
-    res.json({ mediciones, usuarios, sensores });
+    console.log('Ejecutando consulta para obtener datos de la tabla roles');
+    const roles = await connection.query('SELECT * FROM roles');
+    console.log('Consulta de roles ejecutada con éxito');
+
+    console.log('Ejecutando consulta para obtener datos de la tabla senusu');
+    const senusu = await connection.query('SELECT * FROM senusu');
+    console.log('Consulta de senusu ejecutada con éxito');
+
+    console.log('Ejecutando consulta para obtener datos de la tabla usro');
+    const usro = await connection.query('SELECT * FROM usro');
+    console.log('Consulta de usro ejecutada con éxito');
+  
+    res.json({ mediciones, sensores, senusu, usuarios, usro, roles });
   } catch (err) {
     console.error('Error en la consulta a la base de datos:', err);
     res.status(500).send('Error en la consulta a la base de datos');

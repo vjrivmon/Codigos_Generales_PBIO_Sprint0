@@ -2,11 +2,8 @@ package com.example.biometria3a;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
@@ -22,26 +19,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,26 +38,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -83,7 +57,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -150,9 +123,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
+    TextView  dis;
 
 
+    //--------------RSSI------------------
 
+    private long lastSignalTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +136,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
         // Inicializar el helper de Bluetooth
         bluetoothHelper = new BluetoothHelper(this);
+
+
+        //------------Potencia de luethoot -------------------
+      //  TextView tvRssi = findViewById(R.id.dis);
+        ImageView imgSignalStrength = findViewById(R.id.iv_signal);
+
+
+
+
 
         //------------Automatizar busqueda de mi dispositivo----------------
         // Llama automáticamente al método para iniciar la búsqueda
@@ -283,20 +268,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-        //------------------mapa------------------------
-      /*  // WebView设置
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true); // 启用JavaScript
-        webView.setWebViewClient(new WebViewClient()); // 在WebView中打开URL
 
-
-        // 加载Google Maps的普通URL，显示瓦伦西亚的位置
-        String googleMapsUrl = "https://www.google.com/maps?q=Valencia&z=12";
-        webView.loadUrl(googleMapsUrl);
-
-
-       */
-        // 显示当前时间
         updateTime();
 
         // 更新按钮点击事件
@@ -411,7 +383,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 super.onScanResult(callbackType, resultado);
                 Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanResult() ");
                 mostrarInformacionDispositivoBTLE(resultado);
+
+
             }
+
+
+
 
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
@@ -451,10 +428,86 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         BluetoothDevice bluetoothDevice = resultado.getDevice();
         byte[] bytes = resultado.getScanRecord().getBytes();
         int rssi = resultado.getRssi();
+        // Verificar si la señal es válida
+        if (rssi == -100) {
+            // Si no hay señal (RSSI == -100), considera que no hay señal
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                    TextView textViewDistancia = findViewById(R.id.dis);
+                    textViewDistancia.setText("Sin señal");
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen de sin señal
+                }
+            });
+            return; // Salir, ya que no hay datos de señal válidos
+        }
+
         TramaIBeacon tib = new TramaIBeacon(bytes);
 
         // Convertir los valores Major y Minor
         valorMajor = Utilidades.bytesToInt(tib.getMajor());
+        int txPower = tib.getTxPower();
+        // Calcular la distancia
+        double distancia = calcularDistancia(rssi, txPower);
+        // Actualizar el tiempo de la última señal recibida
+        long currentTime = System.currentTimeMillis();
+        lastSignalTime = currentTime; // Actualizamos el último tiempo de señal
+
+
+
+
+        // Mostrar la distancia promedio en el TextView "dis"
+        /*
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                TextView textViewDistancia = findViewById(R.id.dis); // Encuentra el TextView por su ID
+                if (distancia < 2) {
+                    textViewDistancia.setText("Estas al lado del sensor "+ String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_3);
+                } else if (distancia >= 2 && distancia <= 5) {
+                    textViewDistancia.setText("Estas cerca del sensor "+ String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_2);
+                } else if (distancia > 5) {
+                    textViewDistancia.setText("Estas lejos del sensor "+ String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_1);
+                } // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
+                if (distancia > 5 && rssi == -100) { // Asumimos que RSSI -100 indica sin señal
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
+                }
+                //textViewDistancia.setText("Distancia: " + String.format("%.2f", distancia) + " metros");
+            }
+
+         */
+        // Mostrar la distancia y la señal
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                TextView textViewDistancia = findViewById(R.id.dis); // Encuentra el TextView por su ID
+
+                if (distancia < 2) {
+                    textViewDistancia.setText("Estas al lado del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_3);
+                } else if (distancia >= 2 && distancia <= 5) {
+                    textViewDistancia.setText("Estas cerca del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_2);
+                } else if (distancia > 5) {
+                    textViewDistancia.setText("Estas lejos del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_1);
+                }
+
+                // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
+                if (distancia > 2 && rssi == -47) { // Asumimos que RSSI -100 indica sin señal
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
+                }
+            }
+        });
+
+        Log.d("DISTANCIASENSOR", "Distancia estimada entre el dispositivo y el sensor: " + distancia + " metros");
+
         //  valorMajor=50;
        lanzarNoti(valorMajor/10);
         // Usar Handler para esperar 10 segundos antes de mostrar la notificación
@@ -480,12 +533,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(ETIQUETA_LOG, " nombre = " + bluetoothDevice.getName());
         Log.d(ETIQUETA_LOG, " toString = " + bluetoothDevice.toString());
 
-        /*
-        ParcelUuid[] puuids = bluetoothDevice.getUuids();
-        if ( puuids.length >= 1 ) {
-            //Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].getUuid());
-           // Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].toString());
-        }*/
 
         Log.d(ETIQUETA_LOG, " dirección = " + bluetoothDevice.getAddress());
         Log.d(ETIQUETA_LOG, " rssi = " + rssi);
@@ -515,6 +562,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(ETIQUETA_LOG, " ****************************************************");
 
     } // ()
+
+    private double calcularDistancia(int rssi, int txPower) {
+        final double n = 2.0;  // Valor típico para interiores, puedes ajustar este valor según el entorno
+
+        if (rssi == 0) {
+            return -1.0;  // Si el RSSI es 0, no se puede calcular la distancia
+        }
+
+        double ratio = rssi * 1.0 / txPower;
+        if (ratio < 1.0) {
+            return Math.pow(ratio, 10);  // Si la relación RSSI/TXPower es menor que 1, usamos esta fórmula
+        } else {
+            return  (0.89976) * Math.pow(ratio, 7.7095) + 0.111;  // Usamos otra fórmula si la relación es mayor
+        }
+    }
 
 
     // --------------------------------------------------------------
@@ -551,6 +613,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return info.toString();
     }// ()
 
+
+
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
@@ -574,14 +638,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.callbackDelEscaneo = new ScanCallback() {
             @Override
             public void onScanResult(int callbackType, ScanResult resultado) {
+                final List<Integer> rssiValues = new ArrayList<>();
                 super.onScanResult(callbackType, resultado);
                 //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
 
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
+
                 byte[] bytes = resultado.getScanRecord().getBytes();
                 TramaIBeacon tib = new TramaIBeacon(bytes);
+
+
+                int rssi = resultado.getRssi();
+                // Añadimos el valor de RSSI a la lista
+
                 if (Utilidades.bytesToString(tib.getUUID()).equals(dispositivoBuscado)) {
                     mostrarInformacionDispositivoBTLE(resultado);
                     // Reiniciar el temporizador al recibir datos
@@ -635,6 +706,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Iniciar el temporizador
                 handler.postDelayed(timeoutRunnable, 10000);
             }
+
+           /* private double calcularDistancia(int txPower, int rssi) {
+                return Math.pow(10d, ((double) (txPower - rssi)) / (90 * 4));
+            }
+
+            */
+
+
+
+
+
+
+
+
+
+
             private void enviarNotificacionSinDatos() {
                 NotificationHalper notificationHalper = new NotificationHalper(MainActivity.this);
                 notificationHalper.showNotification("Alerta de Sensor", "No se han recibido datos del sensor. El sensor está apagado o no disponible.");
@@ -861,12 +948,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void boton_enviar_pulsado_client(View quien) {
         // Obtener fecha y hora actuales
-        String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String horaActual = CO2NotificationManager.getCurrentTime();
-        // Llama a obtener las coordenadas actuales
-
+     String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        //String fechaActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(new Date());
         double latitud = getLatitud();
         double longitud = getLongitud();
+
+
+        // Mostrar las coordenadas en un Toast
+        Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
+
+
+        String ubicacionJson = String.format("{\"latitud\": %f, \"longitud\": %f}", latitud, longitud);
+       String horaActual = CO2NotificationManager.getCurrentTime();
+        // Llama a obtener las coordenadas actuales
+        // Verificar las coordenadas antes de usarlas
+     //   Log.d("Coordenadas", "Latitud: " + latitud + ", Longitud: " + longitud);
+
         // Mostrar las coordenadas en un Toast
         //Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
         // Obtener el ID del sensor dinámicamente
@@ -885,11 +982,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
        // double valorGas = 200;
      //   double valorTemperatura = valorMinor / 100;
        // double valorTemperatura = 32;
+// Crear el objeto JSON para la ubicación
 
-        // Crea el objeto Medicion con los datos obtenidos
-        // Crear el objeto Medicion con los nuevos datos
-        Medicion medicion = new Medicion(fechaActual, horaActual, latitud, longitud, idSensor,
-                valorO3, valorTemperatura, valorNO2, valorSO3);
+        Log.d("Valor O3", "Valor antes de enviar: " + valorO3);
+
+
+        enviarMedicion  (idSensor, fechaActual, ubicacionJson, "O3", valorO3);
+
+
+
+   // }
+
+        Medicion medicion = new Medicion(idSensor,fechaActual,  ubicacionJson,"O3", valorO3);
         // Realiza la llamada para enviar la medición a la API
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<Void> call = apiService.enviarMedicion(medicion);
@@ -909,6 +1013,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.d("clienterestandroid", "Error de conexión: " + t.getMessage());
                 Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+
+    public void enviarMedicion(String idSensor, String fechaHora, String ubicacionJson, String tipoMedicion, double valor) {
+        // Crear una instancia de la clase Medicion
+        Medicion medicion = new Medicion(idSensor, fechaHora, ubicacionJson, tipoMedicion, valor);
+
+        // Obtener la instancia de Retrofit y ApiService
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+
+        // Llamar al método para enviar medición
+        Call<Void> call = apiService.enviarMedicion(medicion);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Medicion", "Medición enviada con éxito");
+                } else {
+                    Log.e("Medicion", "Error al enviar la medición: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Medicion", "Fallo en la conexión: " + t.getMessage());
             }
         });
     }

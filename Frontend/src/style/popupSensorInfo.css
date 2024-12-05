@@ -1,0 +1,135 @@
+/* Popup */
+#sensor-info-popup {
+    display: none; /* Inicialmente está oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
+}
+
+
+#sensor-info-popup .popup-content {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 20px; /* Ajusta el borde redondeado */
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    opacity: 1;
+    visibility: visible; /* Inicialmente visible */
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Desvanecimiento y visibilidad suave */
+    width: 90%; /* Toma el 90% del ancho disponible */
+    max-width: 800px; /* Limita el ancho máximo */
+    min-width: 600px;
+    max-height: 80%; /* Altura máxima en pantallas pequeñas */
+    overflow-y: auto; /* Activa el scroll si es necesario */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espacio entre elementos */
+}
+
+#sensor-info-popup .btn {
+    background-color: var(--button-color, #395886); /* Usa color de botón predeterminado */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px auto 0 auto; /* Centrado */
+    cursor: pointer;
+    border-radius: 20px; /* Ajuste de borde redondeado */
+    border: 2px solid var(--button-color, #395886);
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 90%; /* Ancho adaptativo */
+    max-width: 200px; /* Máximo para pantallas grandes */
+}
+
+#sensor-info-popup .btn:hover {
+    background-color: white;
+    color: var(--button-color, #395886);
+}
+
+/* Historial y título */
+#sensor-info-popup h3,
+#sensor-info-popup h4 {
+    margin: 0.5rem auto;
+    font-size: 1.5rem; /* Tamaño del texto adaptativo */
+}
+
+#sensor-info-popup p,
+#sensor-info-popup ul {
+    margin: 1rem auto;
+    text-align: left; /* Mejor legibilidad */
+    font-size: 1rem;
+    padding:1.5rem;
+}
+
+/* Lista sin viñetas */
+#sensor-info-popup ul {
+    list-style-type: none;
+    padding: 0 1.5rem 0 1.5rem;
+}
+
+#sensor-history {
+    padding: 0 1.5rem 0 1.5rem;
+    text-align: left;
+}
+
+
+/* Gráfico responsivo */
+#sensor-info-popup #sensor-chart canvas {
+    width: 100%;
+    max-width: 600px; /* Tamaño máximo en pantallas grandes */
+    height: auto;
+    min-height: 200px;
+    max-height: 300px;
+    min-width: 500px;
+    display:block;
+    box-sizing: border-box;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    #sensor-info-popup .popup-content {
+        width: 95%; /* Más ancho en pantallas pequeñas */
+        max-width: 400px;
+        padding: 1rem; /* Menor padding */
+    }
+
+    #sensor-info-popup h3,
+    #sensor-info-popup h4 {
+        font-size: 1.25rem; /* Texto más pequeño */
+    }
+
+    #sensor-info-popup p,
+    #sensor-info-popup ul {
+        font-size: 0.9rem; /* Texto más pequeño */
+    }
+
+    #sensor-info-popup .btn {
+        width: 100%; /* Botones ocupan todo el ancho */
+        max-width: 180px; /* Limita el tamaño máximo */
+    }
+}
+
+@media (max-width: 480px) {
+    #sensor-info-popup .popup-content {
+        padding: 0.5rem; /* Ajustar el espaciado */
+    }
+
+    #sensor-info-popup h3,
+    #sensor-info-popup h4 {
+        font-size: 1rem;
+    }
+
+    #sensor-info-popup p,
+    #sensor-info-popup ul {
+        font-size: 0.8rem;
+    }
+
+    #sensor-info-popup .btn {
+        padding: 8px 16px; /* Botones más pequeños */
+    }
+}

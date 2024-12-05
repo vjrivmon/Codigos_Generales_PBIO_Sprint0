@@ -13,6 +13,17 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+    <uses-feature android:name="android.hardware.location" android:required="true" />
+
+
     <application
         android:icon="@drawable/ic_logo"
         android:allowBackup="true"
@@ -48,6 +59,7 @@
         <activity android:name=".AirQualityActivity"/>
         <activity android:name=".InfoExtraFragment"/>
         <activity android:name=".MapsACTIVITY"/>
+        <activity android:name=".QrActivity"/>
 
 
         <receiver android:name=".OzoneLevelReceiver"
