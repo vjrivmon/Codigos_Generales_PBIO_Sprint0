@@ -57,6 +57,31 @@ function generateRandomFailures() {
     return selectedFailures;
 }
 
+
+// Generar un nombre aleatorio con un apellido
+function generarNombreCompleto() {
+    const nombres = ["Antonio", "María", "José", "Francisco", "Laura", "Carmen", "Ana", "Juan", "Isabel", "Miguel"];
+    const apellidos = ["García", "Martínez", "López", "Sánchez", "Pérez", "Gómez", "Fernández", "Rodríguez", "Hernández"];
+    const nombre = nombres[Math.floor(Math.random() * nombres.length)];
+    const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+    return `${nombre} ${apellido}`;
+}
+
+
+// Asignar nombres a los propietarios de sensores
+function asignarPropietarios(sensores) {
+    sensores.forEach(sensor => {
+        if (!sensor.owner || sensor.owner === "undefined") {
+            sensor.owner = generarNombreCompleto(); // Generar un nombre si está vacío o es "undefined"
+        }
+    });
+}
+
+// Llamar a la función después de definir los sensores
+asignarPropietarios(sensors);
+
+
+
 // Generar datos hasta la última actividad
 function generateDataUntilLastActive(lastActiveTimestamp) {
     const now = new Date();
@@ -90,135 +115,6 @@ function generateDataUntilLastActive(lastActiveTimestamp) {
     return data;
 }
 
-
-
-
-
-// Crear el gráfico con datos hasta la última actividad
-/*function createChartUntilLastActive(sensor) {
-    const data = generateDataUntilLastActive(sensor.lastActive);
-    const ctx = document.createElement("canvas");
-    sensorChart.innerHTML = ""; // Limpiar gráfico anterior
-    sensorChart.appendChild(ctx);
-
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: data.labels,
-            datasets: [
-                {
-                    label: "O3",
-                    data: data.O3,
-                    borderColor: "#4caf50",
-                    backgroundColor: "rgba(76, 175, 80, 0.2)",
-                    fill: true,
-                    tension: 0.3
-                },
-                {
-                    label: "NO2",
-                    data: data.NO2,
-                    borderColor: "#ff9800",
-                    backgroundColor: "rgba(255, 152, 0, 0.2)",
-                    fill: true,
-                    tension: 0.3
-                },
-                {
-                    label: "SO3",
-                    data: data.SO3,
-                    borderColor: "#2196f3",
-                    backgroundColor: "rgba(33, 150, 243, 0.2)",
-                    fill: true,
-                    tension: 0.3
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: true, position: "top" },
-                tooltip: { mode: "index", intersect: false }
-            },
-            scales: {
-                x: {
-                    title: { display: true, text: "Hora" }
-                },
-                y: {
-                    title: { display: true, text: "Concentración (µg/m³)" },
-                    beginAtZero: true
-                }
-            },
-            interaction: {
-                mode: "index",
-                intersect: false
-            }
-        }
-    });
-}*/
-
-
-
-
-// Crear el gráfico con datos de las últimas 8 horas
-/*function create8HourChart(data) {
-    const ctx = document.createElement("canvas");
-    sensorChart.innerHTML = ""; // Limpia el gráfico anterior
-    sensorChart.appendChild(ctx);
-
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: data.labels,
-            datasets: [
-                {
-                    label: "O3",
-                    data: data.O3,
-                    borderColor: "#4caf50",
-                    backgroundColor: "rgba(76, 175, 80, 0.2)",
-                    fill: true,
-                    tension: 0.3
-                },
-                {
-                    label: "NO2",
-                    data: data.NO2,
-                    borderColor: "#ff9800",
-                    backgroundColor: "rgba(255, 152, 0, 0.2)",
-                    fill: true,
-                    tension: 0.3
-                },
-                {
-                    label: "SO3",
-                    data: data.SO3,
-                    borderColor: "#2196f3",
-                    backgroundColor: "rgba(33, 150, 243, 0.2)",
-                    fill: true,
-                    tension: 0.3
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: true, position: "top" },
-                tooltip: { mode: "index", intersect: false }
-            },
-            scales: {
-                x: {
-                    title: { display: true, text: "Hora" }
-                },
-                y: {
-                    title: { display: true, text: "Concentración (µg/m³)" },
-                    beginAtZero: true
-                }
-            },
-            interaction: {
-                mode: "index",
-                intersect: false
-            }
-        }
-    });
-}*/
 
 // Crear el gráfico (última actividad o últimas 8 horas)
 function createChart(sensor) {
@@ -298,7 +194,7 @@ function showSensorInfo(macAddress) {
     const sanitizedMacAddress = macAddress.replace(/ℹ️/g, ""); 
 
     // Actualizar título del popup con la dirección MAC limpia
-    sensorTitle.textContent = `Información del sensor ${sanitizedMacAddress}`;
+    sensorTitle.textContent = `Información del sensor con MAC: ${sanitizedMacAddress}`;
 
      // Aquí usamos `true` o `false` dependiendo de qué gráfico queremos mostrar
      createChart(sensor, true);  // true para las últimas 8 horas, false para hasta la última actividad
@@ -313,6 +209,8 @@ function showSensorInfo(macAddress) {
         <li>Estado: ${sensor.status === "active" ? "Activo" : "Inactivo"}</li>
         <li>Avería: ${sensor.issue || "Sin averías"}</li>
         <li>Antiguas Averías: ${oldFailures.join(", ") || "Ninguna"}</li>
+        <li>Propietario: ${sensor.owner}</li>
+        <li>Ubicación: ${sensor.location}</li>
 
     `;
 
@@ -323,6 +221,7 @@ function showSensorInfo(macAddress) {
 closePopup.addEventListener("click", () => {
     sensorInfoPopup.style.display = "none";
 });
+
 
 // Asignar eventos de clic a las direcciones MAC
 function assignPopupEvents() {
@@ -360,3 +259,4 @@ function displaySensors(sensors) {
 
 // Inicializar la tabla y sus eventos
 displaySensors(sensors);
+asignarPropietarios(sensores); // Asignar propietarios a los sensores
