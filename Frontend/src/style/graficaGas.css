@@ -29,6 +29,18 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease; 
     z-index: 1000;
 }
+#info-box-grafica select  {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid lightgray;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+    min-width: 150px; /* Garantiza un tamaño mínimo consistente */
+
+  }
+  
 
 #info-box-grafica:hover {
     transform: scale(1.05); 
