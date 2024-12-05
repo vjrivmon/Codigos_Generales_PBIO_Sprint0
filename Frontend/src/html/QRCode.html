@@ -42,14 +42,25 @@
 
       <!-- Sección del qr -->
        <section class="qr-section">
+        <div class="text-qr">
             <h2>Enlaza tu nuevo dispositivo</h2>
-            <p>Escanea el siguiente código QR desde la app de VIMYP o introduce el pin que viene junto al sensor para dar de al ta el dispositivo.</p>
-            <div id="qrcode">
-                <img id="qrImage" alt="QR Code" />
-            </div>    
+            <p>Escanea el código QR o introduce el PIN que aparece en la tarjeta que viene junto al dispositivo a continuación o desde la app de VIMYP para dar de alta el dispositivo.</p>
+            <p>Si no encuentras una tarjeta como la que se muestra a continuación, contacta con nosotros.</p>
+            <div class="pin">
+                <input type="number" id="pinInput" placeholder="Escribe aquí tu PIN de 12 dígitos" maxlength="12" minlength="12">
+                <button onclick="submitPin()" id="btn-submit-qr">Enviar</button>
+            </div>
+        </div>
+        <div class="imgandsubmit-qr">
+            <p>Tarjeta de ejemplo:</p>
 
-            <input type="text" id="pinInput" placeholder="Escribe aquí tu pin" maxlength="12" minlength="12">
-            <button onclick="submitPin()" id="btn-submit-qr">Enviar</button>
+            <div id="qrcode">
+                <img id="tarjetaQR" alt="QR Code example" src="../img/tarjeta.png" />
+            </div>    
+        
+          
+        </div>
+            
        </section>
 
     <!-- Footer -->
