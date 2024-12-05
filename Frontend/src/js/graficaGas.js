@@ -94,7 +94,7 @@ function filtrarMediciones(fecha, tipo) {
         document.getElementById('media-O3').innerHTML = `<i class="fas fa-cloud"></i>   O3: ${calcularMediaPonderada(valoresO3).toFixed(2)} ppm`;
     document.getElementById('media-NO2').innerHTML = `<i class="fas fa-cloud"></i>   NO2: ${calcularMediaPonderada(valoresNO2).toFixed(2)} ppm`;
     document.getElementById('media-SO3').innerHTML = `<i class="fas fa-cloud"></i>   SO3: ${calcularMediaPonderada(valoresSO3).toFixed(2)} ppm`;
-    document.getElementById('media-Temperatura').innerHTML = `<i class="fas fa-cloud"></i>   Temperatura: ${calcularMediaPonderada(valoresTemperatura).toFixed(2)} ºC`;
+    document.getElementById('media-Temperatura').innerHTML = `<i class="fa-solid fa-temperature-low"></i>   Temperatura: ${calcularMediaPonderada(valoresTemperatura).toFixed(2)} ºC`;
     actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3, valoresTemperatura);
 }
 
