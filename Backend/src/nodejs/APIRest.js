@@ -25,7 +25,9 @@ const {
   enviarCorreoVerificacion,
   enviarCorreoEditarDatos,
   enviarCorreoRecuperarContrasena,
-  enviarCorreoRestablecerContrasena
+  enviarCorreoRestablecerContrasena,
+  asociarSensorAUsuario,
+  obtenerSensorPorCorreo
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 // Inicializar app y cargar variables de entorno
 // const app = express();
@@ -61,6 +63,8 @@ router.post('/verificar-correo', enviarCorreoVerificacion);
 router.post('/editar-datos', enviarCorreoEditarDatos);
 router.post('/restablecer-contrasena', enviarCorreoRestablecerContrasena);
 router.post('/recuperar-contrasena', enviarCorreoRecuperarContrasena);
+router.post('/asociar_dispositivo', asociarSensorAUsuario);
+// router.get('/usuarios/:correo', obtenerSensorPorCorreo);
 //router.post('/asociar-sensor', asociarSensorAUsuario);
 
 // Pruebas de depuración

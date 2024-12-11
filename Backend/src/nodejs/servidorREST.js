@@ -593,12 +593,17 @@ async function ConsultarDatosUsuario(req, res) {
     connection = await pool.getConnection();
     console.log('Conexión obtenida con éxito');
 
-    const query = 'SELECT * FROM usuarios WHERE id_usuario = ?';
+    const query = `
+      SELECT usuarios.*, senusu.id_sensor 
+      FROM usuarios 
+      LEFT JOIN senusu ON usuarios.id_usuario = senusu.id_usuario 
+      WHERE usuarios.id_usuario = ?
+    `;
     console.log('Ejecutando consulta para obtener datos del usuario');
     const rows = await connection.query(query, [id_usuario]);
     console.log('Consulta ejecutada con éxito');
     if (rows.length > 0) {
-      res.json(rows);
+      res.json(rows[0]); // Devolver solo el primer resultado
     } else {
       res.status(404).send('Usuario no encontrado');
     }
@@ -1079,41 +1084,77 @@ async function enviarCorreoRecuperarContrasena(req, res) {
  * @param {Object} res - Objeto de respuesta HTTP
  */
 const asociarSensorAUsuario = async (req, res) => {
-  const { correo, id_sensor, nombre, funciona } = req.body;
-  let connection;
+    const { correo, id_sensor, nombre, funciona } = req.body;
+    let connection;
 
-  try {
-    connection = await pool.getConnection();
+    try {
+        connection = await pool.getConnection();
+        console.log('Conexión a la base de datos establecida.');
 
-    // Verificar si el usuario existe
-    const usuario = await connection.query('SELECT * FROM usuarios WHERE correo = ?', [correo]);
-    if (usuario.length === 0) {
-      return res.status(404).send('Usuario no encontrado');
+        // Verificar si el usuario existe
+        const usuario = await connection.query('SELECT * FROM usuarios WHERE correo = ?', [correo]);
+        if (usuario.length === 0) {
+            console.log('Usuario no encontrado:', correo);
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        // Verificar si el sensor ya está asociado
+        const sensor = await connection.query('SELECT * FROM sensores WHERE id_sensor = ?', [id_sensor]);
+        if (sensor.length === 0) {
+            // Crear el sensor si no existe
+            await connection.query('INSERT INTO sensores (id_sensor, nombre, funciona) VALUES (?, ?, ?)', [id_sensor, nombre, funciona]);
+            console.log('Sensor creado:', id_sensor);
+        }
+
+        // Asociar el sensor al usuario
+        const rows = await connection.query('SELECT id_usuario FROM usuarios WHERE correo = ?', [correo]);
+        const id_usuario = rows[0].id_usuario;
+        console.log('ID de usuario obtenido:', id_usuario);
+        
+        // Asociar el sensor al usuario en la tabla senusu
+        await connection.query('INSERT INTO senusu (id_usuario, id_sensor) VALUES (?, ?) ON DUPLICATE KEY UPDATE id_sensor = VALUES(id_sensor)', [id_usuario, id_sensor]);
+        console.log('Sensor asociado al usuario:', id_sensor, id_usuario);
+
+        res.status(200).send({ success: true, message: 'Sensor asociado al usuario correctamente' });
+    } catch (error) {
+        console.error('Error al asociar el sensor al usuario:', error);
+        res.status(500).send('Error del servidor');
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
-
-    // Verificar si el sensor ya está asociado
-    const sensor = await connection.query('SELECT * FROM sensores WHERE id_sensor = ?', [id_sensor]);
-    if (sensor.length === 0) {
-      // Crear el sensor si no existe
-      await connection.query('INSERT INTO sensores (id_sensor, nombre, funciona) VALUES (?, ?, ?)', [id_sensor, nombre, funciona]);
-    }
-
-    // Asociar el sensor al usuario
-    const rows = await connection.query('SELECT id_usuario FROM usuarios WHERE correo = ?', [correo]);
-    const id_usuario = rows[0].id_usuario;
-    
-    // Asociar el sensor al usuario en la tabla senusu
-    await connection.query('INSERT INTO senusu (id_usuario, id_sensor) VALUES (?, ?) ON DUPLICATE KEY UPDATE id_sensor = VALUES(id_sensor)', [id_usuario, id_sensor]);
-    res.status(200).send('Sensor asociado al usuario correctamente');
-  } catch (error) {
-    console.error('Error al asociar el sensor al usuario:', error);
-    res.status(500).send('Error del servidor');
-  } finally {
-    if (connection) {
-      connection.release();
-    }
-  }
 };
+
+const obtenerSensorPorCorreo = async (req, res) => {
+    const { correo } = req.params;
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        console.log('Conexión a la base de datos establecida.');
+
+        // Obtener el sensor asociado al usuario
+        const rows = await connection.query('SELECT id_sensor FROM senusu JOIN usuarios ON senusu.id_usuario = usuarios.id_usuario WHERE usuarios.correo = ?', [correo]);
+        if (rows.length === 0) {
+            console.log('No se encontró ningún sensor asociado al usuario:', correo);
+            return res.status(404).send('No se encontró ningún sensor asociado al usuario');
+        }
+
+        const id_sensor = rows[0].id_sensor;
+        console.log('ID del sensor obtenido:', id_sensor);
+
+        res.status(200).send({ id_sensor });
+    } catch (error) {
+        console.error('Error al obtener el sensor del usuario:', error);
+        res.status(500).send('Error del servidor');
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -1135,6 +1176,7 @@ module.exports = {
   enviarCorreoParaRecuperarContrasena,
   enviarCorreoRestablecerContrasena,
   enviarCorreoParaRestablecerContrasena,
-  asociarSensorAUsuario
+  asociarSensorAUsuario,
+  obtenerSensorPorCorreo
 };
 

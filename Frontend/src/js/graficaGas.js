@@ -1,7 +1,7 @@
 // Este código se encarga de obtener los datos de un sensor de gas de un backend y mostrarlos en una gráfica con Chart.js
 // También calcula la media ponderada de los valores de gas y los muestra en la página web
 // Requiere Chart.js y un backend que responda a la ruta '/mediciones/:idSensor' con los datos del sensor de gas en formato JSON
-const id_sensor = '00:1A:2B:3M:4D:5E'; // Ejemplo de ID de sensor
+
 const fechaSelector = document.getElementById('fecha-selector');
 const graficaSelector = document.getElementById('gas-selector');
 let mediciones = []; // Almacén local de todas las mediciones
@@ -11,9 +11,28 @@ console.log('Tipo seleccionado:', tipo);
 const fecha = fechaSelector.value; // Fecha seleccionada por defecto
 console.log('Fecha seleccionada:', fecha);
 
+// Obtener la MAC del sensor del usuario
+function obtenerMacSensor() {
+    const id_usuario = document.cookie.split('; ').find(row => row.startsWith('id_usuario')).split('=')[1]; // Obtener el id_usuario del usuario de la cookie
+
+    fetch(`http://localhost:8080/usuarios/${id_usuario}`)
+        .then(response => response.json())
+        .then(data => {
+            const id_sensor = data.id_sensor;
+            console.log('ID del sensor obtenido:', id_sensor);
+
+            if (id_sensor === 'AA:AA:AA:AA:AA:AA') {
+                console.log('Redirigiendo a QRCode.html');
+                window.location.href = 'QRCode.html';
+            } else {
+                cargarMediciones(id_sensor);
+            }
+        })
+        .catch(error => console.error("Error al obtener la MAC del sensor:", error));
+}
 // Obtener todas las mediciones del sensor
-function cargarMediciones() {
-    fetch(`http://localhost:8080/mediciones/00:1A:2B:3M:4D:5E`)
+function cargarMediciones(id_sensor) {
+    fetch(`http://localhost:8080/mediciones/${id_sensor}`)
         .then(response => response.json())
         .then(data => {
             console.log('Mediciones completas:', data);
@@ -21,12 +40,10 @@ function cargarMediciones() {
             // Guardar las mediciones en una variable global
             mediciones = data;
              
-            // Cargar datos iniciales para el 22/11/2024
+            // Cargar datos iniciales para la fecha seleccionada
             filtrarMediciones(fecha, tipo);
-            
-
         })
-        
+        .catch(error => console.error("Error al cargar las mediciones:", error));
 }
 
 // Filtrar mediciones por fecha seleccionada
@@ -50,8 +67,6 @@ function filtrarMediciones(fecha, tipo) {
     const datosFiltradosSO3 = [];
     const datosFiltradosTemperatura = [];
     
-    
-
     for (const item of datosFiltrados) {
       if (item.tipo_medicion === 'O3') {
         datosFiltradosO3.push(item);
@@ -74,7 +89,6 @@ function filtrarMediciones(fecha, tipo) {
     const ultimosDatosFiltradosSO3 = datosFiltradosSO3.slice(-8);
     const ultimosDatosFiltradosTemperatura = datosFiltradosTemperatura.slice(-8);
 
-    
     // Mostrar los datos filtrados en la consola de las ultimas 8 horas
     console.log(`Datos filtrados por O3 de las ultimas 8 horas:`, ultimosDatosFiltradosO3);
     console.log(`Datos filtrados por NO2 de las ultimas 8 horas:`, ultimosDatosFiltradosNO2);
@@ -91,14 +105,12 @@ function filtrarMediciones(fecha, tipo) {
     const valoresTemperatura = datosFiltradosTemperatura.map(item => item.valor);
 
     // Actualizar los valores medios
-        document.getElementById('media-O3').innerHTML = `<i class="fas fa-cloud"></i>   O3: ${calcularMediaPonderada(valoresO3).toFixed(2)} ppm`;
+    document.getElementById('media-O3').innerHTML = `<i class="fas fa-cloud"></i>   O3: ${calcularMediaPonderada(valoresO3).toFixed(2)} ppm`;
     document.getElementById('media-NO2').innerHTML = `<i class="fas fa-cloud"></i>   NO2: ${calcularMediaPonderada(valoresNO2).toFixed(2)} ppm`;
     document.getElementById('media-SO3').innerHTML = `<i class="fas fa-cloud"></i>   SO3: ${calcularMediaPonderada(valoresSO3).toFixed(2)} ppm`;
     document.getElementById('media-Temperatura').innerHTML = `<i class="fa-solid fa-temperature-low"></i>   Temperatura: ${calcularMediaPonderada(valoresTemperatura).toFixed(2)} ºC`;
     actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3, valoresTemperatura);
 }
-
-
 
 // Calcular la media ponderada
 function calcularMediaPonderada(valores) {
@@ -106,18 +118,17 @@ function calcularMediaPonderada(valores) {
     return sumaValores / valores.length;
 }
 
-
 // Manejar el cambio de fecha en el selector
 fechaSelector.addEventListener('change', () => {
     const fecha2 = fechaSelector.value;
-    console.log('Fecha seleccionada:', fecha);
-    filtrarMediciones(fecha2,tipo);
+    console.log('Fecha seleccionada:', fecha2);
+    filtrarMediciones(fecha2, tipo);
 });
 
 // Manejar el cambio de tipo de gas en el selector
 graficaSelector.addEventListener('change', () => {
     const tipo2 = graficaSelector.value;
-    console.log('Tipo seleccionado:', tipo);
+    console.log('Tipo seleccionado:', tipo2);
     filtrarMediciones(fecha, tipo2);
 });
 
@@ -394,11 +405,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
             });
             return;
     }
-
-    
 }
 
-
-
-// Cargar todas las mediciones al iniciar
-cargarMediciones();
+// Obtener la MAC del sensor del usuario al iniciar
+obtenerMacSensor();
