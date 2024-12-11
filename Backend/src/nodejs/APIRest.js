@@ -6,7 +6,6 @@ const swaggerUi = require('swagger-ui-express');
 const dotenv = require('dotenv');
 const router = express.Router();
 
-
 dotenv.config();
 
 const {
@@ -21,33 +20,18 @@ const {
   recuperarContrasena,
   editarDatosUsuario,
   encriptarContrasenas,
-  //verificarCorreo,
   enviarCorreoVerificacion,
   enviarCorreoEditarDatos,
   enviarCorreoRecuperarContrasena,
   enviarCorreoRestablecerContrasena,
   asociarSensorAUsuario,
-  obtenerSensorPorCorreo
+  obtenerSensorPorCorreo,
+  editarNombreSensor // Importar la nueva función
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
-// Inicializar app y cargar variables de entorno
-// const app = express();
-
-// Middleware para procesar JSON
-// app.use(cors());
-// app.use(express.json());
 
 // Middleware para procesar JSON
 router.use(cors());
 router.use(express.json());
-
-/*
-app.get('/mediciones/:id_sensor', ConsultarMedida);
-app.post('/mediciones', agregarMedicion);
-app.get('/usuarios/:id_usuario', ConsultarDatosUsuario);
-app.post('/usuarios', agregarUsuario);
-app.delete('/usuarios/:id_usuario', EliminarUsuario);
-app.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
-*/
 
 router.get('/mediciones/:id_sensor', ConsultarMedida);
 router.post('/mediciones', agregarMedicion);
@@ -64,54 +48,7 @@ router.post('/editar-datos', enviarCorreoEditarDatos);
 router.post('/restablecer-contrasena', enviarCorreoRestablecerContrasena);
 router.post('/recuperar-contrasena', enviarCorreoRecuperarContrasena);
 router.post('/asociar_dispositivo', asociarSensorAUsuario);
-// router.get('/usuarios/:correo', obtenerSensorPorCorreo);
-//router.post('/asociar-sensor', asociarSensorAUsuario);
-
-// Pruebas de depuración
-console.log('Configuración inicial cargada');
-
-router.get('/mediciones/:id_sensor', (req, res) => {
-  console.log('Ruta /mediciones/:id_sensor accedida');
-  ConsultarMedida(req, res);
-});
-
-router.post('/mediciones', (req, res) => {
-  console.log('Ruta /mediciones accedida');
-  agregarMedicion(req, res);
-});
-
-router.get('/usuarios/:id_usuario', (req, res) => {
-  console.log('Ruta /usuarios/:id_usuario accedida');
-  ConsultarDatosUsuario(req, res);
-});
-
-router.post('/usuarios', (req, res) => {
-  console.log('Ruta /usuarios accedida');
-  agregarUsuario(req, res);
-});
-
-router.delete('/usuarios/:id_usuario', (req, res) => {
-  console.log('Ruta /usuarios/:id_usuario accedida');
-  EliminarUsuario(req, res);
-});
-
-router.get('/mediciones/:id_sensor', (req, res) => {
-  console.log('Ruta /mediciones/:id_sensor accedida');
-  ConsultarSiHayAlerta(req, res);
-});
-
-router.put('/usuarios/:id_usuario', (req, res) => {
-  console.log('Ruta /usuarios/:id_usuario accedida');
-  editarDatosUsuario(req, res);
-});
-
-router.get('/base-datos', ConsultarBaseDeDatos);
-
-// Pruebas de depuración
-console.log('Configuración de rutas cargada');
-
-// Llamar a la función encriptarContrasenas al iniciar el servidor
-encriptarContrasenas();
+router.put('/sensores/:id_sensor', editarNombreSensor); // Nueva ruta para editar el nombre del sensor
 
 // Swagger Setup
 const swaggerOptions = {
@@ -131,81 +68,39 @@ const swaggerOptions = {
   apis: ['./APIRest.js']
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Rutas de la API que usan la lógica de negocio
-/*
-app.get('/mediciones', servidorRest.ConsultarMedida);
-app.post('/mediciones', servidorRest.agregarMedicion);
-app.get('/usuarios', servidorRest.ConsultarDatosUsuario);
-app.get('/mediciones', servidorRest.ConsultarSiHayAlerta);
-app.post('/usuarios', servidorRest.agregarUsuario);
-app.delete('/usuarios', servidorRest.EliminarUsuario);
-*/
-// Levantar servidor
-module.exports = router; // Exportar el router
-
-// Ejemplo de uso de la API
+// Documentación de Swagger para la nueva ruta
 /**
  * @swagger
- * components:
- *   schemas:
- *     Medicion:
- *       type: object
- *       required:
- *         - id
- *         - fecha
- *         - hora
- *         - latitud
- *         - longitud
- *         - valorO3
- *         - valorTemperatura
- *         - valorNO2
- *         - valorSO3
- *       properties:
- *         id:
- *           type: integer
- *           description: ID de la medición
- *         fecha:
+ * /sensores/{id_sensor}:
+ *   put:
+ *     summary: Edita el nombre de un sensor
+ *     tags: [Sensores]
+ *     parameters:
+ *       - in: path
+ *         name: id_sensor
+ *         schema:
  *           type: string
- *           description: Fecha de la medición
- *         hora:
- *           type: string
- *           description: Hora de la medición
- *         latitud:
- *           type: number
- *           format: double
- *           description: latitud de la medición
- *         longitud:
- *           type: number
- *           format: double
- *           description: longitud de la medición
- *         id_sensor:
- *           type: varchar
- *           description: ID del sensor en formato MAC
- *         valorO3:
- *           type: number
- *           description: Valor de la medición de Gas O3
- *         valorTemperatura:
- *           type: number
- *           description: Valor de la medición de Temperatura
- *         valorNO2:
- *           type: number
- *           description: Valor de la medición de Gas NO2
- *         valorSO3:
- *           type: number
- *           description: Valor de la medición de Gas SO3
- *       example:
- *         fecha: '21/11/2024'
- *         hora: '10:00'
- *         latitud: 40.416775
- *         longitud: -3.703790
- *         id_sensor: '00:0A:95:9D:68:16'
- *         valorO3: 10.00
- *         valorTemperatura: 32.00
- *         valorNO2: 10.00
- *         valorSO3: 10.00
+ *         required: true
+ *         description: ID del sensor
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nuevo nombre del sensor
+ *     responses:
+ *       200:
+ *         description: Nombre del sensor actualizado correctamente
+ *       404:
+ *         description: No se encontró ningún sensor con el ID proporcionado
+ *       500:
+ *         description: Error del servidor
  */
 
 // Esquema de Swagger para Medicion
@@ -216,59 +111,35 @@ module.exports = router; // Exportar el router
  *     Medicion:
  *       type: object
  *       required:
- *         - id
- *         - fecha
- *         - hora
- *         - latitud
- *         - longitud
- *         - valorO3
- *         - valorTemperatura
- *         - valorNO2
- *         - valorSO3
+ *         - id_sensor
+ *         - fecha_hora
+ *         - ubicacion
+ *         - tipo_medicion
+ *         - valor
  *       properties:
- *         id:
- *           type: integer
- *           description: ID de la medición
- *         fecha:
- *           type: string
- *           description: Fecha de la medición
- *         hora:
- *           type: string
- *           description: Hora de la medición
- *         latitud:
- *           type: number
- *           format: double
- *           description: latitud de la medición
- *         longitud:
- *           type: number
- *           format: double
- *           description: longitud de la medición
  *         id_sensor:
- *           type: varchar
- *           description: ID del sensor en formato MAC
- *         valorO3:
+ *           type: string
+ *           description: ID del sensor
+ *         fecha_hora:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha y hora de la medición
+ *         ubicacion:
+ *           type: object
+ *           description: Ubicación de la medición
+ *         tipo_medicion:
+ *           type: string
+ *           description: Tipo de medición
+ *         valor:
  *           type: number
- *           description: Valor de la medición de Gas O3
- *         valorTemperatura:
- *           type: number
- *           description: Valor de la medición de Temperatura
- *         valorNO2:
- *           type: number
- *           description: Valor de la medición de Gas NO2
- *         valorSO3:
- *           type: number
- *           description: Valor de la medición de Gas SO3
- *        example:
- *           id: 2
- *           fecha: '21/11/2024'
- *           hora: '11:00:00'
- *           latitud: 41.385064
- *           longitud: 2.173404
- *           id_sensor: '11:2B:2X:3L:4K:5F'
- *           valorO3: 30
- *           valorTemperatura: 32
- *           valorNO2: 20
- *           valorSO3: 20
+ *           format: decimal
+ *           description: Valor de la medición
+ *       example:
+ *         id_sensor: '00:1A:2B:3C:4D:5E'
+ *         fecha_hora: '2024-11-21T10:00:00Z'
+ *         ubicacion: {"latitud": 40.416775, "longitud": -3.703790}
+ *         tipo_medicion: 'Temperatura'
+ *         valor: 25.50
  */
 
 // Esquema de Swagger para Usuario
@@ -300,26 +171,55 @@ module.exports = router; // Exportar el router
  *         nombre: 'Vicente'
  *         telefono: '601037577'
  *         correo: 'visi02@gmail.com'
- *         contrasena: '$2a$10$e4HxEk.Xrs7jtJ5VcVtiPu1Rcs7piWorVyPpSY/VllP2msnLczYBy'
+ *         contrasena: 'pass1'
+ */
+
+// Esquema de Swagger para Sensor
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Sensor:
+ *       type: object
+ *       required:
+ *         - id_sensor
+ *         - nombre
+ *         - funciona
+ *       properties:
+ *         id_sensor:
+ *           type: string
+ *           description: ID del sensor
+ *         nombre:
+ *           type: string
+ *           description: Nombre del sensor
+ *         funciona:
+ *           type: boolean
+ *           description: Indica si el sensor funciona
+ *       example:
+ *         id_sensor: '00:1A:2B:3C:4D:5E'
+ *         nombre: 'Sensor 1'
+ *         funciona: true
  */
 
 // TÍTULO DE LA API en Swagger
-
 /**
  * @swagger
  * tags:
  *   name: Mediciones
- *   description: API para gestionar las mediciones de los sensores de Gas y Temperatura en diferentes ubicaciones
+ *   description: API para gestionar las mediciones de los sensores
  * 
  * @swagger
  * tags:
  *   name: Usuarios
  *   description: API para gestionar los usuarios de la aplicación
+ * 
+ * @swagger
+ * tags:
+ *   name: Sensores
+ *   description: API para gestionar los sensores
  */
 
-
 // Método GET para consultar medida por id_sensor
-
 /**
  * @swagger
  * /mediciones/{id_sensor}:
@@ -389,7 +289,6 @@ module.exports = router; // Exportar el router
  *               $ref: '#/components/schemas/Usuario'
  */
 
-
 // POST para agregar un nuevo usuario
 /**
  * @swagger
@@ -412,7 +311,6 @@ module.exports = router; // Exportar el router
  *               $ref: '#/components/schemas/Usuario'
  */
 
-
 // Método DELETE para eliminar un usuario por id
 /**
  * @swagger
@@ -434,6 +332,40 @@ module.exports = router; // Exportar el router
  *         description: Usuario no encontrado
  */
 
+// Método PUT para editar el nombre de un sensor
+/**
+ * @swagger
+ * /sensores/{id_sensor}:
+ *   put:
+ *     summary: Edita el nombre de un sensor
+ *     tags: [Sensores]
+ *     parameters:
+ *       - in: path
+ *         name: id_sensor
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del sensor
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nuevo nombre del sensor
+ *             example:
+ *               nombre: 'Nuevo nombre del sensor'
+ *     responses:
+ *       200:
+ *         description: Nombre del sensor actualizado correctamente
+ *       404:
+ *         description: No se encontró ningún sensor con el ID proporcionado
+ *       500:
+ *         description: Error del servidor
+ */
 
 // GET para consultar si hay alerta por valor de gas
 /**
@@ -462,5 +394,4 @@ module.exports = router; // Exportar el router
  *                   description: Indica si existe una alerta de gas
  */
 
-
-
+module.exports = router; // Exportar el router
