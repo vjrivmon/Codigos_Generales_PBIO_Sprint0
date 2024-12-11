@@ -21,6 +21,7 @@ section {
     margin-top: 20px;
     display: block;
     width: 100%;
+    text-align: center;
 }
 article {
     margin: 1rem 0;
@@ -240,6 +241,9 @@ strong {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+}
+.level {
+    font-weight: bold;
 }
 
 .dot {
