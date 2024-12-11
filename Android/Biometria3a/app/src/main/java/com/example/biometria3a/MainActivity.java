@@ -129,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //--------------RSSI------------------
 
     private long lastSignalTime = 0;
+    private static final int REQUEST_LOCATION_PERMISSION_CODE = 1001;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -948,72 +950,60 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void boton_enviar_pulsado_client(View quien) {
         // Obtener fecha y hora actuales
-     String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        //String fechaActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(new Date());
-        double latitud = getLatitud();
-        double longitud = getLongitud();
 
+        String fechaActual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        // Mostrar las coordenadas en un Toast
-        Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
+// Mostrar la fecha y hora en el Logcat
+        Log.d("FechaHora", "Fecha y hora generada: " + fechaActual);
 
+// Mostrar la fecha y hora en un Toast
+        Toast.makeText(this, "Fecha y hora: " + fechaActual, Toast.LENGTH_LONG).show();
 
-        String ubicacionJson = String.format("{\"latitud\": %f, \"longitud\": %f}", latitud, longitud);
-       String horaActual = CO2NotificationManager.getCurrentTime();
-        // Llama a obtener las coordenadas actuales
-        // Verificar las coordenadas antes de usarlas
-     //   Log.d("Coordenadas", "Latitud: " + latitud + ", Longitud: " + longitud);
+        // Llama a obtenerUbicacionActual para obtener las coordenadas
+        obtenerUbicacionActual((latitud, longitud) -> {
+            // Mostrar las coordenadas en un Toast
+            Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
 
-        // Mostrar las coordenadas en un Toast
-        //Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
-        // Obtener el ID del sensor dinámicamente
-        //String idSensor = bluetoothHelper.obtenerIdSensor(this);
-       // Log.d("IDsensor", idSensor);
+            // Crear el objeto JSON para la ubicación
+            String ubicacionJson = String.format("{\"latitud\": %f, \"longitud\": %f}", latitud, longitud);
 
+            // Datos adicionales
+            double valorO3 = valorMajor / 1000; // Ejemplo
+            double valorTemperatura = valorMinor / 100;
+            double valorNO2 = 75.30; // Ejemplo
+            double valorSO3 = 10.40; // Ejemplo
 
-        // Valores de las mediciones (estos serían dinámicos en la práctica)
-        double valorO3 =  valorMajor / 1000; // Ejemplo
-        double valorTemperatura = valorMinor / 100;
-        double valorNO2 = 75.30; // Ejemplo
-        double valorSO3 = 10.40; // Ejemplo
+            String idSensor = "00:1A:2B:3M:4D:5E";
 
-       String idSensor = "00:1A:2B:3M:4D:5E";
-       // double valorGas = valorMajor / 1000;
-       // double valorGas = 200;
-     //   double valorTemperatura = valorMinor / 100;
-       // double valorTemperatura = 32;
-// Crear el objeto JSON para la ubicación
+            // Log de valores
+            Log.d("Valor O3", "Valor antes de enviar: " + valorO3);
 
-        Log.d("Valor O3", "Valor antes de enviar: " + valorO3);
+            // Enviar la medición
+            enviarMedicion(idSensor, fechaActual, ubicacionJson, "O3", valorO3);
 
+            // Crear objeto Medicion y enviar
+            Medicion medicion = new Medicion(idSensor, fechaActual, ubicacionJson, "O3", valorO3);
+            ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            Call<Void> call = apiService.enviarMedicion(medicion);
 
-        enviarMedicion  (idSensor, fechaActual, ubicacionJson, "O3", valorO3);
-
-
-
-   // }
-
-        Medicion medicion = new Medicion(idSensor,fechaActual,  ubicacionJson,"O3", valorO3);
-        // Realiza la llamada para enviar la medición a la API
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<Void> call = apiService.enviarMedicion(medicion);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.d("clienterestandroid", "Medición enviada correctamente");
-                    Toast.makeText(MainActivity.this, "Medición enviada correctamente", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d("clienterestandroid", "Error al enviar medición: " + response.code());
-                    Toast.makeText(MainActivity.this, "Error al enviar medición", Toast.LENGTH_SHORT).show();
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("clienterestandroid", "Medición enviada correctamente");
+                        Toast.makeText(MainActivity.this, "Medición enviada correctamente", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("clienterestandroid", "Error al enviar medición: " + response.code());
+                        Toast.makeText(MainActivity.this, "Error al enviar medición", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("clienterestandroid", "Error de conexión: " + t.getMessage());
-                Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("clienterestandroid", "Error de conexión: " + t.getMessage());
+                    Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
@@ -1050,6 +1040,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     // Manejar la respuesta de solicitud de permisos
+    private void obtenerUbicacionActual(LocationCallbackInterface callback) {
+        FusedLocationProviderClient fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(this);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION_CODE);
+            return;
+        }
+
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        callback.onLocationReceived(location.getLatitude(), location.getLongitude());
+                    } else {
+                        Toast.makeText(this, "No se pudo obtener la ubicación.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public interface LocationCallbackInterface {
+        void onLocationReceived(double latitud, double longitud);
+    }
+
 
     private double getLatitud() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

@@ -1071,6 +1071,49 @@ async function enviarCorreoRecuperarContrasena(req, res) {
   }
 }
 
+
+/**
+ * @function asociarSensorAUsuario
+ * @description Asocia un sensor a un usuario. Si el sensor no existe, lo crea.
+ * @param {Object} req - Objeto de solicitud HTTP
+ * @param {Object} res - Objeto de respuesta HTTP
+ */
+const asociarSensorAUsuario = async (req, res) => {
+  const { correo, id_sensor, nombre, funciona } = req.body;
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    // Verificar si el usuario existe
+    const usuario = await connection.query('SELECT * FROM usuarios WHERE correo = ?', [correo]);
+    if (usuario.length === 0) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Verificar si el sensor ya está asociado
+    const sensor = await connection.query('SELECT * FROM sensores WHERE id_sensor = ?', [id_sensor]);
+    if (sensor.length === 0) {
+      // Crear el sensor si no existe
+      await connection.query('INSERT INTO sensores (id_sensor, nombre, funciona) VALUES (?, ?, ?)', [id_sensor, nombre, funciona]);
+    }
+
+    // Asociar el sensor al usuario
+    const rows = await connection.query('SELECT id_usuario FROM usuarios WHERE correo = ?', [correo]);
+    const id_usuario = rows[0].id_usuario;
+    
+    // Asociar el sensor al usuario en la tabla senusu
+    await connection.query('INSERT INTO senusu (id_usuario, id_sensor) VALUES (?, ?) ON DUPLICATE KEY UPDATE id_sensor = VALUES(id_sensor)', [id_usuario, id_sensor]);
+    res.status(200).send('Sensor asociado al usuario correctamente');
+  } catch (error) {
+    console.error('Error al asociar el sensor al usuario:', error);
+    res.status(500).send('Error del servidor');
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -1091,6 +1134,7 @@ module.exports = {
   enviarCorreoRecuperarContrasena,
   enviarCorreoParaRecuperarContrasena,
   enviarCorreoRestablecerContrasena,
-  enviarCorreoParaRestablecerContrasena
+  enviarCorreoParaRestablecerContrasena,
+  asociarSensorAUsuario
 };
 

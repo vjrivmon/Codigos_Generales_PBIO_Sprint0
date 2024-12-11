@@ -17,7 +17,11 @@ section {
     border-radius: 33px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
-
+.btn-ver-valores{
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
 article {
     margin: 1rem 0;
     padding: 1.5rem;
@@ -128,7 +132,8 @@ strong {
     /* Cambia el .content-wrapper a una columna */
     .content-wrapper {
         display: flex;
-        flex-direction: column; /* Coloca los elementos en columna */        width: 100%; /* Asegura que ocupe el 100% */
+        flex-direction: column; /* Coloca los elementos en columna */        
+        width: 100%; /* Asegura que ocupe el 100% */
         margin: 0;
         width: 100%;
     }
@@ -234,7 +239,7 @@ strong {
 .levels div {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .dot {

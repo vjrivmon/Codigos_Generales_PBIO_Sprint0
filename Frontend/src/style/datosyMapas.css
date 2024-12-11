@@ -5,7 +5,7 @@
 }
 #info-box {
     position: absolute;
-    top: 180px;
+    top: 220px;
     left: 50px;
     width: 280px;
     height: auto; /* 自动根据内容调整高度 */
@@ -27,10 +27,10 @@
 }
 
 h3 {
-    font-size: 2rem;
-    margin: 1rem 2rem;
-    color: var(--button-color); /* 深灰色标题 */
-    
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: var(--button-color); /* 深灰色标题 */    
 }
 
 
@@ -68,3 +68,6 @@ h3 {
   color: var(--text-color);
 }
 
+#h3-graf {
+    margin-top: 2.5rem;
+}
