@@ -94,6 +94,30 @@ public class InfoExtraFragment extends AppCompatActivity {
         setupToggleVisibilityWithArrow(so3Title, so3Text);
         setupToggleVisibilityWithArrow(recomendacionesSo3Title, recomendacionesSo3Text);
         setupToggleVisibilityWithArrow(precaucionSo3Title, precaucionSo3Text);
+
+        TextView titleTextView = findViewById(R.id.title); // 获取标题控件
+        String currentCondition = "Bueno"; // 示例：实际需要根据逻辑动态判断条件
+
+// 根据状态更新标题
+        switch (currentCondition) {
+            case "Bueno":
+                titleTextView.setText("Estado del aire: Bueno");
+                titleTextView.setTextColor(getResources().getColor(R.color.green)); // 绿色
+                break;
+            case "Moderado":
+                titleTextView.setText("Estado del aire: Moderado");
+                titleTextView.setTextColor(getResources().getColor(R.color.yellow)); // 黄色
+                break;
+            case "Malo":
+                titleTextView.setText("Estado del aire: Malo");
+                titleTextView.setTextColor(getResources().getColor(R.color.red)); // 红色
+                break;
+            default:
+                titleTextView.setText("Estado del aire: Desconocido");
+                titleTextView.setTextColor(getResources().getColor(R.color.gray)); // 灰色
+                break;
+        }
+
     }
 
     private void initViews() {
