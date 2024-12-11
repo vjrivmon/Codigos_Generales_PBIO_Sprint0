@@ -44,51 +44,35 @@
     </nav>
   </header>
 <body>
-    <h3>Mapa de calidad del aire</h3>
-    <a class="btn btn-primary btn-ver-valores" href="#graficaGas">Ver valores</a>
-    <div id="map"></div>
-
-	
-  <div id="info-box">
-    <h4>Datos de mi sensor</h4>
-	  <p id="current-time"></p> <!-- 小行灰色文字显示时间 -->
-    <p><i class="fas fa-thermometer-half"></i> Temperatura: 25°C</p>
-    <p><i class="fas fa-cloud"></i> Ozono: 100 ppm</p>
-    <button id="sensor-btn">Actualizar datos</button>
+  <h3>Calidad del aire en tu zona en tiempo real</h3>
+    <div class="contenedor-responsive">
+      <div id="info-box-grafica">
+          <h4>Datos de mi sensor</h4>
+          <select id="fecha-selector" class="ancho">
+              <option value="2024-12-13" selected>13/12/2024</option>
+              <option value="2024-12-12">12/12/2024</option>
+              <option value="2024-12-11">11/12/2024</option>
+              <option value="2024-12-10">10/12/2024</option>
+              <option value="2024-12-09">09/12/2024</option>
+          </select>
+          <select id="gas-selector" class="ancho">
+              <option value="Todos" selected>Todos los gases</option>
+              <option value="O3">O3</option>
+              <option value="SO3">SO3</option>
+              <option value="NO2">NO2</option>
+              <option value="Temperatura">Temperatura</option>
+          </select>
+          <p>Valores Medios</p>
+          <p id="media-O3"><i class="fas fa-cloud"></i> O3: 10 ppm</p>
+          <p id="media-NO2"><i class="fas fa-cloud"></i> NO2: 10 ppm</p>
+          <p id="media-SO3"><i class="fas fa-cloud"></i> SO3: 10 ppm</p>
+          <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i> Temperatura: 10 ºC</p>
+          <a href="infoExtra.html" class="ver_mas_info">Mas información</a>
+      </div>
+      <canvas id="graficaGas"></canvas>
+      <div id="map"></div>
   </div>
   
-  <canvas id="graficaGas" 
-  style="border: 1px solid black; 
-         border-radius: 10px; 
-         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
-         width: 90%; 
-         margin-left: 5%; 
-         margin-right: 5%; 
-         padding: 5px;"></canvas>
-  <div id="info-box-grafica" style="top: 800px; left: 150px;">
-    <h4>Datos de mi sensor</h4>
-    <select id="fecha-selector" class="ancho"  >
-      <option value="2024-12-13" selected>13/12/2024</option>
-      <option value="2024-12-12">12/12/2024</option>
-      <option value="2024-12-11">11/12/2024</option>
-      <option value="2024-12-10">10/12/2024</option>
-      <option value="2024-12-09">09/12/2024</option>
-    </select>
-    <select id="gas-selector" class="ancho">
-      <option value="Todos" selected>Todos los gases</option>
-      <option value="O3">O3</option>
-      <option value="SO3">SO3</option>
-      <option value="NO2">NO2</option>
-      <option value="Temperatura">Temperatura</option>
-    </select>
-    <p>Valores Medios</p>
-    <p id="media-O3"><i class="fas fa-cloud"></i>  O3: 10 ppm</p>
-    <p id="media-NO2"><i class="fas fa-cloud"></i>   NO2: 10 ppm</p>
-    <p id="media-SO3"><i class="fas fa-cloud"></i>   SO3: 10 ppm</p>
-    <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i>   Temperatura: 10 ºC</p>
-    
-    <a href="infoExtra.html" class="ver_mas_info">Mas información</a>
-  </div>
     
 
   
