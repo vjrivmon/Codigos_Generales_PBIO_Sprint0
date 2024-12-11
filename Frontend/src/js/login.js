@@ -33,12 +33,13 @@ document.getElementById("privacy-policy").addEventListener("change", function() 
 
 async function registrarUsuario(email, password, phone, name) { 
     try {
-        const response = await fetch('http://localhost:8080/usuarios', { // Cambiado para que use localhost
+        console.log('Iniciando registro de usuario...');
+        const response = await fetch('http://localhost:8080/usuarios', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ correo: email, contrasena: password, telefono: phone, nombre: name }) // Asegúrate de que estos nombres coincidan con los de tu base de datos
+            body: JSON.stringify({ correo: email, contrasena: password, telefono: phone, nombre: name })
         });
 
         if (!response.ok) {
@@ -46,7 +47,26 @@ async function registrarUsuario(email, password, phone, name) {
         }
 
         const data = await response.json();
-        alert('Usuario registrado exitosamente! Por favor, verifica tu correo.'); // Mensaje de éxito
+        const id_usuario = data.id_usuario;
+        console.log('Usuario registrado con ID:', id_usuario);
+
+        // Asignar MAC falsa
+        const macResponse = await fetch('http://localhost:8080/asociar_dispositivo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ correo: email, id_sensor: 'AA:AA:AA:AA:AA:AA', nombre: 'Sensor', funciona: true })
+        });
+
+        if (!macResponse.ok) {
+            throw new Error('Error en la respuesta de la API al asignar la MAC: ' + macResponse.status);
+        }
+
+        const macData = await macResponse.json();
+        console.log('Respuesta de asignación de MAC:', macData);
+
+        alert('Usuario registrado exitosamente! Por favor, verifica tu correo.');
 
         // Enviar correo de verificación
         const correoResponse = await fetch('http://localhost:8080/verificar-correo', {
@@ -61,7 +81,8 @@ async function registrarUsuario(email, password, phone, name) {
             throw new Error('Error al enviar el correo de verificación: ' + correoResponse.status);
         }
 
-        container.classList.remove("active"); // Volver a la vista de inicio de sesión
+        console.log('Correo de verificación enviado.');
+        container.classList.remove("active");
     } catch (error) {
         console.error('Error al registrar el usuario:', error);
         alert('Ocurrió un error al registrar el usuario. Inténtalo de nuevo más tarde.');
@@ -75,7 +96,7 @@ async function registrarUsuario(email, password, phone, name) {
 // La función envía una solicitud al backend para verificar si el correo ha sido verificado.
 async function ConsultarDatosUsuario(email, password) {
     try {
-        const response = await fetch('http://localhost:8080/usuarios/verificar', { // Cambiado para que use localhost
+        const response = await fetch('http://localhost:8080/usuarios/verificar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,24 +106,22 @@ async function ConsultarDatosUsuario(email, password) {
 
         const result = await response.json();
 
-        // ---------------------------- Antes de tocar esto, consultar esto con Vicente, se puede romper el código ----------------------------
-        // ------------------------------------------------------------------------------------------------------------------------------------
         if (response.ok) {
             if (result.success) {
-                // const correoVerificado = await verificarCorreo(email);
-                // if (!correoVerificado) {
-                //     alert('Por favor, verifica tu correo antes de iniciar sesión.');
-                //     return;
-                // }
-                // Almacenar el id_usuario en una cookie segura
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
-                console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
-                // Set a cookie to indicate the user is logged in
+                document.cookie = `correo=${email}; path=/; secure; SameSite=Strict`; // Guardar el correo en una cookie
                 document.cookie = `session_active=true; path=/; secure; SameSite=Strict`;
-                // Redirigir según el correo electrónico
-                if (email.trim().toLowerCase() === 'irene08@gmail.com') {
-                    window.location.href = 'admin.html';
+
+                console.log('Usuario verificado, obteniendo información del sensor...');
+                const macResponse = await fetch(`http://localhost:8080/usuarios/${result.id_usuario}`);
+                const macData = await macResponse.json();
+                console.log('Información del sensor obtenida:', macData);
+
+                if (macData.id_sensor === 'AA:AA:AA:AA:AA:AA') {
+                    console.log('Redirigiendo a QRCode.html');
+                    window.location.href = 'QRCode.html';
                 } else {
+                    console.log('Redirigiendo a datosYMapa.html');
                     window.location.href = 'datosYMapa.html';
                 }
             } else {
@@ -115,10 +134,8 @@ async function ConsultarDatosUsuario(email, password) {
         }
     } catch (error) {
         console.error('Error al verificar el usuario:', error);
-        alert('Porfavor verifica tu correo, para poder iniciar sesión');
+        alert('Por favor verifica tu correo, para poder iniciar sesión');
     }
-    // ------------------------------------------------------------------------------------------------------------------------------------
-
 }
 
 // Manejar el evento de clic en el botón de registrarse
