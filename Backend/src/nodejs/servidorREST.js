@@ -559,9 +559,13 @@ const agregarMedicion = async (req, res) => {
     connection = await pool.getConnection();
     const nuevaMedicion = req.body;
     console.log('Datos de la nueva medición:', nuevaMedicion);
+
+    // Convertir fecha_hora al formato compatible con DATETIME
+    const fechaHoraFormateada = new Date(nuevaMedicion.fecha_hora).toISOString().slice(0, 19).replace('T', ' ');
+
     await connection.query(
       'INSERT INTO mediciones (id_sensor, fecha_hora, ubicacion, tipo_medicion, valor) VALUES (?, ?, ?, ?, ?)',
-      [nuevaMedicion.id_sensor, nuevaMedicion.fecha_hora, JSON.stringify(nuevaMedicion.ubicacion), nuevaMedicion.tipo_medicion, nuevaMedicion.valor]
+      [nuevaMedicion.id_sensor, fechaHoraFormateada, JSON.stringify(nuevaMedicion.ubicacion), nuevaMedicion.tipo_medicion, nuevaMedicion.valor]
     );
     console.log('Medición agregada con éxito');
     res.status(201).json(nuevaMedicion);
@@ -1155,6 +1159,34 @@ const obtenerSensorPorCorreo = async (req, res) => {
     }
 };
 
+const editarNombreSensor = async (req, res) => {
+    const { id_sensor } = req.params;
+    const { nombre } = req.body;
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        console.log('Conexión a la base de datos establecida.');
+
+        // Actualizar el nombre del sensor
+        const result = await connection.query('UPDATE sensores SET nombre = ? WHERE id_sensor = ?', [nombre, id_sensor]);
+        if (result.affectedRows === 0) {
+            console.log('No se encontró ningún sensor con el ID:', id_sensor);
+            return res.status(404).send('No se encontró ningún sensor con el ID proporcionado');
+        }
+
+        console.log('Nombre del sensor actualizado:', nombre);
+        res.status(200).send('Nombre del sensor actualizado correctamente');
+    } catch (error) {
+        console.error('Error al actualizar el nombre del sensor:', error);
+        res.status(500).send('Error del servidor');
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -1177,6 +1209,7 @@ module.exports = {
   enviarCorreoRestablecerContrasena,
   enviarCorreoParaRestablecerContrasena,
   asociarSensorAUsuario,
-  obtenerSensorPorCorreo
+  obtenerSensorPorCorreo,
+  editarNombreSensor
 };
 
