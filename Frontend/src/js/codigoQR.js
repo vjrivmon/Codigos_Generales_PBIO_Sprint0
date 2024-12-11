@@ -1,7 +1,7 @@
 // 加载二维码图片
  document.getElementById("qrImage").src = "http://127.0.0.1:5000/generate_qr";
 
- // 发送 PIN 码到后端
+// 发送 PIN 码到后端
 function submitPin() {
     const pin = document.getElementById("pinInput").value;
     const formattedPin = pin.match(/.{1,2}/g).join(':'); // Formatear el PIN con dos puntos

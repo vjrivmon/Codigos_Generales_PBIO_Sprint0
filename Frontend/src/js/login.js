@@ -94,6 +94,7 @@ async function registrarUsuario(email, password, phone, name) {
 // - email: correo electrónico del usuario
 // - password: contraseña del usuario
 // La función envía una solicitud al backend para verificar si el correo ha sido verificado.
+// Función para verificar si un correo ha sido verificado
 async function ConsultarDatosUsuario(email, password) {
     try {
         const response = await fetch('http://localhost:8080/usuarios/verificar', {
