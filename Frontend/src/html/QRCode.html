@@ -47,7 +47,7 @@
             <p>Escanea el código QR o introduce el PIN que aparece en la tarjeta que viene junto al dispositivo a continuación o desde la app de VIMYP para dar de alta el dispositivo.</p>
             <p>Si no encuentras una tarjeta como la que se muestra a continuación, contacta con nosotros.</p>
             <div class="pin">
-                <input type="number" id="pinInput" placeholder="Escribe aquí tu PIN de 12 dígitos" maxlength="12" minlength="12">
+                <input type="tel" id="pinInput" placeholder="Escribe aquí tu PIN de 12 dígitos" maxlength="12" minlength="12">
                 <button onclick="submitPin()" id="btn-submit-qr">Enviar</button>
             </div>
         </div>
@@ -89,6 +89,46 @@
             <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
         </div>
     </div>
+
+    <script>
+        const pinInput = document.getElementById("pinInput");
+    
+        // Permitir solo números y controlar el estilo del borde
+        pinInput.addEventListener("input", () => {
+            const pin = pinInput.value;
+    
+            // Elimina cualquier carácter que no sea un número
+            pinInput.value = pin.replace(/\D/g, "");
+    
+            // Cambia el borde dependiendo de la longitud
+            if (pinInput.value.length === 12) {
+                pinInput.style.border = "2px solid green"; // Borde verde cuando hay 12 dígitos
+            } else {
+                //pinInput.style.border = ""; // Restaura el borde predeterminado si no tiene 12 dígitos
+                pinInput.style.border = "2px solid red"; // Borde rojo si no es válido
+            }
+        });
+    </script>
+
+    <script>
+            const botonEnviar = document.getElementById("btn-submit-qr");
+
+// Evento al hacer clic en el botón "Enviar"
+botonEnviar.addEventListener("click", () => {
+        const pin = pinInput.value;
+
+        // Validar si el PIN tiene exactamente 12 dígitos
+        if (pin.length !== 12) {
+            alert("El PIN debe tener exactamente 12 dígitos.");
+            pinInput.style.border = "2px solid red"; // Borde rojo si no es válido
+        } else {
+            // Aquí puedes añadir el código para continuar con el envío si el PIN es válido
+            alert("Dispositivo enlazado correctamente.");
+        }
+    });
+    </script>
+    
+    
 
     <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
     <script src="../js/codigoQR.js"></script> <!-- Archivo JS para generar códigos QR -->

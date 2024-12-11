@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validación de longitud al perder el foco
         phoneInput.addEventListener("blur", function () {
             if (this.value.length !== 9) {
-                showAlert("El número de teléfono debe tener exactamente 9 dígitos.");
-                this.focus(); // Volver a enfocar el campo
+                //showAlert("El número de teléfono debe tener exactamente 9 dígitos.");
+                //this.focus(); // Volver a enfocar el campo
             }
         });
     } else {
