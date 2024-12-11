@@ -48,6 +48,11 @@
     <div class="contenedor-responsive">
       <div id="info-box-grafica">
           <h4>Datos de mi sensor</h4>
+          <!-- Añadido el apartado de batería -->
+          <div id="battery-status">
+            <i class="fas fa-battery-full"></i> 
+            <span id="battery-percentage">Batería: 87%</span>
+        </div>
           <select id="fecha-selector" class="ancho">
               <option value="2024-12-13" selected>13/12/2024</option>
               <option value="2024-12-12">12/12/2024</option>
@@ -67,6 +72,7 @@
           <p id="media-NO2"><i class="fas fa-cloud"></i> NO2: 10 ppm</p>
           <p id="media-SO3"><i class="fas fa-cloud"></i> SO3: 10 ppm</p>
           <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i> Temperatura: 10 ºC</p>
+           
           <a href="infoExtra.html" class="ver_mas_info">Mas información</a>
       </div>
       <canvas id="graficaGas"></canvas>
@@ -101,6 +107,30 @@
   </div>
 </div>
 
+ <!-- Script para actualizar el porcentaje de la batería -->
+ <script>
+  // Simulación de actualización de batería (puedes sustituirlo con datos reales del sensor)
+  function actualizarBateria() {
+      const batteryPercentage = 87; // Ejemplo de porcentaje de batería (puedes obtenerlo de tu sensor)
+      const batteryElement = document.getElementById("battery-percentage");
+      
+      // Actualizar el texto del porcentaje de batería
+      batteryElement.textContent = `Batería: ${batteryPercentage}%`;
+
+      // Aquí podrías agregar lógica para cambiar el icono según el nivel de batería
+      // Por ejemplo, cambiar el icono si la batería está baja:
+      if (batteryPercentage < 20) {
+          document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-quarter");
+      } else if (batteryPercentage < 50) {
+          document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-half");
+      } else {
+          document.querySelector("#battery-status i").classList.replace("fa-battery-quarter", "fa-battery-full");
+      }
+  }
+
+  // Llamar a la función para inicializar la batería
+  actualizarBateria();
+</script>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
  <script src="../js/datosyMapas.js"></script>
