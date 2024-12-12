@@ -21,8 +21,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import androidx.appcompat.widget.Toolbar;
@@ -54,11 +58,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -119,8 +125,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Runnable timeoutRunnable;
 
     //---------------------MAPA-------------------------------
-
     private GoogleMap mMap;
+    private ApiService medicionesApi;
+    private String currentPollutant = "NO2";
+
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
@@ -187,16 +195,46 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         buscarEsteDispositivoBTLE300(dispositivoBuscado);
         //---------------mapa----------------
+        // 初始化 Retrofit
+        medicionesApi = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+
+        // 初始化地图
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
+        // 初始化下拉框
+        Spinner spinner = findViewById(R.id.spinner_pollutants);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.pollutants_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        // 监听下拉框选择事件
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentPollutant = parent.getItemAtPosition(position).toString(); // 获取选中的污染物
+                Log.d("SPINNER_SELECT", "Selected pollutant: " + currentPollutant);
+                fetchDataAndUpdateMap(); // 重新获取数据并更新地图
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d("SPINNER_SELECT", "No pollutant selected");
+            }
+        });
+
+
+
         tvCurrentTime = findViewById(R.id.tv_current_time);
         tvTemperature = findViewById(R.id.tv_temperature);
         tvOzone = findViewById(R.id.tv_ozone);
         btnUpdate = findViewById(R.id.btn_update);
 
-        // Inicializa el fragmento del mapa
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(MainActivity.this);
-        }
+
 
         // Inicializa el cliente de ubicación
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -299,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Habilitar el botón de ubicación si los permisos están concedidos
+        // 检查位置权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -307,7 +345,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show();
         }
+
+        // 在地图加载完成后更新数据
+        fetchDataAndUpdateMap();
     }
+
 
     private void getUserLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -926,18 +968,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case CODIGO_PETICION_PERMISOS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(ETIQUETA_LOG, " onRequestPermissionResult(): Permisos concedidos");
-                    inicializarBlueTooth();  // Llamamos a la inicialización si se conceden los permisos
-                } else {
-                    Log.d(ETIQUETA_LOG, " onRequestPermissionResult(): Permisos NO concedidos");
-                }
-                return;
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getUserLocation();
+                fetchDataAndUpdateMap();
+            } else {
+                Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+            }
         }
-    } // ()
+    }
+// ()
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
@@ -1268,10 +1308,114 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   */
     // class
+<<<<<<< Updated upstream
     /*
  public void verificarSensorAsignado(String correo) {
      ApiService apiService = ApiClient.getClient().create(ApiService.class);
      Call<SensorResponse> call = apiService.obtenerSensorPorCorreo(correo);
+=======
+ private void fetchDataAndUpdateMap() {
+     if (medicionesApi == null) {
+         Log.e("API_ERROR", "Mediciones API not initialized.");
+         return;
+     }
+
+     medicionesApi.getMediciones().enqueue(new Callback<List<Medicion2>>() {
+         @Override
+         public void onResponse(Call<List<Medicion2>> call, Response<List<Medicion2>> response) {
+             if (response.isSuccessful() && response.body() != null) {
+                 List<Medicion2> mediciones = response.body();
+                 Log.d("API_SUCCESS", "Mediciones received: " + mediciones.size());
+
+                 // 过滤和更新地图
+                 List<Medicion2> filteredMediciones = filterMedicionesByPollutant(mediciones, currentPollutant);
+                 runOnUiThread(() -> updateMapWithMediciones(filteredMediciones)); // 确保在主线程中更新 UI
+             } else {
+                 Log.e("API_ERROR", "Failed response: " + response.message());
+             }
+         }
+
+         @Override
+         public void onFailure(Call<List<Medicion2>> call, Throwable t) {
+             Log.e("API_FAILURE", "Error: " + t.getMessage());
+         }
+     });
+ }
+
+
+
+
+
+
+    private List<Medicion2> filterMedicionesByPollutant(List<Medicion2> mediciones, String pollutant) {
+        List<Medicion2> filteredMediciones = mediciones.stream()
+                .filter(medicion -> medicion.getTipo().equalsIgnoreCase(pollutant))
+                .filter(medicion -> medicion.getUbicacion() != null) // 确保位置不为空
+                .collect(Collectors.toList());
+
+        Log.d("FILTERED_DATA", "Filtered " + filteredMediciones.size() + " measurements for pollutant: " + pollutant);
+        return filteredMediciones;
+    }
+
+
+
+
+    private void updateMapWithMediciones(List<Medicion2> mediciones) {
+        mMap.clear(); // 清除之前的地图标记
+
+        for (Medicion2 medicion : mediciones) {
+            // 假设没有位置信息时使用默认坐标
+            double lat = 39.0208; // 默认纬度
+            double lon = -0.1751; // 默认经度
+
+            // 如果 Medicion2 包含位置字段，可以从中获取位置
+            LatLng position = new LatLng(lat, lon);
+            float markerColor = determineMarkerColor(medicion.getValor());
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(position)
+                    .title(medicion.getTipo() + ": " + medicion.getValor() + " µg/m³")
+                    .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
+        }
+
+        // 如果有数据，移动地图镜头到第一个点的位置（这里使用默认位置）
+        if (!mediciones.isEmpty()) {
+            LatLng firstLatLng = new LatLng(39.0208, -0.1751); // 默认坐标
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 12));
+        }
+    }
+
+
+
+
+
+
+    private float determineMarkerColor(double value) {
+        if (value < 50) {
+            return BitmapDescriptorFactory.HUE_GREEN; // 低浓度
+        } else if (value <= 100) {
+            return BitmapDescriptorFactory.HUE_YELLOW; // 中浓度
+        } else {
+            return BitmapDescriptorFactory.HUE_RED; // 高浓度
+        }
+    }
+
+
+    public void onResponse(Call<List<Medicion2>> call, Response<List<Medicion2>> response) {
+        if (response.isSuccessful() && response.body() != null) {
+            List<Medicion2> mediciones = response.body();
+            Log.d("API_SUCCESS", "Mediciones received: " + mediciones.size());
+            Log.d("API_DATA", "Data: " + mediciones);
+
+            // 更新地图
+            List<Medicion2> filteredMediciones = filterMedicionesByPollutant(mediciones, currentPollutant);
+            updateMapWithMediciones(filteredMediciones);
+        } else {
+            Log.e("API_ERROR", "Failed response: " + response.message());
+        }
+    }
+
+>>>>>>> Stashed changes
 
      call.enqueue(new Callback<SensorResponse>() {
          @Override

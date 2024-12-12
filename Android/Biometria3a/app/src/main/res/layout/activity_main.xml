@@ -79,6 +79,14 @@
             android:layout_marginTop="20dp"
             android:text="Mapa de calidad del aire de Valencia"
             android:textSize="24sp" />
+        <Spinner
+            android:id="@+id/spinner_pollutants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_map_title"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true" />
+
 
         <!-- WebView for the map -->
      <!--   <WebView
@@ -89,18 +97,19 @@
             android:layout_marginTop="16dp" />
 -->
 
+
+        <!-- Contenedor de los botones -->
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_below="@+id/tv_map_title"
+            android:layout_below="@+id/spinner_pollutants"
             android:layout_gravity="center"
             android:layout_margin="16dp"
-            android:layout_marginTop="-100dp" />
+            android:layout_marginTop="-24dp"
+            android:layout_marginBottom="16dp" />
 
-
-        <!-- Contenedor de los botones -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
