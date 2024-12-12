@@ -1,6 +1,7 @@
 package com.example.biometria3a;
 
 // Importa las clases necesarias
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
@@ -72,6 +73,9 @@ public class QrActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(QrActivity.this, "Sensor asociado correctamente", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(QrActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // Elimina esta actividad de la pila
+                    startActivity(intent);
                 } else {
                     Toast.makeText(QrActivity.this, "Error al asociar el sensor", Toast.LENGTH_SHORT).show();
                 }
