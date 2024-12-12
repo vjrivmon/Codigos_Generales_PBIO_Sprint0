@@ -48,7 +48,10 @@ router.post('/editar-datos', enviarCorreoEditarDatos);
 router.post('/restablecer-contrasena', enviarCorreoRestablecerContrasena);
 router.post('/recuperar-contrasena', enviarCorreoRecuperarContrasena);
 router.post('/asociar_dispositivo', asociarSensorAUsuario);
-router.put('/sensores/:id_sensor', editarNombreSensor); // Nueva ruta para editar el nombre del sensor
+router.put('/sensores/:id_sensor', editarNombreSensor);
+// Ruta para obtener el sensor asociado al correo del usuario
+router.get('/obtenerSensorPorCorreo/:correo', obtenerSensorPorCorreo);
+ // Nueva ruta para editar el nombre del sensor
 
 // Swagger Setup
 const swaggerOptions = {

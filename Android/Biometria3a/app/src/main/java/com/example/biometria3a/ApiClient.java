@@ -7,9 +7,9 @@ public class ApiClient {
 
     // AQI VA LA IP DE TU ORDENADOR Q ES LA IP DEL SERVIDOR
     //private static final String BASE_URL = "http://192.168.0.20:8080/";  // Para emulador
-  // private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
-   private static final String BASE_URL = "http://192.168.0.20:8080/";  // Para emulador
-   // private static final String BASE_URL = "http://192.168.18.157/:8080/";  // Para emulador
+   private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
+   //private static final String BASE_URL = "http://192.168.0.20:8080/";  // Para emulador
+   // private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
     //private static final String BASE_URL = "http://172.20.10.2:8080/";  // Para emulador
 
     // Método para obtener la instancia de Retrofit
