@@ -58,6 +58,7 @@ public interface ApiService {
     Call<SensorResponse> obtenerSensorPorCorreo(@Path("correo") String correo);
     @POST("asociar_dispositivo")
     Call<Void> asociarSensorAUsuario(@Body AsociarSensorRequest request);
+    //miw
 }
 
 
