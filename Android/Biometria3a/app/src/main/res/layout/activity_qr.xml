@@ -1,21 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#f5f5f5"
+    android:gravity="center">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/qrTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Escanea el Código QR"
+        android:textSize="20sp"
+        android:textColor="#333"
+        android:layout_marginBottom="24dp"
+        android:textStyle="bold"/>
+
+    <!-- Input para QR -->
 
     <EditText
         android:id="@+id/inputQr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Escanea el QR"
-        android:inputType="number" />
+        android:hint="Introduce el código QR aquí"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Botón para escanear -->
 
     <Button
         android:id="@+id/scanButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Escanear QR"
-        android:layout_below="@id/inputQr"
-        android:layout_marginTop="20dp" />
+        android:textColor="#fff"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:layout_gravity="center" />
 
-</RelativeLayout>
+</LinearLayout>

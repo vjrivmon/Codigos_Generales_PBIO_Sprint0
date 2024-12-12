@@ -40,8 +40,6 @@ public interface ApiService {
     Call<Void> updateUser(@Path("id") int userId, @Body Usuario usuario);
 
 
-
-
     @GET("/mediciones/{id_sensor}")
     Call<List<Medicion2>> getMedicionesBySensor(@Path("id_sensor") String idSensor);
     @PUT("usuarios/{id}/cambiarContrasena")
@@ -56,11 +54,10 @@ public interface ApiService {
         @PUT("usuarios/actualizarContrasena")
         Call<Void> updatePassword(@Body HashMap<String, String> params);
 
-    @GET("senusu/{id_usuario}")
-    Call<List<Sensor>> getSensorsByUser(@Path("id_usuario") int userId);
-
-
-
+    @GET("obtenerSensorPorCorreo/{correo}")
+    Call<SensorResponse> obtenerSensorPorCorreo(@Path("correo") String correo);
+    @POST("asociar_dispositivo")
+    Call<Void> asociarSensorAUsuario(@Body AsociarSensorRequest request);
 }
 
 

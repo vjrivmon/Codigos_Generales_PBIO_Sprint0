@@ -11,6 +11,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -139,6 +140,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Inicializar el helper de Bluetooth
         bluetoothHelper = new BluetoothHelper(this);
 
+        // Recuperar el correo desde SharedPreferences
+        /*SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String email = sharedPreferences.getString("userEmail", "");  // Valor por defecto es una cadena vacía si no se encuentra
+
+        // Mostrar el correo o realizar la lógica necesaria
+        if (!email.isEmpty()) {
+            // Si el correo existe, puedes mostrarlo en un TextView o usarlo en la lógica
+            Log.d("MainActivity", "Correo del usuario: " + email);
+            Toast.makeText(MainActivity.this, "Correo: " + email, Toast.LENGTH_LONG).show();
+            verificarSensorAsignado(email);
+        }
+
+         */
 
         //------------Potencia de luethoot -------------------
       //  TextView tvRssi = findViewById(R.id.dis);
@@ -1254,7 +1268,40 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   */
     // class
+    /*
+ public void verificarSensorAsignado(String correo) {
+     ApiService apiService = ApiClient.getClient().create(ApiService.class);
+     Call<SensorResponse> call = apiService.obtenerSensorPorCorreo(correo);
 
+     call.enqueue(new Callback<SensorResponse>() {
+         @Override
+         public void onResponse(Call<SensorResponse> call, Response<SensorResponse> response) {
+             if (response.isSuccessful()) {
+                 SensorResponse sensorResponse = response.body();
+                 if (sensorResponse != null && sensorResponse.getId_sensor() != null) {
+                     // Si el usuario tiene un sensor asignado
+                     Toast.makeText(getApplicationContext(), "Sensor asignado: " + sensorResponse.getId_sensor(), Toast.LENGTH_LONG).show();
+                 } else {
+                     // Si no tiene un sensor asignado
+                     Toast.makeText(getApplicationContext(), "No tienes un sensor asignado.", Toast.LENGTH_LONG).show();
+                 }
+             } else {
+                 // Si hubo un error con la respuesta
+                 Toast.makeText(getApplicationContext(), "Error al obtener el sensor.", Toast.LENGTH_LONG).show();
+             }
+         }
+
+         @Override
+         public void onFailure(Call<SensorResponse> call, Throwable t) {
+             // Si hay un fallo en la conexión o en la solicitud
+             Toast.makeText(getApplicationContext(), "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+         }
+     });
+
+
+ }
+
+     */
 }
 // --------------------------------------------------------------
 // --------------------------------------------------------------

@@ -248,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
-
+        verificarSensorAsignado(email);
         // Validar los campos
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Por favor, ingresa correo y contraseña.", Toast.LENGTH_SHORT).show();
@@ -277,21 +277,22 @@ public class LoginActivity extends AppCompatActivity {
                     if (success) {
                         int userId = responseBody.get("id_usuario").getAsInt();
                         Log.d("LoginActivity", "ID de usuario: " + userId);
-                        checkSensorAssignment(userId);
+                        // Guardar el correo en SharedPreferences
+                        saveUserEmailToSession(email);
                         //String userRole = responseBody.get("rol").getAsString();
                         //Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. Rol: " + userRole, Toast.LENGTH_SHORT).show();
                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. ID Usuario: " + userId, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                       // startActivity(intent);
                         saveUserIdToSession(userId);
 
                         finish();
                     } else {
-                        Log.e("API Error", "Error al iniciar sesión1. Código: " + response.code() + ", Mensaje: " + response.message());
-                        Toast.makeText(LoginActivity.this, "Error al iniciar sesión111. Código: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Log.e("API Error", "Error al iniciar sesión. Código: " + response.code() + ", Mensaje: " + response.message());
+                        Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Credenciales incorrectos ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Código: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Credenciales incorrectos ", Toast.LENGTH_SHORT).show();
                     Log.e("API Error", "Error al iniciar sesión3. Código: " + response.code() + ", Mensaje: " + response.message());
                 }
             }
@@ -380,39 +381,54 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void checkSensorAssignment(int userId) {
-        // Consultar si el usuario tiene un sensor asignado
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        apiService.getSensorsByUser(userId).enqueue(new Callback<List<Sensor>>() {
-            @Override
-            public void onResponse(Call<List<Sensor>> call, Response<List<Sensor>> response) {
-                if (response.isSuccessful()) {
-                    List<Sensor> sensores = response.body();
-                    Log.d("SensorResponse", "Sensores: " + (sensores != null ? sensores.size() : "null"));
 
-                    if (sensores == null || sensores.isEmpty()) {
-                        // El usuario no tiene sensor asignado, redirigir a la actividad QR
-                        Log.d("SensorResponse", "No se encontró un sensor asignado.");
+    private void saveUserEmailToSession(String email) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userEmail", email);
+        editor.apply();
+    }
+    public void verificarSensorAsignado(String correo) {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<SensorResponse> call = apiService.obtenerSensorPorCorreo(correo);
+
+        call.enqueue(new Callback<SensorResponse>() {
+            @Override
+            public void onResponse(Call<SensorResponse> call, Response<SensorResponse> response) {
+                if (response.isSuccessful()) {
+                    SensorResponse sensorResponse = response.body();
+                    if (sensorResponse != null && sensorResponse.getId_sensor() != null) {
+                        // Si el usuario tiene un sensor asignado
+                        Toast.makeText(getApplicationContext(), "Sensor asignado: " + sensorResponse.getId_sensor(), Toast.LENGTH_LONG).show();
+                        // Redirigir a MainActivity si tiene un sensor asignado
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); // Cerrar LoginActivity
+                    } else {
+                        // Si no tiene un sensor asignado
+                        Toast.makeText(getApplicationContext(), "No tienes un sensor asignado.", Toast.LENGTH_LONG).show();
+                        // Redirigir a QRActivity si no tiene un sensor asignado
                         Intent intent = new Intent(LoginActivity.this, QrActivity.class);
                         startActivity(intent);
-                    } else {
-                        // El usuario tiene un sensor asignado, continuar con la aplicación normal
-                        Log.d("SensorResponse", "Sensor asignado: " + sensores.size());
-                        Toast.makeText(LoginActivity.this, "Sensor asignado", Toast.LENGTH_SHORT).show();
+                        finish(); // Cerrar LoginActivity
+
                     }
                 } else {
-                    Log.e("SensorResponse", "Error en la respuesta del servidor: " + response.code() + " " + response.message());
-                    Toast.makeText(LoginActivity.this, "Error al verificar sensor", Toast.LENGTH_SHORT).show();
+                    // Si hubo un error con la respuesta
+                    Toast.makeText(getApplicationContext(), "No tienes un sensor asignado.Por favor escanea el QR", Toast.LENGTH_LONG).show();
+                    // Redirigir a QRActivity si no tiene un sensor asignado
+                    Intent intent = new Intent(LoginActivity.this, QrActivity.class);
+                    startActivity(intent);
+                    finish(); // Cerrar LoginActivity
                 }
             }
 
-
             @Override
-            public void onFailure(Call<List<Sensor>> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<SensorResponse> call, Throwable t) {
+                // Si hay un fallo en la conexión o en la solicitud
+                Toast.makeText(getApplicationContext(), "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
-
 
 }

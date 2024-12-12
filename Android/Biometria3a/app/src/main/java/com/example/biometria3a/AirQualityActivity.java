@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AirQualityActivity extends AppCompatActivity {
-
+/*
     private BarChart barChart;
     private TextView airQualityTextView;
     private RequestQueue requestQueue;
@@ -290,5 +290,7 @@ public class AirQualityActivity extends AppCompatActivity {
                 return "desconocido"; // 处理未知类型
         }
     }
+
+ */
 
 }
