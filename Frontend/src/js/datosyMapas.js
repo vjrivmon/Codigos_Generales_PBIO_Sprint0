@@ -22,9 +22,6 @@ var heat_map_00873a80a10518a2df221a14a823814f = L.heatLayer(
     {"blur": 15, "maxZoom": 18, "minOpacity": 0.5, "radius": 15, "useLocalExtrema": true}
 );
 
-
-
-
 heat_map_00873a80a10518a2df221a14a823814f.addTo(map);
 
 
@@ -44,7 +41,7 @@ var heat_map_5062de4e5aac731052ec949b5f1b0a61 = L.heatLayer(
 );
 
 
-heat_map_5062de4e5aac731052ec949b5f1b0a61.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
+heat_map_5062de4e5aac731052ec949b5f1b0a61.addTo(map);
 
 
 var heat_map_8e5a1e7c695338c64e0863ce4d56ce12 = L.heatLayer(
@@ -53,38 +50,34 @@ var heat_map_8e5a1e7c695338c64e0863ce4d56ce12 = L.heatLayer(
 );
 
 
-heat_map_8e5a1e7c695338c64e0863ce4d56ce12.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
+heat_map_8e5a1e7c695338c64e0863ce4d56ce12.addTo(map);
 
+
+// Define the tile layer
+var tile_layer_4d3e4105debc8fb570f1bb422cbdc0fd = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
 
 var layer_control_9ceb66bed6526e717d9ae5e71ac64450_layers = {
     base_layers : {
-        "cartodbpositron" : tile_layer_4d3e4105debc8fb570f1bb422cbdc0fd,
+        "cartodbpositron" : tile_layer_4d3e4105debc8fb570f1bb422cbdc0fd
     },
     overlays :  {
         "Mapa de O3" : heat_map_00873a80a10518a2df221a14a823814f,
         "Mapa de SO3" : heat_map_e3620db5e0f0b4849f6f37116af68d97,
         "Mapa de NO2" : heat_map_5062de4e5aac731052ec949b5f1b0a61,
-        "Mapa de Temperatura" : heat_map_8e5a1e7c695338c64e0863ce4d56ce12,
+        "Mapa de Temperatura" : heat_map_8e5a1e7c695338c64e0863ce4d56ce12
     },
 };
+
+// Add the tile layer to the map to make it active from the beginning
+tile_layer_4d3e4105debc8fb570f1bb422cbdc0fd.addTo(map);
+
 let layer_control_9ceb66bed6526e717d9ae5e71ac64450 = L.control.layers(
     layer_control_9ceb66bed6526e717d9ae5e71ac64450_layers.base_layers,
     layer_control_9ceb66bed6526e717d9ae5e71ac64450_layers.overlays,
     {"autoZIndex": true, "collapsed": true, "position": "topright"}
-).addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
+).addTo(map);
 
 
-
-tile_layer_4d3e4105debc8fb570f1bb422cbdc0fd.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
-
-
-heat_map_00873a80a10518a2df221a14a823814f.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
-
-
-heat_map_e3620db5e0f0b4849f6f37116af68d97.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
-
-
-heat_map_5062de4e5aac731052ec949b5f1b0a61.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
-
-
-heat_map_8e5a1e7c695338c64e0863ce4d56ce12.addTo(map_96e6f0f416a39b1f7c4ed4645db03fea);
