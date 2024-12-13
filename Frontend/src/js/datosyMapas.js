@@ -52,6 +52,21 @@ var heat_map_8e5a1e7c695338c64e0863ce4d56ce12 = L.heatLayer(
 
 heat_map_8e5a1e7c695338c64e0863ce4d56ce12.addTo(map);
 
+var heat_map_07fadb9003806ba200fbdeb00821566d = L.heatLayer(
+    [[39.4578268875183, -0.342986232422652], [39.4503960055053, -0.396337564375856], [39.4743907853567, -0.328534813492743], [39.4580609536967, -0.376643936579157], [39.4692442350919, -0.405923445529067], [39.4591890899964, -0.401411329219128], [39.466684755461, -0.328289489402738], [39.4811121109041, -0.408809896900937], [39.4796444969291, -0.337400660521869], [39.4796409248053, -0.36964822314381], [39.4705476702601, -0.376397651655323]],
+    {
+"minOpacity": 0.5,
+"maxZoom": 18,
+"radius": 15,
+"blur": 15,
+"gradient": null,
+"useLocalExtrema": true,
+}
+);
+
+
+heat_map_07fadb9003806ba200fbdeb00821566d.addTo(map);
+
 
 // Define the tile layer
 var tile_layer_4d3e4105debc8fb570f1bb422cbdc0fd = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -67,7 +82,8 @@ var layer_control_9ceb66bed6526e717d9ae5e71ac64450_layers = {
         "Mapa de O3" : heat_map_00873a80a10518a2df221a14a823814f,
         "Mapa de SO3" : heat_map_e3620db5e0f0b4849f6f37116af68d97,
         "Mapa de NO2" : heat_map_5062de4e5aac731052ec949b5f1b0a61,
-        "Mapa de Temperatura" : heat_map_8e5a1e7c695338c64e0863ce4d56ce12
+        "Mapa de Temperatura" : heat_map_8e5a1e7c695338c64e0863ce4d56ce12,
+        "Mapa de Estaciones Oficiales" : heat_map_07fadb9003806ba200fbdeb00821566d
     },
 };
 
