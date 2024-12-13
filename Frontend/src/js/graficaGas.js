@@ -180,7 +180,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                         text: 'Gráfica con los datos recopilados por los sensores en las últimas 8 horas',
                         color: '#395886',
                         font: {
-                            size: 40,
+                            size: 20,
                         },
                         margin:{
                             bottom: 16
@@ -228,7 +228,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                             text: 'Gráfica con los datos recopilados por los sensores en las últimas 8 horas',
                             color: '#395886',
                             font: {
-                                size: 40,
+                                size: 20,
                             },
                             margin:{
                                 bottom: 16
@@ -276,7 +276,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                             text: 'Gráfica con los datos recopilados por los sensores en las últimas 8 horas',
                             color: '#395886',
                             font: {
-                                size: 40,
+                                size: 20,
                             },
                             margin:{
                                 bottom: 16
@@ -324,7 +324,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                             text: 'Gráfica con los datos recopilados por los sensores en las últimas 8 horas',
                             color: '#395886',
                             font: {
-                                size: 40,
+                                size: 20,
                             },
                             margin:{
                                 bottom: 16
@@ -393,11 +393,12 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                             text: 'Gráfica con los datos recopilados por los sensores en las últimas 8 horas',
                             color: '#395886',
                             font: {
-                                size: 40,
+                                size: 20,
                             },
                             margin:{
                                 bottom: 16
                             },
+                            
                             align: 'center' 
 
                         }
