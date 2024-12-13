@@ -101,8 +101,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutSocialButtons" />
 
-    <!-- Campo de texto para el nombre de usuario -->
-
     <!-- Campo de texto para el correo electrónico -->
     <EditText
         android:id="@+id/edtEmail"
@@ -115,7 +113,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtOr" />
 
-    <!-- Campo de texto para la contraseña -->
     <!-- Contenedor para el campo de contraseña y el ícono del ojo -->
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -148,20 +145,24 @@
             android:padding="12dp"
             android:src="@drawable/eyeclosed" />
     </LinearLayout>
+
     <!-- 忘记密码的 TextView -->
     <TextView
         android:id="@+id/txtOlvidarContrasena"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnIniSesion"
+        android:layout_marginTop="16dp"
         android:layout_gravity="center"
         android:clickable="true"
         android:focusable="true"
         android:text="¿Olvidaste tu contraseña?"
         android:textColor="@color/colorAccent"
         android:textStyle="italic"
-
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+
+
     <!-- Botón de Registro -->
     <Button
         android:id="@+id/btnIniSesion"
@@ -175,6 +176,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
+    <!-- Texto de no tener cuenta -->
     <TextView
         android:id="@+id/txtNoTienesAccount"
         android:layout_width="wrap_content"
@@ -188,6 +190,7 @@
         app:layout_constraintStart_toStartOf="@+id/btnIniSesion"
         app:layout_constraintTop_toBottomOf="@+id/btnIniSesion" />
 
+    <!-- Texto de registro -->
     <TextView
         android:id="@+id/txtRegistrate"
         android:layout_width="wrap_content"
@@ -197,12 +200,9 @@
         android:text="Registrate"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
-
         app:layout_constraintEnd_toEndOf="@+id/btnIniSesion"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/btnIniSesion"
         app:layout_constraintTop_toBottomOf="@+id/txtNoTienesAccount" />
-
-    <!-- Texto subrayado para iniciar sesión -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

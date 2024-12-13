@@ -8,14 +8,18 @@
   <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 
     <!-- 引入外部样式表 -->
-    <link rel="stylesheet" href="../style/datosyMapas.css"/>
-	<link rel="stylesheet" href="../style/styles.css">
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../style/datosyMapas.css"/>
+  <link rel="stylesheet" href="../style/styles.css">
   <link rel="stylesheet" href="../style/graficaGas.css">
   <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- 引入FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Librerías -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+
 </head>
 <header>
     <nav class="navbar">
@@ -132,8 +136,7 @@
   actualizarBateria();
 </script>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
- <script src="../js/datosyMapas.js"></script>
+   <script src="../js/datosyMapas.js"></script>
 	 <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><!-- Archivo JS para librerias de graficas -->
    <script src="../js/graficaGas.js"></script>
