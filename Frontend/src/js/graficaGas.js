@@ -121,15 +121,17 @@ function calcularMediaPonderada(valores) {
 // Manejar el cambio de fecha en el selector
 fechaSelector.addEventListener('change', () => {
     const fecha2 = fechaSelector.value;
-    console.log('Fecha seleccionada:', fecha2);
-    filtrarMediciones(fecha2, tipo);
+    const tipo2 = graficaSelector.value;
+    console.log('Fecha seleccionada:', fecha2,'Tipo seleccionado:', tipo2);
+    filtrarMediciones(fecha2, tipo2);
 });
 
 // Manejar el cambio de tipo de gas en el selector
 graficaSelector.addEventListener('change', () => {
-    const tipo2 = graficaSelector.value;
-    console.log('Tipo seleccionado:', tipo2);
-    filtrarMediciones(fecha, tipo2);
+    const fecha3 = fechaSelector.value;
+    const tipo3 = graficaSelector.value;
+    console.log('Fecha seleccionada:', fecha3,'Tipo seleccionado:', tipo3);
+    filtrarMediciones(fecha3, tipo3);
 });
 
 // Actualizar la gráfica según el tipo seleccionado
