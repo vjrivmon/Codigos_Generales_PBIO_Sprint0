@@ -4,7 +4,7 @@ const L = window.L;
 // Configuración del mapa utilizando Leaflet con heatLayer
 var map = L.map('map', {
     center: [39.005541, -0.16747], // Coordenadas iniciales del mapa de calor
-    zoom: 14,
+    zoom: 13,
     zoomControl: true,
     preferCanvas: false
 });
