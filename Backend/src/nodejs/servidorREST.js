@@ -1119,7 +1119,7 @@ const asociarSensorAUsuario = async (req, res) => {
         await connection.query('INSERT INTO senusu (id_usuario, id_sensor) VALUES (?, ?) ON DUPLICATE KEY UPDATE id_sensor = VALUES(id_sensor)', [id_usuario, id_sensor]);
         console.log('Sensor asociado al usuario:', id_sensor, id_usuario);
 
-        res.status(200).send({ success: true, message: 'Sensor asociado al usuario correctamente' });
+        res.status(200).send('Sensor asociado al usuario correctamente');
     } catch (error) {
         console.error('Error al asociar el sensor al usuario:', error);
         res.status(500).send('Error del servidor');
