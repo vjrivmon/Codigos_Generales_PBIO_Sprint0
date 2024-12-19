@@ -393,6 +393,16 @@ public class RegistroActivity extends AppCompatActivity {
                     Toast.makeText(RegistroActivity.this, "Usuario registrado exitosamente.", Toast.LENGTH_SHORT).show();
                     goToMainActivity();
                 } else {
+                    // Obtener más información sobre el error
+                    Log.e("RegistroError", "Código de error: " + response.code());
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorBody = response.errorBody().string();
+                            Log.e("RegistroError", "Cuerpo del error: " + errorBody);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     Toast.makeText(RegistroActivity.this, "Error al registrar usuario.", Toast.LENGTH_SHORT).show();
                 }
             }

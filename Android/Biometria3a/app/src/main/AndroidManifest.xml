@@ -13,6 +13,17 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+    <uses-feature android:name="android.hardware.location" android:required="true" />
+
+
     <application
         android:icon="@drawable/ic_logo"
         android:allowBackup="true"
@@ -24,7 +35,10 @@
         android:theme="@style/Theme.Biometria3a"
         tools:targetApi="31"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:enableOnBackInvokedCallback="true"
+
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".InformacionPrincipal"
             android:exported="true">
@@ -48,6 +62,7 @@
         <activity android:name=".AirQualityActivity"/>
         <activity android:name=".InfoExtraFragment"/>
         <activity android:name=".MapsACTIVITY"/>
+        <activity android:name=".QrActivity"/>
 
 
         <receiver android:name=".OzoneLevelReceiver"
@@ -66,7 +81,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyAoRVYdSEBfvSe52_bwXEskJ17Nbmn39gw" />
 
     </application>
 </manifest>

@@ -2,11 +2,8 @@ package com.example.biometria3a;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
@@ -14,6 +11,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -22,26 +20,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,26 +42,15 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -79,12 +58,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -145,13 +125,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Runnable timeoutRunnable;
 
     //---------------------MAPA-------------------------------
-
     private GoogleMap mMap;
+    private ApiService medicionesApi;
+    private String currentPollutant = "NO2";
+
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
+    TextView  dis;
 
 
+    //--------------RSSI------------------
+
+    private long lastSignalTime = 0;
+    private static final int REQUEST_LOCATION_PERMISSION_CODE = 1001;
 
 
     @Override
@@ -160,6 +147,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
         // Inicializar el helper de Bluetooth
         bluetoothHelper = new BluetoothHelper(this);
+
+        // Recuperar el correo desde SharedPreferences
+        /*SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String email = sharedPreferences.getString("userEmail", "");  // Valor por defecto es una cadena vacía si no se encuentra
+
+        // Mostrar el correo o realizar la lógica necesaria
+        if (!email.isEmpty()) {
+            // Si el correo existe, puedes mostrarlo en un TextView o usarlo en la lógica
+            Log.d("MainActivity", "Correo del usuario: " + email);
+            Toast.makeText(MainActivity.this, "Correo: " + email, Toast.LENGTH_LONG).show();
+            verificarSensorAsignado(email);
+        }
+
+         */
+
+        //------------Potencia de luethoot -------------------
+      //  TextView tvRssi = findViewById(R.id.dis);
+        ImageView imgSignalStrength = findViewById(R.id.iv_signal);
+
+
+
+
 
         //------------Automatizar busqueda de mi dispositivo----------------
         // Llama automáticamente al método para iniciar la búsqueda
@@ -186,16 +195,46 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         buscarEsteDispositivoBTLE300(dispositivoBuscado);
         //---------------mapa----------------
+        // 初始化 Retrofit
+        medicionesApi = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+
+        // 初始化地图
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
+        // 初始化下拉框
+        Spinner spinner = findViewById(R.id.spinner_pollutants);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.pollutants_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        // 监听下拉框选择事件
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentPollutant = parent.getItemAtPosition(position).toString(); // 获取选中的污染物
+                Log.d("SPINNER_SELECT", "Selected pollutant: " + currentPollutant);
+                fetchDataAndUpdateMap(); // 重新获取数据并更新地图
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d("SPINNER_SELECT", "No pollutant selected");
+            }
+        });
+
+
+
         tvCurrentTime = findViewById(R.id.tv_current_time);
         tvTemperature = findViewById(R.id.tv_temperature);
         tvOzone = findViewById(R.id.tv_ozone);
         btnUpdate = findViewById(R.id.btn_update);
 
-        // Inicializa el fragmento del mapa
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(MainActivity.this);
-        }
+
 
         // Inicializa el cliente de ubicación
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -283,20 +322,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-        //------------------mapa------------------------
-      /*  // WebView设置
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true); // 启用JavaScript
-        webView.setWebViewClient(new WebViewClient()); // 在WebView中打开URL
 
-
-        // 加载Google Maps的普通URL，显示瓦伦西亚的位置
-        String googleMapsUrl = "https://www.google.com/maps?q=Valencia&z=12";
-        webView.loadUrl(googleMapsUrl);
-
-
-       */
-        // 显示当前时间
         updateTime();
 
         // 更新按钮点击事件
@@ -311,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Habilitar el botón de ubicación si los permisos están concedidos
+        // 检查位置权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -319,7 +345,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show();
         }
+
+        // 在地图加载完成后更新数据
+        fetchDataAndUpdateMap();
     }
+
 
     private void getUserLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -411,7 +441,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 super.onScanResult(callbackType, resultado);
                 Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanResult() ");
                 mostrarInformacionDispositivoBTLE(resultado);
+
+
             }
+
+
+
 
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
@@ -451,10 +486,86 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         BluetoothDevice bluetoothDevice = resultado.getDevice();
         byte[] bytes = resultado.getScanRecord().getBytes();
         int rssi = resultado.getRssi();
+        // Verificar si la señal es válida
+        if (rssi == -100) {
+            // Si no hay señal (RSSI == -100), considera que no hay señal
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                    TextView textViewDistancia = findViewById(R.id.dis);
+                    textViewDistancia.setText("Sin señal");
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen de sin señal
+                }
+            });
+            return; // Salir, ya que no hay datos de señal válidos
+        }
+
         TramaIBeacon tib = new TramaIBeacon(bytes);
 
         // Convertir los valores Major y Minor
         valorMajor = Utilidades.bytesToInt(tib.getMajor());
+        int txPower = tib.getTxPower();
+        // Calcular la distancia
+        double distancia = calcularDistancia(rssi, txPower);
+        // Actualizar el tiempo de la última señal recibida
+        long currentTime = System.currentTimeMillis();
+        lastSignalTime = currentTime; // Actualizamos el último tiempo de señal
+
+
+
+
+        // Mostrar la distancia promedio en el TextView "dis"
+        /*
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                TextView textViewDistancia = findViewById(R.id.dis); // Encuentra el TextView por su ID
+                if (distancia < 2) {
+                    textViewDistancia.setText("Estas al lado del sensor "+ String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_3);
+                } else if (distancia >= 2 && distancia <= 5) {
+                    textViewDistancia.setText("Estas cerca del sensor "+ String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_2);
+                } else if (distancia > 5) {
+                    textViewDistancia.setText("Estas lejos del sensor "+ String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_1);
+                } // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
+                if (distancia > 5 && rssi == -100) { // Asumimos que RSSI -100 indica sin señal
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
+                }
+                //textViewDistancia.setText("Distancia: " + String.format("%.2f", distancia) + " metros");
+            }
+
+         */
+        // Mostrar la distancia y la señal
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageViewSignal = findViewById(R.id.iv_signal);
+                TextView textViewDistancia = findViewById(R.id.dis); // Encuentra el TextView por su ID
+
+                if (distancia < 2) {
+                    textViewDistancia.setText("Estas al lado del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_3);
+                } else if (distancia >= 2 && distancia <= 5) {
+                    textViewDistancia.setText("Estas cerca del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_2);
+                } else if (distancia > 5) {
+                    textViewDistancia.setText("Estas lejos del sensor " + String.format("%.2f", distancia) + " metros");
+                    imageViewSignal.setImageResource(R.drawable.signal_1);
+                }
+
+                // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
+                if (distancia > 2 && rssi == -47) { // Asumimos que RSSI -100 indica sin señal
+                    imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
+                }
+            }
+        });
+
+        Log.d("DISTANCIASENSOR", "Distancia estimada entre el dispositivo y el sensor: " + distancia + " metros");
+
         //  valorMajor=50;
        lanzarNoti(valorMajor/10);
         // Usar Handler para esperar 10 segundos antes de mostrar la notificación
@@ -480,12 +591,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(ETIQUETA_LOG, " nombre = " + bluetoothDevice.getName());
         Log.d(ETIQUETA_LOG, " toString = " + bluetoothDevice.toString());
 
-        /*
-        ParcelUuid[] puuids = bluetoothDevice.getUuids();
-        if ( puuids.length >= 1 ) {
-            //Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].getUuid());
-           // Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].toString());
-        }*/
 
         Log.d(ETIQUETA_LOG, " dirección = " + bluetoothDevice.getAddress());
         Log.d(ETIQUETA_LOG, " rssi = " + rssi);
@@ -515,6 +620,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(ETIQUETA_LOG, " ****************************************************");
 
     } // ()
+
+    private double calcularDistancia(int rssi, int txPower) {
+        final double n = 2.0;  // Valor típico para interiores, puedes ajustar este valor según el entorno
+
+        if (rssi == 0) {
+            return -1.0;  // Si el RSSI es 0, no se puede calcular la distancia
+        }
+
+        double ratio = rssi * 1.0 / txPower;
+        if (ratio < 1.0) {
+            return Math.pow(ratio, 10);  // Si la relación RSSI/TXPower es menor que 1, usamos esta fórmula
+        } else {
+            return  (0.89976) * Math.pow(ratio, 7.7095) + 0.111;  // Usamos otra fórmula si la relación es mayor
+        }
+    }
 
 
     // --------------------------------------------------------------
@@ -551,6 +671,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return info.toString();
     }// ()
 
+
+
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
@@ -574,14 +696,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.callbackDelEscaneo = new ScanCallback() {
             @Override
             public void onScanResult(int callbackType, ScanResult resultado) {
+                final List<Integer> rssiValues = new ArrayList<>();
                 super.onScanResult(callbackType, resultado);
                 //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
 
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
+
                 byte[] bytes = resultado.getScanRecord().getBytes();
                 TramaIBeacon tib = new TramaIBeacon(bytes);
+
+
+                int rssi = resultado.getRssi();
+                // Añadimos el valor de RSSI a la lista
+
                 if (Utilidades.bytesToString(tib.getUUID()).equals(dispositivoBuscado)) {
                     mostrarInformacionDispositivoBTLE(resultado);
                     // Reiniciar el temporizador al recibir datos
@@ -635,6 +764,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Iniciar el temporizador
                 handler.postDelayed(timeoutRunnable, 10000);
             }
+
+           /* private double calcularDistancia(int txPower, int rssi) {
+                return Math.pow(10d, ((double) (txPower - rssi)) / (90 * 4));
+            }
+
+            */
+
+
+
+
+
+
+
+
+
+
             private void enviarNotificacionSinDatos() {
                 NotificationHalper notificationHalper = new NotificationHalper(MainActivity.this);
                 notificationHalper.showNotification("Alerta de Sensor", "No se han recibido datos del sensor. El sensor está apagado o no disponible.");
@@ -823,18 +968,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case CODIGO_PETICION_PERMISOS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(ETIQUETA_LOG, " onRequestPermissionResult(): Permisos concedidos");
-                    inicializarBlueTooth();  // Llamamos a la inicialización si se conceden los permisos
-                } else {
-                    Log.d(ETIQUETA_LOG, " onRequestPermissionResult(): Permisos NO concedidos");
-                }
-                return;
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getUserLocation();
+                fetchDataAndUpdateMap();
+            } else {
+                Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+            }
         }
-    } // ()
+    }
+// ()
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
@@ -861,60 +1004,122 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void boton_enviar_pulsado_client(View quien) {
         // Obtener fecha y hora actuales
-        String fechaActual = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String horaActual = CO2NotificationManager.getCurrentTime();
-        // Llama a obtener las coordenadas actuales
 
-        double latitud = getLatitud();
-        double longitud = getLongitud();
-        // Mostrar las coordenadas en un Toast
-        //Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
-        // Obtener el ID del sensor dinámicamente
-        //String idSensor = bluetoothHelper.obtenerIdSensor(this);
-       // Log.d("IDsensor", idSensor);
+        String fechaActual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+// Mostrar la fecha y hora en el Logcat
+        Log.d("FechaHora", "Fecha y hora generada: " + fechaActual);
+
+// Mostrar la fecha y hora en un Toast
+        Toast.makeText(this, "Fecha y hora: " + fechaActual, Toast.LENGTH_LONG).show();
+
+        // Llama a obtenerUbicacionActual para obtener las coordenadas
+        obtenerUbicacionActual((latitud, longitud) -> {
+            // Mostrar las coordenadas en un Toast
+            Toast.makeText(this, "Latitud: " + latitud + " Longitud: " + longitud, Toast.LENGTH_SHORT).show();
+
+            // Crear el objeto JSON para la ubicación
+            String ubicacionJson = String.format("{\"latitud\": %f, \"longitud\": %f}", latitud, longitud);
+
+            // Datos adicionales
+            double valorO3 = valorMajor / 1000; // Ejemplo
+            double valorTemperatura = valorMinor / 100;
+            double valorNO2 = 75.30; // Ejemplo
+            double valorSO3 = 10.40; // Ejemplo
+
+            String idSensor = "00:1A:2B:3M:4D:5E";
+
+            // Log de valores
+            Log.d("Valor O3", "Valor antes de enviar: " + valorO3);
+
+            // Enviar la medición
+            enviarMedicion(idSensor, fechaActual, ubicacionJson, "O3", valorO3);
+
+            // Crear objeto Medicion y enviar
+            Medicion medicion = new Medicion(idSensor, fechaActual, ubicacionJson, "O3", valorO3);
+            ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            Call<Void> call = apiService.enviarMedicion(medicion);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("clienterestandroid", "Medición enviada correctamente");
+                        Toast.makeText(MainActivity.this, "Medición enviada correctamente", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("clienterestandroid", "Error al enviar medición: " + response.code());
+                        Toast.makeText(MainActivity.this, "Error al enviar medición", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("clienterestandroid", "Error de conexión: " + t.getMessage());
+                    Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
 
 
-        // Valores de las mediciones (estos serían dinámicos en la práctica)
-        double valorO3 =  valorMajor / 1000; // Ejemplo
-        double valorTemperatura = valorMinor / 100;
-        double valorNO2 = 75.30; // Ejemplo
-        double valorSO3 = 10.40; // Ejemplo
 
-       String idSensor = "00:1A:2B:3M:4D:5E";
-       // double valorGas = valorMajor / 1000;
-       // double valorGas = 200;
-     //   double valorTemperatura = valorMinor / 100;
-       // double valorTemperatura = 32;
 
-        // Crea el objeto Medicion con los datos obtenidos
-        // Crear el objeto Medicion con los nuevos datos
-        Medicion medicion = new Medicion(fechaActual, horaActual, latitud, longitud, idSensor,
-                valorO3, valorTemperatura, valorNO2, valorSO3);
-        // Realiza la llamada para enviar la medición a la API
+
+    public void enviarMedicion(String idSensor, String fechaHora, String ubicacionJson, String tipoMedicion, double valor) {
+        // Crear una instancia de la clase Medicion
+        Medicion medicion = new Medicion(idSensor, fechaHora, ubicacionJson, tipoMedicion, valor);
+
+        // Obtener la instancia de Retrofit y ApiService
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
+
+        // Llamar al método para enviar medición
         Call<Void> call = apiService.enviarMedicion(medicion);
+
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("clienterestandroid", "Medición enviada correctamente");
-                    Toast.makeText(MainActivity.this, "Medición enviada correctamente", Toast.LENGTH_SHORT).show();
+                    Log.d("Medicion", "Medición enviada con éxito");
                 } else {
-                    Log.d("clienterestandroid", "Error al enviar medición: " + response.code());
-                    Toast.makeText(MainActivity.this, "Error al enviar medición", Toast.LENGTH_SHORT).show();
+                    Log.e("Medicion", "Error al enviar la medición: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("clienterestandroid", "Error de conexión: " + t.getMessage());
-                Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Medicion", "Fallo en la conexión: " + t.getMessage());
             }
         });
     }
 
 
     // Manejar la respuesta de solicitud de permisos
+    private void obtenerUbicacionActual(LocationCallbackInterface callback) {
+        FusedLocationProviderClient fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(this);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION_CODE);
+            return;
+        }
+
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        callback.onLocationReceived(location.getLatitude(), location.getLongitude());
+                    } else {
+                        Toast.makeText(this, "No se pudo obtener la ubicación.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public interface LocationCallbackInterface {
+        void onLocationReceived(double latitud, double longitud);
+    }
+
 
     private double getLatitud() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -1103,7 +1308,144 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   */
     // class
+<<<<<<< Updated upstream
+    /*
+ public void verificarSensorAsignado(String correo) {
+     ApiService apiService = ApiClient.getClient().create(ApiService.class);
+     Call<SensorResponse> call = apiService.obtenerSensorPorCorreo(correo);
+=======
+ private void fetchDataAndUpdateMap() {
+     if (medicionesApi == null) {
+         Log.e("API_ERROR", "Mediciones API not initialized.");
+         return;
+     }
 
+     medicionesApi.getMediciones().enqueue(new Callback<List<Medicion2>>() {
+         @Override
+         public void onResponse(Call<List<Medicion2>> call, Response<List<Medicion2>> response) {
+             if (response.isSuccessful() && response.body() != null) {
+                 List<Medicion2> mediciones = response.body();
+                 Log.d("API_SUCCESS", "Mediciones received: " + mediciones.size());
+
+                 // 过滤和更新地图
+                 List<Medicion2> filteredMediciones = filterMedicionesByPollutant(mediciones, currentPollutant);
+                 runOnUiThread(() -> updateMapWithMediciones(filteredMediciones)); // 确保在主线程中更新 UI
+             } else {
+                 Log.e("API_ERROR", "Failed response: " + response.message());
+             }
+         }
+
+         @Override
+         public void onFailure(Call<List<Medicion2>> call, Throwable t) {
+             Log.e("API_FAILURE", "Error: " + t.getMessage());
+         }
+     });
+ }
+
+
+
+
+
+
+    private List<Medicion2> filterMedicionesByPollutant(List<Medicion2> mediciones, String pollutant) {
+        List<Medicion2> filteredMediciones = mediciones.stream()
+                .filter(medicion -> medicion.getTipo().equalsIgnoreCase(pollutant))
+                .filter(medicion -> medicion.getUbicacion() != null) // 确保位置不为空
+                .collect(Collectors.toList());
+
+        Log.d("FILTERED_DATA", "Filtered " + filteredMediciones.size() + " measurements for pollutant: " + pollutant);
+        return filteredMediciones;
+    }
+
+
+
+
+    private void updateMapWithMediciones(List<Medicion2> mediciones) {
+        mMap.clear(); // 清除之前的地图标记
+
+        for (Medicion2 medicion : mediciones) {
+            // 假设没有位置信息时使用默认坐标
+            double lat = 39.0208; // 默认纬度
+            double lon = -0.1751; // 默认经度
+
+            // 如果 Medicion2 包含位置字段，可以从中获取位置
+            LatLng position = new LatLng(lat, lon);
+            float markerColor = determineMarkerColor(medicion.getValor());
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(position)
+                    .title(medicion.getTipo() + ": " + medicion.getValor() + " µg/m³")
+                    .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
+        }
+
+        // 如果有数据，移动地图镜头到第一个点的位置（这里使用默认位置）
+        if (!mediciones.isEmpty()) {
+            LatLng firstLatLng = new LatLng(39.0208, -0.1751); // 默认坐标
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 12));
+        }
+    }
+
+
+
+
+
+
+    private float determineMarkerColor(double value) {
+        if (value < 50) {
+            return BitmapDescriptorFactory.HUE_GREEN; // 低浓度
+        } else if (value <= 100) {
+            return BitmapDescriptorFactory.HUE_YELLOW; // 中浓度
+        } else {
+            return BitmapDescriptorFactory.HUE_RED; // 高浓度
+        }
+    }
+
+
+    public void onResponse(Call<List<Medicion2>> call, Response<List<Medicion2>> response) {
+        if (response.isSuccessful() && response.body() != null) {
+            List<Medicion2> mediciones = response.body();
+            Log.d("API_SUCCESS", "Mediciones received: " + mediciones.size());
+            Log.d("API_DATA", "Data: " + mediciones);
+
+            // 更新地图
+            List<Medicion2> filteredMediciones = filterMedicionesByPollutant(mediciones, currentPollutant);
+            updateMapWithMediciones(filteredMediciones);
+        } else {
+            Log.e("API_ERROR", "Failed response: " + response.message());
+        }
+    }
+
+>>>>>>> Stashed changes
+
+     call.enqueue(new Callback<SensorResponse>() {
+         @Override
+         public void onResponse(Call<SensorResponse> call, Response<SensorResponse> response) {
+             if (response.isSuccessful()) {
+                 SensorResponse sensorResponse = response.body();
+                 if (sensorResponse != null && sensorResponse.getId_sensor() != null) {
+                     // Si el usuario tiene un sensor asignado
+                     Toast.makeText(getApplicationContext(), "Sensor asignado: " + sensorResponse.getId_sensor(), Toast.LENGTH_LONG).show();
+                 } else {
+                     // Si no tiene un sensor asignado
+                     Toast.makeText(getApplicationContext(), "No tienes un sensor asignado.", Toast.LENGTH_LONG).show();
+                 }
+             } else {
+                 // Si hubo un error con la respuesta
+                 Toast.makeText(getApplicationContext(), "Error al obtener el sensor.", Toast.LENGTH_LONG).show();
+             }
+         }
+
+         @Override
+         public void onFailure(Call<SensorResponse> call, Throwable t) {
+             // Si hay un fallo en la conexión o en la solicitud
+             Toast.makeText(getApplicationContext(), "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+         }
+     });
+
+
+ }
+
+     */
 }
 // --------------------------------------------------------------
 // --------------------------------------------------------------

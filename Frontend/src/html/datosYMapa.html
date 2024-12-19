@@ -8,14 +8,18 @@
   <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 
     <!-- 引入外部样式表 -->
-    <link rel="stylesheet" href="../style/datosyMapas.css"/>
-	<link rel="stylesheet" href="../style/styles.css">
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../style/datosyMapas.css"/>
+  <link rel="stylesheet" href="../style/styles.css">
   <link rel="stylesheet" href="../style/graficaGas.css">
   <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- 引入FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Librerías -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+
 </head>
 <header>
     <nav class="navbar">
@@ -44,40 +48,41 @@
     </nav>
   </header>
 <body>
-    <h3>Mapa de calidad del aire</h3>
-    <div id="map"></div>
-
-	
-  <div id="info-box">
-    <h4>Datos de mi sensor</h4>
-	  <p id="current-time"></p> <!-- 小行灰色文字显示时间 -->
-    <p><i class="fas fa-thermometer-half"></i> Temperatura: 25°C</p>
-    <p><i class="fas fa-cloud"></i> Ozono: 100 ppm</p>
-    <button id="sensor-btn">Actualizar datos</button>
+  <h3>Calidad del aire en tu zona en tiempo real</h3>
+    <div class="contenedor-responsive">
+      <div id="info-box-grafica">
+          <h4>Datos de mi sensor</h4>
+          <!-- Añadido el apartado de batería -->
+          <div id="battery-status">
+            <i class="fas fa-battery-full"></i> 
+            <span id="battery-percentage">Batería: 87%</span>
+        </div>
+          <select id="fecha-selector" class="ancho">
+              <option value="2024-12-13" selected>13/12/2024</option>
+              <option value="2024-12-12">12/12/2024</option>
+              <option value="2024-12-11">11/12/2024</option>
+              <option value="2024-12-10">10/12/2024</option>
+              <option value="2024-12-09">09/12/2024</option>
+          </select>
+          <select id="gas-selector" class="ancho">
+              <option value="Todos" selected>Todos los gases</option>
+              <option value="O3">O3</option>
+              <option value="SO3">SO3</option>
+              <option value="NO2">NO2</option>
+              <option value="Temperatura">Temperatura</option>
+          </select>
+          <p>Valores Medios</p>
+          <p id="media-O3"><i class="fas fa-cloud"></i> O3: 10 ppm</p>
+          <p id="media-NO2"><i class="fas fa-cloud"></i> NO2: 10 ppm</p>
+          <p id="media-SO3"><i class="fas fa-cloud"></i> SO3: 10 ppm</p>
+          <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i> Temperatura: 10 ºC</p>
+           
+          <a href="infoExtra.html" class="ver_mas_info">Mas información</a>
+      </div>
+      <canvas id="graficaGas"></canvas>
+      <div id="map"></div>
   </div>
-  <h3>Gráfica Últimos Valores</h3>
   
-  <canvas id="graficaGas" 
-  style="border: 1px solid black; 
-         border-radius: 10px; 
-         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
-         width: 90%; 
-         margin-left: 5%; 
-         margin-right: 5%; 
-         padding: 5px;"></canvas>
-  <div id="info-box-grafica" style="top: 800px; left: 150px;">
-    <h4>Datos de mi sensor</h4>
-    <select id="fecha-selector">
-      <option value="22/11/2024" selected>22/11/2024</option>
-      <option value="21/11/2024">21/11/2024</option>
-      <option value="20/11/2024">20/11/2024</option>
-      <option value="19/11/2024">19/11/2024</option>
-      <option value="18/11/2024">18/11/2024</option>
-  </select>
-    <p id="media-O3"><i class="fas fa-cloud"></i> Valor Medio O3: 10 ppm</p>
-    <p id="media-NO2"><i class="fas fa-cloud"></i> Valor Medio NO2: 10 ppm</p>
-    <p id="media-SO3"><i class="fas fa-cloud"></i> Valor Medio SO3: 10 ppm</p>
-  </div>
     
 
   
@@ -106,9 +111,32 @@
   </div>
 </div>
 
+ <!-- Script para actualizar el porcentaje de la batería -->
+ <script>
+  // Simulación de actualización de batería (puedes sustituirlo con datos reales del sensor)
+  function actualizarBateria() {
+      const batteryPercentage = 87; // Ejemplo de porcentaje de batería (puedes obtenerlo de tu sensor)
+      const batteryElement = document.getElementById("battery-percentage");
+      
+      // Actualizar el texto del porcentaje de batería
+      batteryElement.textContent = `Batería: ${batteryPercentage}%`;
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
- <script src="../js/datosyMapas.js"></script>
+      // Aquí podrías agregar lógica para cambiar el icono según el nivel de batería
+      // Por ejemplo, cambiar el icono si la batería está baja:
+      if (batteryPercentage < 20) {
+          document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-quarter");
+      } else if (batteryPercentage < 50) {
+          document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-half");
+      } else {
+          document.querySelector("#battery-status i").classList.replace("fa-battery-quarter", "fa-battery-full");
+      }
+  }
+
+  // Llamar a la función para inicializar la batería
+  actualizarBateria();
+</script>
+
+   <script src="../js/datosyMapas.js"></script>
 	 <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><!-- Archivo JS para librerias de graficas -->
    <script src="../js/graficaGas.js"></script>

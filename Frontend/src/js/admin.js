@@ -10,10 +10,11 @@ const sensors = [
     { name: "Sensor 7", status: "inactive", issue: "Batería baja", lastActive: new Date(new Date().getTime() - 2 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:51 ℹ️", latitude: 39.1234, longitude: -0.2456 },
     { name: "Sensor 9", status: "inactive", issue: "Sin conexión", lastActive: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(), macAddress: "00:14:22:01:23:53 ℹ️", latitude: 39.4850, longitude: -0.4110 },
     { name: "Sensor 2", status: "active", issue: "Toma datos aleatorios", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:46 ℹ️", latitude: 39.2974, longitude: -0.1900 },
-    { name: "Sensor 4", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48 ℹ️", latitude: 39.4667, longitude: -0.3760 },
-    { name: "Sensor 6", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50 ℹ️", latitude: 39.4800, longitude: -0.3700 },
-    { name: "Sensor 8", status: "active", issue: " ", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52 ℹ️", latitude: 39.5500, longitude: -0.4000 },
+    { name: "Sensor 4", status: "active", issue: "Ninguna", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:48 ℹ️", latitude: 39.4667, longitude: -0.3760 },
+    { name: "Sensor 6", status: "active", issue: "Ninguna", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:50 ℹ️", latitude: 39.4800, longitude: -0.3700 },
+    { name: "Sensor 8", status: "active", issue: "Ninguna", lastActive: new Date().toISOString(), macAddress: "00:14:22:01:23:52 ℹ️", latitude: 39.5500, longitude: -0.4000 },
 ];
+
 
 
 const sensorList = document.getElementById("sensor-list");
@@ -82,7 +83,7 @@ function displaySensors(sensors) {
 
         // Avería
         const issueCell = document.createElement("td");
-        issueCell.textContent = sensor.issue.trim() || "Sin averías";
+        issueCell.textContent = sensor.issue.trim() || "Ninguna";
         row.appendChild(issueCell);
 
         // Añadir la fila a la tabla
@@ -129,7 +130,7 @@ function applyFilters() {
     } else if (filterStatus.value === "inactive") {
         filteredSensors = filteredSensors.filter(sensor => sensor.status === "inactive");
     } else if (filterStatus.value === "averiados") {
-        filteredSensors = filteredSensors.filter(sensor => sensor.issue.trim().length >= 2);
+        filteredSensors = filteredSensors.filter(sensor => sensor.issue !== "Ninguna");
     } 
 
    else if (filterStatus.value === "act8h") {

@@ -79,6 +79,14 @@
             android:layout_marginTop="20dp"
             android:text="Mapa de calidad del aire de Valencia"
             android:textSize="24sp" />
+        <Spinner
+            android:id="@+id/spinner_pollutants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_map_title"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true" />
+
 
         <!-- WebView for the map -->
      <!--   <WebView
@@ -89,18 +97,19 @@
             android:layout_marginTop="16dp" />
 -->
 
+
+        <!-- Contenedor de los botones -->
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_below="@+id/tv_map_title"
+            android:layout_below="@+id/spinner_pollutants"
             android:layout_gravity="center"
             android:layout_margin="16dp"
-            android:layout_marginTop="-100dp" />
+            android:layout_marginTop="-24dp"
+            android:layout_marginBottom="16dp" />
 
-
-        <!-- Contenedor de los botones -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
@@ -182,32 +191,61 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_marginStart="395dp"
+                android:layout_marginTop="8dp"
                 android:text="Valores del sensor"
                 android:textColor="#00A2F0"
                 android:textSize="20sp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/nuestrodisp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nuestrodisp" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
         <!-- Information box -->
         <RelativeLayout
+
             android:id="@+id/info_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/button_container"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="290dp"
+            android:layout_marginTop="190dp"
             android:padding="20dp">
 
+
+            <TextView
+                android:id="@+id/dis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="10dp"
+                android:text="RSSI: --"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <!-- ImageView a la derecha -->
+            <ImageView
+                android:id="@+id/iv_signal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="Nivel de señal Bluetooth"
+            android:src="@drawable/gris_wwifi"
+            android:layout_marginStart="10dp" />
+            <!-- Hora actual -->
             <!-- Hora actual -->
             <TextView
                 android:id="@+id/tv_current_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_below="@id/dis"
                 android:text="Hora actual: "
                 android:textColor="#808080"
                 android:textSize="12sp" />
@@ -218,7 +256,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_current_time"
-                android:layout_marginTop="10dp"
                 android:text="Datos de mi sensor"
                 android:textColor="#000000"
                 android:textSize="20sp" />
@@ -229,7 +266,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sensor_data"
-                android:layout_marginTop="8dp"
                 android:text="Temperatura: 25°C"
                 android:textSize="16sp" />
 
@@ -239,7 +275,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_temperature"
-                android:layout_marginTop="8dp"
                 android:text="Ozono: 100 ppm"
                 android:textSize="16sp" />
 
@@ -249,8 +284,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_ozone"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/colorAccent"
                 android:text="Actualizar" />
         </RelativeLayout>
     </RelativeLayout>

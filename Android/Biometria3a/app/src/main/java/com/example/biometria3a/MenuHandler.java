@@ -61,6 +61,10 @@ public class MenuHandler {
             Toast.makeText(context, "Info Extra", Toast.LENGTH_SHORT).show();
             // If the context is an instance of AppCompatActivity (or any Activity)
            context.startActivity(new Intent(context, InfoExtraFragment.class));
+        }else if (item.getItemId() == R.id.qr) {
+            Toast.makeText(context, "QR", Toast.LENGTH_SHORT).show();
+            // If the context is an instance of AppCompatActivity (or any Activity)
+            context.startActivity(new Intent(context, QrActivity.class));
         }
     }
 

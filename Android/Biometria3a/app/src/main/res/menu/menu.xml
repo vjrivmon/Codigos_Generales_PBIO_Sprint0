@@ -19,6 +19,10 @@
     <item
         android:id="@+id/action_privacidad"
         android:title="Centro de privacidad" />
+    <item
+        android:id="@+id/qr"
+        android:title="QR" />
+
 
 
 </menu>

@@ -93,21 +93,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Llamada a la función para actualizar los datos del usuario en la base de datos
 
     // Txt -> getCookie() -> json
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
-            }
-        
-            // Función para cargar id del usuario al cargar la página
-            const id_usuario = getCookie('id_usuario'); // Obtener ID del usuario desde la cookie
-            console.log(`id_usuario obtenido de la cookie: ${id_usuario}`);
-            if (!id_usuario) {
-                alert('No se pudo obtener el ID del usuario.');
-                return; // Salir de la función si no se pudo obtener el ID del usuario
-            }
-                // const id_usuario =4;
-
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
+    // Función para cargar id del usuario al cargar la página
+    const id_usuario = getCookie('id_usuario'); // Obtener ID del usuario desde la cookie
+    console.log(`id_usuario obtenido de la cookie: ${id_usuario}`);
+    if (!id_usuario) {
+        alert('No se pudo obtener el ID del usuario.');
+        return; // Salir de la función si no se pudo obtener el ID del usuario
+    }
+    
     fetch(`http://localhost:8080/usuarios/${encodeURIComponent(id_usuario)}`)
         .then(response => {
             if (!response.ok) {
@@ -115,9 +114,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return response.json();  // Convertir respuesta a JSON
         })
-        .then(data => { 
-            if (data && data.length > 0) {
-                const userData = data[0];
+        .then(data => {
+            console.log('Datos recibidos del servidor:', data); // Agregar este log para ver la respuesta completa
+            if (data) {
+                const userData = data; // Asumir que data es un objeto
                 emailInput.value = userData.correo;
                 passwordInput.value = '';
                 nameInput.value = userData.nombre;
@@ -131,9 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             alert(`No se pudieron cargar los datos del usuario. Detalles: ${error.message}`);
         });
-            // ------------------------------------------------------------------------------------------------------------------------------------
-});
-
 // // Función para registrar un nuevo usuario
 // async function registrarUsuario(email, password, phone, name) {
 //     try {
@@ -181,40 +178,41 @@ document.addEventListener('DOMContentLoaded', function() {
 // }
 
 
-// Función para consultar los datos de un usuario existente
-// Txt, txt -> ConsultarDatosUsuario() -> json 
-async function ConsultarDatosUsuario(email, password) {
-    try {
-        const response = await fetch('http://localhost:8080/usuarios/verificar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ correo: email, contrasena: password })
-        });
+    // Función para consultar los datos de un usuario existente
+    // Txt, txt -> ConsultarDatosUsuario() -> json 
+    async function ConsultarDatosUsuario(email, password) {
+        try {
+            const response = await fetch('http://localhost:8080/usuarios/verificar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ correo: email, contrasena: password })
+            });
 
-        const result = await response.json();
+            const result = await response.json();
 
-        if (response.ok) {
-            if (result.success) {
-                const correoVerificado = await verificarCorreo(email);
-                if (!correoVerificado) {
-                    alert('Por favor, verifica tu correo antes de iniciar sesión.');
-                    return; // Salir de la función si el correo no está verificado
+            if (response.ok) {
+                if (result.success) {
+                    const correoVerificado = await verificarCorreo(email);
+                    if (!correoVerificado) {
+                        alert('Por favor, verifica tu correo antes de iniciar sesión.');
+                        return; // Salir de la función si el correo no está verificado
+                    }
+                    document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
+                    console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
+                    window.location.href = 'datosYMapa.html';
+                } else {
+                    alert('Contraseña incorrecta');
                 }
-                document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
-                console.log(`id_usuario almacenado en cookie: ${result.id_usuario}`);
-                window.location.href = 'datosYMapa.html';
+            } else if (result.error === 'Usuario no existe') {
+                alert('El usuario no existe');
             } else {
-                alert('Contraseña incorrecta');
+                alert('Ocurrió un error inesperado');
             }
-        } else if (result.error === 'Usuario no existe') {
-            alert('El usuario no existe');
-        } else {
-            alert('Ocurrió un error inesperado');
+        } catch (error) {
+            console.error('Error al verificar el usuario:', error);
+            alert('Ocurrió un error al conectar con el servidor');
         }
-    } catch (error) {
-        console.error('Error al verificar el usuario:', error);
-        alert('Ocurrió un error al conectar con el servidor');
     }
-}
+});

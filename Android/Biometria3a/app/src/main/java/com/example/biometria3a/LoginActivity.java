@@ -25,22 +25,25 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
     private Button btnIniSesion;
-<<<<<<< Updated upstream
+
     private TextView txtLogin;
     private ImageView imgTogglePassword;
     private boolean isPasswordVisible = false;
-=======
-    private TextView txtLogin,xtOlvidarContrasena;
->>>>>>> Stashed changes
+
+    private TextView xtOlvidarContrasena;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnIniSesion = findViewById(R.id.btnIniSesion);
         txtLogin = findViewById(R.id.txtRegistrate);
-<<<<<<< Updated upstream
+
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
 
         imgTogglePassword.setOnClickListener(new View.OnClickListener() {
@@ -72,9 +75,9 @@ public class LoginActivity extends AppCompatActivity {
                 edtPassword.setSelection(edtPassword.getText().length());
             }
         });
-=======
+
         xtOlvidarContrasena = findViewById(R.id.txtOlvidarContrasena);
->>>>>>> Stashed changes
+
 
         // Configurar el botón de inicio de sesión
         btnIniSesion.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                 goToRegistroActivity();  // Llamamos al método que lleva a la actividad de inicio de sesión
             }
         });
+
 
         // Agregar esto en tu onCreate() después de los demás listeners
         xtOlvidarContrasena.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +133,20 @@ public class LoginActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+
+        // 在 onCreate 方法中
+        TextView txtOlvidarContrasena = findViewById(R.id.txtOlvidarContrasena);
+
+        // 在 txtOlvidarContrasena 的点击事件中调用 showForgotPasswordDialog
+        txtOlvidarContrasena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showForgotPasswordDialog(); // 先显示输入邮箱的弹窗
+            }
+        });
+
+
 
     }
     // Método para verificar si el correo es válido
@@ -247,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
-
+        verificarSensorAsignado(email);
         // Validar los campos
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Por favor, ingresa correo y contraseña.", Toast.LENGTH_SHORT).show();
@@ -264,6 +282,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Hacer la solicitud al servidor
         Call<JsonObject> call = apiService.loginUser(credentials);
+
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -274,17 +293,24 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (success) {
                         int userId = responseBody.get("id_usuario").getAsInt();
-                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. ID Usuario: " + userId, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        Log.d("LoginActivity", "ID de usuario: " + userId);
+                        // Guardar el correo en SharedPreferences
+                        saveUserEmailToSession(email);
+                        //String userRole = responseBody.get("rol").getAsString();
+                        //Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. Rol: " + userRole, Toast.LENGTH_SHORT).show();
+                       Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso. ID Usuario: " + userId, Toast.LENGTH_SHORT).show();
+                        //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                       // startActivity(intent);
                         saveUserIdToSession(userId);
 
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas, intenta de nuevo.", Toast.LENGTH_SHORT).show();
+                        Log.e("API Error", "Error al iniciar sesión. Código: " + response.code() + ", Mensaje: " + response.message());
+                        Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Credenciales incorrectos ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Código: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Error al iniciar sesión. Credenciales incorrectos ", Toast.LENGTH_SHORT).show();
+                    Log.e("API Error", "Error al iniciar sesión3. Código: " + response.code() + ", Mensaje: " + response.message());
                 }
             }
 
@@ -365,11 +391,206 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);  // Iniciamos la nueva actividad
     }
 
+    private void showForgotPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot_password, null);
+        builder.setView(dialogView);
+
+        EditText edtEmail = dialogView.findViewById(R.id.edtEmail);
+        Button btnSendCode = dialogView.findViewById(R.id.btnSendCode);
+
+        AlertDialog dialog = builder.create();
+
+        btnSendCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = edtEmail.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(LoginActivity.this, "Por favor, ingrese su correo electrónico.", Toast.LENGTH_SHORT).show();
+                } else {
+                    sendVerificationCode(email); // 发送验证码
+                    dialog.dismiss(); // 关闭当前的邮箱输入弹窗
+                    showResetPasswordDialog(); // 显示重置密码的弹窗
+                }
+            }
+        });
+
+        dialog.show();
+    }
+    private void showResetPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_reset_password, null);
+        builder.setView(dialogView);
+
+        EditText edtVerificationCode = dialogView.findViewById(R.id.edtVerificationCode);
+        EditText edtNewPassword = dialogView.findViewById(R.id.edtNewPassword);
+        Button btnResetPassword = dialogView.findViewById(R.id.btnResetPassword);
+
+        AlertDialog dialog = builder.create();
+
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String enteredCode = edtVerificationCode.getText().toString().trim();
+                String newPassword = edtNewPassword.getText().toString().trim();
+
+                // 获取保存的验证码
+                SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                String savedCode = sharedPreferences.getString("verificationCode", "");
+
+                if (TextUtils.isEmpty(enteredCode) || TextUtils.isEmpty(newPassword)) {
+                    Toast.makeText(LoginActivity.this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
+                } else if (enteredCode.equals(savedCode)) {
+                    // 获取用户的邮箱
+                    String email = sharedPreferences.getString("email", ""); // 假设你已在发送验证码时保存了邮箱
+                    if (TextUtils.isEmpty(email)) {
+                        Toast.makeText(LoginActivity.this, "Email no encontrado. Vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        resetPassword(email, newPassword);
+                        dialog.dismiss(); // 关闭重置密码弹窗
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Código de verificación incorrecto.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
+    private void resetPassword(String email, String newPassword) {
+        // 验证邮箱和新密码是否为空
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(newPassword)) {
+            Toast.makeText(LoginActivity.this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 创建请求体
+        HashMap<String, String> body = new HashMap<>();
+        body.put("correo", email); // 用户邮箱
+        body.put("nuevaContrasena", newPassword); // 用户的新密码
+
+        // 调用后端 API
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<Void> call = apiService.recuperarContrasena(body);
+
+        Log.d("API_REQUEST", "URL: " + call.request().url());
+        Log.d("API_REQUEST", "Body: " + body.toString());
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Contraseña actualizada correctamente.", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        Log.e("API_ERROR", "Response code: " + response.code());
+                        Log.e("API_ERROR", "Response body: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (response.code() == 404) {
+                        Toast.makeText(LoginActivity.this, "Usuario no encontrado.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Error al actualizar la contraseña. Código: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+
+
+
+    private void sendVerificationCode(String email) {
+        // 固定验证码为 "123456"
+        String verificationCode = "123456";
+        String subject = "Código de Verificación";
+        String message = "Tu código de verificación es: " + verificationCode;
+
+        // 将验证码和邮箱保存到 SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("verificationCode", verificationCode); // 保存验证码
+        editor.putString("email", email); // 保存邮箱
+        editor.apply();
+
+        // 使用 MailSender 类发送邮件
+        new MailSender(email, subject, message).execute();
+
+        Toast.makeText(this, "Código de verificación enviado a: " + email, Toast.LENGTH_SHORT).show();
+    }
+
+// 删除原来的随机生成方法，因为不再需要动态生成验证码。
+// 如果还需要保留，可以将 generateVerificationCode() 的返回值直接改为 "123456"。
+
+
+
     private void saveUserIdToSession(int userId) {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("userId", userId);
         editor.apply();
+    }
+
+
+    private void saveUserEmailToSession(String email) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userEmail", email);
+        editor.apply();
+    }
+    public void verificarSensorAsignado(String correo) {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<SensorResponse> call = apiService.obtenerSensorPorCorreo(correo);
+
+        call.enqueue(new Callback<SensorResponse>() {
+            @Override
+            public void onResponse(Call<SensorResponse> call, Response<SensorResponse> response) {
+                if (response.isSuccessful()) {
+                    SensorResponse sensorResponse = response.body();
+                    if (sensorResponse != null && sensorResponse.getId_sensor() != null) {
+                        // Si el usuario tiene un sensor asignado
+                        Toast.makeText(getApplicationContext(), "Sensor asignado: " + sensorResponse.getId_sensor(), Toast.LENGTH_LONG).show();
+                        // Redirigir a MainActivity si tiene un sensor asignado
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); // Cerrar LoginActivity
+                    } else {
+                        // Si no tiene un sensor asignado
+                        Toast.makeText(getApplicationContext(), "No tienes un sensor asignado.", Toast.LENGTH_LONG).show();
+                        // Redirigir a QRActivity si no tiene un sensor asignado
+                        Intent intent = new Intent(LoginActivity.this, QrActivity.class);
+                        startActivity(intent);
+                        finish(); // Cerrar LoginActivity
+
+                    }
+                } else {
+                    // Si hubo un error con la respuesta
+                    Toast.makeText(getApplicationContext(), "No tienes un sensor asignado.Por favor escanea el QR", Toast.LENGTH_LONG).show();
+                    // Redirigir a QRActivity si no tiene un sensor asignado
+                    Intent intent = new Intent(LoginActivity.this, QrActivity.class);
+                    startActivity(intent);
+                    finish(); // Cerrar LoginActivity
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SensorResponse> call, Throwable t) {
+                // Si hay un fallo en la conexión o en la solicitud
+                Toast.makeText(getApplicationContext(), "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

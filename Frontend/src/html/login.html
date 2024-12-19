@@ -31,7 +31,7 @@
 
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form>
+            <form autocomplete="off">
                 <h1>Crear cuenta</h1>
 				<!--  Añadir en caso de querer expandir la web
                <div class="social-icons">
@@ -41,21 +41,21 @@
     <a href="#" class="icon inactive"><i class="fa-brands fa-linkedin-in"></i></a>
 </div> -->
                 <span>Regístrate a continuación con tus datos</span>
-				<input type="text" required id="signUpName" placeholder="Nombre">
-				<input type="tel" id="signUpPhone" placeholder="Teléfono" maxlength="9" required>
+				<input type="text" required id="signUpName" placeholder="Nombre" autocomplete="off">
+				<input type="tel" id="signUpPhone" placeholder="Teléfono" maxlength="9" required autocomplete="off">
 
-                <input type="email" required id="signUpEmail" placeholder="Email">
+                <input type="email" required id="signUpEmail" placeholder="Email" autocomplete="off">
                <!-- <input type="password" required id="signUpPassword" placeholder="Contraseña"> <!-- AÑADIDO ID -->
 				
 				
 				<div class="password-strength-container">
     <div class="input__wrapper">
-                <input type="password" required id="signUpPassword" placeholder="Contraseña"> <!-- AÑADIDO ID -->
+                <input type="password" required id="signUpPassword" placeholder="Contraseña" autocomplete="off"> <!-- AÑADIDO ID -->
 		
         <img alt="Eye Icon" title="Eye Icon" src="../assets/eye.svg" class="input__icon" id="toggle-password-visibility">
     </div>
 					<!-- Segundo campo "Contraseña" para que se verifique que se ha escrito bien -->
-<input type="password" required id="signUpPasswordConfirm" placeholder="Repetir contraseña">
+<input type="password" required id="signUpPasswordConfirm" placeholder="Repetir contraseña" autocomplete="off">
 					
     <div class="password-strength">
         <p><span id="password-strength-text"></span></p>
@@ -94,7 +94,7 @@
             </form>
       </div>
         <div class="form-container sign-in">
-            <form>
+            <form autocomplete="off">
                 <h1>Iniciar sesión</h1>
 								
 				<!--  Añadir en caso de querer expandir la web
@@ -105,11 +105,11 @@
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div> -->
                 <span>Entra con tu email y contraseña</span>
-                <input type="email" required id="loginEmail" placeholder="Email">
+                <input type="email" required id="loginEmail" placeholder="Email" autocomplete="off">
 				
 				<div class="password-strength-container">
 				<div class="input__wrapper">
-    <input type="password" required id="loginPassword" placeholder="Contraseña">
+    <input type="password" required id="loginPassword" placeholder="Contraseña"  autocomplete="off">
     <img alt="Eye Icon" title="Eye Icon" src="../assets/eye.svg" class="input__icon" id="toggle-login-password-visibility">
 </div>
 				</div>
@@ -145,7 +145,7 @@
         <h3>¿Seguro que quieres cambiar la contraseña?</h3>
 		
             <p>Escribe el teléfono asociado a la cuenta de correo con la que intentas iniciar sesión.</p>
-            <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input">
+            <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input" autocomplete="off">
 			<button id="mandarCorreoNuevaContrasenya">Recuperar contraseña</button>
         	<button id="cancelBtn">Cancelar</button>
     </div>
@@ -172,7 +172,7 @@
 
 
 
-	<script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+	<!--<script src="../js/menu.js"></script>  Archivo JS para que funcione el menú de hamburguesa -->
 
 <script src="../js/login.js"></script>
 	<script src="../js/contrasenya-segura.js"></script>

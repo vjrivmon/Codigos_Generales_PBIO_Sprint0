@@ -108,14 +108,13 @@
             <div class="sensors">
                 <h3>Mis sensores</h3>
                 <div class="sensor-info">
-                    <p>Nombre: <input type="text" placeholder="Nombre del sensor" value="Manolito" required disabled id="sensorName"></p>
-                    <p>Dirección MAC: <input type="tel" placeholder="ID del sensor" value="1234567879123" required disabled></p>
-                    <p>Ubicación: <input type="text" placeholder="Ubicación" value="Gandía playa" required disabled></p>
+                    <p>Nombre: <input type="text" placeholder="Nombre del sensor" value="Elige un nombre para el sensor" required disabled id="sensorName"></p>
+                    <p>Dirección MAC: <input type="tel" placeholder="ID del sensor" value="AA:AA:AA:AA:AA:AA" required disabled></p>
+                    <p>Ultima ubicación registrada en: <input type="text" placeholder="Ubicación" value="Grau i platja de Gandía" required disabled></p>
                 </div>
-                <div class="pagination">
-                    <button>&larr;</button>
-                    <span>1 de 3</span>
-                    <button>&rarr;</button>
+                
+                <div class="info-item" id="contenedorEditBtn">
+                    <button id="editBtn_sensor" class="edit-button" style="width: 50%;">Editar</button>
                 </div>
             </div>
         </div>
@@ -172,7 +171,7 @@
     <script src="../js/menu.js"></script>
     <script src="../js/editarPerfil.js"></script>
     <script src="../js/popupOlvidarContrasenyaPerfil.js"></script>
-    <script src="../js/telf.js"></script>
+    <script src="../js/telfPerfil.js"></script>
     <script src="../js/cerrarSesion.js"></script>
     
 </body>

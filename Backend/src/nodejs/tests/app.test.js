@@ -31,7 +31,8 @@ const {
   ConsultarBaseDeDatos, // Función para consultar toda la base de datos
   verificarUsuario, // Función para verificar un usuario y su contraseña
   recuperarContrasena, // Función para recuperar la contraseña del usuario
-  editarDatosUsuario // Función para editar los datos del usuario
+  editarDatosUsuario, // Función para editar los datos del usuario
+  asociarSensorAUsuario // Importar la función para asociar un sensor a un usuario
 } = require('../servidorREST'); // Importar las funciones de servidorREST
 
 /**
@@ -63,6 +64,7 @@ app.put('/usuarios', async (req, res) => {
   console.log('Datos para actualizar el usuario:', updateUser);
   await editarDatosUsuario(req, res); // Llama a la función de servidorREST para actualizar los datos del usuario
 });
+app.post('/asociar-sensor', asociarSensorAUsuario); // Ruta para asociar un sensor a un usuario
 
 /**
  * @file app-test.js
@@ -92,8 +94,10 @@ describe('API REST Tests', () => {
   test('GET /mediciones/:id_sensor - debería devolver mediciones para un sensor', async () => {
     await runTest('GET /mediciones/:id_sensor', async () => {
       const response = await request(app).get('/mediciones/00:1A:2B:3M:4D:5E');
+      console.log('Respuesta del servidor:', response.body);
+      console.log('Estado de respuesta del servidor:', response.statusCode);
       expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
-      expect(response.body).toBeInstanceOf(Array); // La respuesta debe ser un array
+      expect(Array.isArray(response.body)).toBe(true); // La respuesta debe ser un array
     });
   }, 10000);
 
@@ -103,11 +107,11 @@ describe('API REST Tests', () => {
   test('POST /mediciones - debería agregar una nueva medicion', async () => {
     await runTest('POST /mediciones', async () => {
       const newMeasurement = { // Datos para la nueva medición
+        id_sensor: '00:1A:2B:3M:4D:5E',
         fecha_hora: '2024-11-21 14:00:00',
         ubicacion: { latitud: 40.416775, longitud: -3.703790 },
-        tipo: 'valorO3',
+        tipo_medicion: 'O3',
         valor: 10.00,
-        id_sensor: '00:1A:2B:3M:4D:5E'
       };
       console.log('Datos de la nueva medición para el test:', newMeasurement);
       const response = await request(app).post('/mediciones').send(newMeasurement);
@@ -124,7 +128,6 @@ describe('API REST Tests', () => {
   test('POST /usuarios - debería agregar un nuevo usuario', async () => {
     await runTest('POST /usuarios', async () => {
       const newUser = { // Datos para el nuevo usuario
-        id: 6,
         nombre: 'Test',
         telefono: '123456789',
         correo: 'test@correo.com',
@@ -140,7 +143,6 @@ describe('API REST Tests', () => {
       expect(response.statusCode).toBe(201); // El estado de respuesta debe ser 201
       // Verificar las propiedades individuales, excluyendo la contraseña
       expect(response.body).toMatchObject({
-        id: newUser.id,
         nombre: newUser.nombre,
         telefono: newUser.telefono,
         correo: newUser.correo
@@ -267,7 +269,7 @@ describe('API REST Tests', () => {
    */
     test('DELETE /usuarios/:id_usuario - debería eliminar un usuario', async () => {
       await runTest('DELETE /usuarios/:id_usuario', async () => {
-        const response = await request(app).delete('/usuarios/6');
+        const response = await request(app).delete('/usuarios/8');
         if (response.statusCode === 200) { // Si el estado de respuesta es 200, verificar el mensaje
           expect(response.text).toBe('Usuario eliminado correctamente'); // El mensaje debe ser "Usuario eliminado correctamente"
         } else { // Si el estado de respuesta no es 200, verificar el mensaje
@@ -276,5 +278,28 @@ describe('API REST Tests', () => {
         }
       });
     }, 10000);
+
+  /**
+   * @test POST /asociar-sensor - debería asociar un sensor a un usuario, creando el sensor si no existe
+   */
+  test('POST /asociar-sensor - debería asociar un sensor a un usuario, creando el sensor si no existe', async () => {
+    await runTest('POST /asociar-sensor', async () => {
+      const associationData = { // Datos para la asociación
+        correo: 'nuevo@correo.com',
+        id_sensor: 'AA:BB:CC:DD:EE:FF',
+        nombre: 'Sensor de prueba', // Cambiado a 'nombre' para coincidir con el código
+        funciona: true,
+      };
+      console.log('Datos para asociar el sensor:', associationData);
+      const response = await request(app).post('/asociar-sensor').send(associationData);
+      console.log('Respuesta del servidor:', response.body);
+      console.log('Estado de respuesta del servidor:', response.statusCode);
+      if (response.statusCode !== 200) {
+        console.error('Error del servidor:', response.body);
+      }
+      expect(response.statusCode).toBe(200); // El estado de respuesta debe ser 200
+      expect(response.text).toBe('Sensor asociado al usuario correctamente'); // El mensaje debe ser "Sensor asociado al usuario correctamente"
+    });
+  }, 10000);
   
 });

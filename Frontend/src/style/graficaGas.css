@@ -2,41 +2,62 @@
     border: 2px solid var(--button-color);
     border-radius: 15px;
 }
-#graficaGas{
-    border: 1px solid black; 
-    border-radius: 10px; 
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
-    width: 90%; 
-    margin-left: 5%; 
-    margin-right: 5%; 
-    padding: 5px;
-    background-color: rgba(255, 255, 255, 0.1); 
+
+#graficaGas {
+    flex: 2; /* Espacio relativo menor que el mapa */
+    width: 100%; 
+    max-width: 500px;
+    height: 50vh; /* Altura proporcional al viewport */
+    min-height: 400px;
+    max-height: 400px;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    border-radius: 33px;
+    background-color: rgba(255, 255, 255, 1); 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
 }
+
 #info-box-grafica {
-    position: absolute;
-    top: 750px;
-    left: 150px;
-    width: 280px;
-    height: auto;
+    flex: 1; /* Espacio más reducido */
+    width: 100%;
+    min-width: 300px;
+    height: 50vh;
+    min-height: 400px;
+    max-height: 600px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 1); 
     border-radius: 33px;
-    border: 3px solid rgba(0, 0, 0, 0.1); 
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5); 
-    color: var(--text-color); 
-   
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
     font-size: 1em;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-    z-index: 1000;
+    color: var(--text-color); 
 }
 
-#info-box-grafica:hover {
+
+#info-box-grafica select  {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid lightgray;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+    min-width: 150px; /* Garantiza un tamaño mínimo consistente */
+
+  }
+  
+
+/*#info-box-grafica:hover {
     transform: scale(1.05); 
     box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.7);
     background-color: rgba(255, 255, 255, 0.1); 
-}
+}*/
 #info-box-grafica h4 {
     font-size: 1.2rem;
+    text-align: center;
     margin-bottom: 10px;
     color: var(--text-color); 
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); 
@@ -67,4 +88,108 @@
     background-color: white;
   border: 2px solid var(--button-color);
   color: var(--text-color);
+}
+.ancho{
+    width: 100%;
+    margin-bottom: 10px;
+}
+.ver_mas_info {
+    padding: 10px 20px;
+    border-radius: 33px;
+    text-decoration: none;
+    margin-left: 0;
+    margin-top: 1rem;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    background-color: var(--button-color);
+    border: 2px solid var(--button-color);
+    color: white;
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+  
+  .ver_mas_info:hover {
+    background-color: white;
+    border: 2px solid var(--button-color);
+    color: var(--text-color);
+  }
+.btn-ver-valores {
+    display: block; /* Asegura que el botón se comporte como un bloque */
+    margin: 15px auto; /* 15px de margen arriba y abajo, centrado horizontalmente */
+    text-align: center; /* Centra el texto dentro del botón */
+    padding: 10px 20px; /* Ajusta el padding según sea necesario */
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    background-color: var(--button-color);
+    border: 2px solid var(--button-color);
+    color: white;
+    width: 20%; /* Ajusta el ancho según sea necesario */
+}
+
+#map {
+    flex: 3; /* Ocupa mayor espacio en relación a los demás */
+    width: 100%; /* Asegura que siempre se ajuste al contenedor */
+    max-width: 600px; /* Límite para pantallas grandes */
+    height: 50vh; /* Altura basada en el viewport */
+    min-height: 400px; /* Altura mínima */
+    max-height: 600px; /* Altura máxima */
+    background-color: rgba(255, 255, 255, 1); 
+    border-radius: 33px;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+
+.contenedor-responsive {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite que los elementos bajen en pantallas pequeñas */
+    gap: 20px; /* Espacio entre elementos */
+    padding: 20px 2rem;
+    margin: 0 2rem;
+    justify-content: center; /* Centra los elementos en pantallas grandes */
+}
+
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 550) {
+    .contenedor-responsive {
+        flex-direction: column; /* Cambia a una columna para pantallas pequeñas */
+        gap: 20px; /* Aumenta el espacio entre elementos */
+        padding: 10px; /* Reduce el padding general */
+        margin: 0; /* Quita márgenes laterales */
+    }
+
+    #info-box-grafica {
+        width: 100%; /* Toma todo el ancho disponible */
+        max-width: none; /* Anula el ancho máximo */
+        font-size: 0.9em; /* Reduce el tamaño del texto */
+    }
+
+    #graficaGas {
+        width: 100%; /* Asegura que ocupe todo el ancho */
+        height: 300px; /* Reduce la altura para pantallas pequeñas */
+        max-width: none;
+    }
+
+    #map {
+        width: 100%; /* Se adapta al ancho completo */
+        height: 300px; /* Ajusta la altura del mapa */
+        min-width: 100%;
+        max-width: none;
+        min-height: 300px; /* Altura mínima para evitar que sea demasiado pequeño */
+    }
+
+
+    .ver_mas_info {
+        font-size: 0.9em; /* Reduce ligeramente el tamaño del texto */
+        padding: 8px 15px; /* Ajusta padding */
+    }
 }
