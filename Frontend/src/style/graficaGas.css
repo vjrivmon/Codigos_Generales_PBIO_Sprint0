@@ -7,9 +7,8 @@
     flex: 2; /* Espacio relativo menor que el mapa */
     width: 100%; 
     max-width: 500px;
-    height: 55vh; /* Altura proporcional al viewport */
-    min-height: 400px;
-    max-height: 600px;
+    height: 436px;
+    max-height: 476px; 
     border: 1px solid rgba(0, 0, 0, 0.1); 
     border-radius: 33px;
     background-color: rgba(255, 255, 255, 1); 
@@ -173,11 +172,7 @@
         font-size: 0.9em; /* Reduce el tamaño del texto */
     }
 
-    #graficaGas {
-        width: 100%; /* Asegura que ocupe todo el ancho */
-        height: 55vh; /* Reduce la altura para pantallas pequeñas */
-        max-width: none;
-    }
+    
 
     #map {
         width: 100%; /* Se adapta al ancho completo */

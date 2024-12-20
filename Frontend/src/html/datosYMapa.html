@@ -7,7 +7,7 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 
-    <!-- 引入外部样式表 -->
+    
   <!-- Estilos -->
   <link rel="stylesheet" href="../style/datosyMapas.css"/>
   <link rel="stylesheet" href="../style/styles.css">
@@ -78,7 +78,7 @@
           <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i> Temperatura: 10 ºC</p>
            
           <a href="infoExtra.html" class="boton">Mas información</a>
-          <a class="boton">Actualizar Datos Oficiales</a>
+          <a id="actualizar-datos" class="boton">Actualizar Datos Oficiales</a>
       </div>
       <canvas id="graficaGas"></canvas>
       <div id="map"></div>
@@ -135,6 +135,11 @@
 
   // Llamar a la función para inicializar la batería
   actualizarBateria();
+
+  // Add event listener to the "Actualizar Datos Oficiales" button
+  document.getElementById('actualizar-datos').addEventListener('click', function() {
+    location.reload();
+  });
 </script>
 
    <script src="../js/datosyMapas.js"></script>
