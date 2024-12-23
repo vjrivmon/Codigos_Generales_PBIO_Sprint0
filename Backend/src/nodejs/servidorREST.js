@@ -1217,20 +1217,26 @@ async function generarDatosSinteticosParaSensores() {
       return (Math.random() * (max - min) + min).toFixed(2);
   }
 
+  function getRandomDate(start, end) {
+      return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  }
+
   const datos = [];
-  const fechaBase = new Date('2024-01-17T12:00:00');
+  const fechaInicio = new Date('2025-01-10T00:00:00');
+  const fechaFin = new Date('2025-01-17T23:59:59');
 
   for (let i = 0; i < sensores.length; i++) {
-      for (let j = 0; j < 8; j++) {
+      for (let j = 0; j < 25; j++) { // 25 bloques de 4 mediciones para cada sensor
           const sensor = sensores[i];
-          const fecha_hora = new Date(fechaBase.getTime() - j * 60 * 60 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+          const fecha_hora = getRandomDate(fechaInicio, fechaFin).toISOString().replace('T', ' ').substring(0, 19);
           const latitud = getRandomCoordinate(puntos[3].lat, puntos[1].lat);
           const longitud = getRandomCoordinate(puntos[0].lon, puntos[2].lon);
           const ubicacion = `{"latitud": ${latitud}, "longitud": ${longitud}}`;
-          const tipo_medicion = tiposMedicion[Math.floor(Math.random() * tiposMedicion.length)];
-          const valor = getRandomValue(umbrales[tipo_medicion][0], umbrales[tipo_medicion][1]);
 
-          datos.push([sensor, fecha_hora, ubicacion, tipo_medicion, valor]);
+          for (let tipo of tiposMedicion) {
+              const valor = getRandomValue(umbrales[tipo][0], umbrales[tipo][1]);
+              datos.push([sensor, fecha_hora, ubicacion, tipo, valor]);
+          }
       }
   }
 
