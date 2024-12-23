@@ -4,211 +4,201 @@
     <title>Mapa de calidad del aire | VIMYP</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 
-    
-  <!-- Estilos -->
-  <link rel="stylesheet" href="../style/datosyMapas.css"/>
-  <link rel="stylesheet" href="../style/styles.css">
-  <link rel="stylesheet" href="../style/graficaGas.css">
-  <link rel="stylesheet" href="../style/popupCerrarSesion.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../style/datosyMapas.css"/>
+    <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/graficaGas.css">
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-  <!-- Librerías -->
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-<style>
-  .refresh-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #395886;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, background-color 0.3s;
-}
+    <!-- Librerías -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <style>
+        .refresh-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #395886;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, background-color 0.3s;
+        }
 
-.refresh-btn:hover {
-  background-color: #0056b3;
-}
+        .refresh-btn:hover {
+            background-color: #0056b3;
+        }
 
-.refresh-btn i {
-  color: white;
-  font-size: 24px;
-}
+        .refresh-btn i {
+            color: white;
+            font-size: 24px;
+        }
 
-.refresh-btn.active {
-  animation: rotate 0.8s linear;
-}
+        .refresh-btn.active {
+            animation: rotate 0.8s linear;
+        }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-</style>
-
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <header>
     <nav class="navbar">
-      <div class="logo">
-        <a href="../index.html">
-          <img src="../img/logo.svg" alt="Logotipo VIMYP" />
-          <span>VIMYP</span>
-        </a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="packs.html">Packs</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="nosotros.html">Nosotros</a></li>
-        <li><a href="infoExtra.html">Info sobre los gases</a></li>
-        <li><a href="QRCode.html">Añadir dispositivo</a></li>
-		  <li><a href="perfil.html">Mi perfil</a></li>
-      </ul>
-      <div class="nav-buttons">
-        <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
-        <div class="menu-toggle" id="mobile-menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+        <div class="logo">
+            <a href="../index.html">
+                <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                <span>VIMYP</span>
+            </a>
         </div>
-      </div>
+        <ul class="nav-links">
+            <li><a href="packs.html">Packs</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="infoExtra.html">Info sobre los gases</a></li>
+            <li><a href="QRCode.html">Añadir dispositivo</a></li>
+            <li><a href="perfil.html">Mi perfil</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
     </nav>
-  </header>
+</header>
 <body>
-  <h3>Calidad del aire en tu zona en tiempo real</h3>
+    <h3>Calidad del aire en tu zona en tiempo real</h3>
     <div class="contenedor-responsive">
-      <div id="info-box-grafica">
-          <h4>Datos de mi sensor</h4>
-          <!-- Añadido el apartado de batería -->
-          <div id="battery-status">
-            <i class="fas fa-battery-full"></i> 
-            <span id="battery-percentage">Batería: 87%</span>
+        <div id="info-box-grafica">
+            <h4>Datos de mi sensor</h4>
+            <!-- Añadido el apartado de batería -->
+            <div id="battery-status">
+                <i class="fas fa-battery-full"></i> 
+                <span id="battery-percentage">Batería: 87%</span>
+            </div>
+            <select id="fecha-selector" class="ancho">
+                <option value="2024-12-13" selected>13/12/2024</option>
+                <option value="2024-12-12">12/12/2024</option>
+                <option value="2024-12-11">11/12/2024</option>
+                <option value="2024-12-10">10/12/2024</option>
+                <option value="2024-12-09">09/12/2024</option>
+            </select>
+            <select id="gas-selector" class="ancho">
+                <option value="Todos" selected>Todos los gases</option>
+                <option value="O3">O3</option>
+                <option value="SO3">SO3</option>
+                <option value="NO2">NO2</option>
+                <option value="Temperatura">Temperatura</option>
+            </select>
+            <p>Valores Medios</p>
+            <p id="media-O3"><i class="fas fa-cloud"></i> O3: 10 ppm</p>
+            <p id="media-NO2"><i class="fas fa-cloud"></i> NO2: 10 ppm</p>
+            <p id="media-SO3"><i class="fas fa-cloud"></i> SO3: 10 ppm</p>
+            <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i> Temperatura: 10 ºC</p>
+            <a href="infoExtra.html" class="boton">Mas información</a>
+            <!--<a class="boton">Actualizar Datos Oficiales</a>-->
+            <div id="refresh-button" class="refresh-btn">
+                <i class="fas fa-sync-alt"></i>
+            </div>
         </div>
-          <select id="fecha-selector" class="ancho">
-              <option value="2024-12-13" selected>13/12/2024</option>
-              <option value="2024-12-12">12/12/2024</option>
-              <option value="2024-12-11">11/12/2024</option>
-              <option value="2024-12-10">10/12/2024</option>
-              <option value="2024-12-09">09/12/2024</option>
-          </select>
-          <select id="gas-selector" class="ancho">
-              <option value="Todos" selected>Todos los gases</option>
-              <option value="O3">O3</option>
-              <option value="SO3">SO3</option>
-              <option value="NO2">NO2</option>
-              <option value="Temperatura">Temperatura</option>
-          </select>
-          <p>Valores Medios</p>
-          <p id="media-O3"><i class="fas fa-cloud"></i> O3: 10 ppm</p>
-          <p id="media-NO2"><i class="fas fa-cloud"></i> NO2: 10 ppm</p>
-          <p id="media-SO3"><i class="fas fa-cloud"></i> SO3: 10 ppm</p>
-          <p id="media-Temperatura"><i class="fa-solid fa-temperature-low"></i> Temperatura: 10 ºC</p>
-           
-          <a href="infoExtra.html" class="boton">Mas información</a>
-          <!--<a class="boton">Actualizar Datos Oficiales</a>-->
-          <div id="refresh-button" class="refresh-btn">
-            <i class="fas fa-sync-alt"></i>
-          </div>
-          
-          
-      </div>
-      <canvas id="graficaGas"></canvas>
-      <div id="map"></div>
-  </div>
-  
-    
+        <canvas id="graficaGas"></canvas>
+        <div id="map"></div>
+    </div>
+    <footer class="apple-footer">
+        <div class="footer-top">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
+                    <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
+                    <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
+                    <li><a href="avisosLegales.html">Avisos Legales</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP&nbsp; -&nbsp; Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
-  
-   <footer class="apple-footer">
-    <div class="footer-top">
-        <div class="footer-links">
-            <ul>
-                <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
-                <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
-                <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
-                <li><a href="avisosLegales.html">Avisos Legales</a></li>
-            </ul>
+    <!-- Popup para cerrar sesión -->
+    <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
         </div>
     </div>
-    <div class="footer-bottom">
-        <p>Copyright © 2024 VIMYP&nbsp; -&nbsp; Todos los derechos reservados.</p>
-    </div>
-</footer>
 
- <!-- Popup para cerrar sesión -->
- <div id="popup-cerrar-sesion" class="popup">
-  <div class="popup-content">
-      <p>¿Seguro que quieres cerrar la sesión?</p>
-      <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
-      <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
-  </div>
-</div>
+    <!-- Script para actualizar el porcentaje de la batería -->
+    <script>
+        // Simulación de actualización de batería (puedes sustituirlo con datos reales del sensor)
+        function actualizarBateria() {
+            const batteryPercentage = 87; // Ejemplo de porcentaje de batería (puedes obtenerlo de tu sensor)
+            const batteryElement = document.getElementById("battery-percentage");
+            
+            // Actualizar el texto del porcentaje de batería
+            batteryElement.textContent = `Batería: ${batteryPercentage}%`;
 
- <!-- Script para actualizar el porcentaje de la batería -->
- <script>
-  // Simulación de actualización de batería (puedes sustituirlo con datos reales del sensor)
-  function actualizarBateria() {
-      const batteryPercentage = 87; // Ejemplo de porcentaje de batería (puedes obtenerlo de tu sensor)
-      const batteryElement = document.getElementById("battery-percentage");
-      
-      // Actualizar el texto del porcentaje de batería
-      batteryElement.textContent = `Batería: ${batteryPercentage}%`;
+            // Aquí podrías agregar lógica para cambiar el icono según el nivel de batería
+            // Por ejemplo, cambiar el icono si la batería está baja:
+            if (batteryPercentage < 20) {
+                document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-quarter");
+            } else if (batteryPercentage < 50) {
+                document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-half");
+            } else {
+                document.querySelector("#battery-status i").classList.replace("fa-battery-quarter", "fa-battery-full");
+            }
+        }
 
-      // Aquí podrías agregar lógica para cambiar el icono según el nivel de batería
-      // Por ejemplo, cambiar el icono si la batería está baja:
-      if (batteryPercentage < 20) {
-          document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-quarter");
-      } else if (batteryPercentage < 50) {
-          document.querySelector("#battery-status i").classList.replace("fa-battery-full", "fa-battery-half");
-      } else {
-          document.querySelector("#battery-status i").classList.replace("fa-battery-quarter", "fa-battery-full");
-      }
-  }
+        // Llamar a la función para inicializar la batería
+        actualizarBateria();
 
-  // Llamar a la función para inicializar la batería
-  actualizarBateria();
+        // Add event listener to the "Actualizar Datos Oficiales" button
+        document.getElementById('actualizar-datos').addEventListener('click', function() {
+            location.reload();
+        });
+    </script>
 
-  // Add event listener to the "Actualizar Datos Oficiales" button
-  document.getElementById('actualizar-datos').addEventListener('click', function() {
-    location.reload();
-  });
-</script>
-
-   <script src="../js/datosyMapas.js"></script>
-	 <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
-   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><!-- Archivo JS para librerias de graficas -->
-   <script src="../js/graficaGas.js"></script>
+    <!-- Librerías -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><!-- Archivo JS para librerias de graficas -->
+    <script src="../js/datosyMapas.js"></script>
+    <script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+    <script src="../js/graficaGas.js"></script>
     <script src="../js/popupCerrarSesion.js"></script>
     <script src="../js/cerrarSesion.js"></script>
 
-<script>
-  document.getElementById('refresh-button').addEventListener('click', function () {
-  const button = this;
+    <script>
+        document.getElementById('refresh-button').addEventListener('click', function () {
+            const button = this;
 
-  // Añade la clase "spin" para activar la animación
-  button.classList.add('spin');
+            // Añade la clase "spin" para activar la animación
+            button.classList.add('spin');
 
-  // Simula la actualización de los datos
-  setTimeout(() => {
-    button.classList.remove('spin'); // Elimina la clase "spin" después de 2 segundos
-    alert('Datos actualizados correctamente.');
-  }, 2000);
-});
-
-</script>
-
-
+            // Simula la actualización de los datos
+            setTimeout(() => {
+                button.classList.remove('spin'); // Elimina la clase "spin" después de 2 segundos
+                alert('Datos actualizados correctamente.');
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
