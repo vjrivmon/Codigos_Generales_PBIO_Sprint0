@@ -26,7 +26,9 @@ const {
   enviarCorreoRestablecerContrasena,
   asociarSensorAUsuario,
   obtenerSensorPorCorreo,
-  editarNombreSensor // Importar la nueva función
+  editarNombreSensor,
+  generarYGuardarDatosSinteticos,
+  insertarDatosSinteticos
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 
 // Middleware para procesar JSON
@@ -49,9 +51,9 @@ router.post('/restablecer-contrasena', enviarCorreoRestablecerContrasena);
 router.post('/recuperar-contrasena', enviarCorreoRecuperarContrasena);
 router.post('/asociar_dispositivo', asociarSensorAUsuario);
 router.put('/sensores/:id_sensor', editarNombreSensor);
-// Ruta para obtener el sensor asociado al correo del usuario
+router.get('/base-datos', ConsultarBaseDeDatos);
 router.get('/obtenerSensorPorCorreo/:correo', obtenerSensorPorCorreo);
- // Nueva ruta para editar el nombre del sensor
+router.post('/insertar-datos-sinteticos', insertarDatosSinteticos);
 
 // Swagger Setup
 const swaggerOptions = {

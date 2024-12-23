@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 //const enviarCorreo = require('./emailCrearUsuarioNuevo'); // Asegúrate de que la ruta sea correcta
 const nodemailer = require('nodemailer');
-
+const fs = require('fs');
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
@@ -1187,6 +1187,85 @@ const editarNombreSensor = async (req, res) => {
     }
 };
 
+async function generarDatosSinteticosParaSensores() {
+  const sensores = [
+      '00:1A:2B:3M:4D:5E',
+      '11:2B:2X:3L:4K:5F',
+      '22:3C:2T:3U:4H:5G',
+      '33:4A:2R:3Q:4G:5H',
+      '09:20:21:01:04:03'
+  ];
+  const tiposMedicion = ['SO3', 'NO2', 'O3', 'Temperatura'];
+  const umbrales = {
+      'SO3': [50, 100],
+      'NO2': [60, 120],
+      'O3': [130, 200],
+      'Temperatura': [15, 30]
+  };
+  const puntos = [
+      { lat: 39.01810060621549, lon: -0.18162830452004086 },
+      { lat: 39.02097808802224, lon: -0.17507040635569954 },
+      { lat: 38.996021545908675, lon: -0.15585276580706064 },
+      { lat: 38.99576319630499, lon: -0.16683205471027718 }
+  ];
+
+  function getRandomCoordinate(min, max) {
+      return (Math.random() * (max - min) + min).toFixed(6);
+  }
+
+  function getRandomValue(min, max) {
+      return (Math.random() * (max - min) + min).toFixed(2);
+  }
+
+  const datos = [];
+  const fechaBase = new Date('2024-01-17T12:00:00');
+
+  for (let i = 0; i < sensores.length; i++) {
+      for (let j = 0; j < 8; j++) {
+          const sensor = sensores[i];
+          const fecha_hora = new Date(fechaBase.getTime() - j * 60 * 60 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+          const latitud = getRandomCoordinate(puntos[3].lat, puntos[1].lat);
+          const longitud = getRandomCoordinate(puntos[0].lon, puntos[2].lon);
+          const ubicacion = `{"latitud": ${latitud}, "longitud": ${longitud}}`;
+          const tipo_medicion = tiposMedicion[Math.floor(Math.random() * tiposMedicion.length)];
+          const valor = getRandomValue(umbrales[tipo_medicion][0], umbrales[tipo_medicion][1]);
+
+          datos.push([sensor, fecha_hora, ubicacion, tipo_medicion, valor]);
+      }
+  }
+
+  return datos;
+}
+
+async function insertarDatosSinteticos() {
+  const datosSinteticos = await generarDatosSinteticosParaSensores();
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    // Escapa los valores correctamente.
+    const values = datosSinteticos
+      .map(
+        ([id_sensor, fecha_hora, ubicacion, tipo_medicion, valor]) =>
+          `('${id_sensor}', '${fecha_hora}', '${ubicacion.replace(/'/g, "\\'")}', '${tipo_medicion}', ${valor})`
+      )
+      .join(',');
+
+    const query = `INSERT INTO mediciones (id_sensor, fecha_hora, ubicacion, tipo_medicion, valor) VALUES ${values}`;
+
+    await connection.query(query);
+    console.log('Datos sintéticos insertados en la base de datos correctamente');
+  } catch (err) {
+    console.error('Error al insertar los datos sintéticos en la base de datos:', err);
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+}
+
+insertarDatosSinteticos();
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -1210,6 +1289,7 @@ module.exports = {
   enviarCorreoParaRestablecerContrasena,
   asociarSensorAUsuario,
   obtenerSensorPorCorreo,
-  editarNombreSensor
+  editarNombreSensor,
+  insertarDatosSinteticos
 };
 
