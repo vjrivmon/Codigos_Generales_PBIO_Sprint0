@@ -109,14 +109,45 @@ async function agregarChinchetas(id_sensor) {
 
         mediciones.forEach(m => {
             const unidad = m.tipo_medicion === 'Temperatura' ? 'ºC' : 'ppm';
-            popupContent += `<i class="${iconos[m.tipo_medicion]}"></i> ${m.tipo_medicion}: ${m.valor} ${unidad}<br>`;
+            const color = getColorForValue(calcularCalidadAire(m));
+
+            if (unidad === 'ppm') {
+                popupContent += `<i class="${iconos[m.tipo_medicion]}"></i> ${m.tipo_medicion}: <span style="color:${color}; font-weight:bold;">${m.valor}</span> ${unidad}<br>`;
+            } else {
+                popupContent += `<i class="${iconos[m.tipo_medicion]}"></i> ${m.tipo_medicion}: ${m.valor} ${unidad}<br>`;
+            }
         });
+
+        popupContent += `
+        <a href="infoExtra.html" 
+            style="
+                padding: 10px 20px; 
+                border-radius: 33px; 
+                text-decoration: none; 
+                margin-left: 0; 
+                margin-top: 1rem; 
+                font-size: 1em; 
+                font-weight: bold; 
+                transition: background-color 0.3s, color 0.3s; 
+                cursor: pointer; 
+                background-color: rgb(57, 88, 134); 
+                border: 2px solid rgb(57, 88, 134); 
+                color: white; 
+                width: 100%; 
+                display: block; 
+                text-align: center;"
+            onmouseover="this.style.backgroundColor='white'; this.style.color='rgb(57, 88, 134)';"
+            onmouseout="this.style.backgroundColor='rgb(57, 88, 134)'; this.style.color='white';">
+            Más información
+        </a>`;
+    
 
         L.marker(latLng).addTo(chinchetasLayer).bindPopup(popupContent);
     });
 
     return chinchetasLayer;
 }
+
 
 function interpolateData(datos) {
     // Implementar la interpolación espacial (por ejemplo, IDW o Kriging)
