@@ -6,9 +6,11 @@ const fechaSelector = document.getElementById('fecha-selector');
 const graficaSelector = document.getElementById('gas-selector');
 let mediciones = []; // Almacén local de todas las mediciones
 let grafica; // Variable global para almacenar la instancia de la gráfica
-const tipo = graficaSelector.value; // Tipo de gas seleccionado por defecto
+const tipo = 'Todos'; // Tipo de gas seleccionado por defecto
 console.log('Tipo seleccionado:', tipo);
-const fecha = fechaSelector.value; // Fecha seleccionada por defecto
+// Para cuando sean los días del sprint, descomentar la siguiente línea y comentar la línea 11
+//const fecha = new Date().toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
+const fecha = '2025-01-10'; // Fecha actual en formato YYYY-MM-DD
 console.log('Fecha seleccionada:', fecha);
 
 // Obtener la MAC del sensor del usuario
@@ -30,6 +32,7 @@ function obtenerMacSensor() {
         })
         .catch(error => console.error("Error al obtener la MAC del sensor:", error));
 }
+
 // Obtener todas las mediciones del sensor
 function cargarMediciones(id_sensor) {
     fetch(`http://localhost:8080/mediciones/${id_sensor}`)
@@ -48,13 +51,7 @@ function cargarMediciones(id_sensor) {
 
 // Filtrar mediciones por fecha seleccionada
 function filtrarMediciones(fecha, tipo) {
-    const datosFiltrados = [];
-
-    for (const item of mediciones) {
-      if (item.fecha_hora.startsWith(fecha)) {
-        datosFiltrados.push(item);
-      }
-    }
+    const datosFiltrados = mediciones.filter(item => item.fecha_hora.startsWith(fecha));
     
     console.log(`Datos filtrados para la fecha ${fecha}:`, datosFiltrados);
 
@@ -62,22 +59,12 @@ function filtrarMediciones(fecha, tipo) {
         console.log('No se encontraron datos para la fecha seleccionada.');
         return;
     }
-    const datosFiltradosO3 = [];
-    const datosFiltradosNO2 = [];
-    const datosFiltradosSO3 = [];
-    const datosFiltradosTemperatura = [];
-    
-    for (const item of datosFiltrados) {
-      if (item.tipo_medicion === 'O3') {
-        datosFiltradosO3.push(item);
-      } else if (item.tipo_medicion === 'NO2') {
-        datosFiltradosNO2.push(item);
-      } else if (item.tipo_medicion === 'SO3') {
-        datosFiltradosSO3.push(item);
-      } else if (item.tipo_medicion === 'Temperatura') {
-        datosFiltradosTemperatura.push(item);
-      }
-    }
+
+    const datosFiltradosO3 = datosFiltrados.filter(item => item.tipo_medicion === 'O3');
+    const datosFiltradosNO2 = datosFiltrados.filter(item => item.tipo_medicion === 'NO2');
+    const datosFiltradosSO3 = datosFiltrados.filter(item => item.tipo_medicion === 'SO3');
+    const datosFiltradosTemperatura = datosFiltrados.filter(item => item.tipo_medicion === 'Temperatura');
+
     // Mostrar los datos filtrados en la consola
     console.log(`Datos filtrados por O3 :`, datosFiltradosO3);
     console.log(`Datos filtrados por NO2 :`, datosFiltradosNO2);
@@ -95,14 +82,14 @@ function filtrarMediciones(fecha, tipo) {
     console.log(`Datos filtrados por SO3 de las ultimas 8 horas:`, ultimosDatosFiltradosSO3);
     console.log(`Datos filtrados por Temperatura de las ultimas 8 horas:`, ultimosDatosFiltradosTemperatura);
 
-    // Extraer los caracteres desde el índice 5 al 7 de la propiedad fecha_hora para la gráfica
+    // Extraer las horas para la gráfica
     const horas = ultimosDatosFiltradosO3.map(item => item.fecha_hora.slice(11, 13));
     console.log('Horas para la gráfica:', horas);
 
-    const valoresO3 = datosFiltradosO3.map(item => item.valor);
-    const valoresNO2 = datosFiltradosNO2.map(item => item.valor);
-    const valoresSO3 = datosFiltradosSO3.map(item => item.valor);
-    const valoresTemperatura = datosFiltradosTemperatura.map(item => item.valor);
+    const valoresO3 = ultimosDatosFiltradosO3.map(item => item.valor);
+    const valoresNO2 = ultimosDatosFiltradosNO2.map(item => item.valor);
+    const valoresSO3 = ultimosDatosFiltradosSO3.map(item => item.valor);
+    const valoresTemperatura = ultimosDatosFiltradosTemperatura.map(item => item.valor);
 
     // Actualizar los valores medios
     document.getElementById('media-O3').innerHTML = `<i class="fas fa-cloud"></i>   O3: ${calcularMediaPonderada(valoresO3).toFixed(2)} ppm`;
@@ -149,49 +136,49 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
         case 'O3':
             // Crear una nueva gráfica
             grafica = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: horas,
-                datasets: [
-                    {
-                        label: 'Valor de O3 (ppm)',
-                        data: valoresO3,
-                        borderColor: 'rgba(59, 59, 59, 1)',
-                        backgroundColor: 'rgba(59, 59, 59, 0.2)',                        
-                        fill: false,
-                        tension: 0.4,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        type: 'category',
-                    },
-                    y: {
-                        beginAtZero: true,
-                        max: 250, // Aquí defines el valor máximo del eje Y
-                    },
+                type: 'line',
+                data: {
+                    labels: horas,
+                    datasets: [
+                        {
+                            label: 'Valor de O3 (ppm)',
+                            data: valoresO3,
+                            borderColor: 'rgba(59, 59, 59, 1)',
+                            backgroundColor: 'rgba(59, 59, 59, 0.2)',                        
+                            fill: false,
+                            tension: 0.4,
+                        },
+                    ],
                 },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Datos en las últimas 8 horas',
-                        color: '#395886',
-                        font: {
-                            size: 20,
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'category',
                         },
-                        margin:{
-                            bottom: 16
+                        y: {
+                            beginAtZero: true,
+                            max: 250, // Aquí defines el valor máximo del eje Y
                         },
-                        align: 'center' 
-
                     },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Datos en las últimas 8 horas',
+                            color: '#395886',
+                            font: {
+                                size: 20,
+                            },
+                            margin:{
+                                bottom: 16
+                            },
+                            align: 'center' 
+
+                        },
+                        
+                    }
                     
-                }
-                
-            },
+                },
             });
             break;
         case 'NO2':
@@ -240,7 +227,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                     }
            
                 },
-                });
+            });
             break;
         case 'SO3':
             // Crear una nueva gráfica
@@ -288,7 +275,7 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
                     }
                
                 },
-                });
+            });
             break;
         case 'Temperatura':
             // Crear una nueva gráfica
@@ -412,3 +399,20 @@ function actualizarGraficaPorTipo(tipo, horas, valoresO3, valoresNO2, valoresSO3
 
 // Obtener la MAC del sensor del usuario al iniciar
 obtenerMacSensor();
+
+// Actualizar el dropdown con las fechas del 10 al 17 de enero de 2025
+const fechas = [
+    '2025-01-10',
+    '2025-01-11',
+    '2025-01-12',
+    '2025-01-13',
+    '2025-01-14',
+    '2025-01-15',
+    '2025-01-16',
+    '2025-01-17'
+];
+
+fechaSelector.innerHTML = fechas.map(fecha => `<option value="${fecha}">${fecha.split('-').reverse().join('/')}</option>`).join('');
+
+// Cargar las mediciones al iniciar
+cargarMediciones();
