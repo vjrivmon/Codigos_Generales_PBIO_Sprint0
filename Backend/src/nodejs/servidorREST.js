@@ -527,9 +527,16 @@ const ConsultarMedida = async (req, res) => {
   try {
     connection = await pool.getConnection();
     console.log('Intentando obtener conexión para el sensor ID:', req.params.id_sensor);
+
+    // Obtener la fecha y hora actual
+    const now = new Date();
+    // Calcular la fecha y hora de hace 8 horas
+    const eightHoursAgo = new Date(now.getTime() - 8 * 60 * 60 * 1000);
+    const formattedEightHoursAgo = eightHoursAgo.toISOString().slice(0, 19).replace('T', ' ');
+
     const rows = await connection.query(
-      'SELECT * FROM mediciones WHERE id_sensor = ?',
-      [req.params.id_sensor]
+      'SELECT * FROM mediciones WHERE id_sensor = ? AND fecha_hora >= ? ORDER BY fecha_hora DESC',
+      [req.params.id_sensor, formattedEightHoursAgo]
     );
     console.log('Resultado de la consulta de mediciones:', rows);
     res.json(Array.isArray(rows) ? rows : [rows]);
@@ -538,7 +545,6 @@ const ConsultarMedida = async (req, res) => {
     res.status(500).send('Error en la consulta');
   } finally {
     if (connection) {
-      console.log('Liberando conexión');
       connection.release();
     }
   }
