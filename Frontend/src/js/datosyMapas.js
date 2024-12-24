@@ -100,8 +100,16 @@ async function agregarChinchetas(id_sensor) {
 
         let popupContent = `<b>Sensor:</b> ${mediciones[0].id_sensor}<br><b>Fecha y Hora:</b> ${fechaHora}<br>`;
 
+        const iconos = {
+            'SO3': 'fas fa-cloud',
+            'NO2': 'fas fa-cloud',
+            'O3': 'fas fa-cloud',
+            'Temperatura': 'fa-solid fa-temperature-low'
+        };
+
         mediciones.forEach(m => {
-            popupContent += `<b>Tipo de Medición:</b> ${m.tipo_medicion}<br><b>Valor:</b> ${m.valor}<br>`;
+            const unidad = m.tipo_medicion === 'Temperatura' ? 'ºC' : 'ppm';
+            popupContent += `<i class="${iconos[m.tipo_medicion]}"></i> ${m.tipo_medicion}: ${m.valor} ${unidad}<br>`;
         });
 
         L.marker(latLng).addTo(chinchetasLayer).bindPopup(popupContent);

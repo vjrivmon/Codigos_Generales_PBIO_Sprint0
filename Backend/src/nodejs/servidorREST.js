@@ -1197,9 +1197,9 @@ async function generarDatosSinteticosParaSensores() {
   ];
   const tiposMedicion = ['SO3', 'NO2', 'O3', 'Temperatura'];
   const umbrales = {
-      'SO3': [50, 100],
-      'NO2': [60, 120],
-      'O3': [130, 200],
+      'SO3': { bueno: [0, 125], moderado: [126, 350], malo: [351, 500] },
+      'NO2': { bueno: [0, 40], moderado: [41, 200], malo: [201, 300] },
+      'O3': { bueno: [0, 120], moderado: [121, 180], malo: [181, 300] },
       'Temperatura': [15, 30]
   };
   const puntos = [
@@ -1213,12 +1213,23 @@ async function generarDatosSinteticosParaSensores() {
       return (Math.random() * (max - min) + min).toFixed(6);
   }
 
-  function getRandomValue(min, max) {
-      return (Math.random() * (max - min) + min).toFixed(2);
+  function getRandomValue(range) {
+      return (Math.random() * (range[1] - range[0]) + range[0]).toFixed(2);
   }
 
   function getRandomDate(start, end) {
       return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  }
+
+  function getRandomValueByDistribution(tipo) {
+      const random = Math.random();
+      if (random < 0.2) {
+          return getRandomValue(umbrales[tipo].malo); // 20% malas
+      } else if (random < 0.5) {
+          return getRandomValue(umbrales[tipo].moderado); // 30% moderadas
+      } else {
+          return getRandomValue(umbrales[tipo].bueno); // 50% buenas
+      }
   }
 
   const datos = [];
@@ -1234,7 +1245,12 @@ async function generarDatosSinteticosParaSensores() {
           const ubicacion = `{"latitud": ${latitud}, "longitud": ${longitud}}`;
 
           for (let tipo of tiposMedicion) {
-              const valor = getRandomValue(umbrales[tipo][0], umbrales[tipo][1]);
+              let valor;
+              if (tipo === 'Temperatura') {
+                  valor = getRandomValue(umbrales[tipo]);
+              } else {
+                  valor = getRandomValueByDistribution(tipo);
+              }
               datos.push([sensor, fecha_hora, ubicacion, tipo, valor]);
           }
       }
