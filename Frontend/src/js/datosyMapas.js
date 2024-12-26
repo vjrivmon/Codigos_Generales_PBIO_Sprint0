@@ -51,13 +51,25 @@ async function generarMapaDeInterpolacion(id_sensor) {
     const interpolatedData = interpolateData(datos);
 
     // Dibujar los datos interpolados en el canvas
-    interpolatedData.forEach(point => {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, 50, 0, 2 * Math.PI, false); // Aumentar el radio para que los círculos choquen
-        ctx.fillStyle = getColorForValue(point.value);
-        ctx.globalAlpha = 0.03; // Cambiar este valor para la transparencia de la interpolación
-        ctx.fill();
-    });
+
+        interpolatedData.forEach(point => {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 30, 0, 2 * Math.PI, false); // Aumentar el radio para que los círculos choquen
+            ctx.fillStyle = getColorForValue(point.value);
+    
+            // Ajustar la opacidad y el tamaño según el valor
+            if (point.value > 50 && point.value <= 100) { // Amarillo
+                ctx.globalAlpha = 0.1; // Mayor opacidad para amarillo
+                ctx.arc(point.x, point.y, 30, 0, 2 * Math.PI, false); // Aumentar tamaño para amarillo
+            } else if (point.value > 100) { // Rojo
+                ctx.globalAlpha = 0.1; // Mayor opacidad para rojo
+                ctx.arc(point.x, point.y, 30, 0, 2 * Math.PI, false); // Aumentar tamaño para rojo
+            } else {
+                ctx.globalAlpha = 0.03; // Opacidad original para verde
+            }
+    
+            ctx.fill();
+        });
 
     const imageUrl = canvas.toDataURL();
     const imageBounds = map.getBounds();
