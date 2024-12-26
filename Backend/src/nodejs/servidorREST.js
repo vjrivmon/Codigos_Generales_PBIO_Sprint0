@@ -1209,10 +1209,10 @@ async function generarDatosSinteticosParaSensores() {
       'Temperatura': [15, 30]
   };
   const puntos = [
-      { lat: 39.01810060621549, lon: -0.18162830452004086 },
-      { lat: 39.02097808802224, lon: -0.17507040635569954 },
-      { lat: 38.996021545908675, lon: -0.15585276580706064 },
-      { lat: 38.99576319630499, lon: -0.16683205471027718 }
+      { lat: 39.01810060621549, lon: -0.18162830452004086 }, // Rotonda Ribera Baixa
+      { lat: 39.02097808802224, lon: -0.17507040635569954 }, // Gandía Surf
+      { lat: 38.996021545908675, lon: -0.15585276580706064 }, // Club Real
+      { lat: 38.99576319630499, lon: -0.16683205471027718 } // Repsol
   ];
 
   function getRandomCoordinate(min, max) {
