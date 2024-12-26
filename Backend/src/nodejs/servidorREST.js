@@ -1294,6 +1294,45 @@ async function insertarDatosSinteticos() {
 }
 
 insertarDatosSinteticos();
+
+async function obtenerRolPorCorreo(req, res) {
+    const { correo } = req.params;
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        console.log('Conexión a la base de datos establecida.');
+
+        // Obtener el id_usuario a partir del correo
+        const usuarioQuery = 'SELECT id_usuario FROM usuarios WHERE correo = ?';
+        const usuarioRows = await connection.query(usuarioQuery, [correo]);
+        if (usuarioRows.length === 0) {
+            console.log('Usuario no encontrado:', correo);
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        const id_usuario = usuarioRows[0].id_usuario;
+
+        // Obtener el id_rol a partir del id_usuario
+        const rolQuery = 'SELECT id_rol FROM usro WHERE id_usuario = ?';
+        const rolRows = await connection.query(rolQuery, [id_usuario]);
+        if (rolRows.length === 0) {
+            console.log('Rol no encontrado para el usuario:', id_usuario);
+            return res.status(404).send('Rol no encontrado para el usuario');
+        }
+
+        const id_rol = rolRows[0].id_rol;
+        res.status(200).send({ id_rol });
+    } catch (error) {
+        console.error('Error al obtener el rol del usuario:', error);
+        res.status(500).send('Error del servidor');
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -1318,6 +1357,7 @@ module.exports = {
   asociarSensorAUsuario,
   obtenerSensorPorCorreo,
   editarNombreSensor,
-  insertarDatosSinteticos
+  insertarDatosSinteticos,
+  obtenerRolPorCorreo
 };
 

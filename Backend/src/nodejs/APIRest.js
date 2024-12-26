@@ -28,7 +28,8 @@ const {
   obtenerSensorPorCorreo,
   editarNombreSensor,
   generarYGuardarDatosSinteticos,
-  insertarDatosSinteticos
+  insertarDatosSinteticos,
+  obtenerRolPorCorreo
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
 
 // Middleware para procesar JSON
@@ -54,6 +55,7 @@ router.put('/sensores/:id_sensor', editarNombreSensor);
 router.get('/base-datos', ConsultarBaseDeDatos);
 router.get('/obtenerSensorPorCorreo/:correo', obtenerSensorPorCorreo);
 router.post('/insertar-datos-sinteticos', insertarDatosSinteticos);
+router.get('/obtenerRolPorCorreo/:correo', obtenerRolPorCorreo);
 
 // Swagger Setup
 const swaggerOptions = {
