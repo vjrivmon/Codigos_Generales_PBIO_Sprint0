@@ -150,7 +150,6 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 
     private void saveUserData() {
-        // Obtener el ID del usuario desde la sesión
         int userId = getUserIdFromSession();
         Log.d("EditPerfilActivity", "ID de usuario en sesión: " + userId);
         if (userId == -1) {
@@ -158,59 +157,45 @@ public boolean onCreateOptionsMenu(Menu menu) {
             return;
         }
 
-        // Obtener los datos ingresados por el usuario
         String nombre = editName.getText().toString().trim();
         String email = editEmail.getText().toString();
         String telefono = editPhone.getText().toString().trim();
         String contrasena = editContrasenia.getText().toString().trim();
 
-        // Validaciones básicas para asegurarse de que no estén vacíos los campos obligatorios
         if (nombre.isEmpty() || email.isEmpty() || telefono.isEmpty()) {
             Toast.makeText(this, "Por favor, completa todos los campos obligatorios.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validar el formato del correo electrónico (si es necesario)
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Por favor, ingresa un correo electrónico válido.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Validar el formato del teléfono (si es necesario)
-        if (telefono.length() < 9) {
+
+        if (telefono.length() < 10) {
             Toast.makeText(this, "El número de teléfono es demasiado corto.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        Usuario usuario = new Usuario(userId, nombre, telefono, email, contrasena);
 
-        Usuario usuario = new Usuario(userId,nombre, telefono, email, contrasena);
-        // Crear un objeto Usuario con los nuevos datos
-       /* Usuario usuario = new Usuario();
-        usuario.setId_usuario(userId);  // Establecer el ID del usuario
-        usuario.setNombre(nombre);      // Establecer el nombre
-        usuario.setCorreo(email);       // Establecer el correo
-        usuario.setTelefono(telefono);  // Establecer el teléfono
-
-        */
-        // Solo actualizar la contraseña si fue modificada
-       /* if (!contrasena.isEmpty()) {
-            usuario.setContrasena(contrasena);  // Establecer la contraseña si no está vacía
-        }
-*/
-        // Log para verificar los datos que se van a enviar al backend
         Log.d("EditPerfilActivity", "Datos enviados al servidor: " + new Gson().toJson(usuario));
 
-        // Llamar al endpoint para actualizar el usuario
         Call<Void> call = apiService.updateUser(userId, usuario);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditPerfilActivity.this, "Datos actualizados correctamente.", Toast.LENGTH_SHORT).show();
-                    finish();  // Cerrar la actividad
+
+                    // 发送电子邮件通知
+                    enviarCorreoDeNotificacion(email, nombre);
+
+                    finish();
                 } else {
                     try {
-                        // Obtener el cuerpo de la respuesta como texto
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "No hay información de error";
                         Log.d("EditPerfilActivity", "Error al actualizar los datos: " + response.code() + " " + response.message());
                         Log.d("EditPerfilActivity", "Cuerpo de la respuesta: " + errorBody);
@@ -224,17 +209,25 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                // Si ocurre un error en la conexión, mostrar el mensaje de error
                 Toast.makeText(EditPerfilActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("EditPerfilActivity", "Error de conexión: " + t.getMessage());
             }
         });
     }
 
+    private void enviarCorreoDeNotificacion(String email, String nombre) {
+        String subject = "Notificación de cambios en tu perfil";
+        String message = "Hola " + nombre + ",\n\nTu perfil ha sido actualizado exitosamente. Si no realizaste este cambio, por favor contacta con nuestro soporte técnico.\n\nSaludos,\nEquipo de Soporte";
 
-
-
-// --------------------------------------------------------------
-// --------------------------------------------------------------
+        MailSender mailSender = new MailSender(email, subject, message);
+        mailSender.execute(); // Ejecutar la tarea asíncrona para enviar el correo
+    }
 
 }
+
+
+
+
+
+
+

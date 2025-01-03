@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 //const enviarCorreo = require('./emailCrearUsuarioNuevo'); // Asegúrate de que la ruta sea correcta
 const nodemailer = require('nodemailer');
-
+const fs = require('fs');
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
@@ -527,9 +527,16 @@ const ConsultarMedida = async (req, res) => {
   try {
     connection = await pool.getConnection();
     console.log('Intentando obtener conexión para el sensor ID:', req.params.id_sensor);
+
+    // Obtener la fecha y hora actual
+    const now = new Date();
+    // Calcular la fecha y hora de hace 8 horas
+    const eightHoursAgo = new Date(now.getTime() - 8 * 60 * 60 * 1000);
+    const formattedEightHoursAgo = eightHoursAgo.toISOString().slice(0, 19).replace('T', ' ');
+
     const rows = await connection.query(
-      'SELECT * FROM mediciones WHERE id_sensor = ?',
-      [req.params.id_sensor]
+      'SELECT * FROM mediciones WHERE id_sensor = ? AND fecha_hora >= ? ORDER BY fecha_hora DESC',
+      [req.params.id_sensor, formattedEightHoursAgo]
     );
     console.log('Resultado de la consulta de mediciones:', rows);
     res.json(Array.isArray(rows) ? rows : [rows]);
@@ -538,7 +545,6 @@ const ConsultarMedida = async (req, res) => {
     res.status(500).send('Error en la consulta');
   } finally {
     if (connection) {
-      console.log('Liberando conexión');
       connection.release();
     }
   }
@@ -1119,7 +1125,7 @@ const asociarSensorAUsuario = async (req, res) => {
         await connection.query('INSERT INTO senusu (id_usuario, id_sensor) VALUES (?, ?) ON DUPLICATE KEY UPDATE id_sensor = VALUES(id_sensor)', [id_usuario, id_sensor]);
         console.log('Sensor asociado al usuario:', id_sensor, id_usuario);
 
-        res.status(200).send({ success: true, message: 'Sensor asociado al usuario correctamente' });
+        res.status(200).send('Sensor asociado al usuario correctamente');
     } catch (error) {
         console.error('Error al asociar el sensor al usuario:', error);
         res.status(500).send('Error del servidor');
@@ -1187,6 +1193,146 @@ const editarNombreSensor = async (req, res) => {
     }
 };
 
+async function generarDatosSinteticosParaSensores() {
+  const sensores = [
+      '00:1A:2B:3M:4D:5E',
+      '11:2B:2X:3L:4K:5F',
+      '22:3C:2T:3U:4H:5G',
+      '33:4A:2R:3Q:4G:5H',
+      '09:20:21:01:04:03'
+  ];
+  const tiposMedicion = ['SO3', 'NO2', 'O3', 'Temperatura'];
+  const umbrales = {
+      'SO3': { bueno: [0, 125], moderado: [126, 350], malo: [351, 500] },
+      'NO2': { bueno: [0, 40], moderado: [41, 200], malo: [201, 300] },
+      'O3': { bueno: [0, 120], moderado: [121, 180], malo: [181, 300] },
+      'Temperatura': [15, 30]
+  };
+  const puntos = [
+      { lat: 39.01810060621549, lon: -0.18162830452004086 }, // Rotonda Ribera Baixa
+      { lat: 39.02097808802224, lon: -0.17507040635569954 }, // Gandía Surf
+      { lat: 38.996021545908675, lon: -0.15585276580706064 }, // Club Real
+      { lat: 38.99576319630499, lon: -0.16683205471027718 } // Repsol
+  ];
+
+  function getRandomCoordinate(min, max) {
+      return (Math.random() * (max - min) + min).toFixed(6);
+  }
+
+  function getRandomValue(range) {
+      return (Math.random() * (range[1] - range[0]) + range[0]).toFixed(2);
+  }
+
+  function getRandomDate(start, end) {
+      return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  }
+
+  function getRandomValueByDistribution(tipo) {
+      const random = Math.random();
+      if (random < 0.2) {
+          return getRandomValue(umbrales[tipo].malo); // 20% malas
+      } else if (random < 0.5) {
+          return getRandomValue(umbrales[tipo].moderado); // 30% moderadas
+      } else {
+          return getRandomValue(umbrales[tipo].bueno); // 50% buenas
+      }
+  }
+
+  const datos = [];
+  const fechaInicio = new Date('2025-01-10T00:00:00');
+  const fechaFin = new Date('2025-01-17T23:59:59');
+
+  for (let i = 0; i < sensores.length; i++) {
+      for (let j = 0; j < 25; j++) { // 25 bloques de 4 mediciones para cada sensor
+          const sensor = sensores[i];
+          const fecha_hora = getRandomDate(fechaInicio, fechaFin).toISOString().replace('T', ' ').substring(0, 19);
+          const latitud = getRandomCoordinate(puntos[3].lat, puntos[1].lat);
+          const longitud = getRandomCoordinate(puntos[0].lon, puntos[2].lon);
+          const ubicacion = `{"latitud": ${latitud}, "longitud": ${longitud}}`;
+
+          for (let tipo of tiposMedicion) {
+              let valor;
+              if (tipo === 'Temperatura') {
+                  valor = getRandomValue(umbrales[tipo]);
+              } else {
+                  valor = getRandomValueByDistribution(tipo);
+              }
+              datos.push([sensor, fecha_hora, ubicacion, tipo, valor]);
+          }
+      }
+  }
+
+  return datos;
+}
+
+async function insertarDatosSinteticos() {
+  const datosSinteticos = await generarDatosSinteticosParaSensores();
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    // Escapa los valores correctamente.
+    const values = datosSinteticos
+      .map(
+        ([id_sensor, fecha_hora, ubicacion, tipo_medicion, valor]) =>
+          `('${id_sensor}', '${fecha_hora}', '${ubicacion.replace(/'/g, "\\'")}', '${tipo_medicion}', ${valor})`
+      )
+      .join(',');
+
+    const query = `INSERT INTO mediciones (id_sensor, fecha_hora, ubicacion, tipo_medicion, valor) VALUES ${values}`;
+
+    await connection.query(query);
+    console.log('Datos sintéticos insertados en la base de datos correctamente');
+  } catch (err) {
+    console.error('Error al insertar los datos sintéticos en la base de datos:', err);
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+}
+
+insertarDatosSinteticos();
+
+async function obtenerRolPorCorreo(req, res) {
+    const { correo } = req.params;
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        console.log('Conexión a la base de datos establecida.');
+
+        // Obtener el id_usuario a partir del correo
+        const usuarioQuery = 'SELECT id_usuario FROM usuarios WHERE correo = ?';
+        const usuarioRows = await connection.query(usuarioQuery, [correo]);
+        if (usuarioRows.length === 0) {
+            console.log('Usuario no encontrado:', correo);
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        const id_usuario = usuarioRows[0].id_usuario;
+
+        // Obtener el id_rol a partir del id_usuario
+        const rolQuery = 'SELECT id_rol FROM usro WHERE id_usuario = ?';
+        const rolRows = await connection.query(rolQuery, [id_usuario]);
+        if (rolRows.length === 0) {
+            console.log('Rol no encontrado para el usuario:', id_usuario);
+            return res.status(404).send('Rol no encontrado para el usuario');
+        }
+
+        const id_rol = rolRows[0].id_rol;
+        res.status(200).send({ id_rol });
+    } catch (error) {
+        console.error('Error al obtener el rol del usuario:', error);
+        res.status(500).send('Error del servidor');
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
 // Exportar funciones para ser usadas en APIRest.js
 module.exports = {
   ConsultarMedida,
@@ -1210,6 +1356,8 @@ module.exports = {
   enviarCorreoParaRestablecerContrasena,
   asociarSensorAUsuario,
   obtenerSensorPorCorreo,
-  editarNombreSensor
+  editarNombreSensor,
+  insertarDatosSinteticos,
+  obtenerRolPorCorreo
 };
 

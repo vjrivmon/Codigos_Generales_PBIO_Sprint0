@@ -110,7 +110,7 @@ async function ConsultarDatosUsuario(email, password) {
         if (response.ok) {
             if (result.success) {
                 document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
-                document.cookie = `correo=${email}; path=/; secure; SameSite=Strict`; // Guardar el correo en una cookie
+                document.cookie = `correo=${email}; path=/; secure; SameSite=Strict`;
                 document.cookie = `session_active=true; path=/; secure; SameSite=Strict`;
 
                 console.log('Usuario verificado, obteniendo información del sensor...');
@@ -118,7 +118,14 @@ async function ConsultarDatosUsuario(email, password) {
                 const macData = await macResponse.json();
                 console.log('Información del sensor obtenida:', macData);
 
-                if (macData.id_sensor === 'AA:AA:AA:AA:AA:AA') {
+                const rolResponse = await fetch(`http://localhost:8080/obtenerRolPorCorreo/${email}`);
+                const rolData = await rolResponse.json();
+                console.log('Rol del usuario obtenido:', rolData);
+
+                if (rolData.id_rol === 1) {
+                    console.log('Redirigiendo a admin.html');
+                    window.location.href = 'admin.html';
+                } else if (macData.id_sensor === 'AA:AA:AA:AA:AA:AA') {
                     console.log('Redirigiendo a QRCode.html');
                     window.location.href = 'QRCode.html';
                 } else {
@@ -138,7 +145,6 @@ async function ConsultarDatosUsuario(email, password) {
         alert('Por favor verifica tu correo, para poder iniciar sesión');
     }
 }
-
 // Manejar el evento de clic en el botón de registrarse
 document.getElementById('register-btn').addEventListener('click', function(event) {
     event.preventDefault(); // Evitar el envío del formulario

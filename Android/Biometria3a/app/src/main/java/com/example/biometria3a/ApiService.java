@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -54,10 +58,40 @@ public interface ApiService {
         @PUT("usuarios/actualizarContrasena")
         Call<Void> updatePassword(@Body HashMap<String, String> params);
 
+<<<<<<< Updated upstream
     @GET("obtenerSensorPorCorreo/{correo}")
     Call<SensorResponse> obtenerSensorPorCorreo(@Path("correo") String correo);
     @POST("asociar_dispositivo")
     Call<Void> asociarSensorAUsuario(@Body AsociarSensorRequest request);
+=======
+    @GET("senusu/{id_usuario}")
+    Call<List<Sensor>> getSensorsByUser(@Path("id_usuario") int userId);
+
+
+
+    @PUT("usuarios/{id_usuario}/contrase%C3%B1a")
+    Call<Void> updatePassword(@Path("id_usuario") int userId, @Body HashMap<String, String> body);
+
+
+    @POST("recuperarContrasena")
+    Call<Void> recuperarContrasena(@Body HashMap<String, String> body);
+
+
+    @GET("/mediciones") // 根据后端的 API 路径，确保和后端定义一致
+    Call<List<Medicion2>> getMediciones();
+
+    @GET("/mediciones")
+    Call<List<Medicion2>> getMedicionesByDate(@Query("fecha") String fecha);
+
+
+    @GET("/mediciones/{id_medicion}")
+    Call<List<Medicion2>> getMedicionesById(@Path("id_medicion") int idMedicion);
+    @GET("mediciones/{id}")
+    Call<Medicion2> getMedicionById(@Path("id") int id);
+
+    @GET("/") // 根路径
+    Call<List<Medicion>> getAllMediciones();
+>>>>>>> Stashed changes
 }
 
 
