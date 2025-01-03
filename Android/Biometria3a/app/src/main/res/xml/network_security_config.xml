@@ -47,6 +47,11 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">172.20.10.2</domain>  <!-- Dirección IP de tu servidor -->
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">172.20.10.1</domain>  <!-- Dirección IP de tu servidor -->
+    </domain-config>
+
+
 
 
 </network-security-config>

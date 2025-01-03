@@ -66,6 +66,11 @@ public class MenuHandler {
             // If the context is an instance of AppCompatActivity (or any Activity)
             context.startActivity(new Intent(context, QrActivity.class));
         }
+        else if (item.getItemId() == R.id.map) {
+            Toast.makeText(context, "mapa", Toast.LENGTH_SHORT).show();
+            // If the context is an instance of AppCompatActivity (or any Activity)
+            context.startActivity(new Intent(context,webmapAc.class));
+        }
     }
 
 }

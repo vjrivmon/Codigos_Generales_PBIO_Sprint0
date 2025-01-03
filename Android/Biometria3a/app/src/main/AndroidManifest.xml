@@ -60,6 +60,7 @@
         <activity android:name=".InfoExtraFragment"/>
         <activity android:name=".MapsACTIVITY"/>
         <activity android:name=".QrActivity"/>
+        <activity android:name=".webmapAc"/>
 
 
         <receiver android:name=".OzoneLevelReceiver"
