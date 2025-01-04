@@ -229,32 +229,5 @@ h2 {
   });
 </script>
 
-
-<script>
-  // Suponiendo que tienes un array o variable que contiene los valores de calidad del aire
-// Puedes obtenerlos de las capas del mapa, o desde una API
-
-// Aquí hacemos una simulación simple
-let qualityLevel = "green"; // Este valor lo cambiarás dependiendo de la lógica del mapa (puede ser 'green', 'yellow' o 'red')
-
-// Función para cambiar el color del punto según la calidad
-function updateAirQuality() {
-  const qualityDot = document.getElementById("quality-dot");
-
-  // Cambiar el color del punto según el valor de qualityLevel
-  if (qualityLevel === "red") {
-    qualityDot.className = "dot red";
-  } else if (qualityLevel === "yellow") {
-    qualityDot.className = "dot yellow";
-  } else {
-    qualityDot.className = "dot green";
-  }
-}
-
-// Llamamos a la función al cargar el mapa o cuando se detecten los valores del aire
-updateAirQuality();
-
-</script>
-
 </body>
 </html>
