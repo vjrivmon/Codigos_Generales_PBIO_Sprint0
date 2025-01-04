@@ -30,12 +30,13 @@
 
     <!-- Sección de Admin -->
     <section class="admin">
+        <h1>Técnico</h1>
         <div class="container">
             <h1>Gestión de Sensores</h1>
             
-            <!-- Filtros -->
-            <div class="filters">
-                <div class="filt">
+            <!-- Filtros y Botones -->
+            <div class="filters-and-buttons" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem;">
+                <div class="filters">
                     <p><strong>Filtrar por:</strong></p>
                     <select id="filter-status">
                         <option value="all">Todos</option>
@@ -47,58 +48,97 @@
                         <option value="act24hmas">Inactivos más de 24 horas</option>
                     </select>
                 </div>
+                <div class="sensor-management-buttons">
+                    <button id="add-sensor-btn" class="btn btn-primary">Añadir Sensor</button>
+                    <button id="remove-sensor-btn" class="btn btn-secondary">Eliminar Sensor</button>
+                </div>
             </div>
 
             <!-- Tabla de Sensores -->
             <div class="sensor-table-container">
                 <table class="sensor-table">
-                            <thead>
-                                <tr>
-                                    <th onclick="sortTable('macAddress', toggleSortDirection('macAddress'))">
-                                        <span>Dirección MAC</span>
-                                        <span class="sort-icons" data-column="macAddress">
-                                            <span class="asc">▲</span>
-                                            <span class="desc">▼</span>
-                                        </span>
-                                    </th>
-                                    <th onclick="sortTable('location', toggleSortDirection('location'))">
-                                        <span>Ubicación</span>
-                                        <span class="sort-icons" data-column="location">
-                                            <span class="asc">▲</span>
-                                            <span class="desc">▼</span>
-                                        </span>
-                                    </th>
-                                    <th onclick="sortTable('lastActive', toggleSortDirection('lastActive'))">
-                                        <span>Última actividad</span>
-                                        <span class="sort-icons" data-column="lastActive">
-                                            <span class="asc">▲</span>
-                                            <span class="desc">▼</span>
-                                        </span>
-                                    </th>
-                                    <th onclick="sortTable('status', toggleSortDirection('status'))">
-                                        <span>Estado</span>
-                                        <span class="sort-icons" data-column="status">
-                                            <span class="asc">▲</span>
-                                            <span class="desc">▼</span>
-                                        </span>
-                                    </th>
-                                    <th onclick="sortTable('failureType', toggleSortDirection('failureType'))">
-                                        <span>Avería</span>
-                                        </span>
-                                    </th>
-                                </tr>
-                                
-                                
-                            </thead>
-                            
-                            
-                            <tbody id="sensor-list">
-                                <!-- Datos generados dinámicamente -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('macAddress', toggleSortDirection('macAddress'))">
+                                <span>Dirección MAC</span>
+                                <span class="sort-icons" data-column="macAddress">
+                                    <span class="asc">▲</span>
+                                    <span class="desc">▼</span>
+                                </span>
+                            </th>
+                            <th onclick="sortTable('location', toggleSortDirection('location'))">
+                                <span>Ubicación</span>
+                                <span class="sort-icons" data-column="location">
+                                    <span class="asc">▲</span>
+                                    <span class="desc">▼</span>
+                                </span>
+                            </th>
+                            <th onclick="sortTable('lastActive', toggleSortDirection('lastActive'))">
+                                <span>Última actividad</span>
+                                <span class="sort-icons" data-column="lastActive">
+                                    <span class="asc">▲</span>
+                                    <span class="desc">▼</span>
+                                </span>
+                            </th>
+                            <th onclick="sortTable('status', toggleSortDirection('status'))">
+                                <span>Estado</span>
+                                <span class="sort-icons" data-column="status">
+                                    <span class="asc">▲</span>
+                                    <span class="desc">▼</span>
+                                </span>
+                            </th>
+                            <th onclick="sortTable('failureType', toggleSortDirection('failureType'))">
+                                <span>Avería</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="sensor-list">
+                        <!-- Datos generados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+       <!-- Gestión de Usuarios -->
+<div class="container">
+    <h1>Gestión de Usuarios</h1>
+
+    <!-- Tabla de Usuarios -->
+    <div class="sensor-table-container">
+        <div class="sensor-management-buttons" style="display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-bottom: 1rem;">
+            <button id="add-sensor-btn" class="btn btn-primary">Añadir Usuario</button>
+            <button id="remove-sensor-btn" class="btn btn-secondary">Eliminar Usuario</button>
+        </div>
+        <table class="sensor-table"> <!-- Usamos la misma clase de tabla -->
+            <thead>
+                <tr>
+                    <th onclick="sortTable('name', toggleSortDirection('name'))">
+                        <span>Nombre</span>
+                       
+                    </th>
+                    <th onclick="sortTable('email', toggleSortDirection('email'))">
+                        <span>Correo</span>
+                        
+                    </th>
+                    <th onclick="sortTable('role', toggleSortDirection('role'))">
+                        <span>Rol</span>
+                        
+                    </th>
+                    <th onclick="sortTable('status', toggleSortDirection('status'))">
+                        <span>Estado</span>
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="user-list">
+                <!-- Datos generados dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    </section>
 
     <!-- Popup para cerrar sesión -->
     <div id="popup-cerrar-sesion" class="popup">
@@ -109,13 +149,11 @@
         </div>
     </div>
 
-
+    <!-- Popup de información del sensor -->
     <div id="sensor-info-popup" class="popup">
         <div class="popup-content">
             <h3 id="sensor-title"></h3>
             <div id="sensor-chart" style="margin: 0 auto;"><canvas></canvas></div>
-
-
             <div id="sensor-history">
                 <h4>Historial de Datos:</h4>
                 <ul id="history-list"></ul>
@@ -123,8 +161,6 @@
             <button id="close-popup" class="btn">Cerrar</button>
         </div>
     </div>
-    
-
 
     <script src="../js/admin.js"></script>
     <script src="../js/cerrarSesion.js"></script>
