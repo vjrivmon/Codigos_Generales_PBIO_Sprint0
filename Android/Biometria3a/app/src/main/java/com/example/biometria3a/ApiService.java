@@ -58,12 +58,12 @@ public interface ApiService {
         @PUT("usuarios/actualizarContrasena")
         Call<Void> updatePassword(@Body HashMap<String, String> params);
 
-<<<<<<< Updated upstream
+
     @GET("obtenerSensorPorCorreo/{correo}")
     Call<SensorResponse> obtenerSensorPorCorreo(@Path("correo") String correo);
     @POST("asociar_dispositivo")
     Call<Void> asociarSensorAUsuario(@Body AsociarSensorRequest request);
-=======
+
     @GET("senusu/{id_usuario}")
     Call<List<Sensor>> getSensorsByUser(@Path("id_usuario") int userId);
 
@@ -91,7 +91,7 @@ public interface ApiService {
 
     @GET("/") // 根路径
     Call<List<Medicion>> getAllMediciones();
->>>>>>> Stashed changes
+
 }
 
 

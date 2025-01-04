@@ -36,7 +36,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
-    private Button btnIniSesion;
+    private Button btnIniSesion, btnBiom;
 
     private TextView txtLogin;
     private ImageView imgTogglePassword;
@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnIniSesion = findViewById(R.id.btnIniSesion);
+        btnBiom = findViewById(R.id.biome);
         txtLogin = findViewById(R.id.txtRegistrate);
 
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
@@ -84,6 +85,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
+                //fakeLogin();
+            }
+        });
+
+        btnBiom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBA();
                 //fakeLogin();
             }
         });
@@ -260,7 +269,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);  // Iniciamos la actividad de inicio de sesión
         finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
     }
-
+    private void goToBA() {
+        // Creamos un Intent para abrir la actividad de inicio de sesión
+        Intent intent = new Intent(LoginActivity.this, BiometricAuthActivity.class);
+        startActivity(intent);  // Iniciamos la actividad de inicio de sesión
+        finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
+    }
 
     private void login() {
         String email = edtEmail.getText().toString();

@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentPollutant = parent.getItemAtPosition(position).toString(); // 获取选中的污染物
                 Log.d("SPINNER_SELECT", "Selected pollutant: " + currentPollutant);
-                fetchDataAndUpdateMap(); // 重新获取数据并更新地图
+                //fetchDataAndUpdateMap(); // 重新获取数据并更新地图
             }
 
             @Override
@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         // 在地图加载完成后更新数据
-        fetchDataAndUpdateMap();
+        //fetchDataAndUpdateMap();
     }
 
 
@@ -1024,7 +1024,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getUserLocation();
-                fetchDataAndUpdateMap();
+                //fetchDataAndUpdateMap();
             } else {
                 Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
             }
@@ -1361,7 +1361,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   */
     // class
-<<<<<<< Updated upstream
+
     /*
  public void verificarSensorAsignado(String correo) {
      ApiService apiService = ApiClient.getClient().create(ApiService.class);
