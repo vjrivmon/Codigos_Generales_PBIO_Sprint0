@@ -10,10 +10,91 @@
     <link rel="icon" href="img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
 
+<style>
+ body {
+  background-color: #B1C9EF;
+ }
+
+  #map {
+  width: 100%;
+  height: 500px;
+  margin: 0 auto;
+}
+
+  .scroll-to-map {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto 20px auto;
+    width: 50px;
+    height: 50px;
+    background-color: white; /* Ajusta el color */
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
+
+  .scroll-to-map i {
+    font-size: 36px;
+    color: #395886;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+
+
+  .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.red {
+  background-color: red;
+}
+
+h2 {
+  text-align: center;
+  margin: 30px auto 0 auto;
+}
+
+
+.card {
+    width: 25%;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 33px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 20px 20px 20px;
+}
+
+</style>
+
 </head>
 <body>
 <!-- Inicio Header y Navbar -->
-<header>
+<header style="background-color: white;">
   <nav class="navbar">
     <div class="logo">
       <a href="index.html">
@@ -49,11 +130,61 @@
 		  <br>Fácil, directo y sin complicaciones.<br>
       </strong> <br>
       </p>
-      <a href="html/packs.html" class="btn btn-primary">Saber más</a> 
+      <a href="html/packs.html" class="btn btn-primary">Saber más</a>
+    </br>
+    <br>
+      <a href="#map-section" class="scroll-to-map">  <i class="bx bx-chevron-down"></i>
+      </a>
+
     </div>
     <div class="hero-image"> </div>
   </div>
 </main>
+
+<section style="background-color: #B1C9EF;">
+  <h2 style="background-color: #B1C9EF;">Mapa de calidad General del Aire</h2>
+</section>
+
+<!-- Sección del mapa y leyenda -->
+<section id="map-section" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; background-color: #B1C9EF;">
+ 
+  <!-- Contenedor de la leyenda -->
+  <div class="card">
+    <div class="levels">
+      <div class="level">Resultado de la calidad del aire actual:</div>
+      <div>
+        <span id="quality-dot" class="dot yellow" style="background-color:yellow;"></span> Regular
+      </div>
+    </div>
+<br>
+    <div class="levels">
+      <div class="level">Leyenda:</div>
+      <div>
+        <span class="dot green"></span> Bueno
+      </div>
+      <div>
+        <span class="dot yellow"></span> Regular
+      </div>
+      <div>
+        <span class="dot red"></span> Malo
+      </div>
+    </div>
+
+    <br>
+    <div>
+      <a href="html/infoExtraPublico.html" class="btn btn-primary btn-ver-valores">Saber más</a>
+
+    </div>
+
+  </div>
+
+   <!-- Contenedor del mapa -->
+   <div id="map" style="width: 75%; height: 500px; border-radius:33px;"></div>
+
+</section>
+
+  
+
 
 <div class="wrapper">
     <div>
@@ -72,5 +203,35 @@
 
 <script src="js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
 <script src="js/cookie.js"></script> <!-- Archivo JS para que funcione la ventana emergente de cookies -->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="js/mapaLanding.js"></script>
+
+<script>
+  document.querySelector('.scroll-to-map').addEventListener('click', function (e) {
+      e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+      const target = document.querySelector('#map-section');
+      const targetPosition = target.offsetTop;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 1000; // Duración de la animación en milisegundos
+      let start = null;
+
+      function step(timestamp) {
+          if (!start) start = timestamp;
+          const progress = timestamp - start;
+          const ease = progress / duration > 1 ? 1 : progress / duration;
+          window.scrollTo(0, startPosition + distance * ease);
+          if (progress < duration) {
+              window.requestAnimationFrame(step);
+          }
+      }
+
+      window.requestAnimationFrame(step);
+  });
+</script>
+
 </body>
 </html>
