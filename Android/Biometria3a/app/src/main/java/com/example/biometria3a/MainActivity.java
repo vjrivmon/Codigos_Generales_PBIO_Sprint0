@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ApiService medicionesApi;
     private String currentPollutant = "NO2";
 
-    private FusedLocationProviderClient fusedLocationClient;
+    private FusedLocationProviderClient fLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
     TextView  dis;
@@ -149,38 +149,53 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+    //---------------------Distsanica revorrida-------------------
+    private FusedLocationProviderClient fusedLocationClient;
+    private CalculoDistanciaRecorrida calculoDistanciaRecorrida;  // Instancia de la clase CalculoDistanciaRecorrida
+    private TextView distanceTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //---------------------Distsanica revorrida-------------------
+        // Inicialización
+        fLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        calculoDistanciaRecorrida = new CalculoDistanciaRecorrida();  // Crear una instancia de la clase
+        distanceTextView = findViewById(R.id.PasosText);
+
+        // Verifica los permisos de ubicación
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        // Obtén la última ubicación conocida
+        fLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            // Calcula la distancia usando la clase CalculoDistanciaRecorrida
+                            float totalDistance = calculoDistanciaRecorrida.calcularDistancia(location);
+
+                            // Muestra la distancia recorrida
+                            distanceTextView.setText("Distancia recorrida: " + totalDistance + " metros");
+                        }
+                    }
+                });
+
+
+
+
         // Inicializar el helper de Bluetooth
         bluetoothHelper = new BluetoothHelper(this);
 
-        // Recuperar el correo desde SharedPreferences
-        /*SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        String email = sharedPreferences.getString("userEmail", "");  // Valor por defecto es una cadena vacía si no se encuentra
-
-        // Mostrar el correo o realizar la lógica necesaria
-        if (!email.isEmpty()) {
-            // Si el correo existe, puedes mostrarlo en un TextView o usarlo en la lógica
-            Log.d("MainActivity", "Correo del usuario: " + email);
-            Toast.makeText(MainActivity.this, "Correo: " + email, Toast.LENGTH_LONG).show();
-            verificarSensorAsignado(email);
-        }
-
-         */
-
         //------------Potencia de luethoot -------------------
-      //  TextView tvRssi = findViewById(R.id.dis);
         ImageView imgSignalStrength = findViewById(R.id.iv_signal);
 
-
-
-
-
         //------------Automatizar busqueda de mi dispositivo----------------
-        // Llama automáticamente al método para iniciar la búsqueda
-        // Inicializa el adaptador Bluetooth y el escáner
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
             Log.e("Error", "Este dispositivo no soporta Bluetooth");

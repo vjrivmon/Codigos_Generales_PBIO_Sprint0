@@ -223,11 +223,12 @@
                 android:id="@+id/dis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:layout_below="@+id/PasosText"
                 android:layout_marginEnd="10dp"
                 android:text="RSSI: --"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"/>
 
             <!-- ImageView a la derecha -->
             <ImageView
@@ -235,10 +236,11 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="Nivel de señal Bluetooth"
-            android:src="@drawable/gris_wwifi"
-            android:layout_marginStart="10dp" />
+                android:layout_marginStart="92dp"
+                android:layout_marginEnd="83dp"
+                android:layout_toEndOf="@+id/PasosImg"
+                android:contentDescription="Nivel de señal Bluetooth"
+                android:src="@drawable/gris_wwifi" />
             <!-- Hora actual -->
             <!-- Hora actual -->
             <TextView
@@ -285,6 +287,27 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_ozone"
                 android:text="Actualizar" />
+
+            <ImageView
+                android:id="@+id/PasosImg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:srcCompat="@drawable/pasos" />
+            <TextView
+                android:id="@+id/PasosText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/PasosImg"
+                android:layout_marginEnd="10dp"
+                android:text="Pasos: --"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>
