@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,13 +32,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import androidx.biometric.BiometricPrompt;
 
+public class LoginActivity extends AppCompatActivity  {
 
-public class LoginActivity extends AppCompatActivity {
+    private BiometricAuthActivity  biometricCTR;
 
     private EditText edtEmail, edtPassword;
-    private Button btnIniSesion, btnBiom;
-
+    private Button btnIniSesion;
+private ImageView btnBiom;
     private TextView txtLogin;
     private ImageView imgTogglePassword;
     private boolean isPasswordVisible = false;
@@ -50,11 +53,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        EdgeToEdge.enable(this);
+
+
+        btnBiom = findViewById(R.id.btnGooglePlus);
+
+
+        btnBiom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBA();
+                //fakeLogin();
+            }
+        });
         // Enlazar los elementos del layout
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnIniSesion = findViewById(R.id.btnIniSesion);
-        btnBiom = findViewById(R.id.biome);
+
         txtLogin = findViewById(R.id.txtRegistrate);
 
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
@@ -158,6 +174,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+    private void goToBA() {
+        // Creamos un Intent para abrir la actividad de inicio de sesión
+        Intent intent = new Intent(LoginActivity.this, BiometricAuthActivity.class);
+        startActivity(intent);  // Iniciamos la actividad de inicio de sesión
+        finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
+    }
+
     // Método para verificar si el correo es válido
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -266,12 +289,6 @@ public class LoginActivity extends AppCompatActivity {
     private void goToLoginActivity() {
         // Creamos un Intent para abrir la actividad de inicio de sesión
         Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
-        startActivity(intent);  // Iniciamos la actividad de inicio de sesión
-        finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
-    }
-    private void goToBA() {
-        // Creamos un Intent para abrir la actividad de inicio de sesión
-        Intent intent = new Intent(LoginActivity.this, BiometricAuthActivity.class);
         startActivity(intent);  // Iniciamos la actividad de inicio de sesión
         finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
     }

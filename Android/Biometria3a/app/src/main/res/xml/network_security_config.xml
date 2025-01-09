@@ -19,7 +19,7 @@
 
     <!-- AQUI SE DEBE PONER TU IP DEL ORDENADOR Q ES LA IP DEL SERVIDOR ASI CON 192.168.X.X-->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.0.22</domain>  <!-- Dirección IP de tu servidor -->
+        <domain includeSubdomains="true">192.168.18.112</domain>  <!-- Dirección IP de tu servidor -->
     </domain-config>
 
 
