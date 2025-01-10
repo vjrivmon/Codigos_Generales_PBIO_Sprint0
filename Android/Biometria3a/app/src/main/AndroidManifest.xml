@@ -70,7 +70,8 @@
         <activity android:name=".QrActivity"/>
         <activity android:name=".webmapAc"/>
         <activity android:name=".BiometricAuthActivity"/>
-
+        <activity android:name=".DistanceCalculatorActivity"/>
+        <activity android:name=".PacksActivity"/>
 
         <receiver android:name=".OzoneLevelReceiver"
             android:enabled="true"

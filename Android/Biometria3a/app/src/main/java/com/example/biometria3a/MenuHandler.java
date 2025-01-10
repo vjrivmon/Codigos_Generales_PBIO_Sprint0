@@ -50,7 +50,7 @@ public class MenuHandler {
             context.startActivity(new Intent(context, FAQActivity.class));
         } else if (item.getItemId() == R.id.action_packs) {
             Toast.makeText(context, "Packs", Toast.LENGTH_SHORT).show();
-            context.startActivity(new Intent(context, MainActivity.class));
+            context.startActivity(new Intent(context, PacksActivity.class));
         } else if (item.getItemId() == R.id.action_privacidad) {
             Toast.makeText(context, "Privacidad", Toast.LENGTH_SHORT).show();
             context.startActivity(new Intent(context, PrivacidadAcitivity.class));

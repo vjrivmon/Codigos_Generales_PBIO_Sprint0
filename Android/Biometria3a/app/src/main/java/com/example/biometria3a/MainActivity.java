@@ -74,7 +74,7 @@ import retrofit2.Response;
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback  {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -151,19 +151,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //---------------------Distsanica revorrida-------------------
     private FusedLocationProviderClient fusedLocationClient;
-    private CalculoDistanciaRecorrida calculoDistanciaRecorrida;  // Instancia de la clase CalculoDistanciaRecorrida
+    //private CalculoDistanciaRecorrida calculoDistanciaRecorrida;  // Instancia de la clase CalculoDistanciaRecorrida
     private TextView distanceTextView;
-
+    private ImageView Pasos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //---------------------Distsanica revorrida-------------------
+
         // Inicialización
         fLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        calculoDistanciaRecorrida = new CalculoDistanciaRecorrida();  // Crear una instancia de la clase
+       // calculoDistanciaRecorrida = new CalculoDistanciaRecorrida();  // Crear una instancia de la clase
         distanceTextView = findViewById(R.id.PasosText);
+        Pasos= findViewById(R.id. PasosImg);
+
+        Pasos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPasos();
+                //fakeLogin();
+            }
+        });
 
         // Verifica los permisos de ubicación
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -178,10 +188,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onSuccess(Location location) {
                         if (location != null) {
                             // Calcula la distancia usando la clase CalculoDistanciaRecorrida
-                            float totalDistance = calculoDistanciaRecorrida.calcularDistancia(location);
+                        //    float totalDistance = calculoDistanciaRecorrida.calcularDistancia(location);
 
                             // Muestra la distancia recorrida
-                            distanceTextView.setText("Distancia recorrida: " + totalDistance + " metros");
+                           // distanceTextView.setText("Distancia recorrida: " + totalDistance + " metros");
                         }
                     }
                 });
@@ -356,6 +366,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     updateTime(); // 更新时间
         });
     }
+
+    private void goToPasos() {
+        // Creamos un Intent para abrir la actividad de inicio de sesión
+        Intent intent = new Intent(MainActivity.this, DistanceCalculatorActivity.class);
+        startActivity(intent);  // Iniciamos la actividad de inicio de sesión
+        finish();  // Finaliza la actividad actual para evitar que el usuario regrese a la pantalla anterior
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
