@@ -245,3 +245,64 @@ function toggleSortDirection(column) {
 
 // Mostrar sensores al cargar
 displaySensors(sensors);
+
+
+
+/* ------------------------------------------------------------ */
+const users = [
+    { name: "Carlos Pérez", email: "carlos.perez@example.com", role: "Admin", status: "Activo" },
+    { name: "María López", email: "maria.lopez@example.com", role: "Técnico", status: "Inactivo" },
+    { name: "Juan Sánchez", email: "juan.sanchez@example.com", role: "Técnico", status: "Activo" },
+    { name: "Ana Gómez", email: "ana.gomez@example.com", role: "Usuario", status: "Inactivo" }
+];
+
+const userList = document.getElementById("user-list");
+
+function displayUsers(users) {
+    userList.innerHTML = ""; // Limpiar tabla
+
+    users.forEach(user => {
+        const row = document.createElement("tr");
+
+        // Nombre
+        const nameCell = document.createElement("td");
+        nameCell.textContent = user.name;
+        row.appendChild(nameCell);
+
+        // Correo
+        const emailCell = document.createElement("td");
+        emailCell.textContent = user.email;
+        row.appendChild(emailCell);
+
+        // Rol
+        const roleCell = document.createElement("td");
+        roleCell.textContent = user.role;
+        row.appendChild(roleCell);
+
+        // Estado
+        const statusCell = document.createElement("td");
+        statusCell.textContent = user.status;
+        row.appendChild(statusCell);
+
+        userList.appendChild(row);
+    });
+}
+/*
+function toggleSortDirection(column) {
+    const currentIcon = document.querySelector(`[data-column="${column}"] .asc, [data-column="${column}"] .desc`);
+    return currentIcon.classList.contains("asc") ? "desc" : "asc";
+}
+
+function sortTable(column, direction) {
+    const sortedUsers = [...users].sort((a, b) => {
+        if (a[column] < b[column]) return direction === "asc" ? -1 : 1;
+        if (a[column] > b[column]) return direction === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    displayUsers(sortedUsers);
+}*/
+
+document.addEventListener("DOMContentLoaded", () => {
+    displayUsers(users);
+});

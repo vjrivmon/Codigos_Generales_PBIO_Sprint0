@@ -23,6 +23,8 @@
         android:id="@+id/qr"
         android:title="QR" />
 
-
+    <item
+        android:id="@+id/map"
+        android:title="map" />
 
 </menu>

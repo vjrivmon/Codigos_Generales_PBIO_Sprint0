@@ -141,6 +141,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int REQUEST_LOCATION_PERMISSION_CODE = 1001;
 
 
+
+    //--------------RSSI------------------
+    private static final int NUM_MUESTRAS = 10;  // Número de muestras para el promedio
+    private double[] rssiValores = new double[NUM_MUESTRAS];  // Array para almacenar los valores RSSI
+    private int indice = 0;  // Índice para el almacenamiento de valores RSSI
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentPollutant = parent.getItemAtPosition(position).toString(); // 获取选中的污染物
                 Log.d("SPINNER_SELECT", "Selected pollutant: " + currentPollutant);
-                fetchDataAndUpdateMap(); // 重新获取数据并更新地图
+                //fetchDataAndUpdateMap(); // 重新获取数据并更新地图
             }
 
             @Override
@@ -347,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         // 在地图加载完成后更新数据
-        fetchDataAndUpdateMap();
+        //fetchDataAndUpdateMap();
     }
 
 
@@ -540,27 +548,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
          */
         // Mostrar la distancia y la señal
+
+        // Mostrar la distancia promedio en el TextView "dis"
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ImageView imageViewSignal = findViewById(R.id.iv_signal);
                 TextView textViewDistancia = findViewById(R.id.dis); // Encuentra el TextView por su ID
-
                 if (distancia < 2) {
-                    textViewDistancia.setText("Estas al lado del sensor " + String.format("%.2f", distancia) + " metros");
+                    textViewDistancia.setText("Estas al lado del sensor "+ String.format("%.2f", distancia) + " metros");
                     imageViewSignal.setImageResource(R.drawable.signal_3);
                 } else if (distancia >= 2 && distancia <= 5) {
-                    textViewDistancia.setText("Estas cerca del sensor " + String.format("%.2f", distancia) + " metros");
+                    textViewDistancia.setText("Estas cerca del sensor "+ String.format("%.2f", distancia) + " metros");
                     imageViewSignal.setImageResource(R.drawable.signal_2);
                 } else if (distancia > 5) {
-                    textViewDistancia.setText("Estas lejos del sensor " + String.format("%.2f", distancia) + " metros");
+                    textViewDistancia.setText("Estas lejos del sensor "+ String.format("%.2f", distancia) + " metros");
                     imageViewSignal.setImageResource(R.drawable.signal_1);
-                }
-
-                // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
-                if (distancia > 2 && rssi == -47) { // Asumimos que RSSI -100 indica sin señal
+                } // Si la distancia es más de 5 metros y no se detecta señal, poner la imagen gris
+                if (distancia > 5 && rssi == -100) { // Asumimos que RSSI -100 indica sin señal
                     imageViewSignal.setImageResource(R.drawable.gris_wwifi); // Imagen cuando no hay señal
                 }
+                //textViewDistancia.setText("Distancia: " + String.format("%.2f", distancia) + " metros");
             }
         });
 
@@ -636,7 +644,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+   /* private void mostrarDistancia(double distancia) {
+        TextView myTextView = findViewById(R.id.dis);
+        if (myTextView != null) {
+            Log.d("MainActivity", "TextView encontrado, actualizando texto.");
+            if (distancia < 2) {
+                myTextView.setText("Estas al lado del sensor");
+            } else if (distancia >= 2 && distancia <= 5) {
+                myTextView.setText("Estas cerca del sensor");
+            } else if (distancia > 5) {
+                myTextView.setText("Estas lejos");
+            }
+        } else {
+            Log.e("MainActivity", "El TextView no se encontró.");
+        }
+    }
 
+
+    */
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
@@ -770,7 +795,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             */
+           private void actualizarIconoSenal(int nivelDeSenal) {
+               ImageView ivSignal = findViewById(R.id.iv_signal);
 
+               switch (nivelDeSenal) {
+                   case 3:
+                       ivSignal.setImageResource(R.drawable.signal_3); // Imagen de 3 barras
+                       break;
+                   case 2:
+                       ivSignal.setImageResource(R.drawable.signal_1); // Imagen de 2 barras
+                       break;
+                   case 1:
+                       ivSignal.setImageResource(R.drawable.signal_1); // Imagen de 1 barra
+                       break;
+                   default:
+                       ivSignal.setImageResource(R.drawable.gris_wwifi); // Sin señal
+                       break;
+               }
+           }
+            private void detectarDesconexion() {
+                handler.postDelayed(() -> {
+                    NotificationHalper notificationHalper = new NotificationHalper(MainActivity.this);
+                    notificationHalper.showNotification("Desconexión", "El dispositivo se ha desconectado.");
+
+                    runOnUiThread(() -> {
+                        ImageView ivSignal = findViewById(R.id.iv_signal);
+                        ivSignal.setImageResource(R.drawable.gris_wwifi); // Actualiza el icono a sin señal
+                    });
+                }, TIMEOUT_MS);
+            }
 
 
 
@@ -971,7 +1024,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getUserLocation();
-                fetchDataAndUpdateMap();
+                //fetchDataAndUpdateMap();
             } else {
                 Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
             }
@@ -1308,7 +1361,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   */
     // class
-<<<<<<< Updated upstream
+
     /*
  public void verificarSensorAsignado(String correo) {
      ApiService apiService = ApiClient.getClient().create(ApiService.class);
