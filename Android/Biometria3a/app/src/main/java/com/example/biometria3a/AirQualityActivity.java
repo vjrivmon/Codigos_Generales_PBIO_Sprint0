@@ -32,12 +32,45 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AirQualityActivity extends AppCompatActivity {
-/*
+
     private BarChart barChart;
     private TextView airQualityTextView;
     private RequestQueue requestQueue;
-
+    String ip = Config.SERVER_IP;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +85,14 @@ public class AirQualityActivity extends AppCompatActivity {
         // 初始化日期选择器
         Spinner dateSpinner = findViewById(R.id.dateSpinner);
         List<String> dates = new ArrayList<>();
-        dates.add("2024-12-09");
-        dates.add("2024-12-10");
-        dates.add("2024-12-11");
-        dates.add("2024-12-12");
-        dates.add("2024-12-13");
+        dates.add("2025-01-10");
+        dates.add("2025-01-11");
+        dates.add("2025-01-12");
+        dates.add("2025-01-13");
+        dates.add("2025-01-14");
+        dates.add("2025-01-15");
+        dates.add("2025-01-16");
+        dates.add("2025-01-17");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dates);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,18 +103,18 @@ public class AirQualityActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedDate = dates.get(position);
-                fetchDataFromAPI("http://172.20.10.3:8080/", selectedDate);
+                fetchDataFromAPI(ip, selectedDate);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // 默认加载第一个日期的数据
-                fetchDataFromAPI("http://172.20.10.3:8080/", dates.get(0));
+                fetchDataFromAPI(ip, dates.get(0));
             }
         });
 
         // 默认加载第一个日期的数据
-        fetchDataFromAPI("http://172.20.10.3:8080/", dates.get(0));
+        fetchDataFromAPI(ip, dates.get(0));
     }
 
     private void fetchDataFromAPI(String url, String selectedDate) {
@@ -291,6 +327,6 @@ public class AirQualityActivity extends AppCompatActivity {
         }
     }
 
- */
-
 }
+
+

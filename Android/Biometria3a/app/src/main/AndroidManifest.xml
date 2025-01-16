@@ -72,6 +72,7 @@
         <activity android:name=".BiometricAuthActivity"/>
         <activity android:name=".DistanceCalculatorActivity"/>
         <activity android:name=".PacksActivity"/>
+        <activity android:name=".HeatmapActivity"/>
 
         <receiver android:name=".OzoneLevelReceiver"
             android:enabled="true"

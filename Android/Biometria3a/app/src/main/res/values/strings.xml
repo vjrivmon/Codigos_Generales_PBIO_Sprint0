@@ -5,4 +5,17 @@
         <item>SO3</item>
         <item>O3</item>
     </string-array>
+
+
+
+        <!-- 这里不再重复 app_name，避免冲突 -->
+
+        <!-- 仅定义 map_layers，确保不重复 -->
+        <string-array name="map_layers">
+            <item>Mostrar Todos</item>
+            <item>Mostrar NO2</item>
+            <item>Mostrar SO2</item>
+            <item>Mostrar O3</item>
+            <item>Mostrar Temp</item>
+        </string-array>
 </resources>
