@@ -10,10 +10,10 @@ public class ApiClient {
     //private static final String BASE_URL = "http://192.168.0.20:8080/";  // Para emulador
   // private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
    //private static final String BASE_URL = "http://192.168.0.20:8080/";  // Para emulador
-   // private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
+    private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
     //private static final String BASE_URL = "http://172.20.10.2:8080/";  // Para emulador
-    private static final String BASE_URL = Config.SERVER_IP;
-    //private static final String BASE_URL = "http://192.168.18.157:8080/";  // Para emulador
+   // private static final String BASE_URL = Config.SERVER_IP;
+   //private static final String BASE_URL = "http://10.0.2.2:8080/ ";  // Para emulador
 
 
 

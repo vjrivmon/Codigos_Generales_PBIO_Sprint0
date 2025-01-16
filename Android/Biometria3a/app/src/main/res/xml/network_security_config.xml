@@ -19,7 +19,7 @@
 
     <!-- AQUI SE DEBE PONER TU IP DEL ORDENADOR Q ES LA IP DEL SERVIDOR ASI CON 192.168.X.X-->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.18.112</domain>  <!-- Dirección IP de tu servidor -->
+        <domain includeSubdomains="true">192.168.18.157</domain>  <!-- Dirección IP de tu servidor -->
     </domain-config>
 
 
@@ -28,37 +28,23 @@
         <domain includeSubdomains="true">192.168.18.113</domain>
     </domain-config>
 
-    <!-- AQUI SE DEBE PONER TU IP DEL ORDENADOR Q ES LA IP DEL SERVIDOR ASI CON 192.168.X.X-->
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.18.157</domain>  <!-- Dirección IP de tu servidor -->
-    </domain-config>
-
-
-
-
 
     <!-- aqui va la ip del tu dispositivo movil-->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">172.20.10.13</domain>
+        <domain includeSubdomains="true">192.168.18.1</domain>
     </domain-config>
+    
 
 
     <!-- AQUI SE DEBE PONER TU IP DEL ORDENADOR Q ES LA IP DEL SERVIDOR ASI CON 192.168.X.X-->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">172.20.10.2</domain>  <!-- Dirección IP de tu servidor -->
+        <domain includeSubdomains="true">172.20.10.3</domain>  <!-- Dirección IP de tu servidor -->
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">172.20.10.1</domain>  <!-- Dirección IP de tu servidor -->
+        <domain includeSubdomains="true">172.20.10.2</domain>  <!-- Dirección IP de tu servidor -->
     </domain-config>
 
-
-
-    <!-- aqui va la ip del tu dispositivo movil-->
-
-
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">172.20.10.3</domain>
-    </domain-config>
 
 
 </network-security-config>

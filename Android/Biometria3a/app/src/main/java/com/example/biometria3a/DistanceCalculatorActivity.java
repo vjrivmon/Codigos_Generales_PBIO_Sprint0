@@ -13,49 +13,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import android.location.Location;
-/*
-public class DistanceCalculatorActivity extends AppCompatActivity {
-
-    private LocationTracker locationTracker;
-    private TextView distanceTextView;
-    private Button startButton, stopButton;
-
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_distance_calculator);
-
-        distanceTextView = findViewById(R.id.distanceTextView);
-        startButton = findViewById(R.id.startButton);
-        stopButton = findViewById(R.id.stopButton);
-
-        locationTracker = new LocationTracker(this);
-
-        startButton.setOnClickListener(v -> {
-            locationTracker.startTracking();
-        });
-
-        stopButton.setOnClickListener(v -> {
-            locationTracker.stopTracking();
-            updateDistance();
-        });
-    }
-
-    private void updateDistance() {
-        float distance = locationTracker.getTotalDistance();
-        distanceTextView.setText(String.format("Distancia recorrida: %.2f metros", distance));
-    }
-}
-
-
- */
-
-
-import android.os.Bundle;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 
@@ -73,24 +30,33 @@ public class DistanceCalculatorActivity extends AppCompatActivity {
 
 
      */
+  //  private static final double LAT_END = 38.9954;
+ //   private static final double LON_END = -0.1662;
+
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location startLocation, endLocation;
-    private TextView distanceTextView;
+    private TextView distanceTextView, inicioTextView, finTextView, calculatedDistanceTextView;
     private Button startButton, stopButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distance_calculator);
 
+        // Inicializar vistas
         distanceTextView = findViewById(R.id.distanceTextView);
+        inicioTextView = findViewById(R.id.Inicio);
+        finTextView = findViewById(R.id.Fin);
+        calculatedDistanceTextView = findViewById(R.id.calculatedDistanceTextView);
         startButton = findViewById(R.id.startButton);
         stopButton = findViewById(R.id.stopButton);
 
+        // Configurar los botones
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Configurar los botones
+        // Configurar botones
         startButton.setOnClickListener(v -> startTracking());
         stopButton.setOnClickListener(v -> stopTracking());
         // Calcular la distancia entre las dos ubicaciones
@@ -135,6 +101,8 @@ public class DistanceCalculatorActivity extends AppCompatActivity {
     }
     // Método para iniciar el seguimiento (obtiene la ubicación inicial)
     // Método para iniciar el seguimiento (obtiene la ubicación inicial)
+    // Método para iniciar el seguimiento y mostrar las coordenadas iniciales
+    // Método para iniciar el seguimiento y guardar la ubicación inicial
     private void startTracking() {
         if (checkPermissions()) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -150,17 +118,24 @@ public class DistanceCalculatorActivity extends AppCompatActivity {
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
                     startLocation = location;
+                    String startCoords = String.format("Lat: %.6f, Lon: %.6f",
+                            startLocation.getLatitude(), startLocation.getLongitude());
+                    inicioTextView.setText("Inicio: " + startCoords);
                     distanceTextView.setText("Ubicación inicial guardada.");
                 } else {
+                    inicioTextView.setText("Inicio: No disponible");
                     distanceTextView.setText("No se pudo obtener la ubicación inicial.");
                 }
-            }).addOnFailureListener(e -> distanceTextView.setText("Error al obtener la ubicación inicial."));
+            }).addOnFailureListener(e -> {
+                inicioTextView.setText("Inicio: Error");
+                distanceTextView.setText("Error al obtener la ubicación inicial.");
+            });
         } else {
             requestPermissions();
         }
     }
 
-    // Método para detener el seguimiento (obtiene la ubicación final y calcula la distancia)
+    // Método para detener el seguimiento y calcular la distancia
     private void stopTracking() {
         if (checkPermissions()) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -173,26 +148,54 @@ public class DistanceCalculatorActivity extends AppCompatActivity {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+
+
+            // Usar las coordenadas fijas como ubicación final
+            //double fixedLatEnd = LAT_END;
+           // double fixedLonEnd = LON_END;
+
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
+                    //endLocation = location;
                     endLocation = location;
+                    String endCoords = String.format("Lat: %.6f, Lon: %.6f",
+                            endLocation.getLatitude(), endLocation.getLongitude());
+                    finTextView.setText("Fin: " + endCoords);
+
                     if (startLocation != null) {
-                        // Calcular la distancia entre las ubicaciones
+                        // Calcular la distancia usando Location.distanceTo
                         float distance = startLocation.distanceTo(endLocation);
                         distanceTextView.setText(String.format("Distancia recorrida: %.2f metros", distance));
+
+                        // Calcular la distancia usando calculateDistance
+                        double calculatedDistance = calculateDistance(
+                                startLocation.getLatitude(),
+                                startLocation.getLongitude(),
+                                endLocation.getLatitude(),
+                               endLocation.getLongitude()
+
+
+                                // Usar las coordenadas fijas como ubicación final
+                        // LAT_END,
+                         //LON_END
+                        );
+                        calculatedDistanceTextView.setText(String.format("Distancia calculada: %.2f metros", calculatedDistance));
                     } else {
                         distanceTextView.setText("No se ha registrado la ubicación inicial.");
                     }
                 } else {
+                    finTextView.setText("Fin: No disponible");
                     distanceTextView.setText("No se pudo obtener la ubicación final.");
                 }
-            }).addOnFailureListener(e -> distanceTextView.setText("Error al obtener la ubicación final."));
+            }).addOnFailureListener(e -> {
+                finTextView.setText("Fin: Error");
+                distanceTextView.setText("Error al obtener la ubicación final.");
+            });
         } else {
             distanceTextView.setText("Permisos de ubicación no concedidos.");
             requestPermissions();
         }
     }
-
     // Verificar si los permisos están concedidos
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;

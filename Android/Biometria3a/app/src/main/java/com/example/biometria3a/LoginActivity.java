@@ -109,7 +109,6 @@ private ImageView btnBiom;
             @Override
             public void onClick(View v) {
                 goToBA();
-                //fakeLogin();
             }
         });
 
@@ -414,7 +413,9 @@ private ImageView btnBiom;
             Toast.makeText(LoginActivity.this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }
     }
-*/
+
+     */
+
     // Método para iniciar la actividad "IniciaSesionActivity"
     private void goToRegistroActivity() {
         // Creamos un Intent para abrir la actividad de inicio de sesión
@@ -619,7 +620,7 @@ private ImageView btnBiom;
             @Override
             public void onFailure(Call<SensorResponse> call, Throwable t) {
                 // Si hay un fallo en la conexión o en la solicitud
-                Toast.makeText(getApplicationContext(), "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Fallo de conexión 333: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
