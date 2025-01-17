@@ -10,7 +10,7 @@ const tipo = 'Todos'; // Tipo de gas seleccionado por defecto
 console.log('Tipo seleccionado:', tipo);
 // Para cuando sean los días del sprint, descomentar la siguiente línea y comentar la línea 11
 //const fecha = new Date().toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
-const fecha = '2025-01-10'; // Fecha actual en formato YYYY-MM-DD
+const fecha = '2025-01-26'; // Fecha actual en formato YYYY-MM-DD
 console.log('Fecha seleccionada:', fecha);
 
 // Obtener la MAC del sensor del usuario
