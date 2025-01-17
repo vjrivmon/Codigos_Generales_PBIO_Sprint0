@@ -99,7 +99,6 @@
             </div>
         </div>
 
-
        <!-- Gestión de Usuarios -->
 <div class="container">
     <h1>Gestión de Usuarios</h1>
@@ -137,6 +136,42 @@
         </table>
     </div>
 </div>
+
+       <!-- Gestión de Historiales -->
+       <div class="container">
+        <h1>Gestión de Historiales</h1>
+    
+        <!-- Tabla de historiales -->
+        <div class="historiales-table-container">
+            
+            <table class="historiales-table"> <!-- Usamos la misma clase de tabla -->
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('name', toggleSortDirection('name'))">
+                            <span>Nombre</span>
+                           
+                        </th>
+                        <th onclick="sortTable('email', toggleSortDirection('email'))">
+                            <span>Correo</span>
+                            
+                        </th>
+                        <th onclick="sortTable('role', toggleSortDirection('role'))">
+                            <span>Rol</span>
+                            
+                        </th>
+                        <th onclick="sortTable('status', toggleSortDirection('status'))">
+                            <span>Estado</span>
+                            
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="historiales-list">
+                    <!-- Datos generados dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 
     </section>
 
