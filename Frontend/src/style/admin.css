@@ -88,7 +88,7 @@ h1 {
   color: var(--button-color);
 }
 
-/* Tabla */
+/* Tabla sensor */
 .sensor-table {
   width: 100%;
   min-width: 1122px; /* No permite que la tabla sea más pequeña */
@@ -122,6 +122,47 @@ h1 {
 
 /* Estilos responsivos para la tabla */
 .sensor-table-container {
+  overflow-x: auto; /* Activa el scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
+  border-radius: 10px;
+  margin-bottom: 1rem; /* Espacio inferior */
+}
+
+
+/* Tabla historial */
+.historial-table {
+  width: 100%;
+  min-width: 1122px; /* No permite que la tabla sea más pequeña */
+  border-collapse: collapse;
+  table-layout: auto; /* Permite que las columnas mantengan su ancho natural */
+}
+
+.historial-table th, .historial-table td {
+  padding: 0.8rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85rem;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.historial-table th {
+  background-color: var(--background-color-secondary);
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.historial-table tr:hover {
+  background-color: #f4f6fa;
+}
+
+.historial-table td {
+  color: var(--text-color);
+}
+
+/* Estilos responsivos para la tabla */
+.historial-table-container {
   overflow-x: auto; /* Activa el scroll horizontal */
   -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
   border-radius: 10px;
