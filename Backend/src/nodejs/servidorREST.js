@@ -1239,8 +1239,8 @@ async function generarDatosSinteticosParaSensores() {
   }
 
   const datos = [];
-  const fechaInicio = new Date('2025-01-10T00:00:00');
-  const fechaFin = new Date('2025-01-17T23:59:59');
+  const fechaInicio = new Date('2025-01-20T00:00:00');
+  const fechaFin = new Date('2025-01-30T23:59:59');
 
   for (let i = 0; i < sensores.length; i++) {
       for (let j = 0; j < 25; j++) { // 25 bloques de 4 mediciones para cada sensor
