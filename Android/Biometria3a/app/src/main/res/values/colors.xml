@@ -5,4 +5,12 @@
     <color name="colorAccent">#628ECB</color>
     <color name="colorAzulclaro">#b1c9ef</color>
     <color name="colorAzuloscuro">#395886</color>
+    <color name="red">#3F51B5</color>
+    <color name="primaryColor">#2E7D32</color>
+    <color name="textColor">#000000</color>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="green">#00FF00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="gray">#808080</color>
+
 </resources>

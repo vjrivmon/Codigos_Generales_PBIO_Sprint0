@@ -6,7 +6,6 @@ const swaggerUi = require('swagger-ui-express');
 const dotenv = require('dotenv');
 const router = express.Router();
 
-
 dotenv.config();
 
 const {
@@ -17,27 +16,25 @@ const {
   agregarUsuario,
   EliminarUsuario,
   ConsultarBaseDeDatos,
-  verificarUsuario
+  verificarUsuario,
+  recuperarContrasena,
+  editarDatosUsuario,
+  encriptarContrasenas,
+  enviarCorreoVerificacion,
+  enviarCorreoEditarDatos,
+  enviarCorreoRecuperarContrasena,
+  enviarCorreoRestablecerContrasena,
+  asociarSensorAUsuario,
+  obtenerSensorPorCorreo,
+  editarNombreSensor,
+  generarYGuardarDatosSinteticos,
+  insertarDatosSinteticos,
+  obtenerRolPorCorreo
 } = require('./servidorREST'); // Importar lógica de negocio desde el archivo separado
-// Inicializar app y cargar variables de entorno
-// const app = express();
-
-// Middleware para procesar JSON
-// app.use(cors());
-// app.use(express.json());
 
 // Middleware para procesar JSON
 router.use(cors());
 router.use(express.json());
-
-/*
-app.get('/mediciones/:id_sensor', ConsultarMedida);
-app.post('/mediciones', agregarMedicion);
-app.get('/usuarios/:id_usuario', ConsultarDatosUsuario);
-app.post('/usuarios', agregarUsuario);
-app.delete('/usuarios/:id_usuario', EliminarUsuario);
-app.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
-*/
 
 router.get('/mediciones/:id_sensor', ConsultarMedida);
 router.post('/mediciones', agregarMedicion);
@@ -46,45 +43,19 @@ router.post('/usuarios', agregarUsuario);
 router.delete('/usuarios/:id_usuario', EliminarUsuario);
 router.get('/mediciones/:id_sensor', ConsultarSiHayAlerta);
 router.get('/usuarios', verificarUsuario);
-//router.post('/asociar-sensor', asociarSensorAUsuario);
-
-// Pruebas de depuración
-console.log('Configuración inicial cargada');
-
-router.get('/mediciones/:id_sensor', (req, res) => {
-  console.log('Ruta /mediciones/:id_sensor accedida');
-  ConsultarMedida(req, res);
-});
-
-router.post('/mediciones', (req, res) => {
-  console.log('Ruta /mediciones accedida');
-  agregarMedicion(req, res);
-});
-
-router.get('/usuarios/:id_usuario', (req, res) => {
-  console.log('Ruta /usuarios/:id_usuario accedida');
-  ConsultarDatosUsuario(req, res);
-});
-
-router.post('/usuarios', (req, res) => {
-  console.log('Ruta /usuarios accedida');
-  agregarUsuario(req, res);
-});
-
-router.delete('/usuarios/:id_usuario', (req, res) => {
-  console.log('Ruta /usuarios/:id_usuario accedida');
-  EliminarUsuario(req, res);
-});
-
-router.get('/mediciones/:id_sensor', (req, res) => {
-  console.log('Ruta /mediciones/:id_sensor accedida');
-  ConsultarSiHayAlerta(req, res);
-});
-
+router.put('/usuarios/contrasena', recuperarContrasena);
+router.put('/usuarios/:id_usuario', editarDatosUsuario);
+router.post('/usuarios/verificar', verificarUsuario);
+router.post('/verificar-correo', enviarCorreoVerificacion);
+router.post('/editar-datos', enviarCorreoEditarDatos);
+router.post('/restablecer-contrasena', enviarCorreoRestablecerContrasena);
+router.post('/recuperar-contrasena', enviarCorreoRecuperarContrasena);
+router.post('/asociar_dispositivo', asociarSensorAUsuario);
+router.put('/sensores/:id_sensor', editarNombreSensor);
 router.get('/base-datos', ConsultarBaseDeDatos);
-
-// Pruebas de depuración
-console.log('Configuración de rutas cargada');
+router.get('/obtenerSensorPorCorreo/:correo', obtenerSensorPorCorreo);
+router.post('/insertar-datos-sinteticos', insertarDatosSinteticos);
+router.get('/obtenerRolPorCorreo/:correo', obtenerRolPorCorreo);
 
 // Swagger Setup
 const swaggerOptions = {
@@ -104,22 +75,42 @@ const swaggerOptions = {
   apis: ['./APIRest.js']
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Rutas de la API que usan la lógica de negocio
-/*
-app.get('/mediciones', servidorRest.ConsultarMedida);
-app.post('/mediciones', servidorRest.agregarMedicion);
-app.get('/usuarios', servidorRest.ConsultarDatosUsuario);
-app.get('/mediciones', servidorRest.ConsultarSiHayAlerta);
-app.post('/usuarios', servidorRest.agregarUsuario);
-app.delete('/usuarios', servidorRest.EliminarUsuario);
-*/
-// Levantar servidor
-module.exports = router; // Exportar el router
+// Documentación de Swagger para la nueva ruta
+/**
+ * @swagger
+ * /sensores/{id_sensor}:
+ *   put:
+ *     summary: Edita el nombre de un sensor
+ *     tags: [Sensores]
+ *     parameters:
+ *       - in: path
+ *         name: id_sensor
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del sensor
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nuevo nombre del sensor
+ *     responses:
+ *       200:
+ *         description: Nombre del sensor actualizado correctamente
+ *       404:
+ *         description: No se encontró ningún sensor con el ID proporcionado
+ *       500:
+ *         description: Error del servidor
+ */
 
-// Ejemplo de uso de la API
+// Esquema de Swagger para Medicion
 /**
  * @swagger
  * components:
@@ -127,42 +118,35 @@ module.exports = router; // Exportar el router
  *     Medicion:
  *       type: object
  *       required:
- *         - id
- *         - hora
- *         - latitud
- *         - longitud
- *         - valorGas
- *         - valorTemperatura
+ *         - id_sensor
+ *         - fecha_hora
+ *         - ubicacion
+ *         - tipo_medicion
+ *         - valor
  *       properties:
- *         id:
- *           type: integer
- *           description: ID de la medición
- *         hora:
- *           type: string
- *           description: Hora de la medición
- *         latitud:
- *           type: number
- *           format: double
- *           description: latitud de la medición
- *         longitud:
- *           type: number
- *           format: double
- *           description: longitud de la medición
  *         id_sensor:
- *           type: integer
+ *           type: string
  *           description: ID del sensor
- *         valorGas:
+ *         fecha_hora:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha y hora de la medición
+ *         ubicacion:
+ *           type: object
+ *           description: Ubicación de la medición
+ *         tipo_medicion:
+ *           type: string
+ *           description: Tipo de medición
+ *         valor:
  *           type: number
- *           description: Valor de la medición de Gas
- *         valorTemperatura:
- *           type: number
- *           description: Valor de la medición de Temperatura
+ *           format: decimal
+ *           description: Valor de la medición
  *       example:
- *         hora: '10:00'
- *         latitud: 40.416775
- *         longitud: -3.703790
- *         valorGas: 40.00
- *         valorTemperatura: 32.00
+ *         id_sensor: '00:1A:2B:3C:4D:5E'
+ *         fecha_hora: '2024-11-21T10:00:00Z'
+ *         ubicacion: {"latitud": 40.416775, "longitud": -3.703790}
+ *         tipo_medicion: 'Temperatura'
+ *         valor: 25.50
  */
 
 // Esquema de Swagger para Usuario
@@ -173,37 +157,76 @@ module.exports = router; // Exportar el router
  *     Usuario:
  *       type: object
  *       required:
+ *         - nombre
+ *         - telefono
  *         - correo
  *         - contrasena
  *       properties:
+ *         nombre:
+ *           type: string
+ *           description: Nombre del usuario
+ *         telefono:
+ *           type: string
+ *           description: Teléfono del usuario
  *         correo:
  *           type: string
  *           description: Correo electrónico del usuario
- *         contrasenya:
+ *         contrasena:
  *           type: string
  *           description: Contraseña del usuario
  *       example:
- *         correo: 'ejemplo@correo.com'
- *         contrasena: '123456'
+ *         nombre: 'Vicente'
+ *         telefono: '601037577'
+ *         correo: 'visi02@gmail.com'
+ *         contrasena: 'pass1'
+ */
+
+// Esquema de Swagger para Sensor
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Sensor:
+ *       type: object
+ *       required:
+ *         - id_sensor
+ *         - nombre
+ *         - funciona
+ *       properties:
+ *         id_sensor:
+ *           type: string
+ *           description: ID del sensor
+ *         nombre:
+ *           type: string
+ *           description: Nombre del sensor
+ *         funciona:
+ *           type: boolean
+ *           description: Indica si el sensor funciona
+ *       example:
+ *         id_sensor: '00:1A:2B:3C:4D:5E'
+ *         nombre: 'Sensor 1'
+ *         funciona: true
  */
 
 // TÍTULO DE LA API en Swagger
-
 /**
  * @swagger
  * tags:
  *   name: Mediciones
- *   description: API para gestionar las mediciones de los sensores de Gas y Temperatura en diferentes ubicaciones
+ *   description: API para gestionar las mediciones de los sensores
  * 
  * @swagger
  * tags:
  *   name: Usuarios
  *   description: API para gestionar los usuarios de la aplicación
+ * 
+ * @swagger
+ * tags:
+ *   name: Sensores
+ *   description: API para gestionar los sensores
  */
 
-
 // Método GET para consultar medida por id_sensor
-
 /**
  * @swagger
  * /mediciones/{id_sensor}:
@@ -214,7 +237,7 @@ module.exports = router; // Exportar el router
  *       - in: path
  *         name: id_sensor
  *         schema:
- *           type: integer
+ *           type: string
  *         required: true
  *         description: ID del sensor
  *     responses:
@@ -227,7 +250,6 @@ module.exports = router; // Exportar el router
  *               items:
  *                 $ref: '#/components/schemas/Medicion'
  */
-
 
 // POST para agregar medición
 /**
@@ -250,7 +272,6 @@ module.exports = router; // Exportar el router
  *             schema:
  *               $ref: '#/components/schemas/Medicion'
  */
-
 
 // GET para consultar usuario por id
 /**
@@ -275,7 +296,6 @@ module.exports = router; // Exportar el router
  *               $ref: '#/components/schemas/Usuario'
  */
 
-
 // POST para agregar un nuevo usuario
 /**
  * @swagger
@@ -298,7 +318,6 @@ module.exports = router; // Exportar el router
  *               $ref: '#/components/schemas/Usuario'
  */
 
-
 // Método DELETE para eliminar un usuario por id
 /**
  * @swagger
@@ -320,6 +339,40 @@ module.exports = router; // Exportar el router
  *         description: Usuario no encontrado
  */
 
+// Método PUT para editar el nombre de un sensor
+/**
+ * @swagger
+ * /sensores/{id_sensor}:
+ *   put:
+ *     summary: Edita el nombre de un sensor
+ *     tags: [Sensores]
+ *     parameters:
+ *       - in: path
+ *         name: id_sensor
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del sensor
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nuevo nombre del sensor
+ *             example:
+ *               nombre: 'Nuevo nombre del sensor'
+ *     responses:
+ *       200:
+ *         description: Nombre del sensor actualizado correctamente
+ *       404:
+ *         description: No se encontró ningún sensor con el ID proporcionado
+ *       500:
+ *         description: Error del servidor
+ */
 
 // GET para consultar si hay alerta por valor de gas
 /**
@@ -348,5 +401,4 @@ module.exports = router; // Exportar el router
  *                   description: Indica si existe una alerta de gas
  */
 
-
-
+module.exports = router; // Exportar el router

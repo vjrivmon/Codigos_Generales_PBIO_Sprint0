@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_grafica"
+        android:title="Grafica" />
+    <item
+        android:id="@+id/info_extra"
+        android:title="Info sobre los gases" />
     <item
         android:id="@+id/action_about"
         android:title="Sobre Nosotros" />
@@ -12,6 +19,12 @@
     <item
         android:id="@+id/action_privacidad"
         android:title="Centro de privacidad" />
+    <item
+        android:id="@+id/qr"
+        android:title="QR" />
 
+    <item
+        android:id="@+id/map"
+        android:title="map" />
 
 </menu>

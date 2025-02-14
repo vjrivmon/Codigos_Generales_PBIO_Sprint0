@@ -19,6 +19,7 @@ public class PrivacidadAcitivity extends AppCompatActivity {
 
 
     private ImageView menuIcon;
+    private MenuHandler menuHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,55 +84,11 @@ public class PrivacidadAcitivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Encontrar el icono del menú en el Toolbar
+        menuHandler = new MenuHandler(this);
         menuIcon = findViewById(R.id.menu_icon);
-
-        // Establecer el listener para abrir el PopupMenu al hacer clic en el icono
-        menuIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenu(v);
-            }
-        });
+        menuIcon.setOnClickListener(menuHandler::showPopupMenu);
     }
 
-    // Método para mostrar el PopupMenu
-    // Método para mostrar el PopupMenu
-    private void showPopupMenu(View view) {
-        // Crear el PopupMenu
-        PopupMenu popupMenu = new PopupMenu(PrivacidadAcitivity.this, view);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.menu, popupMenu.getMenu());
-
-        // Manejar las acciones del menú
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                // Usar if-else en lugar de switch para evitar el error
-                if (item.getItemId() == R.id.action_about) {
-                    Toast.makeText(PrivacidadAcitivity.this, "Sobre Nosotros", Toast.LENGTH_SHORT).show();
-                    lanzarSobreNosotros();
-                    return true;
-                } else if (item.getItemId() == R.id.action_faq) {
-                    Toast.makeText(PrivacidadAcitivity.this, "FAQ", Toast.LENGTH_SHORT).show();
-                    lanzarFAQ();
-                    return true;
-                } else if (item.getItemId() == R.id.action_packs) {
-                    Toast.makeText(PrivacidadAcitivity.this, "Packs", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (item.getItemId() == R.id.action_privacidad) {
-                    Toast.makeText(PrivacidadAcitivity.this, "Action Privaciodad", Toast.LENGTH_SHORT).show();
-                    lanzarPrivacidad();
-                    return true;
-                }else {
-                    return false;
-                }
-            }
-        });
-
-        // Mostrar el menú
-        popupMenu.show();
-    }
     // Inflar el menú cuando se crea la actividad
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,28 +96,6 @@ public class PrivacidadAcitivity extends AppCompatActivity {
     }
 
 
-    private void lanzarSobreNosotros() {
-        Intent intent = new Intent(this, SobreNosotrosActivity.class);
-        startActivity(intent);
-    }
-
-    private void lanzarFAQ() {
-        Intent intent = new Intent(this, FAQActivity.class);
-        startActivity(intent);
-    }
-
-    private void lanzarPacks() {
-        // Acción o navegación para la opción de "Packs"
-        Intent intent = new Intent(this, PacksActivity.class);
-        startActivity(intent);
-    }
-
-
-    private void lanzarPrivacidad() {
-        // Acción o navegación para la opción de "Packs"
-        Intent intent = new Intent(this, PrivacidadAcitivity.class);
-        startActivity(intent);
-    }
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 

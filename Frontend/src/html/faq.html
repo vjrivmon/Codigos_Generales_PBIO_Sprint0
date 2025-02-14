@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>FAQ | VIMYP</title>
     <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
     <link rel="stylesheet" href="../style/faq.css"> <!-- Archivo CSS específico para FAQ -->
     <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 
@@ -13,28 +14,55 @@
 <body>
 	
 <!-- Inicio Header y Navbar -->
-<header>
-  <nav class="navbar">
-    <div class="logo">
-        <a href="../index.html">
-          <img src="../img/logo.svg" alt="Logotipo VIMYP" />
-          <span>VIMYP</span>
-        </a>
+<header id="header_publico" >
+    <nav class="navbar">
+      <div class="logo">
+          <a href="../index.html">
+            <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+            <span>VIMYP</span>
+          </a>
+        </div>
+      <ul class="nav-links">
+        <li><a href="packs.html">Packs</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="infoExtraPublico.html">Info sobre los gases</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <a href="login.html" class="btn btn-primary">Login</a>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
       </div>
-    <ul class="nav-links">
-      <li><a href="packs.html">Packs</a></li>
-      <li><a href="faq.html">FAQ</a></li>
-      <li><a href="nosotros.html">Nosotros</a></li>
-    </ul>
-    <div class="nav-buttons">
-      <a href="login.html" class="btn btn-primary">Login</a>
-      <div class="menu-toggle" id="mobile-menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
+
+<header id="header_usuario" style="display: none;">
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">
+                <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                <span>VIMYP</span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="packs.html">Packs</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="infoExtra.html">Info sobre los gases</a></li>
+            <li><a href="datosYMapa.html">Mapa</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
 </header>
 <!-- Fin Navbar y header -->
 
@@ -110,8 +138,19 @@
     </div>
 </footer>
 <!-- Fin footer -->
+ 
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
 
 <script src="../js/faq.js"></script> <!-- Archivo JS específico para FAQ -->
-	<script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+<script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+<script src="../js/selectorHeader.js"></script> <!-- Archivo JS para que muestre el menu adecuado-->
+<script src="../js/cerrarSesion.js"></script> <!-- Archivo JS para cerrar sesión -->
 </body>
 </html>

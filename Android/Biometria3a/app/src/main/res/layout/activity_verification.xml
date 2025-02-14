@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/instructionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Por favor, introduce el código que has recibido en el correo de verificación"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:paddingBottom="10dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/warningTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No cierres la app o vuelvas atrás, o tendrás que hacer la verificación nuevamente"
+        android:textSize="14sp"
+        android:textColor="#FF0000"
+        android:gravity="center"
+        android:paddingBottom="20dp" />
+    <EditText
+        android:id="@+id/emailEditText"
+        android:hint="Por favor ingrese su correo electrónico"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/sendEmailButton"
+        android:text="Enviar código de verificación"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/codeEditText"
+        android:hint="introducir el código de confirmación"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/verifyButton"
+        android:text="verificar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

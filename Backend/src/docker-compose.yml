@@ -1,6 +1,6 @@
 services:
   node:
-    container_name: sprint1_njs
+    container_name: sprint3_njs
     build: 
       context: ./nodejs
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
       - ./variables.env
     command: bash -c "while !</dev/tcp/mariadb/3306; do sleep 1; done; node main.js"
   mariadb:
-    container_name: sprint1_mdb
+    container_name: sprint3_mdb
     restart: always
     build:
       context: ./mariadb
@@ -26,7 +26,7 @@ services:
       - ./mariadb/sql:/docker-entrypoint-initdb.d/  # Monta la carpeta sql
       - db_data:/var/lib/mysql
   nginx:
-    container_name: sprint1_ngx
+    container_name: sprint3_ngx
     build:
       context: ./nodejs/app_web
       dockerfile: Dockerfile

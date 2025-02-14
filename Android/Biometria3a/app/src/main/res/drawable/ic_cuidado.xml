@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="48dp"
+    android:viewportHeight="48"
+    android:viewportWidth="48"
+    android:width="48dp">
+
+    <!-- Círculo con borde rojo (sin relleno interior) -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF0000"
+        android:strokeWidth="4"
+        android:pathData="M24,0c13.255,0 24,10.745 24,24s-10.745,24 -24,24S0,37.255 0,24S10.745,0 24,0z"/>
+
+    <!-- Exclamación roja centrada y más grande -->
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M21,8h6v20h-6zM21,30h6v6h-6z"/>
+</vector>
+

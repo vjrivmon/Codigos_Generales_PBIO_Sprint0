@@ -1,6 +1,7 @@
 package com.example.biometria3a;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,11 +25,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Mapa_Activity extends AppCompatActivity {
-
+    private OzoneLevelReceiver ozoneLevelReceiver;
     private TextView tvCurrentTime, tvTemperature, tvOzone;
     private WebView webView;
     private Button btnUpdate;
     private ImageView menuIcon;
+    private MenuHandler menuHandler;
+
     private NotificationHalper notificationHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +91,14 @@ public class Mapa_Activity extends AppCompatActivity {
         menuIcon = findViewById(R.id.menu_icon);
 
         // Establecer el listener para abrir el PopupMenu al hacer clic en el icono
-        menuIcon.setOnClickListener(new View.OnClickListener() {
+      /*  menuIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopupMenu(v);
             }
         });
+
+       */
 
         ImageView logo = findViewById(R.id.logo);
         logo.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +109,10 @@ public class Mapa_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+// Configurar menú usando MenuHandler
+        menuHandler = new MenuHandler(this);
+        menuIcon = findViewById(R.id.menu_icon);
+        menuIcon.setOnClickListener(menuHandler::showPopupMenu);
 
 
         // Llama a la notificación al iniciar la actividad
@@ -122,7 +130,7 @@ public class Mapa_Activity extends AppCompatActivity {
 
     // Método para mostrar el PopupMenu
     // Método para mostrar el PopupMenu
-    private void showPopupMenu(View view) {
+   /* private void showPopupMenu(View view) {
         // Crear el PopupMenu
         PopupMenu popupMenu = new PopupMenu(Mapa_Activity.this, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
@@ -158,8 +166,10 @@ public class Mapa_Activity extends AppCompatActivity {
         // Mostrar el menú
         popupMenu.show();
     }
+
+    */
     // Inflar el menú cuando se crea la actividad
-    @Override
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
@@ -187,7 +197,10 @@ public class Mapa_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, PrivacidadAcitivity.class);
         startActivity(intent);
     }
+
+   */
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+
 
 }

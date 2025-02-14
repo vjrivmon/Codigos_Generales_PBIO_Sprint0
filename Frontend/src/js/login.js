@@ -1,33 +1,45 @@
+// Este archivo contiene el código JavaScript necesario para manejar el registro e inicio de sesión de usuarios en la aplicación web.
+// Se encarga de enviar los datos de registro al backend y de verificar los datos de inicio de sesión. También maneja la redirección 
+// a la página principal de la aplicación una vez que el usuario ha iniciado sesión correctamente.
+// Requiere un backend que responda a las rutas '/usuarios' y '/usuarios/verificar' con las operaciones de registro e inicio de sesión, 
+// respectivamente.
+
+// Obtener los elementos del DOM
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
 
-registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
+registerBtn.addEventListener('click', () => { // Evento de clic en el botón de registrarse
+    container.classList.add("active"); 
 });
 
-loginBtn.addEventListener('click', () => {
-    container.classList.remove("active");
+loginBtn.addEventListener('click', () => { // Evento de clic en el botón de iniciar sesión
+    container.classList.remove("active");
 });
 
- document.getElementById("privacy-policy").addEventListener("change", function() {
-            document.getElementById("register-btn").disabled = !this.checked;
-        });
+document.getElementById("privacy-policy").addEventListener("change", function() {  // Evento de cambio en la casilla de verificación de política de privacidad
+            document.getElementById("register-btn").disabled = !this.checked; // Habilitar o deshabilitar el botón de registro según el estado de la casilla
+        });
 
-// Función para registrar un nuevo usuario
-async function registrarUsuario( email, password) {
+// Función para registrar un nuevo usuario 
+// Txt, Txt, N, Txt -> registrarUsuario() ->
+// - email: correo electrónico del usuario
+// - password: contraseña del usuario
+// - phone: teléfono del usuario
+// - name: nombre del usuario
+// La función envía los datos de registro al backend y muestra un mensaje de éxito o error al usuario.
+// Si el registro es exitoso, se envía un correo de verificación al usuario.
+// Si ocurre un error, se muestra un mensaje de error al usuario.
+
+async function registrarUsuario(email, password, phone, name) { 
     try {
-        //const response = await fetch('http://192.168.0.101:8080/usuarios', { // Ip Torre Pablo
-        //const response = await fetch('http://172.20.10.11:8080/usuarios', { // Ip Portatil Pablo Wifi Pablo
-        //const response = await fetch('http://192.168.0.20:8080/usuarios', { // Ip Ordenador Vicente
-        //const response = await fetch('http://192.168.0.17:8080/usuarios', { // Ip Ordenador Irene
-        const response = await fetch('http://172.20.10.5:8080/usuarios', { // Ip Portátil visi Universidad
-        
+        console.log('Iniciando registro de usuario...');
+        const response = await fetch('http://localhost:8080/usuarios', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ correo: email, contrasena: password }) // Asegúrate de que estos nombres coincidan con los de tu base de datos
+            body: JSON.stringify({ correo: email, contrasena: password, telefono: phone, nombre: name })
         });
 
         if (!response.ok) {
@@ -35,79 +47,132 @@ async function registrarUsuario( email, password) {
         }
 
         const data = await response.json();
-        alert('Usuario registrado exitosamente!'); // Mensaje de éxito
+        const id_usuario = data.id_usuario;
+        console.log('Usuario registrado con ID:', id_usuario);
 
-        // Opcionalmente, puedes redirigir al usuario al iniciar sesión
-        container.classList.remove("active"); // Volver a la vista de inicio de sesión
+        // Asignar MAC falsa
+        const macResponse = await fetch('http://localhost:8080/asociar_dispositivo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ correo: email, id_sensor: 'AA:AA:AA:AA:AA:AA', nombre: 'Sensor', funciona: true })
+        });
+
+        if (!macResponse.ok) {
+            throw new Error('Error en la respuesta de la API al asignar la MAC: ' + macResponse.status);
+        }
+
+        const macData = await macResponse.json();
+        console.log('Respuesta de asignación de MAC:', macData);
+
+        alert('Usuario registrado exitosamente! Por favor, verifica tu correo.');
+
+        // Enviar correo de verificación
+        const correoResponse = await fetch('http://localhost:8080/verificar-correo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        });
+
+        if (!correoResponse.ok) {
+            throw new Error('Error al enviar el correo de verificación: ' + correoResponse.status);
+        }
+
+        console.log('Correo de verificación enviado.');
+        container.classList.remove("active");
     } catch (error) {
         console.error('Error al registrar el usuario:', error);
         alert('Ocurrió un error al registrar el usuario. Inténtalo de nuevo más tarde.');
     }
 }
+
+// Función para verificar si un correo ha sido verificado
+// Txt, txt -> verificarCorreo() -> V/F
+// - email: correo electrónico del usuario
+// - password: contraseña del usuario
+// La función envía una solicitud al backend para verificar si el correo ha sido verificado.
+// Función para verificar si un correo ha sido verificado
 async function ConsultarDatosUsuario(email, password) {
     try {
-      // Codificar la contraseña antes de enviarla (esto solo es para fines ilustrativos, NO es seguro)
-      const encodedPassword = encodeURIComponent(password);
-  
-      // Realizar una solicitud GET al servidor con los parámetros
-      //const response = await fetch(`http://192.168.0.101:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  IP Torre Pablo 
-      //const response = await fetch(`http://172.20.10.11:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // IP Portatil Pablo Wifi Pablo
-      //const response = await fetch(`http://192.168.0.20:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
-      //const response = await fetch(`http://192.168.0.17:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { // Ip ordenador vicente
-      const response = await fetch(`http://172.20.10.5:8080/usuarios?correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`, { //  Ip Portátil visi Universidad
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+        const response = await fetch('http://localhost:8080/usuarios/verificar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ correo: email, contrasena: password })
+        });
 
-      const result = await response.json();
-  
-      if (response.ok) {
-        if (result.success) {
-          window.location.href = 'datosYMapa.html';
+        const result = await response.json();
+
+        if (response.ok) {
+            if (result.success) {
+                document.cookie = `id_usuario=${result.id_usuario}; path=/; secure; SameSite=Strict`;
+                document.cookie = `correo=${email}; path=/; secure; SameSite=Strict`;
+                document.cookie = `session_active=true; path=/; secure; SameSite=Strict`;
+
+                console.log('Usuario verificado, obteniendo información del sensor...');
+                const macResponse = await fetch(`http://localhost:8080/usuarios/${result.id_usuario}`);
+                const macData = await macResponse.json();
+                console.log('Información del sensor obtenida:', macData);
+
+                const rolResponse = await fetch(`http://localhost:8080/obtenerRolPorCorreo/${email}`);
+                const rolData = await rolResponse.json();
+                console.log('Rol del usuario obtenido:', rolData);
+
+                if (rolData.id_rol === 1) {
+                    console.log('Redirigiendo a admin.html');
+                    window.location.href = 'admin.html';
+                } else if (macData.id_sensor === 'AA:AA:AA:AA:AA:AA') {
+                    console.log('Redirigiendo a QRCode.html');
+                    window.location.href = 'QRCode.html';
+                } else {
+                    console.log('Redirigiendo a datosYMapa.html');
+                    window.location.href = 'datosYMapa.html';
+                }
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        } else if (result.error === 'Usuario no existe') {
+            alert('El usuario no existe');
         } else {
-          alert('Contraseña incorrecta');
+            alert('Ocurrió un error inesperado');
         }
-      } else if (result.error === 'Usuario no existe') {
-        alert('El usuario no existe');
-      } else {
-        alert('Ocurrió un error inesperado');
-      }
     } catch (error) {
-      console.error('Error al verificar el usuario:', error);
-      alert('Ocurrió un error al conectar con el servidor');
+        console.error('Error al verificar el usuario:', error);
+        alert('Por favor verifica tu correo, para poder iniciar sesión');
     }
-  }
-  
-  
-
+}
 // Manejar el evento de clic en el botón de registrarse
 document.getElementById('register-btn').addEventListener('click', function(event) {
     event.preventDefault(); // Evitar el envío del formulario
 
     const email = document.getElementById('signUpEmail').value; // Obtener el correo
     const password = document.getElementById('signUpPassword').value; // Obtener la contraseña
+    const phone = document.getElementById('signUpPhone').value; // Obtener el teléfono
+    const name = document.getElementById('signUpName').value; // Obtener el nombre
 
     // Validar que los campos no estén vacíos
-    if (!email || !password) {
+    if (!email || !password || !phone || !name) {
         alert('Todos los campos son obligatorios.'); // Mensaje de error
         return; // Salir de la función si hay campos vacíos
     }
     // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el formato de email. Debe contener @ y al menos un punto. 
     if (!emailRegex.test(email)) {
         alert('Por favor, introduce un email válido.'); // Mensaje de error
         return; // Salir de la función si el email no es válido
-	}
+    }
     // Validar formato de contraseña
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,200}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,200}$/; 
+    // La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)
     if (!passwordRegex.test(password)) {
         alert('La contraseña debe tener mínimo 8 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (!@#$%^&*)'); // Mensaje de error
         return; // Salir de la función si la contraseña no es válida
     }
-    registrarUsuario( email, password); // Llamar a la función para registrar el usuario3
-		
+    registrarUsuario(email, password, phone, name); // Llamar a la función para registrar el usuario
 });
 
 // Manejar el evento de clic en el botón de iniciar sesion

@@ -6,7 +6,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mi perfil | VIMYP</title>
     <link rel="stylesheet" href="../style/styles.css">
-    <link rel="stylesheet" href="../style/Perfil.css">
+    <link rel="stylesheet" href="../style/Perfil.css">  
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="stylesheet" href="../style/popupOlvidarContrasenyaPerfil.css">
+    <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
+
+<style>
+    #popupOlvidado {
+    display: none; /* Inicialmente está oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
+}
+
+#popup-content-olvidado {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 33px; /* Ajusta el borde redondeado */
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    opacity: 1;
+    visibility: visible; /* Inicialmente visible */
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Desvanecimiento y visibilidad suave */
+    /*width: 100%;*/
+    max-width: 580px; /* Limita el ancho máximo */
+	min-height: 160px;
+    max-height: 220px;
+}
+
+</style>
+
 </head>
 <body>
     <!-- Header -->
@@ -22,10 +57,12 @@
                 <li><a href="packs.html">Packs</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="infoExtra.html">Info sobre los gases</a></li>
                 <li><a href="datosYMapa.html">Mapa</a></li>
+                <li><a href="QRCode.html">Añadir dispositivo</a></li>
             </ul>
             <div class="nav-buttons">
-                <a href="../index.html" class="btn btn-primary">Cerrar sesión</a>
+                <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
                 <div class="menu-toggle" id="mobile-menu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -43,41 +80,62 @@
                 <div class="headerPerfil">
                     <h3>Información personal</h3>
                 </div>
-                <form id="profileForm" class="info-grid">
+                <div class="info-grid">
                     <div class="info-item">
-                        <p><strong>Correo</strong></p>
-                        <input type="email" id="email" placeholder="pmg@gmail.com" disabled/>
+                        <p>Nombre</p>
+                        <input type="text" id="userName" placeholder="Nombre Apellidos" required disabled>	
                     </div>
                     <div class="info-item">
-                        <p><strong>Contraseña</strong></p>
-                        <input type="password" id="password" placeholder="Pi124578" disabled/>
+                        <p>Teléfono</p>
+                        <input type="tel" id="userPhone" placeholder="123456789" maxlength="9" required disabled>
                     </div>
-                    <button type="button" id="editBtn" class="edit-button">Editar Datos</button>
-                    <button type="button" id="guardarCambios" class="edit-button" disabled>Guardar cambios</button>
-                </form>
+                    <div class="info-item">
+                        <p>Correo electrónico</p>
+                        <input type="email" id="userEmail" placeholder="correo@gmail.com" required disabled>
+                    </div>
+                    <div class="info-item">
+                        <p>Contraseña</p>
+                        <input type="password" id="userPassword" placeholder="********" required disabled>
+                        <a href="#" id="olvideContrasenyaBtn">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <div class="info-item"><!-- vacio para tener el boton como 6 elemento a la derecha --></div>
+                    <div class="info-item" id="contenedorEditBtn">
+                        <button id="editBtn" class="edit-button" style="width: 100%;">Editar</button>
+                    </div>
+                </div>
             </div>
 
             <div class="sensors">
                 <h3>Mis sensores</h3>
                 <div class="sensor-info">
-                    <p>Nombre: _________</p>
-                    <p>Id: _________</p>
-                    <p>Ubicación: _________</p>
+                    <p>Nombre: <input type="text" placeholder="Nombre del sensor" value="Elige un nombre para el sensor" required disabled id="sensorName"></p>
+                    <p>Dirección MAC: <input type="tel" placeholder="ID del sensor" value="AA:AA:AA:AA:AA:AA" required disabled></p>
+                    <p>Ultima ubicación registrada en: <input type="text" placeholder="Ubicación" value="Grau i platja de Gandía" required disabled></p>
                 </div>
-                <div class="pagination">
-                    <button>&larr;</button>
-                    <span>1 de 3</span>
-                    <button>&rarr;</button>
+                
+                <div class="info-item" id="contenedorEditBtn">
+                    <button id="editBtn_sensor" class="edit-button" style="width: 50%;">Editar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Popup -->
-    <div id="popup" class="popup">
-        <div class="popup-content">
+    <!-- Popup editar cambios -->
+    <div id="popup2" class="popup2">
+        <div class="popup-content2">
             <p>¿Seguro que quieres aplicar estos cambios?</p>
-            <button id="confirmBtn">Confirmar</button>
+            <button id="confirmBtn2">Confirmar</button>
+            <button id="cancelBtn2">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Popup cambiar contraseña -->
+    <div id="popupOlvidado" class="popup">
+        <div class="popup-content" id="popup-content-olvidado">
+            <h3>¿Seguro que quieres cambiar la contraseña?</h3>
+            <p>Escribe el teléfono asociado a la cuenta de correo con la que intentas iniciar sesión.</p>
+            <input type="tel" id="popupPhone" placeholder="Teléfono" maxlength="9" required class="input">
+            <button id="mandarCorreoNuevaContrasenya">Recuperar contraseña</button>
             <button id="cancelBtn">Cancelar</button>
         </div>
     </div>
@@ -94,9 +152,27 @@
                 </ul>
             </div>
         </div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP - Todos los derechos reservados.</p>
+        </div>
     </footer>
+
+
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
 
     <script src="../js/Perfil.js"></script>
     <script src="../js/menu.js"></script>
+    <script src="../js/editarPerfil.js"></script>
+    <script src="../js/popupOlvidarContrasenyaPerfil.js"></script>
+    <script src="../js/telfPerfil.js"></script>
+    <script src="../js/cerrarSesion.js"></script>
+    
 </body>
 </html>

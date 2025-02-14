@@ -5,11 +5,30 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.biometrics" android:required="true"/>
+
+
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+    <uses-feature android:name="android.hardware.location" android:required="true" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+
+
+
     <application
         android:icon="@drawable/ic_logo"
         android:allowBackup="true"
@@ -21,7 +40,10 @@
         android:theme="@style/Theme.Biometria3a"
         tools:targetApi="31"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:enableOnBackInvokedCallback="true"
+
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".InformacionPrincipal"
             android:exported="true">
@@ -41,10 +63,34 @@
         <activity android:name=".Venta_reembolso_activity" />
         <activity android:name=".EditPerfilActivity"/>
         <activity android:name=".Mapa_Activity"/>
+        <activity android:name=".VerificationActivity"/>
+        <activity android:name=".AirQualityActivity"/>
+        <activity android:name=".InfoExtraFragment"/>
+        <activity android:name=".MapsACTIVITY"/>
+        <activity android:name=".QrActivity"/>
+        <activity android:name=".webmapAc"/>
+        <activity android:name=".BiometricAuthActivity"/>
+        <activity android:name=".DistanceCalculatorActivity"/>
+        <activity android:name=".PacksActivity"/>
+        <activity android:name=".HeatmapActivity"/>
+
+        <receiver android:name=".OzoneLevelReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.biometria3a.OZONE_LEVEL_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
 
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAoRVYdSEBfvSe52_bwXEskJ17Nbmn39gw" />
+
     </application>
 </manifest>

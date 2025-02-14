@@ -33,9 +33,12 @@ body{
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    /*width: 768px;*/
+	width: 800px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 600px;    
+	transition: min-height 0.6s ease-in-out; /* Transición suave en min-height */
+
 }
 
 .container p{
@@ -122,9 +125,9 @@ body{
     width: 50%;
     opacity: 0;
     z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 
@@ -137,14 +140,14 @@ body{
 
 
 .sign-up label a{
-    font-size: 12px;
-    color: var(--button-color);
-        text-decoration: underline; /* Subrayado para el enlace */
-    padding-bottom: 0px;
+    font-size: 12px;
+    color: var(--button-color);
+    text-decoration: underline; /* Subrayado para el enlace */
+    padding-bottom: 0px;
 }
 
 .sign-up span {
-    font-size: 12px;
+    font-size: 12px;
 }
 
 /* Estilo para el contenedor del checkbox y el texto */
@@ -161,11 +164,10 @@ form label {
 
 /* Asegurar que el checkbox no cause desplazamiento de línea */
 .sing-up label input[type="checkbox"] {
-    margin: 0; /* Elimina márgenes adicionales */
-    vertical-align: middle; /* Alineación vertical correcta */
-     width: 16px;
-    height: 16px;
-   
+    margin: 0; /* Elimina márgenes adicionales */
+    vertical-align: middle; /* Alineación vertical correcta */
+    width: 16px;
+    height: 16px;
 }
 
 
@@ -361,4 +363,19 @@ button:disabled {
 
 .progress-bar-success {
     background-color: green;
+}
+
+
+.alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
 }

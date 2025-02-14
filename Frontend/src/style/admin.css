@@ -1,0 +1,278 @@
+.admin {
+  padding: 2rem;
+  background-color: var(--background-color);
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  font-size: 2rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.filt {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filt p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.filters .btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.filters select, .filters button {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid lightgray;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.filters button:hover {
+  transform: scale(1.02);
+}
+
+/* Botones */
+#clear-filters {
+  background-color: #f44336;
+  border: 2px solid #f44336;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+#clear-filters:hover {
+  background-color: white;
+  color: #f44336;
+}
+
+#apply-filters {
+  background-color: var(--button-color);
+  border: 2px solid var(--button-color);
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+#apply-filters:hover {
+  background-color: white;
+  color: var(--button-color);
+}
+
+/* Tabla sensor */
+.sensor-table {
+  width: 100%;
+  min-width: 1122px; /* No permite que la tabla sea más pequeña */
+  border-collapse: collapse;
+  table-layout: auto; /* Permite que las columnas mantengan su ancho natural */
+}
+
+.sensor-table th, .sensor-table td {
+  padding: 0.8rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85rem;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.sensor-table th {
+  background-color: var(--background-color-secondary);
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.sensor-table tr:hover {
+  background-color: #f4f6fa;
+}
+
+.sensor-table td {
+  color: var(--text-color);
+}
+
+/* Estilos responsivos para la tabla */
+.sensor-table-container {
+  overflow-x: auto; /* Activa el scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
+  border-radius: 10px;
+  margin-bottom: 1rem; /* Espacio inferior */
+}
+
+
+/* Tabla historial */
+.historial-table {
+  width: 100%;
+  min-width: 1122px; /* No permite que la tabla sea más pequeña */
+  border-collapse: collapse;
+  table-layout: auto; /* Permite que las columnas mantengan su ancho natural */
+}
+
+.historial-table th, .historial-table td {
+  padding: 0.8rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85rem;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.historial-table th {
+  background-color: var(--background-color-secondary);
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.historial-table tr:hover {
+  background-color: #f4f6fa;
+}
+
+.historial-table td {
+  color: var(--text-color);
+}
+
+/* Estilos responsivos para la tabla */
+.historial-table-container {
+  overflow-x: auto; /* Activa el scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
+  border-radius: 10px;
+  margin-bottom: 1rem; /* Espacio inferior */
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters .btns {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .filters select, .filters button {
+    width: 100%;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .sensor-table th, .sensor-table td {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-table th, .sensor-table td {
+    padding: 0.4rem;
+  }
+
+  .filters select, .filters button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+
+/* Estilo para las etiquetas de estado activo e inactivo */
+.status {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.status.active {
+  background-color: rgb(53, 175, 53);
+}
+
+.status.inactive {
+  background-color: rgb(255, 50, 50);
+}
+
+
+/* Estilo para las flechas de orden activas */
+.sort-icons .asc.active {
+  color: black; /* Cambia el color para indicar que está activo */
+  font-weight: bold; /* Opcional: resalta la flecha activa */
+}
+
+.sort-icons .desc.active {
+  color: black; /* Cambia el color para indicar que está activo */
+  font-weight: bold; /* Opcional: resalta la flecha activa */
+}
+
+
+
+.sort-icons span {
+  cursor: pointer;
+  color: gray; /* Color predeterminado */
+  font-size: 0.9rem;
+}
+
+.sort-icons span.active {
+  color: black; /* Color de la flecha activa */
+  font-weight: bold; /* Opcional: resaltar */
+}
+
+
+/* Evitar estrechamiento en pantallas más pequeñas */
+@media (max-width: 1122px) {
+  .sensor-table-container {
+    overflow-x: auto; /* Activar desplazamiento horizontal */
+  }
+
+  .sensor-table {
+    min-width: 1122px; /* Mantener ancho mínimo */
+  }
+}
+
+@media (max-width: 768px) {
+  .sensor-table th, .sensor-table td {
+    padding: 0.6rem; /* Reducir el padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-table th, .sensor-table td {
+    padding: 0.4rem;
+  }
+}
+
+

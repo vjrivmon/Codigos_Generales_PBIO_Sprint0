@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Información sobre Gases | VIMYP</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="../img/logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../style/infoExtra.css" />
+    <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                    <span>VIMYP</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="packs.html">Packs</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="datosYMapa.html">Mapa</a></li>
+                <li><a href="QRCode.html">Añadir dispositivo</a></li>
+                <li><a href="perfil.html">Mi perfil</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <h1>Información sobre Gases Contaminantes</h1>
+
+    <section class="emergency-contact">
+        <h2><i class="fas fa-exclamation-triangle"></i> ¿Qué hacer en caso de intoxicación? <i class="fas fa-exclamation-triangle"></i></h2>
+        <p>Si crees que has estado expuesto a niveles peligrosos de alguno de estos gases, contacta de inmediato con el servicio de emergencias llamando al <strong>112</strong>. La intervención rápida es fundamental para evitar daños graves a la salud. Describe tus síntomas y el posible gas al que has estado expuesto para que puedan ofrecerte la asistencia adecuada.</p>
+    </section>
+
+    <!-- Sección para Ozono (O3) -->
+    <section>
+        <article>
+            <h2>Ozono (O<sub>3</sub>)</h2>
+            <div class="content-wrapper">
+                <div class="text-content">
+                    <p>El ozono es un gas de color azul pálido compuesto por tres átomos de oxígeno. En la troposfera, es un contaminante que se forma por la reacción entre la luz solar y otros contaminantes como compuestos orgánicos volátiles y dióxido de nitrógeno.</p>
+                    <p>El valor objetivo (VO) para la protección de la salud es de 120 µg/m³, y no debe superarse más de 25 días por promedio de tres años. También existen valores de umbrales: el umbral de información es de 180 µg/m³ y el umbral de alerta es de 240 µg/m³.</p>
+                </div>
+                <div class="card">
+                    <div class="levels">
+                        <div class="level">Umbrales de seguridad</div>
+                        <div><span class="dot green"></span> Bueno: 0-120 µg/m³</div>
+                        <div><span class="dot yellow"></span> Moderado: 121-180 µg/m³</div>
+                        <div><span class="dot red"></span> Malo: &gt; 240 µg/m³</div>
+                        <a href="datosYMapa.html#graficaGas" class="btn btn-primary btn-ver-valores" >Ver mis valores</a>
+                        
+                    </div>
+                </div>
+            </div>
+            <aside>
+                <h4>Recomendaciones</h4>
+                <ul>
+                    <li>Evitar actividades físicas intensas al aire libre durante horas de alta concentración de ozono.</li>
+                    <li>Permanecer en interiores con ventanas cerradas en días de alerta ambiental.</li>
+                </ul>
+            </aside>
+            <div class="alerta">
+                <h4>Precaución</h4>
+                <p>Grupos de riesgo: personas con <strong>problemas respiratorios, niños, adultos mayores y personas que trabajan al aire libre</strong>. En caso de dificultad para respirar o síntomas persistentes, <strong>busca ayuda médica</strong>.</p>
+            </div>
+        </article>
+    </section>
+
+    <!-- Sección para Dióxido de Nitrógeno (NO2) -->
+    <section>
+        <article>
+            <h2>Dióxido de Nitrógeno (NO<sub>2</sub>)</h2>
+            <div class="content-wrapper">
+                <div class="text-content">
+                    <p>El dióxido de nitrógeno es un gas de color marrón rojizo, que se genera en la combustión de motores y plantas industriales. Es un indicador de la contaminación por óxidos de nitrógeno.</p>
+                    <p>El valor límite (VL) horario es de 200 µg/m³, no debiendo superarse en más de 18 ocasiones al año. El valor límite anual es de 40 µg/m³.</p>                    
+                </div>
+                <div class="card">
+                    <div class="levels">
+                        <div class="level">Umbrales de seguridad</div>
+                        <div><span class="dot green"></span> Bueno: 0-40 µg/m³</div>
+                        <div><span class="dot yellow"></span> Moderado: 41-200 µg/m³</div>
+                        <div><span class="dot red"></span> Malo: &gt; 200 µg/m³</div>
+                        <a href="datosYMapa.html#graficaGas" class="btn btn-primary btn-ver-valores" >Ver mi sensor</a>                    </div>
+                </div>
+            </div>
+            <aside>
+                <h4>Recomendaciones</h4>
+                <ul>
+                    <li>Evitar zonas de tráfico intenso y áreas industriales en períodos de alta contaminación.</li>
+                    <li>Mantener ventanas cerradas en días con altos niveles de NO<sub>2</sub>.</li>
+                    <li>Utilizar sistemas de ventilación o purificadores de aire en interiores si es necesario.</li>
+                </ul>
+            </aside>
+            <div class="alerta">
+                <h4>Precaución</h4>
+                <p>Grupos de riesgo: personas con <strong>asma, alergias, problemas cardíacos y niños</strong>. En caso de <strong>irritación en los ojos, garganta o vías respiratorias</strong>, se recomienda <strong>consultar a un médico</strong>.</p>
+            </div>
+        </article>
+    </section>
+
+    <!-- Sección para Trióxido de Azufre (SO3) -->
+    <section>
+        <article>
+            <h2>Trióxido de Azufre (SO<sub>3</sub>)</h2>
+            <div class="content-wrapper">
+                <div class="text-content">
+                    <p>El trióxido de azufre es un gas incoloro con un olor picante, producido en la quema de combustibles fósiles. Al combinarse con agua, forma ácido sulfúrico, altamente dañino para la salud.</p>
+                    <p>El valor límite (VL) horario es de 350 µg/m³, no debiendo superarse en más de 24 ocasiones al año. Además, el valor límite diario es de 125 µg/m³, que no debe superarse en más de 3 ocasiones al año.</p>                    
+                </div>
+                <div class="card">
+                    <div class="levels">
+                        <div class="level">Umbrales de seguridad</div>
+                        <div><span class="dot green"></span> Bueno: 0-125 µg/m³</div>
+                        <div><span class="dot yellow"></span> Moderado: 126-350 µg/m³</div>
+                        <div><span class="dot red"></span> Malo: &gt; 350 µg/m³</div>
+                        <a href="datosYMapa.html#graficaGas" class="btn btn-primary btn-ver-valores" >Ver mi sensor</a>                    </div>
+                </div>  
+            </div>
+            <aside>
+                <h4>Recomendaciones</h4>
+                <ul>
+                    <li>Evitar áreas industriales o sitios de emisión en días de alta concentración de SO<sub>2</sub>.</li>
+                    <li>Usar mascarillas y equipo de protección si es necesario, especialmente en entornos industriales.</li>
+                </ul>
+            </aside>
+            <div class="alerta">
+                <h4>Precaución</h4>
+                <p>Grupos de riesgo: <strong>trabajadores industriales</strong> y personas con <strong>enfermedades respiratorias</strong>. En caso de exposición prolongada, se debe buscar <strong>asistencia médica de inmediato</strong>.</p>
+            </div>
+        </article>
+    </section>
+
+    <section class="interes">
+        <h2>Enlaces de Interés <i class="fas fa-link"></i></h2>
+        <p>
+            La calidad del aire es fundamental para la salud y el medio ambiente. En España, puedes consultar las normativas y recomendaciones sobre este tema en el <a href="https://www.boe.es/" target="_blank">Boletín Oficial del Estado (BOE)</a> y en páginas oficiales como la del <a href="https://www.miteco.gob.es/" target="_blank">Ministerio para la Transición Ecológica y el Reto Demográfico</a>.
+        </p>
+        <p>
+            Además, los datos satelitales de <a href="https://www.meteosat.com/" target="_blank">Meteosat</a> ofrecen información útil para evaluar condiciones atmosféricas que afectan la calidad del aire. Consulta estas fuentes para tomar decisiones más informadas y proteger el medio ambiente.
+        </p>
+        
+            </section>
+
+
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="apple-footer">
+        <div class="footer-top">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="politicaPrivacidad.html">Política de Privacidad</a></li>
+                    <li><a href="condicionesDeUso.html">Condiciones de uso</a></li>
+                    <li><a href="ventasYReembolsos.html">Ventas y Reembolsos</a></li>
+                    <li><a href="avisosLegales.html">Avisos Legales</a></li>
+                </ul>
+            </div>
+</div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 VIMYP&nbsp; -&nbsp; Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script src="../js/cerrarSesion.js"></script>
+    <script src="../js/menu.js"></script>
+</body>
+
+</html>

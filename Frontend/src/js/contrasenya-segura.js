@@ -1,8 +1,19 @@
+// En este código se implementa la funcionalidad de la página de registro y login para cambiar entre las pantallas de registro 
+//y login, y ajustar el tamaño del contenedor en función de la vista actual. Se utilizan funciones para mostrar el formulario 
+//de registro y login, y para ajustar el tamaño del contenedor. Además, se definen eventos para los botones de registro y login 
+//que llaman a estas funciones al hacer clic en ellos.
+
+//Elementos para el registro
 const passwordInput = document.getElementById("signUpPassword");
 const passwordStrengthText = document.getElementById("password-strength-text");
 const passwordStrengthBar = document.getElementById("password-strength");
 const passwordToggle = document.getElementById("toggle-password-visibility");
 
+// Elementos para el login
+const loginPasswordInput = document.getElementById("loginPassword");
+const loginPasswordToggle = document.getElementById("toggle-login-password-visibility");
+
+// registro
 passwordToggle.addEventListener("click", () => {
     passwordInput.type = passwordInput.type === "password" ? "text" : "password";
     passwordToggle.src = passwordInput.type === "password" ? "../assets/eye.svg" : "../assets/eye-off.svg";
@@ -11,6 +22,19 @@ passwordToggle.addEventListener("click", () => {
 passwordInput.addEventListener("keyup", () => {
     const password = passwordInput.value;
     updatePasswordStrength(password);
+});
+
+
+//login
+
+loginPasswordToggle.addEventListener("click", () => {
+    loginPasswordInput.type = loginPasswordInput.type === "password" ? "text" : "password";
+    loginPasswordToggle.src = loginPasswordInput.type === "password" ? "../assets/eye.svg" : "../assets/eye-off.svg";
+});
+
+loginPasswordInput.addEventListener("keyup", () => {
+    const password = loginPasswordInput.value;
+    //updatePasswordStrength(password);
 });
 
 function updatePasswordStrength(password) {

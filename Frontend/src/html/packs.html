@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Dónde encontrar nuestros packs | VIMYP</title>
     <link rel="stylesheet" href="../style/styles.css">
+    <link rel="stylesheet" href="../style/popupCerrarSesion.css">
     <link rel="stylesheet" href="../style/packs.css"> <!-- Archivo CSS específico para FAQ -->
     <link rel="icon" href="../img/logo.svg" type="image/x-icon"> <!-- Poner el icono de la web-->
 </head>
 <body>
 	
 <!-- Inicio Header y Navbar -->
-<header>
+<header id="header_publico" >
   <nav class="navbar">
     <div class="logo">
         <a href="../index.html">
@@ -24,6 +25,7 @@
       <li><a href="packs.html">Packs</a></li>
       <li><a href="faq.html">FAQ</a></li>
       <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="infoExtraPublico.html">Info sobre los gases</a></li>
     </ul>
     <div class="nav-buttons">
       <a href="login.html" class="btn btn-primary">Login</a>
@@ -34,6 +36,32 @@
       </div>
     </div>
   </nav>
+</header>
+
+<header id="header_usuario" style="display: none;">
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">
+                <img src="../img/logo.svg" alt="Logotipo VIMYP" />
+                <span>VIMYP</span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="packs.html">Packs</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="infoExtra.html">Info sobre los gases</a></li>
+            <li><a href="datosYMapa.html">Mapa</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <a class="btn btn-primary" id="logoutBtn">Cerrar sesión</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
 </header>
 <!-- Fin Navbar y header -->
 
@@ -52,7 +80,7 @@
                 <li>Batería autónoma por más de una semana.</li>
             </ul>
             <div class="button-group">
-                <a href="#purchase-options" class="btn btn-primary">Comprar</a>
+                <a href="#purchase-options" class="btn btn-primary">Comprar desde 1€</a>
                 <a href="#customer-reviews" class="btn btn-secondary">Aún no lo tengo claro...</a>
             </div>
         </div>
@@ -71,16 +99,16 @@
             <div class="purchase-card">
                 <img src="../img/etsy.png" alt="Compra en Etsy" id="Etsy">
                 <!--<h4>Etsy</h4>-->
-                <p>Método de pago: Tarjeta de crédito y débito VISA&nbsp; </p>
-                <p>Envío: a partir de 5€</p>
+                <p>Método de pago: Tarjeta de crédito y débito VISA y Mastercard, paypal</p>
+                <p>Envío: a partir de 2€</p>
                 <a href="https://www.etsy.com" class="btn btn-primary">Comprar en Etsy</a>
             </div>
 
           <div class="purchase-card">
                 <img src="../img/amazon.png" alt="Compra en Amazon" id="Amazon">
                 <!--<h4>Amazon</h4>-->
-              <p>Método de pago: Tarjeta de crédito, débito y Apple Pay</p>
-              <p>Envío: a partir de 4€</p>
+              <p>Método de pago: Tarjeta de crédito y débito VISA y Mastercard, bizum, paypal y Apple Pay</p>
+              <p>Envío: a partir de 2€</p>
                 <a href="https://www.amazon.com" class="btn btn-primary">Comprar en Amazon</a>
             </div>
 
@@ -100,23 +128,35 @@
         <h3>Opiniones de nuestros clientes</h3>
         <div class="reviews-carousel">
             <div class="review-item">
-                <p>"El kit de VIMYP me ha dado una visión clara sobre la calidad del aire en mi ciudad. Lo llevo a todos lados." <strong>Rebeca G.</strong></p>
+                <p>"El kit de VIMYP me ha dado una visión clara sobre la calidad del aire en mi ciudad. Lo llevo a todos lados." 
+                    <img src="../img/prod6.jpg" alt="Producto reseña" class="review-image">
+                    <strong>Rebeca G.</strong></p>
             </div>
             <div class="review-item">
-                <p>"Me encanta lo precisos que son los datos y la facilidad para consultar la información desde el móvil en su mapa." <strong>Juan P.</strong></p>
+                <p>"Me encanta lo precisos que son los datos y la facilidad para consultar la información desde el móvil en su mapa." 
+                    <img src="../img/prod5.jpg" alt="Producto reseña" class="review-image">
+                    <strong>Juan P.</strong></p>
             </div>
             <div class="review-item">
-                <p>"Una herramienta excelente para mantener mi salud y la de mi familia. Los mapas son realmente útiles." <strong>Lucía R.</strong></p>
+                <p>"Una herramienta excelente para mantener mi salud y la de mi familia. Los mapas son realmente útiles." 
+                    <img src="../img/prod4.jpg" alt="Producto reseña" class="review-image">
+                    <strong>Lucía R.</strong></p>
             </div>
 			<div class="review-item">
-                <p>"Le compré uno de estos a mi padre, que es asmático, para saber cuándo puede salir a la calle con tranquilidad. Va de maravilla." <strong>Camilo J.</strong></p>
+                <p>"Le compré uno de estos a mi padre, que es asmático, para saber cuándo puede salir a la calle con tranquilidad. Va de maravilla."
+                    <img src="../img/prod1.jpg" alt="Producto reseña" class="review-image">
+                    <strong>Camilo J.</strong></p>
             </div>
 			<div class="review-item">
-    <p>"Excelente producto, me ayuda a planificar mis salidas diarias sin preocupaciones. Muy recomendado para quienes tienen alergias." <strong>Ana P.</strong></p>
+    <p>"Excelente producto, me ayuda a planificar mis salidas diarias sin preocupaciones. Muy recomendado para quienes tienen alergias." 
+        <img src="../img/prod3.jpg" alt="Producto reseña" class="review-image">
+        <strong>Ana P.</strong></p>
 </div>
 
 <div class="review-item">
-    <p>"Lo compré para mi hija y realmente nos ha ayudado a controlar sus síntomas. Información precisa y fácil de usar." <strong>Martín L.</strong></p>
+    <p>"Lo compré para mi hija y realmente nos ha ayudado a controlar sus síntomas. Información precisa y fácil de usar." 
+        <img src="../img/prod2.jpg" alt="Producto reseña" class="review-image">
+        <strong>Martín L.</strong></p>
 </div>
 
         </div>
@@ -142,7 +182,18 @@
     </div>
 </footer>
 <!-- Fin footer -->
+ 
+     <!-- Popup para cerrar sesión -->
+     <div id="popup-cerrar-sesion" class="popup">
+        <div class="popup-content">
+            <p>¿Seguro que quieres cerrar la sesión?</p>
+            <button id="confirmBtn-cerrar" class="btn">Confirmar</button>
+            <button id="cancelBtn-cerrar" class="btn">Cancelar</button>
+        </div>
+    </div>
 
 	<script src="../js/menu.js"></script> <!-- Archivo JS para que funcione el menú de hamburguesa -->
+    <script src="../js/selectorHeader.js"></script> <!-- Archivo JS para que muestre el menu adecuado-->
+    <script src="../js/cerrarSesion.js"></script> <!-- Archivo JS para cerrar sesión -->
 </body>
 </html>

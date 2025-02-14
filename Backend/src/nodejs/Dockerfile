@@ -16,6 +16,9 @@ RUN apt update
 RUN npm install mariadb
 RUN npm install cors
 RUN npm install dotenv
+RUN npm install nodemailer
+RUN npm install bcryptjs
+RUN npm install leaflet leaflet.heat
 
 # Copiamos el resto del código
 COPY . .

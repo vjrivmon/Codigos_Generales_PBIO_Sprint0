@@ -16,9 +16,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 include(":Application")
 rootProject.name = "Biometria3a"
 include(":app")
- 
+
+
+
+
+

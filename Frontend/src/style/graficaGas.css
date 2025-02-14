@@ -1,0 +1,188 @@
+#fechaSelector{
+    border: 2px solid var(--button-color);
+    border-radius: 15px;
+}
+
+#graficaGas {
+    flex: 2; /* Espacio relativo menor que el mapa */
+    width: 100%; 
+    max-width: 500px;
+    height: 410px;
+    max-height: 410px;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    border-radius: 33px;
+    background-color: rgba(255, 255, 255, 1); 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+#info-box-grafica {
+    flex: 1; /* Espacio más reducido */
+    width: 100%;
+    min-width: 300px;
+    height: 410px;
+    min-height: 400px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 1); 
+    border-radius: 33px;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    font-size: 1em;
+    color: var(--text-color); 
+}
+
+
+#info-box-grafica select  {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid lightgray;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+    min-width: 150px; /* Garantiza un tamaño mínimo consistente */
+
+  }
+  
+
+/*#info-box-grafica:hover {
+    transform: scale(1.05); 
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.7);
+    background-color: rgba(255, 255, 255, 0.1); 
+}*/
+#info-box-grafica h4 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--text-color); 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); 
+}
+
+#info-box-grafica p {
+    margin: 5px 0;
+    font-size: 1em;
+    font-weight: 300; 
+    line-height: 1.5;
+}
+#filtrar-fecha-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-top: 20px;
+    background-color: var(--button-color); 
+    color: white;
+    border: 2px solid var(--button-color);
+    border-radius: 33px; 
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#filtrar-fecha-btn:hover {
+    background-color: white;
+  border: 2px solid var(--button-color);
+  color: var(--text-color);
+}
+.ancho{
+    width: 100%;
+    margin-bottom: 10px;
+}
+.boton{
+    padding: 10px 20px;
+    border-radius: 33px;
+    text-decoration: none;
+    margin-left: 0;
+    margin-top: 1rem;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    background-color: var(--button-color);
+    border: 2px solid var(--button-color);
+    color: white;
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+  
+  .boton:hover{
+    background-color: white;
+    border: 2px solid var(--button-color);
+    color: var(--text-color);
+  }
+.btn-ver-valores {
+    display: block; /* Asegura que el botón se comporte como un bloque */
+    margin: 15px auto; /* 15px de margen arriba y abajo, centrado horizontalmente */
+    text-align: center; /* Centra el texto dentro del botón */
+    padding: 10px 20px; /* Ajusta el padding según sea necesario */
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    background-color: var(--button-color);
+    border: 2px solid var(--button-color);
+    color: white;
+    width: 20%; /* Ajusta el ancho según sea necesario */
+}
+
+#map {
+    flex: 3; /* Ocupa mayor espacio en relación a los demás */
+    width: 100%; /* Asegura que siempre se ajuste al contenedor */
+    max-width: 600px; /* Límite para pantallas grandes */
+    height: 410px; /* Altura basada en el viewport */
+    min-height: 400px; /* Altura mínima */
+    background-color: rgba(255, 255, 255, 1); 
+    border-radius: 33px;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+
+.contenedor-responsive {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite que los elementos bajen en pantallas pequeñas */
+    gap: 20px; /* Espacio entre elementos */
+    padding: 20px 2rem;
+    margin: 0 2rem;
+    justify-content: center; /* Centra los elementos en pantallas grandes */
+}
+
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 550) {
+    .contenedor-responsive {
+        flex-direction: column; /* Cambia a una columna para pantallas pequeñas */
+        gap: 20px; /* Aumenta el espacio entre elementos */
+        padding: 10px; /* Reduce el padding general */
+        margin: 0; /* Quita márgenes laterales */
+    }
+
+    #info-box-grafica {
+        width: 100%; /* Toma todo el ancho disponible */
+        max-width: none; /* Anula el ancho máximo */
+        font-size: 0.9em; /* Reduce el tamaño del texto */
+    }
+
+    
+
+    #map {
+        width: 100%; /* Se adapta al ancho completo */
+        height: 410px; /* Ajusta la altura del mapa */
+        min-width: 100%;
+        max-width: none;
+        min-height: 300px; /* Altura mínima para evitar que sea demasiado pequeño */
+    }
+
+
+    .boton{
+        font-size: 0.9em; /* Reduce ligeramente el tamaño del texto */
+        padding: 8px 15px; /* Ajusta padding */
+    }
+}
